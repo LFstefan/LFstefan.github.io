@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[初心]]></title>
+    <url>%2F2017%2F04%2F30%2F%E5%88%9D%E5%BF%83%2F</url>
+    <content type="text"><![CDATA[引言 2017-04-29是我阳历的生日，同时也是我第一个博客的诞辰！初心是为了能有一个可以记录自己在代码中的成长过程的空间，同时也希望能够发挥自己的一些微不足道的能力去帮助一些人，在此过程中不断提高自己。——————一只奋进的小菜鸟 随笔 起因其实可以追溯到一篇微博，内容讲述了为什么程序员要写博客，作者文笔着实不错，让我看着动了心，回想起从前码代码的日子，经历过好多的坑，走过好多的弯路，一直想可以把自己心得或者当时的想法，做法记录下来，以后可以回头看看自己当初犯过那些错，走过那些弯路，警醒一下自己，同时也可以提醒同在路上的人不要重蹈我的覆辙，为他人尽自己的一丝绵薄之力。 本人小小一程序员菜鸟，无意间对编程产生了浓厚的兴趣，遂开始了码代码的日子，由于起步较晚，基础也薄弱，希望以后的日子有幸能看我文章的小伙伴不要吝啬你们的口水，为我提出宝贵的意见，更希望各位大牛心情愉悦之际能指点一二，同路的菜鸟我们相互交流，共同学习，一起奋进！]]></content>
+      <categories>
+        <category>初心</category>
+      </categories>
+      <tags>
+        <tag>初心</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2017%2F04%2F29%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+</search>
