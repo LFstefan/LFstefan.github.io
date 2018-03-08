@@ -1,0 +1,1285 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,Struts,JavaWeb,Architecture," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="序言 软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2">
+<meta name="keywords" content="Java,Struts,JavaWeb,Architecture">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java架构学习心得(一)">
+<meta property="og:url" content="https://lfstefan.github.io/2017/07/15/Java架构学习心得/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="序言 软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2">
+<meta property="og:updated_time" content="2018-03-08T02:49:50.489Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java架构学习心得(一)">
+<meta name="twitter:description" content="序言 软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2017/07/15/Java架构学习心得/"/>
+
+
+
+
+
+  <title>Java架构学习心得(一) | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/15/Java架构学习心得/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java架构学习心得(一)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-15T14:57:58+08:00">
+                2017-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Architecture/" itemprop="url" rel="index">
+                    <span itemprop="name">Architecture</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/15/Java架构学习心得/" class="leancloud_visitors" data-flag-title="Java架构学习心得(一)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><blockquote>
+<h3 id="软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c-s模式（客户端-服务器模式），在到现在的b-s模式（浏览器-服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）"><a href="#软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c-s模式（客户端-服务器模式），在到现在的b-s模式（浏览器-服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）" class="headerlink" title="软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）"></a>软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，<strong>框架</strong>应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）</h3></blockquote>
+<a id="more"></a>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h3 id="首先我们来说流程控制，b-s模式均由浏览器向服务器发出请求，然后服务器响应相关请求并回传结果给浏览器，这是个一成不变的通用过程，所以我要做的就是抽象这个过程，类似于Struts2，把请求和响应的控制流程抽象到框架中去，让框架去拦截掉你的所有请求，然后经过处理后在传递给服务器，服务器的相响应结果同样被框架截获，然后处理后再扔给浏览器去显示，以上是大概流程，下面我们用程序代码详细道来！"><a href="#首先我们来说流程控制，b-s模式均由浏览器向服务器发出请求，然后服务器响应相关请求并回传结果给浏览器，这是个一成不变的通用过程，所以我要做的就是抽象这个过程，类似于Struts2，把请求和响应的控制流程抽象到框架中去，让框架去拦截掉你的所有请求，然后经过处理后在传递给服务器，服务器的相响应结果同样被框架截获，然后处理后再扔给浏览器去显示，以上是大概流程，下面我们用程序代码详细道来！" class="headerlink" title="首先我们来说流程控制，b/s模式均由浏览器向服务器发出请求，然后服务器响应相关请求并回传结果给浏览器，这是个一成不变的通用过程，所以我要做的就是抽象这个过程，类似于Struts2，把请求和响应的控制流程抽象到框架中去，让框架去拦截掉你的所有请求，然后经过处理后在传递给服务器，服务器的相响应结果同样被框架截获，然后处理后再扔给浏览器去显示，以上是大概流程，下面我们用程序代码详细道来！"></a>首先我们来说流程控制，b/s模式均由浏览器向服务器发出请求，然后服务器响应相关请求并回传结果给浏览器，这是个一成不变的通用过程，所以我要做的就是抽象这个过程，类似于Struts2，把请求和响应的控制流程抽象到框架中去，让框架去拦截掉你的所有请求，然后经过处理后在传递给服务器，服务器的相响应结果同样被框架截获，然后处理后再扔给浏览器去显示，以上是大概流程，下面我们用程序代码详细道来！</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"> <span class="tag">&lt;<span class="name">FlowControl</span>&gt;</span></div><div class="line">      	<span class="tag">&lt;<span class="name">Action</span> <span class="attr">name</span>=<span class="string">"login"</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;<span class="name">OperatePoint</span> <span class="attr">name</span>=<span class="string">"login_execute"</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"success"</span>&gt;</span>success.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"error"</span>&gt;</span>error.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;/<span class="name">OperatePoint</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;<span class="name">OperatePoint</span> <span class="attr">name</span>=<span class="string">"login_check"</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"success"</span>&gt;</span>success.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"error"</span>&gt;</span>error.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;/<span class="name">OperatePoint</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;<span class="name">OperatePoint</span> <span class="attr">name</span>=<span class="string">"login_init"</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"success"</span>&gt;</span>success.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"error"</span>&gt;</span>error.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;/<span class="name">OperatePoint</span>&gt;</span></div><div class="line">      	<span class="tag">&lt;/<span class="name">Action</span>&gt;</span></div><div class="line">      	<span class="tag">&lt;<span class="name">Action</span> <span class="attr">name</span>=<span class="string">"register"</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;<span class="name">OperatePoint</span> <span class="attr">name</span>=<span class="string">"register_execute"</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"success"</span>&gt;</span>success.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"error"</span>&gt;</span>error.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;/<span class="name">OperatePoint</span>&gt;</span></div><div class="line">      	<span class="tag">&lt;/<span class="name">Action</span>&gt;</span></div><div class="line">      	<span class="tag">&lt;<span class="name">Action</span> <span class="attr">name</span>=<span class="string">"xxx"</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;<span class="name">OperatePoint</span> <span class="attr">name</span>=<span class="string">"xxx_execute"</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"success"</span>&gt;</span>success.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">	      		<span class="tag">&lt;<span class="name">Result</span> <span class="attr">name</span>=<span class="string">"error"</span>&gt;</span>error.jsp<span class="tag">&lt;/<span class="name">Result</span>&gt;</span></div><div class="line">      		<span class="tag">&lt;/<span class="name">OperatePoint</span>&gt;</span></div><div class="line">      	<span class="tag">&lt;/<span class="name">Action</span>&gt;</span></div><div class="line"> <span class="tag">&lt;/<span class="name">FlowControl</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="上面的xml配置文件类似于Struts2的struts-xml，用于表明整个项目中所有的请求与对应请求的响应，Action为我自己定义的用于处理相关的请求动作类，OperatePoint为动作类中不同的方法，用于减少过多动作类，将一组相关的动作处理放入到同一个类中，用不同的方法去处理，减少代码的冗余。"><a href="#上面的xml配置文件类似于Struts2的struts-xml，用于表明整个项目中所有的请求与对应请求的响应，Action为我自己定义的用于处理相关的请求动作类，OperatePoint为动作类中不同的方法，用于减少过多动作类，将一组相关的动作处理放入到同一个类中，用不同的方法去处理，减少代码的冗余。" class="headerlink" title="上面的xml配置文件类似于Struts2的struts.xml，用于表明整个项目中所有的请求与对应请求的响应，Action为我自己定义的用于处理相关的请求动作类，OperatePoint为动作类中不同的方法，用于减少过多动作类，将一组相关的动作处理放入到同一个类中，用不同的方法去处理，减少代码的冗余。"></a>上面的xml配置文件类似于Struts2的struts.xml，用于表明整个项目中所有的请求与对应请求的响应，Action为我自己定义的用于处理相关的请求动作类，OperatePoint为动作类中不同的方法，用于减少过多动作类，将一组相关的动作处理放入到同一个类中，用不同的方法去处理，减少代码的冗余。</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>FrameFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>edu.frame.web.core.FrameFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span>  </div><div class="line">   <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>ExcludedPages<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span>  </div><div class="line">   <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>/authImage,/register<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span>  </div><div class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span>  </div><div class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>DataBaseName<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>MySql<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>DBConfigFile<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>DBConfig.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>FlowControlConfigFile<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>flowcontrol.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>AppBasePath<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>edu.demo.web.flowcontrol<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>ConfigPath<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>config<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>JspPath<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>jsp<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>FrameFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="上述代码段来自web-xml，我们用一个名叫FrameFilter的filter来拦截浏览器发送的所有的请求然后判定请求的类别，如果是jsp页面，我们不做处理直接扔给服务器，如果是action类请求，我们获取路径分解出类名和方法名，利用Java反射机制实例化相应的的动作类执行相应的方法，然后返回结果字符串result，在根据结果result找到流程控制配置文件中对应的jsp页面扔给服务器。init-param部分为初始化参数，包括ExcludedPages（请求过滤页面），DataBaseName（选用数据库名称，我们将数据库的统一操作也封装在框架内，应用层通过配置文件来进行数据库的选择和连接），DBConfigFile（数据库配置文件）FlowControlConfigFile（流程控制文件），AppBasePath（action动作类目录），ConfigPath（配置文件地址），JspPath（页面地址）。"><a href="#上述代码段来自web-xml，我们用一个名叫FrameFilter的filter来拦截浏览器发送的所有的请求然后判定请求的类别，如果是jsp页面，我们不做处理直接扔给服务器，如果是action类请求，我们获取路径分解出类名和方法名，利用Java反射机制实例化相应的的动作类执行相应的方法，然后返回结果字符串result，在根据结果result找到流程控制配置文件中对应的jsp页面扔给服务器。init-param部分为初始化参数，包括ExcludedPages（请求过滤页面），DataBaseName（选用数据库名称，我们将数据库的统一操作也封装在框架内，应用层通过配置文件来进行数据库的选择和连接），DBConfigFile（数据库配置文件）FlowControlConfigFile（流程控制文件），AppBasePath（action动作类目录），ConfigPath（配置文件地址），JspPath（页面地址）。" class="headerlink" title="上述代码段来自web.xml，我们用一个名叫FrameFilter的filter来拦截浏览器发送的所有的请求然后判定请求的类别，如果是jsp页面，我们不做处理直接扔给服务器，如果是action类请求，我们获取路径分解出类名和方法名，利用Java反射机制实例化相应的的动作类执行相应的方法，然后返回结果字符串result，在根据结果result找到流程控制配置文件中对应的jsp页面扔给服务器。init-param部分为初始化参数，包括ExcludedPages（请求过滤页面），DataBaseName（选用数据库名称，我们将数据库的统一操作也封装在框架内，应用层通过配置文件来进行数据库的选择和连接），DBConfigFile（数据库配置文件）FlowControlConfigFile（流程控制文件），AppBasePath（action动作类目录），ConfigPath（配置文件地址），JspPath（页面地址）。"></a>上述代码段来自web.xml，我们用一个名叫FrameFilter的filter来拦截浏览器发送的所有的请求然后判定请求的类别，如果是jsp页面，我们不做处理直接扔给服务器，如果是action类请求，我们获取路径分解出类名和方法名，利用Java反射机制实例化相应的的动作类执行相应的方法，然后返回结果字符串result，在根据结果result找到流程控制配置文件中对应的jsp页面扔给服务器。init-param部分为初始化参数，包括ExcludedPages（请求过滤页面），DataBaseName（选用数据库名称，我们将数据库的统一操作也封装在框架内，应用层通过配置文件来进行数据库的选择和连接），DBConfigFile（数据库配置文件）FlowControlConfigFile（流程控制文件），AppBasePath（action动作类目录），ConfigPath（配置文件地址），JspPath（页面地址）。</h3><h3 id="因此FrameFilter-java为本框架中最核心的部分，下面我们来看一下此文件的具体内容"><a href="#因此FrameFilter-java为本框架中最核心的部分，下面我们来看一下此文件的具体内容" class="headerlink" title="因此FrameFilter.java为本框架中最核心的部分，下面我们来看一下此文件的具体内容"></a>因此FrameFilter.java为本框架中最核心的部分，下面我们来看一下此文件的具体内容</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FrameFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest req, ServletResponse res, FilterChain chain)</span></span>&#123;&#125;</div><div class="line">	<span class="comment">//前处理，字符的乱码，数据库和流程控制配置文件的解析与实例化封装</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">perpare</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span>&#123;&#125;</div><div class="line">	<span class="comment">//初始化过滤器，加载web.xml文件中参数	</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;&#125;</div><div class="line">	<span class="comment">//获取物理路径</span></div><div class="line">	<span class="function"><span class="keyword">private</span> String <span class="title">getRealPath</span><span class="params">(FilterConfig config, String name)</span></span>&#123;&#125;</div><div class="line">	<span class="comment">//请求匹配，判定是action还是jsp页面</span></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">actionMapping</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span>&#123;&#125;</div><div class="line">	<span class="comment">//action执行前的准备，action动作类名及方法的提取分离</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">prepareExecute</span><span class="params">(HttpServletRequest request, HttpServletResponse response,String functionName)</span></span>&#123;&#125;</div><div class="line">	<span class="comment">//根据传来的动作类名和方法名去相应的action中执行相应的方法，返回result</span></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">executeAction</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span>&#123;&#125;</div><div class="line">	<span class="comment">//根据action类返回的result跳转到相应的jsp页面	</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatcher</span><span class="params">(HttpServletRequest request, HttpServletResponse response,String result)</span></span>&#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="上述即为流程控制的核心部分，涉及到的细节有xml配置文件的解析（需引入dom4j或者其他的xml解析jar包，例如数据库配置文件和流程控制文件的解析均需要用到），还有就是java的反射机制，已知类名和方法名的字符串实现类的实例化，及方法的执行。"><a href="#上述即为流程控制的核心部分，涉及到的细节有xml配置文件的解析（需引入dom4j或者其他的xml解析jar包，例如数据库配置文件和流程控制文件的解析均需要用到），还有就是java的反射机制，已知类名和方法名的字符串实现类的实例化，及方法的执行。" class="headerlink" title="上述即为流程控制的核心部分，涉及到的细节有xml配置文件的解析（需引入dom4j或者其他的xml解析jar包，例如数据库配置文件和流程控制文件的解析均需要用到），还有就是java的反射机制，已知类名和方法名的字符串实现类的实例化，及方法的执行。"></a>上述即为流程控制的核心部分，涉及到的细节有xml配置文件的解析（需引入dom4j或者其他的xml解析jar包，例如数据库配置文件和流程控制文件的解析均需要用到），还有就是java的反射机制，已知类名和方法名的字符串实现类的实例化，及方法的执行。</h3>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Struts/" rel="tag"># Struts</a>
+          
+            <a href="/tags/JavaWeb/" rel="tag"># JavaWeb</a>
+          
+            <a href="/tags/Architecture/" rel="tag"># Architecture</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/08/重温JavaEE-SSH框架/" rel="next" title="重温JavaEE_SSH框架">
+                <i class="fa fa-chevron-left"></i> 重温JavaEE_SSH框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/22/FactoryPattern/" rel="prev" title="Factory Pattern">
+                Factory Pattern <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#序言"><span class="nav-number">1.</span> <span class="nav-text">序言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c-s模式（客户端-服务器模式），在到现在的b-s模式（浏览器-服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）"><span class="nav-number">1.0.1.</span> <span class="nav-text">软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#首先我们来说流程控制，b-s模式均由浏览器向服务器发出请求，然后服务器响应相关请求并回传结果给浏览器，这是个一成不变的通用过程，所以我要做的就是抽象这个过程，类似于Struts2，把请求和响应的控制流程抽象到框架中去，让框架去拦截掉你的所有请求，然后经过处理后在传递给服务器，服务器的相响应结果同样被框架截获，然后处理后再扔给浏览器去显示，以上是大概流程，下面我们用程序代码详细道来！"><span class="nav-number">2.0.1.</span> <span class="nav-text">首先我们来说流程控制，b/s模式均由浏览器向服务器发出请求，然后服务器响应相关请求并回传结果给浏览器，这是个一成不变的通用过程，所以我要做的就是抽象这个过程，类似于Struts2，把请求和响应的控制流程抽象到框架中去，让框架去拦截掉你的所有请求，然后经过处理后在传递给服务器，服务器的相响应结果同样被框架截获，然后处理后再扔给浏览器去显示，以上是大概流程，下面我们用程序代码详细道来！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上面的xml配置文件类似于Struts2的struts-xml，用于表明整个项目中所有的请求与对应请求的响应，Action为我自己定义的用于处理相关的请求动作类，OperatePoint为动作类中不同的方法，用于减少过多动作类，将一组相关的动作处理放入到同一个类中，用不同的方法去处理，减少代码的冗余。"><span class="nav-number">2.0.2.</span> <span class="nav-text">上面的xml配置文件类似于Struts2的struts.xml，用于表明整个项目中所有的请求与对应请求的响应，Action为我自己定义的用于处理相关的请求动作类，OperatePoint为动作类中不同的方法，用于减少过多动作类，将一组相关的动作处理放入到同一个类中，用不同的方法去处理，减少代码的冗余。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上述代码段来自web-xml，我们用一个名叫FrameFilter的filter来拦截浏览器发送的所有的请求然后判定请求的类别，如果是jsp页面，我们不做处理直接扔给服务器，如果是action类请求，我们获取路径分解出类名和方法名，利用Java反射机制实例化相应的的动作类执行相应的方法，然后返回结果字符串result，在根据结果result找到流程控制配置文件中对应的jsp页面扔给服务器。init-param部分为初始化参数，包括ExcludedPages（请求过滤页面），DataBaseName（选用数据库名称，我们将数据库的统一操作也封装在框架内，应用层通过配置文件来进行数据库的选择和连接），DBConfigFile（数据库配置文件）FlowControlConfigFile（流程控制文件），AppBasePath（action动作类目录），ConfigPath（配置文件地址），JspPath（页面地址）。"><span class="nav-number">2.0.3.</span> <span class="nav-text">上述代码段来自web.xml，我们用一个名叫FrameFilter的filter来拦截浏览器发送的所有的请求然后判定请求的类别，如果是jsp页面，我们不做处理直接扔给服务器，如果是action类请求，我们获取路径分解出类名和方法名，利用Java反射机制实例化相应的的动作类执行相应的方法，然后返回结果字符串result，在根据结果result找到流程控制配置文件中对应的jsp页面扔给服务器。init-param部分为初始化参数，包括ExcludedPages（请求过滤页面），DataBaseName（选用数据库名称，我们将数据库的统一操作也封装在框架内，应用层通过配置文件来进行数据库的选择和连接），DBConfigFile（数据库配置文件）FlowControlConfigFile（流程控制文件），AppBasePath（action动作类目录），ConfigPath（配置文件地址），JspPath（页面地址）。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#因此FrameFilter-java为本框架中最核心的部分，下面我们来看一下此文件的具体内容"><span class="nav-number">2.0.4.</span> <span class="nav-text">因此FrameFilter.java为本框架中最核心的部分，下面我们来看一下此文件的具体内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上述即为流程控制的核心部分，涉及到的细节有xml配置文件的解析（需引入dom4j或者其他的xml解析jar包，例如数据库配置文件和流程控制文件的解析均需要用到），还有就是java的反射机制，已知类名和方法名的字符串实现类的实例化，及方法的执行。"><span class="nav-number">2.0.5.</span> <span class="nav-text">上述即为流程控制的核心部分，涉及到的细节有xml配置文件的解析（需引入dom4j或者其他的xml解析jar包，例如数据库配置文件和流程控制文件的解析均需要用到），还有就是java的反射机制，已知类名和方法名的字符串实现类的实例化，及方法的执行。</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1335 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,Algorithm," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="常用查找算法顺序查找 无序或有序队列,按顺序比较每个元素，直到找到关键字为止。 时间复杂度：O(n)123456789101112131415161718192021222324252627282930313233343536373839//用链表来实现，动态的插入和删除便于维护序列的有序性public class SequentialSearchST&amp;lt;Key,Value&amp;gt;  &amp;#12">
+<meta name="keywords" content="Java,Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用查找算法">
+<meta property="og:url" content="https://lfstefan.github.io/2017/05/06/常用查找算法/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="常用查找算法顺序查找 无序或有序队列,按顺序比较每个元素，直到找到关键字为止。 时间复杂度：O(n)123456789101112131415161718192021222324252627282930313233343536373839//用链表来实现，动态的插入和删除便于维护序列的有序性public class SequentialSearchST&amp;lt;Key,Value&amp;gt;  &amp;#12">
+<meta property="og:updated_time" content="2018-03-08T02:17:56.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用查找算法">
+<meta name="twitter:description" content="常用查找算法顺序查找 无序或有序队列,按顺序比较每个元素，直到找到关键字为止。 时间复杂度：O(n)123456789101112131415161718192021222324252627282930313233343536373839//用链表来实现，动态的插入和删除便于维护序列的有序性public class SequentialSearchST&amp;lt;Key,Value&amp;gt;  &amp;#12">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2017/05/06/常用查找算法/"/>
+
+
+
+
+
+  <title>常用查找算法 | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/06/常用查找算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                常用查找算法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-06T12:33:45+08:00">
+                2017-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/06/常用查找算法/" class="leancloud_visitors" data-flag-title="常用查找算法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="常用查找算法"><a href="#常用查找算法" class="headerlink" title="常用查找算法"></a>常用查找算法</h1><h2 id="顺序查找"><a href="#顺序查找" class="headerlink" title="顺序查找"></a>顺序查找</h2><ul>
+<li>无序或有序队列,按顺序比较每个元素，直到找到关键字为止。</li>
+<li>时间复杂度：O(n)<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//用链表来实现，动态的插入和删除便于维护序列的有序性</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SequentialSearchST</span>&lt;<span class="title">Key</span>,<span class="title">Value</span>&gt;  </span>&#123;</div><div class="line">    <span class="keyword">private</span> Node head;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size=<span class="number">0</span>;</div><div class="line">	<span class="comment">//插入时间复杂度为O(n)</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Key key,Value v)</span></span>&#123;</div><div class="line">        Node p=head;</div><div class="line">        <span class="keyword">while</span>(p!=<span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">if</span>(p.key.equals(key))&#123;</div><div class="line">                p.v=v;</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            &#125;</div><div class="line">            p=p.next;</div><div class="line">        &#125;</div><div class="line">        head=<span class="keyword">new</span> Node(key,v,head);</div><div class="line">        size++;</div><div class="line">    &#125;</div><div class="line">	<span class="comment">//查找时间复杂度为O(n)</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Value <span class="title">get</span><span class="params">(Key key)</span></span>&#123;</div><div class="line">        Node p=head;</div><div class="line">        <span class="keyword">while</span> (p!=<span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">if</span>(p.key.equals(key))&#123;</div><div class="line">                <span class="keyword">return</span>  p.v;</div><div class="line">            &#125;</div><div class="line">            p=p.next;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">	<span class="comment">//删除时间复杂度为O(n)</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(Key key)</span></span>&#123;</div><div class="line">        Node p=head;</div><div class="line">        <span class="keyword">while</span> (p!=<span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">if</span>(p.key.equals(key))&#123;</div><div class="line">                p.v = p.next.v;</div><div class="line">				p.next = p.next.next;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="二分查找（折半查找）"><a href="#二分查找（折半查找）" class="headerlink" title="二分查找（折半查找）"></a>二分查找（折半查找）</h2><ul>
+<li>条件：有序数组</li>
+<li>原理：<ol>
+<li>查找过程从数组的中间元素开始，如果中间元素正好是要查找的元素，则搜素过程结束；</li>
+<li>如果某一特定元素大于或者小于中间元素，则在数组大于或小于中间元素的那一半中重复步骤1。</li>
+<li>如果在某一步骤数组为空，则代表找不到。</li>
+</ol>
+</li>
+<li>时间复杂度：O(logn)<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">binarySearach</span><span class="params">(<span class="keyword">int</span>[] array,<span class="keyword">int</span> key)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> low = <span class="number">0</span>;</div><div class="line">	<span class="keyword">int</span> high = array.length-<span class="number">1</span>;</div><div class="line">	<span class="keyword">while</span>(low &lt;= high)&#123;</div><div class="line">		<span class="keyword">int</span> middle = (low + high) &gt;&gt; <span class="number">1</span>;</div><div class="line">		<span class="keyword">if</span>(key &lt; array[middle])</div><div class="line">			high = middle-<span class="number">1</span>;</div><div class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(key &gt; array[middle])</div><div class="line">			low = middle+<span class="number">1</span>;</div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="keyword">return</span> array[middle];</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> -<span class="number">1</span>;<span class="comment">//没找到目标值返回-1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="插值查找"><a href="#插值查找" class="headerlink" title="插值查找"></a>插值查找</h2><blockquote>
+<p>插值查找，基于折半查找的优化变种。由于折半查找这种查找方式，不是自适应的（也就是说是傻瓜式的）打个比方，在英文字典里面查“apple”，你下意识翻开字典是翻前面的书页还是后面的书页呢？如果再让你查“zoo”，你又怎么查？很显然，这里你绝对不会是从中间开始查起，而是有一定目的的往前或往后翻。所以插值查找克服了折半查找的傻瓜式，采用自适应查找点，从而让每次所选择的查找点更加接近被查找值，以加快查找速度。</p>
+</blockquote>
+<ul>
+<li>二分查找中查找点计算如下：mid=(low+high)/2, 即mid=low+1/2*(high-low);</li>
+<li>插值查找中查找点计算如下：mid=low+(key-a[low])/(a[high]-a[low])*(high-low)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">insertKeySearch</span><span class="params">(<span class="keyword">int</span> [] a, <span class="keyword">int</span> key)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> low, high, mid;</div><div class="line">	low = <span class="number">0</span>;</div><div class="line">	high = a.length-<span class="number">1</span>;</div><div class="line">	<span class="keyword">while</span>(low &lt;= high)&#123;</div><div class="line">		<span class="comment">/* 插值查找的计算公式 */</span></div><div class="line">		mid = low + (high - low)*(key - a[low])/(a[high] - a[low]);</div><div class="line">		<span class="keyword">if</span> (key &lt; a[mid])&#123;</div><div class="line">			high = mid - <span class="number">1</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (key &gt; a[mid])&#123;</div><div class="line">			low = mid + <span class="number">1</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> </div><div class="line">			<span class="keyword">return</span> mid;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="复杂度分析：查找成功或者失败的时间复杂度均为O-log2-log2n-。"><a href="#复杂度分析：查找成功或者失败的时间复杂度均为O-log2-log2n-。" class="headerlink" title="复杂度分析：查找成功或者失败的时间复杂度均为O(log2(log2n))。"></a>复杂度分析：查找成功或者失败的时间复杂度均为O(log2(log2n))。</h3><h3 id="注：对于表长较大，而关键字分布又比较均匀的查找表来说，插值查找算法的平均性能比折半查找要好的多。反之，数组中如果分布非常不均匀，那么插值查找未必是很合适的选择。"><a href="#注：对于表长较大，而关键字分布又比较均匀的查找表来说，插值查找算法的平均性能比折半查找要好的多。反之，数组中如果分布非常不均匀，那么插值查找未必是很合适的选择。" class="headerlink" title="注：对于表长较大，而关键字分布又比较均匀的查找表来说，插值查找算法的平均性能比折半查找要好的多。反之，数组中如果分布非常不均匀，那么插值查找未必是很合适的选择。"></a>注：对于表长较大，而关键字分布又比较均匀的查找表来说，插值查找算法的平均性能比折半查找要好的多。反之，数组中如果分布非常不均匀，那么插值查找未必是很合适的选择。</h3><h2 id="斐波那契查找"><a href="#斐波那契查找" class="headerlink" title="斐波那契查找"></a>斐波那契查找</h2><blockquote>
+<p>在介绍斐波那契查找算法之前，先介绍一下很它紧密相连的一个概念——黄金分割。黄金比例又称黄金分割，是指事物各部分间一定的数学比例关系，即将整体一分为二，较大部分与较小部分之比等于整体与较大部分之比，其比值约为1:0.618或1.618:1。0.618被公认为最具有审美意义的比例数字，这个数值的作用不仅仅体现在诸如绘画、雕塑、音乐、建筑等艺术领域，而且在管理、工程设计等方面也有着不可忽视的作用。因此被称为黄金分割。斐波那契数列：1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89…….（从第三个数开始，后边每一个数都是前两个数的和）。然后我们会发现，随着斐波那契数列的递增，前后两个数的比值会越来越接近0.618，利用这个特性，我们就可以将黄金比例运用到查找技术中。</p>
+</blockquote>
+<h3 id="斐波那契查找也是二分查找的一种提升算法，通过运用黄金比例的概念在数列中选择查找点进行查找，提高查找效率。同样地，斐波那契查找也属于一种有序查找算法。斐波那契查找就是在二分查找的基础上根据斐波那契数列进行分割的。在斐波那契数列找一个等于略大于查找表中元素个数的数F-n-，将原查找表扩展为长度为Fn，完成后进行斐波那契分割，即F-n-个元素分割为前半部分F-n-1-个元素，后半部分F-n-2-个元素，找出要查找的元素在那一部分并递归，直到找到。"><a href="#斐波那契查找也是二分查找的一种提升算法，通过运用黄金比例的概念在数列中选择查找点进行查找，提高查找效率。同样地，斐波那契查找也属于一种有序查找算法。斐波那契查找就是在二分查找的基础上根据斐波那契数列进行分割的。在斐波那契数列找一个等于略大于查找表中元素个数的数F-n-，将原查找表扩展为长度为Fn，完成后进行斐波那契分割，即F-n-个元素分割为前半部分F-n-1-个元素，后半部分F-n-2-个元素，找出要查找的元素在那一部分并递归，直到找到。" class="headerlink" title="斐波那契查找也是二分查找的一种提升算法，通过运用黄金比例的概念在数列中选择查找点进行查找，提高查找效率。同样地，斐波那契查找也属于一种有序查找算法。斐波那契查找就是在二分查找的基础上根据斐波那契数列进行分割的。在斐波那契数列找一个等于略大于查找表中元素个数的数F[n]，将原查找表扩展为长度为Fn，完成后进行斐波那契分割，即F[n]个元素分割为前半部分F[n-1]个元素，后半部分F[n-2]个元素，找出要查找的元素在那一部分并递归，直到找到。"></a>斐波那契查找也是二分查找的一种提升算法，通过运用黄金比例的概念在数列中选择查找点进行查找，提高查找效率。同样地，斐波那契查找也属于一种有序查找算法。斐波那契查找就是在二分查找的基础上根据斐波那契数列进行分割的。在斐波那契数列找一个等于略大于查找表中元素个数的数F[n]，将原查找表扩展为长度为F<a href="如果要补充元素，则补充重复最后一个元素，直到满足F[n]个元素">n</a>，完成后进行斐波那契分割，即F[n]个元素分割为前半部分F[n-1]个元素，后半部分F[n-2]个元素，找出要查找的元素在那一部分并递归，直到找到。</h3><h3 id="相对于折半查找，一般将待比较的key值与第mid-（low-high）-2位置的元素比较，比较结果分三种情况："><a href="#相对于折半查找，一般将待比较的key值与第mid-（low-high）-2位置的元素比较，比较结果分三种情况：" class="headerlink" title="相对于折半查找，一般将待比较的key值与第mid=（low+high）/2位置的元素比较，比较结果分三种情况："></a>相对于折半查找，一般将待比较的key值与第mid=（low+high）/2位置的元素比较，比较结果分三种情况：</h3><ol>
+<li>key值与第mid=（low+high）/2相等，mid位置的元素即为所求；</li>
+<li>key值大于第mid=（low+high）/2，则令 low=mid+1；</li>
+<li>key值小于第mid=（low+high）/2，则令high=mid-1。<h3 id="斐波那契查找与折半查找很相似，他是根据斐波那契序列的特点对有序表进行分割的。他要求开始表中记录的个数为某个斐波那契数小1，及n-F-k-1；开始将k值与第F-k-1-位置的记录进行比较-及mid-low-F-k-1-1-，比较结果也分为三种："><a href="#斐波那契查找与折半查找很相似，他是根据斐波那契序列的特点对有序表进行分割的。他要求开始表中记录的个数为某个斐波那契数小1，及n-F-k-1；开始将k值与第F-k-1-位置的记录进行比较-及mid-low-F-k-1-1-，比较结果也分为三种：" class="headerlink" title="斐波那契查找与折半查找很相似，他是根据斐波那契序列的特点对有序表进行分割的。他要求开始表中记录的个数为某个斐波那契数小1，及n=F(k)-1；开始将k值与第F(k-1)位置的记录进行比较(及mid=low+F(k-1)-1)，比较结果也分为三种："></a>斐波那契查找与折半查找很相似，他是根据斐波那契序列的特点对有序表进行分割的。他要求开始表中记录的个数为某个斐波那契数小1，及n=F(k)-1；开始将k值与第F(k-1)位置的记录进行比较(及mid=low+F(k-1)-1)，比较结果也分为三种：</h3></li>
+<li>key值与第mid=low+F(k-1)-1相等，则mid位置的元素即为所求；</li>
+<li>key值大于第mid=low+F(k-1)-1，则low=mid+1，k-=2；说明：low=mid+1说明待查找的元素在[mid+1,high]范围内，k-=2 说明范围[mid+1,high]内的元素个数为n-(F(k-1))=Fk-1-F(k-1)=Fk-F(k-1)-1=F(k-2)-1个，所以可以递归的应用斐波那契查找。</li>
+<li>key值小于第mid=low+F(k-1)-1，则high=mid-1，k-=1。说明：low=mid+1说明待查找的元素在[low,mid-1]范围内，k-=1 说明范围[low,mid-1]内的元素个数为F(k-1)-1个，所以可以递归的应用斐波那契查找。</li>
+</ol>
+<h3 id="上代码我们来实际操作一番"><a href="#上代码我们来实际操作一番" class="headerlink" title="上代码我们来实际操作一番"></a>上代码我们来实际操作一番</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">FibonacciSearch</span><span class="params">(<span class="keyword">int</span> [] a, <span class="keyword">int</span> key)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> [] F = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">13</span>,<span class="number">21</span>,<span class="number">34</span>&#125;;<span class="comment">//构造一个斐波那契数列</span></div><div class="line">	<span class="keyword">int</span> low, high, mid, k;</div><div class="line">	low = <span class="number">1</span>;</div><div class="line">	high = a.length-<span class="number">1</span>;</div><div class="line">	k = <span class="number">0</span>;</div><div class="line">	<span class="keyword">while</span> (n &gt; F[k]-<span class="number">1</span>) <span class="comment">/* 计算n位于斐波那契数列的位置 */</span></div><div class="line">		k++;</div><div class="line">	<span class="keyword">while</span> (low &lt;= high) &#123;</div><div class="line">		mid = low + F[k-<span class="number">1</span>] -<span class="number">1</span>;</div><div class="line">		<span class="keyword">if</span> (key &lt; a[mid])&#123;</div><div class="line">			high = mid - <span class="number">1</span>;</div><div class="line">			k -= <span class="number">1</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (key &gt; a[mid])&#123;</div><div class="line">			low = mid + <span class="number">1</span>;</div><div class="line">			k -= <span class="number">2</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">if</span> (mid &lt;= n)</div><div class="line">				<span class="keyword">return</span> mid;</div><div class="line">			<span class="keyword">else</span></div><div class="line">				<span class="keyword">return</span> n;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="在最坏情况下，斐波那契查找的时间复杂度还是O-log2n-，且其期望复杂度也为O-log2n-，但是与折半查找相比，斐波那契查找的优点是它只涉及加法和减法运算，而不用除法，而除法比加减法要占用更多的时间，因此，斐波那契查找的运行时间理论上比折半查找小，但是还是得视具体情况而定。"><a href="#在最坏情况下，斐波那契查找的时间复杂度还是O-log2n-，且其期望复杂度也为O-log2n-，但是与折半查找相比，斐波那契查找的优点是它只涉及加法和减法运算，而不用除法，而除法比加减法要占用更多的时间，因此，斐波那契查找的运行时间理论上比折半查找小，但是还是得视具体情况而定。" class="headerlink" title="在最坏情况下，斐波那契查找的时间复杂度还是O(log2n)，且其期望复杂度也为O(log2n)，但是与折半查找相比，斐波那契查找的优点是它只涉及加法和减法运算，而不用除法，而除法比加减法要占用更多的时间，因此，斐波那契查找的运行时间理论上比折半查找小，但是还是得视具体情况而定。"></a>在最坏情况下，斐波那契查找的时间复杂度还是O(log2n)，且其期望复杂度也为O(log2n)，但是与折半查找相比，斐波那契查找的优点是它只涉及加法和减法运算，而不用除法，而除法比加减法要占用更多的时间，因此，斐波那契查找的运行时间理论上比折半查找小，但是还是得视具体情况而定。</h3><h2 id="二叉排序树查找"><a href="#二叉排序树查找" class="headerlink" title="二叉排序树查找"></a>二叉排序树查找</h2><h3 id="特性："><a href="#特性：" class="headerlink" title="特性："></a>特性：</h3><ul>
+<li>若它的左子树不空，则左子树上所有结点的值均小于它的根结点的值；</li>
+<li>若它的右子树不空，则右子树上所有结点的值均大于它的根结点的值；</li>
+<li>它的左、右子树也分别为二叉排序树。<h3 id="在二叉查找树b中查找x的过程为："><a href="#在二叉查找树b中查找x的过程为：" class="headerlink" title="在二叉查找树b中查找x的过程为："></a>在二叉查找树b中查找x的过程为：</h3></li>
+</ul>
+<ol>
+<li>若b是空树，则搜索失败，否则：</li>
+<li>若x等于b的根节点的数据域之值，则查找成功；否则：</li>
+<li>若x小于b的根节点的数据域之值，则搜索左子树；否则：</li>
+<li>查找右子树。<h3 id="时间复杂度：O-log-2-n"><a href="#时间复杂度：O-log-2-n" class="headerlink" title="时间复杂度：O(log_2(n))　　"></a>时间复杂度：O(log_2(n))　　</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//查找</span></div><div class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">BSTSearach</span><span class="params">(TreeNode root, Value value)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(root==<span class="keyword">null</span>)</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">if</span>(root.value==value)</div><div class="line">		<span class="keyword">return</span> root;</div><div class="line">	<span class="keyword">else</span></div><div class="line">    	<span class="keyword">return</span> root.value&lt;value ? BSTSearach(roo.right,value) : BSTSearach(root.left,value);</div><div class="line">&#125;</div><div class="line"><span class="comment">//插入节点</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertNode</span><span class="params">(TreeNode root,TreeNode node)</span>  </span></div><div class="line">&#123;  </div><div class="line">    <span class="keyword">if</span> (root == NULL)  </div><div class="line">        root = node;  </div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (root.val &gt; node.val)  </div><div class="line">        insertNode(root.left,node);  </div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(root.val &lt; node.val)  </div><div class="line">        insertNode(root.right,node);  </div><div class="line">    <span class="keyword">else</span></div><div class="line">		<span class="keyword">return</span>;</div><div class="line">&#125;  </div><div class="line"><span class="comment">//删除二叉查找树的节点</span></div><div class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">removeNode</span><span class="params">(TreeNode root, <span class="keyword">int</span> value)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>)&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (root.val == value)&#123;<span class="comment">//当前节点值等于value值</span></div><div class="line">        <span class="keyword">if</span> (root.left == <span class="keyword">null</span> &amp;&amp; root.right == <span class="keyword">null</span>)&#123;<span class="comment">//当前节点没有左右孩子节点</span></div><div class="line">            root = <span class="keyword">null</span>;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (root.left == <span class="keyword">null</span>)&#123;<span class="comment">//当前节点只有右孩子节点</span></div><div class="line">            root = root.right;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (root.right == <span class="keyword">null</span>)&#123;<span class="comment">//当前节点只有左孩子节点</span></div><div class="line">            root = root.left;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;<span class="comment">//当前节点有左右孩子节点</span></div><div class="line">            TreeNode tmp = root;</div><div class="line">            tmp = tmp.left;</div><div class="line">            <span class="keyword">while</span>(tmp.right != <span class="keyword">null</span>)&#123;</div><div class="line">                tmp = tmp.right;</div><div class="line">            &#125;</div><div class="line">            root.val = tmp.val;</div><div class="line">            root.left = removeNode(root.left,root.val);</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value &lt; root.val)&#123;<span class="comment">//当前节点值大于value</span></div><div class="line">        <span class="keyword">if</span> (root.left == <span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">return</span> root;</div><div class="line">        &#125;</div><div class="line">        root.left = removeNode(root.left, value);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;<span class="comment">//当前节点值小于value</span></div><div class="line">        <span class="keyword">if</span> (root.right == <span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">return</span> root;</div><div class="line">        &#125;</div><div class="line">        root.right = removeNode(root.right,value);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> root;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="哈希表法（散列表）"><a href="#哈希表法（散列表）" class="headerlink" title="哈希表法（散列表）"></a>哈希表法（散列表）</h2><ul>
+<li>先创建哈希表（散列表）</li>
+<li>根据键值方式(Key value)进行查找，通过散列函数，定位数据元素。</li>
+<li>时间复杂度：几乎是O(1)，取决于产生冲突的多少。<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">searchHash</span><span class="params">(<span class="keyword">int</span>[] hash, <span class="keyword">int</span> hashLength, <span class="keyword">int</span> key)</span> </span>&#123;  </div><div class="line">    <span class="comment">// 哈希函数  </span></div><div class="line">    <span class="keyword">int</span> hashAddress = key % hashLength;  </div><div class="line">    <span class="comment">// 指定hashAdrress对应值存在但不是关键值，则用开放寻址法解决  </span></div><div class="line">    <span class="keyword">while</span> (hash[hashAddress] != <span class="number">0</span> &amp;&amp; hash[hashAddress] != key) &#123;  </div><div class="line">        hashAddress = (++hashAddress) % hashLength;  </div><div class="line">    &#125;  </div><div class="line">    <span class="comment">// 查找到了开放单元，表示查找失败  </span></div><div class="line">    <span class="keyword">if</span> (hash[hashAddress] == <span class="number">0</span>)  </div><div class="line">        <span class="keyword">return</span> -<span class="number">1</span>;  </div><div class="line">    <span class="keyword">return</span> hashAddress;  </div><div class="line">&#125;  </div><div class="line"><span class="comment">//数据插入Hash表 </span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertHash</span><span class="params">(<span class="keyword">int</span>[] hash, <span class="keyword">int</span> hashLength, <span class="keyword">int</span> data)</span> </span>&#123;  </div><div class="line">    <span class="comment">// 哈希函数  </span></div><div class="line">    <span class="keyword">int</span> hashAddress = data % hashLength;  </div><div class="line">    <span class="comment">// 如果key存在，则说明已经被别人占用，此时必须解决冲突  </span></div><div class="line">    <span class="keyword">while</span> (hash[hashAddress] != <span class="number">0</span>) &#123;  </div><div class="line">        <span class="comment">// 用开放寻址法找到  </span></div><div class="line">        hashAddress = (++hashAddress) % hashLength;  </div><div class="line">    &#125;  </div><div class="line">    <span class="comment">// 将data存入字典中  </span></div><div class="line">    hash[hashAddress] = data;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="分块查找"><a href="#分块查找" class="headerlink" title="分块查找"></a>分块查找</h2><ul>
+<li>将n个数据元素”按块有序”划分为m块（m ≤ n）。</li>
+<li>每一块中的结点不必有序，但块与块之间必须”按块有序”；即第1块中任一元素的关键字都必须小于第2块中任一元素的关键字；而第2块中任一元素又都必须小于第3块中的任一元素，……</li>
+<li>然后使用二分查找确定数据所处在哪一块后用顺序查找key。<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">blockSearch</span><span class="params">(<span class="keyword">int</span>[] index, <span class="keyword">int</span>[] st, <span class="keyword">int</span> key, <span class="keyword">int</span> m)</span> </span>&#123;  </div><div class="line">    <span class="comment">// 在序列st数组中，用分块查找方法查找关键字为key的记录  </span></div><div class="line">    <span class="comment">// 1.在index[ ] 中折半查找，确定要查找的key属于哪个块中  </span></div><div class="line">    <span class="keyword">int</span> i = binarySearch(index, key);  </div><div class="line">    <span class="keyword">if</span> (i &gt;= <span class="number">0</span>) &#123;  </div><div class="line">        <span class="keyword">int</span> j = i &gt; <span class="number">0</span> ? i * m : i;  </div><div class="line">        <span class="keyword">int</span> len = (i + <span class="number">1</span>) * m;  </div><div class="line">        <span class="comment">// 在确定的块中用顺序查找方法查找key  </span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> k = j; k &lt; len; k++) &#123;  </div><div class="line">            <span class="keyword">if</span> (key == st[k]) &#123;  </div><div class="line">                System.out.println(<span class="string">"查询成功"</span>);  </div><div class="line">                <span class="keyword">return</span> k;  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">    System.out.println(<span class="string">"查找失败"</span>);  </div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/06/二分查找/" rel="next" title="二分查找">
+                <i class="fa fa-chevron-left"></i> 二分查找
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/10/矩阵相关运算/" rel="prev" title="矩阵相关运算">
+                矩阵相关运算 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常用查找算法"><span class="nav-number">1.</span> <span class="nav-text">常用查找算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#顺序查找"><span class="nav-number">1.1.</span> <span class="nav-text">顺序查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二分查找（折半查找）"><span class="nav-number">1.2.</span> <span class="nav-text">二分查找（折半查找）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插值查找"><span class="nav-number">1.3.</span> <span class="nav-text">插值查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂度分析：查找成功或者失败的时间复杂度均为O-log2-log2n-。"><span class="nav-number">1.3.1.</span> <span class="nav-text">复杂度分析：查找成功或者失败的时间复杂度均为O(log2(log2n))。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注：对于表长较大，而关键字分布又比较均匀的查找表来说，插值查找算法的平均性能比折半查找要好的多。反之，数组中如果分布非常不均匀，那么插值查找未必是很合适的选择。"><span class="nav-number">1.3.2.</span> <span class="nav-text">注：对于表长较大，而关键字分布又比较均匀的查找表来说，插值查找算法的平均性能比折半查找要好的多。反之，数组中如果分布非常不均匀，那么插值查找未必是很合适的选择。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#斐波那契查找"><span class="nav-number">1.4.</span> <span class="nav-text">斐波那契查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#斐波那契查找也是二分查找的一种提升算法，通过运用黄金比例的概念在数列中选择查找点进行查找，提高查找效率。同样地，斐波那契查找也属于一种有序查找算法。斐波那契查找就是在二分查找的基础上根据斐波那契数列进行分割的。在斐波那契数列找一个等于略大于查找表中元素个数的数F-n-，将原查找表扩展为长度为Fn，完成后进行斐波那契分割，即F-n-个元素分割为前半部分F-n-1-个元素，后半部分F-n-2-个元素，找出要查找的元素在那一部分并递归，直到找到。"><span class="nav-number">1.4.1.</span> <span class="nav-text">斐波那契查找也是二分查找的一种提升算法，通过运用黄金比例的概念在数列中选择查找点进行查找，提高查找效率。同样地，斐波那契查找也属于一种有序查找算法。斐波那契查找就是在二分查找的基础上根据斐波那契数列进行分割的。在斐波那契数列找一个等于略大于查找表中元素个数的数F[n]，将原查找表扩展为长度为Fn，完成后进行斐波那契分割，即F[n]个元素分割为前半部分F[n-1]个元素，后半部分F[n-2]个元素，找出要查找的元素在那一部分并递归，直到找到。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相对于折半查找，一般将待比较的key值与第mid-（low-high）-2位置的元素比较，比较结果分三种情况："><span class="nav-number">1.4.2.</span> <span class="nav-text">相对于折半查找，一般将待比较的key值与第mid=（low+high）/2位置的元素比较，比较结果分三种情况：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#斐波那契查找与折半查找很相似，他是根据斐波那契序列的特点对有序表进行分割的。他要求开始表中记录的个数为某个斐波那契数小1，及n-F-k-1；开始将k值与第F-k-1-位置的记录进行比较-及mid-low-F-k-1-1-，比较结果也分为三种："><span class="nav-number">1.4.3.</span> <span class="nav-text">斐波那契查找与折半查找很相似，他是根据斐波那契序列的特点对有序表进行分割的。他要求开始表中记录的个数为某个斐波那契数小1，及n=F(k)-1；开始将k值与第F(k-1)位置的记录进行比较(及mid=low+F(k-1)-1)，比较结果也分为三种：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上代码我们来实际操作一番"><span class="nav-number">1.4.4.</span> <span class="nav-text">上代码我们来实际操作一番</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在最坏情况下，斐波那契查找的时间复杂度还是O-log2n-，且其期望复杂度也为O-log2n-，但是与折半查找相比，斐波那契查找的优点是它只涉及加法和减法运算，而不用除法，而除法比加减法要占用更多的时间，因此，斐波那契查找的运行时间理论上比折半查找小，但是还是得视具体情况而定。"><span class="nav-number">1.4.5.</span> <span class="nav-text">在最坏情况下，斐波那契查找的时间复杂度还是O(log2n)，且其期望复杂度也为O(log2n)，但是与折半查找相比，斐波那契查找的优点是它只涉及加法和减法运算，而不用除法，而除法比加减法要占用更多的时间，因此，斐波那契查找的运行时间理论上比折半查找小，但是还是得视具体情况而定。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉排序树查找"><span class="nav-number">1.5.</span> <span class="nav-text">二叉排序树查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特性："><span class="nav-number">1.5.1.</span> <span class="nav-text">特性：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在二叉查找树b中查找x的过程为："><span class="nav-number">1.5.2.</span> <span class="nav-text">在二叉查找树b中查找x的过程为：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度：O-log-2-n"><span class="nav-number">1.5.3.</span> <span class="nav-text">时间复杂度：O(log_2(n))　　</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希表法（散列表）"><span class="nav-number">1.6.</span> <span class="nav-text">哈希表法（散列表）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分块查找"><span class="nav-number">1.7.</span> <span class="nav-text">分块查找</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
