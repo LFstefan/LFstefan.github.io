@@ -92,7 +92,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java,算法," />
+  <meta name="keywords" content="Java,Algorithm," />
 
 
 
@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="海量数据处理问题topK问题（10亿词中查找出现频率最高的10个） 单机+单核+足够大内存 10亿词（每个词占8B）中查找出现频率最高的10个 首先考虑全部放入内存，需要至少10^9*8=8GB 然后排序，顺序遍历找出结果或者用HashMap统计频率在求出结果     单机+多核（意味着可以多线程）+足够大内存 在内存中用hash将数据分为n个partition，交给n个线程处理，最后有一个线程负">
-<meta name="keywords" content="Java,算法">
+<meta name="description" content="海量数据处理问题 topK问题 重复问题 排序问题 相关算法">
+<meta name="keywords" content="Java,Algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="海量数据处理">
 <meta property="og:url" content="https://lfstefan.github.io/2017/05/10/海量数据处理/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="海量数据处理问题topK问题（10亿词中查找出现频率最高的10个） 单机+单核+足够大内存 10亿词（每个词占8B）中查找出现频率最高的10个 首先考虑全部放入内存，需要至少10^9*8=8GB 然后排序，顺序遍历找出结果或者用HashMap统计频率在求出结果     单机+多核（意味着可以多线程）+足够大内存 在内存中用hash将数据分为n个partition，交给n个线程处理，最后有一个线程负">
-<meta property="og:updated_time" content="2018-02-03T08:48:50.000Z">
+<meta property="og:description" content="海量数据处理问题 topK问题 重复问题 排序问题 相关算法">
+<meta property="og:updated_time" content="2018-04-14T09:45:45.475Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="海量数据处理">
-<meta name="twitter:description" content="海量数据处理问题topK问题（10亿词中查找出现频率最高的10个） 单机+单核+足够大内存 10亿词（每个词占8B）中查找出现频率最高的10个 首先考虑全部放入内存，需要至少10^9*8=8GB 然后排序，顺序遍历找出结果或者用HashMap统计频率在求出结果     单机+多核（意味着可以多线程）+足够大内存 在内存中用hash将数据分为n个partition，交给n个线程处理，最后有一个线程负">
+<meta name="twitter:description" content="海量数据处理问题 topK问题 重复问题 排序问题 相关算法">
 
 
 
@@ -387,7 +387,7 @@
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                    <span itemprop="name">Algorithm</span>
                   </a>
                 </span>
 
@@ -431,7 +431,14 @@
       
 
       
-        <h1 id="海量数据处理问题"><a href="#海量数据处理问题" class="headerlink" title="海量数据处理问题"></a>海量数据处理问题</h1><h2 id="topK问题（10亿词中查找出现频率最高的10个）"><a href="#topK问题（10亿词中查找出现频率最高的10个）" class="headerlink" title="topK问题（10亿词中查找出现频率最高的10个）"></a>topK问题（10亿词中查找出现频率最高的10个）</h2><ul>
+        <h1 id="海量数据处理问题"><a href="#海量数据处理问题" class="headerlink" title="海量数据处理问题"></a>海量数据处理问题</h1><ul>
+<li>topK问题</li>
+<li>重复问题</li>
+<li>排序问题</li>
+<li>相关算法</li>
+</ul>
+<a id="more"></a>
+<h2 id="topK问题（10亿词中查找出现频率最高的10个）"><a href="#topK问题（10亿词中查找出现频率最高的10个）" class="headerlink" title="topK问题（10亿词中查找出现频率最高的10个）"></a>topK问题（10亿词中查找出现频率最高的10个）</h2><ul>
 <li>单机+单核+足够大内存<ul>
 <li>10亿词（每个词占8B）中查找出现频率最高的10个<ul>
 <li>首先考虑全部放入内存，需要至少10^9*8=8GB</li>
@@ -548,7 +555,7 @@
           
             <a href="/tags/Java/" rel="tag"># Java</a>
           
-            <a href="/tags/算法/" rel="tag"># 算法</a>
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
           
         </div>
       
@@ -561,8 +568,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/10/矩阵相关运算/" rel="next" title="矩阵相关运算">
-                <i class="fa fa-chevron-left"></i> 矩阵相关运算
+              <a href="/2017/05/06/常用查找算法/" rel="next" title="常用查找算法">
+                <i class="fa fa-chevron-left"></i> 常用查找算法
               </a>
             
           </div>
@@ -571,8 +578,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/13/选择排序/" rel="prev" title="选择排序">
-                选择排序 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/10/矩阵相关运算/" rel="prev" title="矩阵相关运算">
+                矩阵相关运算 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -647,7 +654,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -658,7 +665,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -669,7 +676,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

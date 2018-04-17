@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/AbstractFactoryPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/ChainOfResponsibilityPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/22/AbstractFactoryPattern/" itemprop="url">
-                  Abstract Factory Pattern
+                <a class="post-title-link" href="/2017/07/29/ChainOfResponsibilityPattern/" itemprop="url">
+                  Chain Of Responsibility Pattern
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T12:21:25+08:00">
-                2017-07-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T12:11:25+08:00">
+                2017-07-29
               </time>
             
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2017/07/22/AbstractFactoryPattern/" class="leancloud_visitors" data-flag-title="Abstract Factory Pattern">
+             <span id="/2017/07/29/ChainOfResponsibilityPattern/" class="leancloud_visitors" data-flag-title="Chain Of Responsibility Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,17 +435,19 @@
 
       
         
-          
-            <h1 id="Abstract-Factory-Pattern（抽象工厂模式）"><a href="#Abstract-Factory-Pattern（抽象工厂模式）" class="headerlink" title="Abstract Factory Pattern（抽象工厂模式）"></a>Abstract Factory Pattern（抽象工厂模式）</h1><h2 id="Provide-an-interface-for-creating-families-of-related-or-dependent-objects-without-specifying-their-concrete-classes-（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）"><a href="#Provide-an-interface-for-creating-families-of-related-or-dependent-objects-without-specifying-their-concrete-classes-（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）" class="headerlink" title="Provide an interface for creating families of related or dependent objects without specifying their concrete classes.（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）"></a>Provide an interface for creating families of related or dependent objects without specifying their concrete classes.（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）</h2><ul>
-<li>抽象产品（Product）：一个接口或者抽象类，定义、产品必须实现的方法</li>
-<li>具体产品（ConcreteProduct）：抽象产品的子类或者实现类</li>
-<li>抽象工厂（AbstractFactory）：一个接口或者抽象类，定义若干个抽象方法</li>
-<li>具体工厂（ConcreteFactory）：抽象工厂的实现类或者子类，重写抽象方法，使其返回具体产品的实例</li>
-<li>应用场景：提供一个创建一系列或相互依赖对象的接口，而无需知道他们具体的类，反射机制+抽象工厂（反射可以灵活地进行实例化）</li>
-<li>javac -encoding UTF-8 Application.java<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Product</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Weapon</span></span>&#123;</div><div class="line">	<span class="keyword">protected</span> String type;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">loadBullet</span><span class="params">(Bullet bullet)</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span>  <span class="class"><span class="keyword">class</span> <span class="title">Bullet</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">load</span><span class="params">(String type)</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//ConcreteProduct</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JiQiang</span> <span class="keyword">extends</span> <span class="title">Weapon</span></span>&#123;</div><div class="line">	JiQiang()&#123;</div><div class="line">		type = <span class="string">"机枪"</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadBullet</span><span class="params">(Bullet bullet)</span></span>&#123;</div><div class="line">		bullet.load(type);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShouQiang</span> <span class="keyword">extends</span> <span class="title">Weapon</span></span>&#123;</div><div class="line">	ShouQiang()&#123;</div><div class="line">		type = <span class="string">"手枪"</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadBullet</span><span class="params">(Bullet bullet)</span></span>&#123;</div><div class="line">		bullet.load(type);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JiQiangBullet</span> <span class="keyword">extends</span> <span class="title">Bullet</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">load</span><span class="params">(String  type)</span></span>&#123;</div><div class="line">		System.out.println(type+<span class="string">"---装载机枪型子弹"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShouQiangBullet</span> <span class="keyword">extends</span> <span class="title">Bullet</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">load</span><span class="params">(String type)</span></span>&#123;</div><div class="line">		System.out.println(type+<span class="string">"---装载手枪型子弹"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//Creator</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span>  <span class="class"><span class="keyword">class</span> <span class="title">Factory</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Weapon <span class="title">createWeapon</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Bullet <span class="title">createBullet</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//ConcreteCreator</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShouQiangFactory</span> <span class="keyword">extends</span> <span class="title">Factory</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> Weapon <span class="title">createWeapon</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ShouQiang();</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> Bullet <span class="title">createBullet</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ShouQiangBullet();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JiQiangFactory</span> <span class="keyword">extends</span> <span class="title">Factory</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> Weapon <span class="title">createWeapon</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> JiQiang();</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> Bullet <span class="title">createBullet</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> JiQiangBullet();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//Test</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		Factory factory = <span class="keyword">new</span> ShouQiangFactory();</div><div class="line">		Weapon gun = factory.createWeapon();</div><div class="line">		Bullet bullet = factory.createBullet();</div><div class="line">		gun.loadBullet(bullet);</div><div class="line">		factory = <span class="keyword">new</span> JiQiangFactory();</div><div class="line">		gun = factory.createWeapon();</div><div class="line">		bullet = factory.createBullet();</div><div class="line">		gun.loadBullet(bullet);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li>
+          <h1 id="Chain-Of-Responsibility-Pattern（责任链模式）"><a href="#Chain-Of-Responsibility-Pattern（责任链模式）" class="headerlink" title="Chain Of Responsibility Pattern（责任链模式）"></a>Chain Of Responsibility Pattern（责任链模式）</h1><h2 id="Avoid-coupling-the-sender-of-a-request-to-its-receiver-by-giving-more-than-one-object-a-chance-to-handle-the-request-Chain-the-receiving-objects-and-pass-the-request-along-the-chain-until-an-object-handles-it-（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系-。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）"><a href="#Avoid-coupling-the-sender-of-a-request-to-its-receiver-by-giving-more-than-one-object-a-chance-to-handle-the-request-Chain-the-receiving-objects-and-pass-the-request-along-the-chain-until-an-object-handles-it-（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系-。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）" class="headerlink" title="Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request.Chain the receiving objects and pass the request along the chain until an object handles it.（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系 。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）"></a>Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request.Chain the receiving objects and pass the request along the chain until an object handles it.（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系 。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）</h2><ul>
+<li>处理者（Handler）：一个接口,负责规定具体处理者处理用户的请求的方法和具体处理者设置后继对象的方法</li>
+<li>具体处理者（ConcreteHandler）：Handler接口的实现类，调用处理者接口规定的方法处理用户的请求，若能处理则进行处理，不能则传给下一节点</li>
+<li>应用场景：形成一个处理链，挨个节点判断是否能够进行处理，阶乘的计算（从结果的数据量按需判断那个节点可以容纳结果）</li>
+<li>javac -encoding UTF-8 Application.java</li>
 </ul>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/29/ChainOfResponsibilityPattern/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -595,8 +597,7 @@
 
       
         
-          
-            <h1 id="Factory-Pattern（工厂模式）"><a href="#Factory-Pattern（工厂模式）" class="headerlink" title="Factory Pattern（工厂模式）"></a>Factory Pattern（工厂模式）</h1><blockquote>
+          <h1 id="Factory-Pattern（工厂模式）"><a href="#Factory-Pattern（工厂模式）" class="headerlink" title="Factory Pattern（工厂模式）"></a>Factory Pattern（工厂模式）</h1><blockquote>
 <p>Define an interface for creating an object,but let subclass decide which class to instantiate.Factory Method lets a class defer instantiation to subclass.（定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法是一个类的实例化延迟到其子类。）</p>
 </blockquote>
 <ul>
@@ -605,164 +606,11 @@
 <li>构造者（Creator）：一个接口或者抽象类，定义一个叫做工厂方法的抽象方法，该方法返回具体产品类的实例</li>
 <li>具体构造者（ConcreteCreator）：构造者实现类或者子类</li>
 <li>应用场景：使一个类的实例化延迟到其子类，或者是想得到某一类的子类的实例，但是却无法直接使用new（不允许与该子类形成耦合），或者不清楚该类有哪些子类可用</li>
-<li>javac -encoding UTF-8 Application.java<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Product</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">PenCore</span></span>&#123;</div><div class="line">	String color;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">writeword</span><span class="params">(String s)</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//ConcreteProduct</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedPen</span> <span class="keyword">extends</span> <span class="title">PenCore</span></span>&#123;</div><div class="line">	 RedPen()&#123;</div><div class="line">	 	color = <span class="string">"红色"</span>;</div><div class="line">	 &#125;</div><div class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeword</span><span class="params">(String s)</span></span>&#123;</div><div class="line">	 	System.out.println(<span class="string">"写出"</span>+color+<span class="string">"的字："</span>+s);</div><div class="line">	 &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BluePen</span> <span class="keyword">extends</span> <span class="title">PenCore</span></span>&#123;</div><div class="line">	 BluePen()&#123;</div><div class="line">	 	color = <span class="string">"蓝色"</span>;</div><div class="line">	 &#125;</div><div class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeword</span><span class="params">(String s)</span></span>&#123;</div><div class="line">	 	System.out.println(<span class="string">"写出"</span>+color+<span class="string">"的字："</span>+s);</div><div class="line">	 &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BallPen</span></span>&#123;</div><div class="line">	PenCore core;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">usePenCore</span><span class="params">(PenCore core)</span></span>&#123;</div><div class="line">		<span class="keyword">this</span>.core = core;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(String s)</span></span>&#123;</div><div class="line">		core.writeword(s);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//AbstractFactory</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Creator</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> PenCore <span class="title">getPenCore</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//ConcreteFactory</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedCreator</span> <span class="keyword">extends</span> <span class="title">Creator</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> PenCore <span class="title">getPenCore</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> RedPen();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlueCreator</span> <span class="keyword">extends</span> <span class="title">Creator</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> PenCore <span class="title">getPenCore</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> BluePen();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//Test</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		PenCore core;			<span class="comment">//笔芯</span></div><div class="line">		Creator c = <span class="keyword">new</span> RedCreator();		<span class="comment">//笔芯构造者</span></div><div class="line">		BallPen b = <span class="keyword">new</span> BallPen();		<span class="comment">//圆珠笔</span></div><div class="line">		core = c.getPenCore();</div><div class="line">		b.usePenCore(core);</div><div class="line">		b.write(<span class="string">"哈"</span>);</div><div class="line">		c = <span class="keyword">new</span> BlueCreator();</div><div class="line">		core = c.getPenCore();</div><div class="line">		b.usePenCore(core);</div><div class="line">		b.write(<span class="string">"ha"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li>
+<li>javac -encoding UTF-8 Application.java</li>
 </ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/15/Java架构学习心得/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/15/Java架构学习心得/" itemprop="url">
-                  Java架构学习心得(一)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-15T14:57:58+08:00">
-                2017-07-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Architecture/" itemprop="url" rel="index">
-                    <span itemprop="name">Architecture</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/15/Java架构学习心得/" class="leancloud_visitors" data-flag-title="Java架构学习心得(一)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><blockquote>
-<h3 id="软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c-s模式（客户端-服务器模式），在到现在的b-s模式（浏览器-服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）"><a href="#软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c-s模式（客户端-服务器模式），在到现在的b-s模式（浏览器-服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）" class="headerlink" title="软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）"></a>软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，<strong>框架</strong>应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）</h3></blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/15/Java架构学习心得/#more" rel="contents">
+            <a class="btn" href="/2017/07/22/FactoryPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -808,7 +656,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/08/重温JavaEE-SSH框架/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/AdapterPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -830,8 +678,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/08/重温JavaEE-SSH框架/" itemprop="url">
-                  重温JavaEE_SSH框架
+                <a class="post-title-link" href="/2017/07/22/AdapterPattern/" itemprop="url">
+                  Adapter Pattern
                 </a>
               
             
@@ -847,8 +695,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T12:13:25+08:00">
-                2017-07-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T12:21:25+08:00">
+                2017-07-22
               </time>
             
 
@@ -870,8 +718,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Architecture/" itemprop="url" rel="index">
-                    <span itemprop="name">Architecture</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -887,7 +735,7 @@
 
           
           
-             <span id="/2017/07/08/重温JavaEE-SSH框架/" class="leancloud_visitors" data-flag-title="重温JavaEE_SSH框架">
+             <span id="/2017/07/22/AdapterPattern/" class="leancloud_visitors" data-flag-title="Adapter Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -916,19 +764,19 @@
 
       
         
-          <h3 id="知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞"><a href="#知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞" class="headerlink" title="知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞"></a>知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞</h3><blockquote>
-<ul>
-<li>struts2</li>
-<li>hibernate</li>
-<li>spring</li>
-<li>ssh整合及项目实例</li>
-</ul>
+          <h1 id="Adapter-Pattern（适配器模式）"><a href="#Adapter-Pattern（适配器模式）" class="headerlink" title="Adapter Pattern（适配器模式）"></a>Adapter Pattern（适配器模式）</h1><blockquote>
+<p>Convert the inface of a class into another interface clients expect.Adapter lets classes work together that couldn’t otherwise because of incompatible interface.（将一个类的接口变换成客户端所期待的另一种接口，从而使原本因接口不匹配而无法在一起工作的两个类能够在一起工作。）“系统的数据和行为都正确，单接口不符时，我们应该考虑使用适配器，目的是是控制范围之外的一个原有对象与某个接口匹配。适配器模式主要用于希望复用一些现存的类，但是接口又与复用环境不一致的情况。”（《大话设计模式》）</p>
 </blockquote>
-<h1 id="Struts2"><a href="#Struts2" class="headerlink" title="Struts2"></a><a href="http://struts.apache.org/download.cgi" target="_blank" rel="external">Struts2</a></h1><blockquote>
-<h3 id="Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器-Controller-来建立模型与视图的数据交互。——百度百科"><a href="#Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器-Controller-来建立模型与视图的数据交互。——百度百科" class="headerlink" title="Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器(Controller)来建立模型与视图的数据交互。——百度百科"></a>Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器(Controller)来建立模型与视图的数据交互。——<a href="http://baike.baidu.com/link?url=ShHZ1EuJDaLZ_jYWb5JsokO0FymifdBhOSwZE_EE7HshozZKHtpYk2V-HVmNP7uhjru1w-h2bloxs37lWCAwDYL7TdogHByUiYkQf0_RN3-gl55RgS3XshLfdF6qO35QT-BA_SWAr73UE0D7Jxeji_" target="_blank" rel="external">百度百科</a></h3></blockquote>
+<ul>
+<li>目标（Target）：一个接口，客户想要使用的接口</li>
+<li>被适配器（Adaptee）：一个已经存在的接口或者抽象类</li>
+<li>适配器(Adapter)：一个实现了目标接口并且含有被适配器引用的类</li>
+<li>应用场景：目标和被适配器完全解耦，通过适配器来建立联系（单接口适配器）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/08/重温JavaEE-SSH框架/#more" rel="contents">
+            <a class="btn" href="/2017/07/22/AdapterPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -974,7 +822,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/01/红黑树/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/BridgePattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -996,8 +844,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/01/红黑树/" itemprop="url">
-                  红黑树
+                <a class="post-title-link" href="/2017/07/22/BridgePattern/" itemprop="url">
+                  Bridge Pattern
                 </a>
               
             
@@ -1013,8 +861,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-01T12:42:25+08:00">
-                2017-07-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T12:21:25+08:00">
+                2017-07-22
               </time>
             
 
@@ -1036,8 +884,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/查找/" itemprop="url" rel="index">
-                    <span itemprop="name">查找</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -1053,7 +901,7 @@
 
           
           
-             <span id="/2017/07/01/红黑树/" class="leancloud_visitors" data-flag-title="红黑树">
+             <span id="/2017/07/22/BridgePattern/" class="leancloud_visitors" data-flag-title="Bridge Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1082,85 +930,185 @@
 
       
         
-          
-            <h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><h2 id="红黑树，一种自平衡二叉查找树，又称之为”对称二叉B树”，虽然复杂，但它的操作有着良好的最坏情况运行时间，并且在实践中是高效的：它可以在logn时间内做查找，插入和删除。"><a href="#红黑树，一种自平衡二叉查找树，又称之为”对称二叉B树”，虽然复杂，但它的操作有着良好的最坏情况运行时间，并且在实践中是高效的：它可以在logn时间内做查找，插入和删除。" class="headerlink" title="红黑树，一种自平衡二叉查找树，又称之为”对称二叉B树”，虽然复杂，但它的操作有着良好的最坏情况运行时间，并且在实践中是高效的：它可以在logn时间内做查找，插入和删除。"></a>红黑树，一种自平衡二叉查找树，又称之为”对称二叉B树”，虽然复杂，但它的操作有着良好的最坏情况运行时间，并且在实践中是高效的：它可以在logn时间内做查找，插入和删除。</h2><blockquote>
-<ul>
-<li>红黑树和AVL树一样都对插入时间、删除时间和查找时间提供了最好可能的最坏情况担保。红黑树相对于AVL树来说，牺牲了部分平衡性以换取插入/删除操作时少量的旋转操作，整体来说性能要优于AVL树。</li>
-<li>红黑树是2-3-4树的一种等同。换句话说，对于每个2-3-4树，都存在至少一个数据元素是同样次序的红黑树。在2-3-4树上的插入和删除操作也等同于在红黑树中颜色翻转和旋转。这使得2-3-4树成为理解红黑树背后的逻辑的重要工具，这也是很多介绍算法的教科书在红黑树之前介绍2-3-4树的原因，尽管2-3-4树在实践中不经常使用。</li>
+          <h1 id="Bridge-Pattern（桥梁模式）"><a href="#Bridge-Pattern（桥梁模式）" class="headerlink" title="Bridge Pattern（桥梁模式）"></a>Bridge Pattern（桥梁模式）</h1><h2 id="Decouple-an-abstraction-from-its-implementation-so-that-the-two-can-vary-independently-（将抽象和实现解耦，使得两者可以独立的变化。）"><a href="#Decouple-an-abstraction-from-its-implementation-so-that-the-two-can-vary-independently-（将抽象和实现解耦，使得两者可以独立的变化。）" class="headerlink" title="Decouple an abstraction from its implementation so that the two can vary independently.（将抽象和实现解耦，使得两者可以独立的变化。）"></a>Decouple an abstraction from its implementation so that the two can vary independently.（将抽象和实现解耦，使得两者可以独立的变化。）</h2><ul>
+<li>抽象（Abstraction）：一个抽象类，含有实现者声明的变量，</li>
+<li>实现者（Implementor）：一个接口，定义基本操作</li>
+<li>细化抽象（RefinedAbstraction）：抽象的子类</li>
+<li>具体实现者（ConcreteImplementor）：实现者的实现类</li>
+<li>应用场景：分离实现和抽象，将抽象中方法的重要实现部分交给另外一个抽象类的子类或者接口的类</li>
+<li>javac -encoding UTF-8 Application.java</li>
 </ul>
-</blockquote>
-<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><h3 id="红黑树是每个节点都带有颜色属性的二叉查找树，颜色为红色或黑色。在二叉查找树强制一般要求以外，对于任何有效的红黑树我们增加了如下的额外要求："><a href="#红黑树是每个节点都带有颜色属性的二叉查找树，颜色为红色或黑色。在二叉查找树强制一般要求以外，对于任何有效的红黑树我们增加了如下的额外要求：" class="headerlink" title="红黑树是每个节点都带有颜色属性的二叉查找树，颜色为红色或黑色。在二叉查找树强制一般要求以外，对于任何有效的红黑树我们增加了如下的额外要求："></a>红黑树是每个节点都带有颜色属性的二叉查找树，颜色为红色或黑色。在二叉查找树强制一般要求以外，对于任何有效的红黑树我们增加了如下的额外要求：</h3><ul>
-<li>节点是红色或黑色。</li>
-<li>根是黑色。</li>
-<li>所有叶子都是黑色（叶子是NIL节点）。</li>
-<li>每个红色节点必须有两个黑色的子节点。（从每个叶子到根的所有路径上不能有两个连续的红色节点。）</li>
-<li>从任一节点到其每个叶子的所有简单路径都包含相同数目的黑色节点。</li>
-</ul>
-<h3 id="下面是一个具体的红黑树的图例："><a href="#下面是一个具体的红黑树的图例：" class="headerlink" title="下面是一个具体的红黑树的图例："></a>下面是一个具体的红黑树的图例：<img src="http://op7sipvie.bkt.clouddn.com/Red-black_tree.svg.png" alt="红黑树"></h3><ul>
-<li>这些约束确保了红黑树的关键特性：从根到叶子的最长的可能路径不多于最短的可能路径的两倍长。结果是这个树大致上是平衡的。因为操作比如插入、删除和查找某个值的最坏情况时间都要求与树的高度成比例，这个在高度上的理论上限允许红黑树在最坏情况下都是高效的，而不同于普通的二叉查找树。</li>
-<li>要知道为什么这些性质确保了这个结果，注意到性质4导致了路径不能有两个毗连的红色节点就足够了。最短的可能路径都是黑色节点，最长的可能路径有交替的红色和黑色节点。因为根据性质5所有最长的路径都有相同数目的黑色节点，这就表明了没有路径能多于任何其他路径的两倍长。</li>
-<li>在很多树数据结构的表示中，一个节点有可能只有一个子节点，而叶子节点包含数据。用这种范例表示红黑树是可能的，但是这会改变一些性质并使算法复杂。为此，本文中我们使用”nil叶子”或”空（null）叶子”，如上图所示，它不包含数据而只充当树在此结束的指示。这些节点在绘图中经常被省略，导致了这些树好像同上述原则相矛盾，而实际上不是这样。与此有关的结论是所有节点都有两个子节点，尽管其中的一个或两个可能是空叶子。</li>
-<li>因为每一个红黑树也是一个特化的二叉查找树，因此红黑树上的只读操作与普通二叉查找树上的只读操作相同。然而，在红黑树上进行插入操作和删除操作会导致不再匹配红黑树的性质。恢复红黑树的性质需要少量的颜色变更（实际是非常快速的）和不超过三次树旋转（对于插入操作是两次）。虽然插入和删除很复杂，但操作时间仍可以保持为logn次。</li>
-</ul>
-<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><blockquote>
-<p>我们首先以二叉查找树的方法增加节点并标记它为红色。（如果设为黑色，就会导致根到叶子的路径上有一条路上，多一个额外的黑节点，这个是很难调整的。但是设为红色节点后，可能会导致出现两个连续红色节点的冲突，那么可以通过颜色调换和树旋转来调整。）下面要进行什么操作取决于其他临近节点的颜色。同人类的家族树中一样，我们将使用术语叔父节点来指一个节点的父节点的兄弟节点。注意：</p>
-</blockquote>
-<ul>
-<li>性质1和性质3总是保持着。</li>
-<li>性质4只在增加红色节点、重绘黑色节点为红色，或做旋转时受到威胁。</li>
-<li>性质5只在增加黑色节点、重绘红色节点为黑色，或做旋转时受到威胁。</li>
-<li>在下面的的代码中，将要插入的节点标为N，N的父节点标为P，N的祖父节点标为G，N的叔父节点标为U。</li>
-</ul>
-<h4 id="通过下列函数，可以找到一个节点的叔父和祖父节点："><a href="#通过下列函数，可以找到一个节点的叔父和祖父节点：" class="headerlink" title="通过下列函数，可以找到一个节点的叔父和祖父节点："></a>通过下列函数，可以找到一个节点的叔父和祖父节点：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> node <span class="title">grandparent</span><span class="params">(node n)</span></span>&#123;</div><div class="line">	<span class="keyword">return</span> n.parent.parent;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> node <span class="title">uncle</span><span class="params">(node n)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(n.parent == grandparent(n).left)</div><div class="line">		<span class="keyword">return</span> grandparent (n).right;</div><div class="line">	<span class="keyword">else</span></div><div class="line">		<span class="keyword">return</span> grandparent (n).left;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="情形1-新节点N位于树的根上，没有父节点。在这种情形下，我们把它重绘为黑色以满足性质2。因为它在每个路径上对黑节点数目增加一，性质5匹配。"><a href="#情形1-新节点N位于树的根上，没有父节点。在这种情形下，我们把它重绘为黑色以满足性质2。因为它在每个路径上对黑节点数目增加一，性质5匹配。" class="headerlink" title="情形1:新节点N位于树的根上，没有父节点。在这种情形下，我们把它重绘为黑色以满足性质2。因为它在每个路径上对黑节点数目增加一，性质5匹配。"></a>情形1:新节点N位于树的根上，没有父节点。在这种情形下，我们把它重绘为黑色以满足性质2。因为它在每个路径上对黑节点数目增加一，性质5匹配。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert_case1</span><span class="params">(node n)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(n.parent == NULL)</div><div class="line">		n.color = BLACK;</div><div class="line">	<span class="keyword">else</span></div><div class="line">		insert_case2 (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="情形2-新节点的父节点P是黑色，所以性质4没有失效（新节点是红色的）。在这种情形下，树仍是有效的。性质5也未受到威胁，尽管新节点N有两个黑色叶子子节点；但由于新节点N是红色，通过它的每个子节点的路径就都有同通过它所取代的黑色的叶子的路径同样数目的黑色节点，所以依然满足这个性质。"><a href="#情形2-新节点的父节点P是黑色，所以性质4没有失效（新节点是红色的）。在这种情形下，树仍是有效的。性质5也未受到威胁，尽管新节点N有两个黑色叶子子节点；但由于新节点N是红色，通过它的每个子节点的路径就都有同通过它所取代的黑色的叶子的路径同样数目的黑色节点，所以依然满足这个性质。" class="headerlink" title="情形2:新节点的父节点P是黑色，所以性质4没有失效（新节点是红色的）。在这种情形下，树仍是有效的。性质5也未受到威胁，尽管新节点N有两个黑色叶子子节点；但由于新节点N是红色，通过它的每个子节点的路径就都有同通过它所取代的黑色的叶子的路径同样数目的黑色节点，所以依然满足这个性质。"></a>情形2:新节点的父节点P是黑色，所以性质4没有失效（新节点是红色的）。在这种情形下，树仍是有效的。性质5也未受到威胁，尽管新节点N有两个黑色叶子子节点；但由于新节点N是红色，通过它的每个子节点的路径就都有同通过它所取代的黑色的叶子的路径同样数目的黑色节点，所以依然满足这个性质。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert_case2</span><span class="params">(node n)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(n.parent.color == BLACK)</div><div class="line">		<span class="keyword">return</span>; <span class="comment">/* 树仍旧有效*/</span></div><div class="line">	<span class="keyword">else</span></div><div class="line">		insert_case3 (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>注意：在下列情形下我们假定新节点的父节点为红色，所以它有祖父节点；因为如果父节点是根节点，那父节点就应当是黑色。所以新节点总有一个叔父节点，尽管在情形4和5下它可能是叶子节点。</p>
-</blockquote>
-<h4 id="情形3-如果父节点P和叔父节点U二者都是红色，（此时新插入节点N做为P的左子节点或右子节点都属于情形3，这里右图仅显示N做为P左子的情形）则我们可以将它们两个重绘为黑色并重绘祖父节点G为红色（用来保持性质5）。现在我们的新节点N有了一个黑色的父节点P。因为通过父节点P或叔父节点U的任何路径都必定通过祖父节点G，在这些路径上的黑节点数目没有改变。但是，红色的祖父节点G可能是根节点，这就违反了性质2，也有可能祖父节点G的父节点是红色的，这就违反了性质4。为了解决这个问题，我们在祖父节点G上递归地进行情形1的整个过程。（把G当成是新加入的节点进行各种情形的检查）"><a href="#情形3-如果父节点P和叔父节点U二者都是红色，（此时新插入节点N做为P的左子节点或右子节点都属于情形3，这里右图仅显示N做为P左子的情形）则我们可以将它们两个重绘为黑色并重绘祖父节点G为红色（用来保持性质5）。现在我们的新节点N有了一个黑色的父节点P。因为通过父节点P或叔父节点U的任何路径都必定通过祖父节点G，在这些路径上的黑节点数目没有改变。但是，红色的祖父节点G可能是根节点，这就违反了性质2，也有可能祖父节点G的父节点是红色的，这就违反了性质4。为了解决这个问题，我们在祖父节点G上递归地进行情形1的整个过程。（把G当成是新加入的节点进行各种情形的检查）" class="headerlink" title="情形3:如果父节点P和叔父节点U二者都是红色，（此时新插入节点N做为P的左子节点或右子节点都属于情形3，这里右图仅显示N做为P左子的情形）则我们可以将它们两个重绘为黑色并重绘祖父节点G为红色（用来保持性质5）。现在我们的新节点N有了一个黑色的父节点P。因为通过父节点P或叔父节点U的任何路径都必定通过祖父节点G，在这些路径上的黑节点数目没有改变。但是，红色的祖父节点G可能是根节点，这就违反了性质2，也有可能祖父节点G的父节点是红色的，这就违反了性质4。为了解决这个问题，我们在祖父节点G上递归地进行情形1的整个过程。（把G当成是新加入的节点进行各种情形的检查）"></a>情形3:如果父节点P和叔父节点U二者都是红色，（此时新插入节点N做为P的左子节点或右子节点都属于情形3，这里右图仅显示N做为P左子的情形）则我们可以将它们两个重绘为黑色并重绘祖父节点G为红色（用来保持性质5）。现在我们的新节点N有了一个黑色的父节点P。因为通过父节点P或叔父节点U的任何路径都必定通过祖父节点G，在这些路径上的黑节点数目没有改变。但是，红色的祖父节点G可能是根节点，这就违反了性质2，也有可能祖父节点G的父节点是红色的，这就违反了性质4。为了解决这个问题，我们在祖父节点G上递归地进行情形1的整个过程。（把G当成是新加入的节点进行各种情形的检查）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert_case3</span><span class="params">(node n)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(uncle(n) != NULL &amp;&amp; uncle (n).color == RED) &#123;</div><div class="line">		n.parent.color = BLACK;</div><div class="line">		uncle (n).color = BLACK;</div><div class="line">		grandparent (n).color = RED;</div><div class="line">		insert_case1(grandparent(n));</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span></div><div class="line">	insert_case4 (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>注意：在余下的情形下，我们假定父节点P是其父亲G的左子节点。如果它是右子节点，情形4和情形5中的左和右应当对调。</p>
-</blockquote>
-<h4 id="情形4-父节点P是红色而叔父节点U是黑色或缺少，并且新节点N是其父节点P的右子节点而父节点P又是其父节点的左子节点。在这种情形下，我们进行一次左旋转调换新节点和其父节点的角色-接着，我们按情形5处理以前的父节点P以解决仍然失效的性质4。注意这个改变会导致某些路径通过它们以前不通过的新节点N（比如图中1号叶子节点）或不通过节点P（比如图中3号叶子节点），但由于这两个节点都是红色的，所以性质5仍有效。"><a href="#情形4-父节点P是红色而叔父节点U是黑色或缺少，并且新节点N是其父节点P的右子节点而父节点P又是其父节点的左子节点。在这种情形下，我们进行一次左旋转调换新节点和其父节点的角色-接着，我们按情形5处理以前的父节点P以解决仍然失效的性质4。注意这个改变会导致某些路径通过它们以前不通过的新节点N（比如图中1号叶子节点）或不通过节点P（比如图中3号叶子节点），但由于这两个节点都是红色的，所以性质5仍有效。" class="headerlink" title="情形4:父节点P是红色而叔父节点U是黑色或缺少，并且新节点N是其父节点P的右子节点而父节点P又是其父节点的左子节点。在这种情形下，我们进行一次左旋转调换新节点和其父节点的角色;接着，我们按情形5处理以前的父节点P以解决仍然失效的性质4。注意这个改变会导致某些路径通过它们以前不通过的新节点N（比如图中1号叶子节点）或不通过节点P（比如图中3号叶子节点），但由于这两个节点都是红色的，所以性质5仍有效。"></a>情形4:父节点P是红色而叔父节点U是黑色或缺少，并且新节点N是其父节点P的右子节点而父节点P又是其父节点的左子节点。在这种情形下，我们进行一次左旋转调换新节点和其父节点的角色;接着，我们按情形5处理以前的父节点P以解决仍然失效的性质4。注意这个改变会导致某些路径通过它们以前不通过的新节点N（比如图中1号叶子节点）或不通过节点P（比如图中3号叶子节点），但由于这两个节点都是红色的，所以性质5仍有效。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert_case4</span><span class="params">(node n)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(n == n.parent.right &amp;&amp; n.parent == grandparent(n).left) &#123;</div><div class="line">		rotate_left(n-&gt;parent);</div><div class="line">		n = n-&gt;left;</div><div class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span>(n == n.parent.left &amp;&amp; n.parent == grandparent(n).right) &#123;</div><div class="line">		rotate_right(n.parent);</div><div class="line">		n = n.right;</div><div class="line">	&#125;</div><div class="line">	insert_case5 (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="情形5：父节点P是红色而叔父节点U是黑色或缺少，新节点N是其父节点的左子节点，而父节点P又是其父节点G的左子节点。在这种情形下，我们进行针对祖父节点G的一次右旋转；在旋转产生的树中，以前的父节点P现在是新节点N和以前的祖父节点G的父节点。我们知道以前的祖父节点G是黑色，否则父节点P就不可能是红色（如果P和G都是红色就违反了性质4，所以G必须是黑色）。我们切换以前的父节点P和祖父节点G的颜色，结果的树满足性质4。性质5也仍然保持满足，因为通过这三个节点中任何一个的所有路径以前都通过祖父节点G，现在它们都通过以前的父节点P。在各自的情形下，这都是三个节点中唯一的黑色节点。"><a href="#情形5：父节点P是红色而叔父节点U是黑色或缺少，新节点N是其父节点的左子节点，而父节点P又是其父节点G的左子节点。在这种情形下，我们进行针对祖父节点G的一次右旋转；在旋转产生的树中，以前的父节点P现在是新节点N和以前的祖父节点G的父节点。我们知道以前的祖父节点G是黑色，否则父节点P就不可能是红色（如果P和G都是红色就违反了性质4，所以G必须是黑色）。我们切换以前的父节点P和祖父节点G的颜色，结果的树满足性质4。性质5也仍然保持满足，因为通过这三个节点中任何一个的所有路径以前都通过祖父节点G，现在它们都通过以前的父节点P。在各自的情形下，这都是三个节点中唯一的黑色节点。" class="headerlink" title="情形5：父节点P是红色而叔父节点U是黑色或缺少，新节点N是其父节点的左子节点，而父节点P又是其父节点G的左子节点。在这种情形下，我们进行针对祖父节点G的一次右旋转；在旋转产生的树中，以前的父节点P现在是新节点N和以前的祖父节点G的父节点。我们知道以前的祖父节点G是黑色，否则父节点P就不可能是红色（如果P和G都是红色就违反了性质4，所以G必须是黑色）。我们切换以前的父节点P和祖父节点G的颜色，结果的树满足性质4。性质5也仍然保持满足，因为通过这三个节点中任何一个的所有路径以前都通过祖父节点G，现在它们都通过以前的父节点P。在各自的情形下，这都是三个节点中唯一的黑色节点。"></a>情形5：父节点P是红色而叔父节点U是黑色或缺少，新节点N是其父节点的左子节点，而父节点P又是其父节点G的左子节点。在这种情形下，我们进行针对祖父节点G的一次右旋转；在旋转产生的树中，以前的父节点P现在是新节点N和以前的祖父节点G的父节点。我们知道以前的祖父节点G是黑色，否则父节点P就不可能是红色（如果P和G都是红色就违反了性质4，所以G必须是黑色）。我们切换以前的父节点P和祖父节点G的颜色，结果的树满足性质4。性质5也仍然保持满足，因为通过这三个节点中任何一个的所有路径以前都通过祖父节点G，现在它们都通过以前的父节点P。在各自的情形下，这都是三个节点中唯一的黑色节点。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert_case5</span><span class="params">(node n)</span></span>&#123;</div><div class="line">	n.parent.color = BLACK;</div><div class="line">	grandparent (n).color = RED;</div><div class="line">	<span class="keyword">if</span>(n == n.parent.left &amp;&amp; n.parent == grandparent(n).left) &#123;</div><div class="line">		rotate_right(grandparent(n));</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">		<span class="comment">/* Here, n == n.parent.right &amp;&amp; n.parent == grandparent (n).right */</span></div><div class="line">		rotate_left(grandparent(n));</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>注意插入实际上是原地算法，因为上述所有调用都使用了尾部递归。</p>
-</blockquote>
-<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><ul>
-<li>如果需要删除的节点有两个儿子，那么问题可以被转化成删除另一个只有一个儿子的节点的问题（为了表述方便，这里所指的儿子，为非叶子节点的儿子）。对于二叉查找树，在删除带有两个非叶子儿子的节点的时候，我们找到要么在它的左子树中的最大元素、要么在它的右子树中的最小元素，并把它的值转移到要删除的节点中。我们接着删除我们从中复制出值的那个节点，它必定有少于两个非叶子的儿子。因为只是复制了一个值，不违反任何性质，这就把问题简化为如何删除最多有一个儿子的节点的问题。它不关心这个节点是最初要删除的节点还是我们从中复制出值的那个节点。</li>
-<li>在本文余下的部分中，我们只需要讨论删除只有一个儿子的节点（如果它两个儿子都为空，即均为叶子，我们任意将其中一个看作它的儿子）。如果我们删除一个红色节点（此时该节点的儿子将都为叶子节点），它的父亲和儿子一定是黑色的。所以我们可以简单的用它的黑色儿子替换它，并不会破坏性质3和性质4。通过被删除节点的所有路径只是少了一个红色节点，这样可以继续保证性质5。另一种简单情况是在被删除节点是黑色而它的儿子是红色的时候。如果只是去除这个黑色节点，用它的红色儿子顶替上来的话，会破坏性质5，但是如果我们重绘它的儿子为黑色，则曾经通过它的所有路径将通过它的黑色儿子，这样可以继续保持性质5。</li>
-<li>需要进一步讨论的是在要删除的节点和它的儿子二者都是黑色的时候，这是一种复杂的情况。我们首先把要删除的节点替换为它的儿子。出于方便，称呼这个儿子为N（在新的位置上），称呼它的兄弟（它父亲的另一个儿子）为S。在下面的示意图中，我们还是使用P称呼N的父亲，SL称呼S的左儿子，SR称呼S的右儿子。我们将使用下述函数找到兄弟节点：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> node <span class="title">sibling</span><span class="params">(node n)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(n == n-&gt;parent-&gt;left)</div><div class="line">    	<span class="keyword">return</span> n-&gt;parent-&gt;right;</div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="keyword">return</span> n-&gt;parent-&gt;left;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>我们可以使用下列代码进行上述的概要步骤，这里的函数replace_node替换child到n在树中的位置。出于方便，在本章节中的代码将假定空叶子被用不是NULL的实际节点对象来表示（在插入章节中的代码可以同任何一种表示一起工作）。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete_one_child</span><span class="params">(struct node *n)</span></span>&#123;</div><div class="line">    <span class="comment">//Precondition: n has at most one non-null child.</span></div><div class="line">    struct node *child = is_leaf(n-&gt;right)? n-&gt;left : n-&gt;right;</div><div class="line">    replace_node(n, child);</div><div class="line">    <span class="keyword">if</span>(n-&gt;color == BLACK)&#123;</div><div class="line">            <span class="keyword">if</span>(child-&gt;color == RED)</div><div class="line">                    child-&gt;color = BLACK;</div><div class="line">            <span class="keyword">else</span></div><div class="line">                    delete_case1 (child);</div><div class="line">    &#125;</div><div class="line">    free (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>如果N和它初始的父亲是黑色，则删除它的父亲导致通过N的路径都比不通过它的路径少了一个黑色节点。因为这违反了性质5，树需要被重新平衡。有几种情形需要考虑：</li>
-</ul>
-<h4 id="情形1-N是新的根。在这种情形下，我们就做完了。我们从所有路径去除了一个黑色节点，而新根是黑色的，所以性质都保持着。"><a href="#情形1-N是新的根。在这种情形下，我们就做完了。我们从所有路径去除了一个黑色节点，而新根是黑色的，所以性质都保持着。" class="headerlink" title="情形1: N是新的根。在这种情形下，我们就做完了。我们从所有路径去除了一个黑色节点，而新根是黑色的，所以性质都保持着。"></a>情形1: N是新的根。在这种情形下，我们就做完了。我们从所有路径去除了一个黑色节点，而新根是黑色的，所以性质都保持着。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete_case1</span><span class="params">(struct node *n)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(n-&gt;parent != NULL)</div><div class="line">            delete_case2 (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>注意：在情形2、5和6下，我们假定N是它父亲的左儿子。如果它是右儿子，则在这些情形下的左和右应当对调。</p>
-</blockquote>
-<h4 id="情形2：-S是红色。在这种情形下我们在N的父亲上做左旋转，把红色兄弟转换成N的祖父，我们接着对调N的父亲和祖父的颜色。完成这两个操作后，尽管所有路径上黑色节点的数目没有改变，但现在N有了一个黑色的兄弟和一个红色的父亲（它的新兄弟是黑色因为它是红色S的一个儿子），所以我们可以接下去按情形4、情形5或情形6来处理。"><a href="#情形2：-S是红色。在这种情形下我们在N的父亲上做左旋转，把红色兄弟转换成N的祖父，我们接着对调N的父亲和祖父的颜色。完成这两个操作后，尽管所有路径上黑色节点的数目没有改变，但现在N有了一个黑色的兄弟和一个红色的父亲（它的新兄弟是黑色因为它是红色S的一个儿子），所以我们可以接下去按情形4、情形5或情形6来处理。" class="headerlink" title="情形2： S是红色。在这种情形下我们在N的父亲上做左旋转，把红色兄弟转换成N的祖父，我们接着对调N的父亲和祖父的颜色。完成这两个操作后，尽管所有路径上黑色节点的数目没有改变，但现在N有了一个黑色的兄弟和一个红色的父亲（它的新兄弟是黑色因为它是红色S的一个儿子），所以我们可以接下去按情形4、情形5或情形6来处理。"></a>情形2： S是红色。在这种情形下我们在N的父亲上做左旋转，把红色兄弟转换成N的祖父，我们接着对调N的父亲和祖父的颜色。完成这两个操作后，尽管所有路径上黑色节点的数目没有改变，但现在N有了一个黑色的兄弟和一个红色的父亲（它的新兄弟是黑色因为它是红色S的一个儿子），所以我们可以接下去按情形4、情形5或情形6来处理。</h4><blockquote>
-<p>注意：N是删除了黑色节点后替换上来的子节点，所以这个过程中由P-&gt;X-&gt;N变成了P-&gt;N，实际上是少了一个黑色节点，也可以理解为Parent(Black)和Silbing(Red)那么他们的孩子黑色节点的数目肯定不等，让他们做新兄弟肯定是不平衡的，还需后面继续处理。</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete_case2</span><span class="params">(struct node *n)</span></span>&#123;</div><div class="line">    struct node *s = sibling (n);</div><div class="line">    <span class="keyword">if</span>(s-&gt;color == RED)&#123;</div><div class="line">            n-&gt;parent-&gt;color = RED;</div><div class="line">            s-&gt;color = BLACK;</div><div class="line">            <span class="keyword">if</span>(n == n-&gt;parent-&gt;left)</div><div class="line">                    rotate_left(n-&gt;parent);</div><div class="line">            <span class="keyword">else</span></div><div class="line">                    rotate_right(n-&gt;parent);</div><div class="line">    &#125; </div><div class="line">    delete_case3 (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="情形3：-N的父亲、S和S的儿子都是黑色的。在这种情形下，我们简单的重绘S为红色。结果是通过S的所有路径，它们就是以前不通过N的那些路径，都少了一个黑色节点。因为删除N的初始的父亲使通过N的所有路径少了一个黑色节点，这使事情都平衡了起来。但是，通过P的所有路径现在比不通过P的路径少了一个黑色节点，所以仍然违反性质5。要修正这个问题，我们要从情形1开始，在P上做重新平衡处理。"><a href="#情形3：-N的父亲、S和S的儿子都是黑色的。在这种情形下，我们简单的重绘S为红色。结果是通过S的所有路径，它们就是以前不通过N的那些路径，都少了一个黑色节点。因为删除N的初始的父亲使通过N的所有路径少了一个黑色节点，这使事情都平衡了起来。但是，通过P的所有路径现在比不通过P的路径少了一个黑色节点，所以仍然违反性质5。要修正这个问题，我们要从情形1开始，在P上做重新平衡处理。" class="headerlink" title="情形3： N的父亲、S和S的儿子都是黑色的。在这种情形下，我们简单的重绘S为红色。结果是通过S的所有路径，它们就是以前不通过N的那些路径，都少了一个黑色节点。因为删除N的初始的父亲使通过N的所有路径少了一个黑色节点，这使事情都平衡了起来。但是，通过P的所有路径现在比不通过P的路径少了一个黑色节点，所以仍然违反性质5。要修正这个问题，我们要从情形1开始，在P上做重新平衡处理。"></a>情形3： N的父亲、S和S的儿子都是黑色的。在这种情形下，我们简单的重绘S为红色。结果是通过S的所有路径，它们就是以前不通过N的那些路径，都少了一个黑色节点。因为删除N的初始的父亲使通过N的所有路径少了一个黑色节点，这使事情都平衡了起来。但是，通过P的所有路径现在比不通过P的路径少了一个黑色节点，所以仍然违反性质5。要修正这个问题，我们要从情形1开始，在P上做重新平衡处理。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete_case3</span><span class="params">(struct node *n)</span></span>&#123;</div><div class="line">    struct node *s = sibling (n);</div><div class="line"></div><div class="line">    <span class="keyword">if</span>((n-&gt;parent-&gt;color == BLACK)&amp;&amp;(s-&gt;color == BLACK)&amp;&amp;(s-&gt;left-&gt;color == BLACK)&amp;&amp;(s-&gt;right-&gt;color == BLACK)) &#123;</div><div class="line">            s-&gt;color = RED;</div><div class="line">            delete_case1(n-&gt;parent);</div><div class="line">    &#125; <span class="keyword">else</span></div><div class="line">            delete_case4 (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="情形4：-S和S的儿子都是黑色，但是N的父亲是红色。在这种情形下，我们简单的交换N的兄弟和父亲的颜色。这不影响不通过N的路径的黑色节点的数目，但是它在通过N的路径上对黑色节点数目增加了一，添补了在这些路径上删除的黑色节点。"><a href="#情形4：-S和S的儿子都是黑色，但是N的父亲是红色。在这种情形下，我们简单的交换N的兄弟和父亲的颜色。这不影响不通过N的路径的黑色节点的数目，但是它在通过N的路径上对黑色节点数目增加了一，添补了在这些路径上删除的黑色节点。" class="headerlink" title="情形4： S和S的儿子都是黑色，但是N的父亲是红色。在这种情形下，我们简单的交换N的兄弟和父亲的颜色。这不影响不通过N的路径的黑色节点的数目，但是它在通过N的路径上对黑色节点数目增加了一，添补了在这些路径上删除的黑色节点。"></a>情形4： S和S的儿子都是黑色，但是N的父亲是红色。在这种情形下，我们简单的交换N的兄弟和父亲的颜色。这不影响不通过N的路径的黑色节点的数目，但是它在通过N的路径上对黑色节点数目增加了一，添补了在这些路径上删除的黑色节点。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete_case4</span><span class="params">(struct node *n)</span></span>&#123;</div><div class="line">    struct node *s = sibling (n);</div><div class="line"></div><div class="line">    <span class="keyword">if</span>（(n-&gt;parent-&gt;color == RED)&amp;&amp;(s-&gt;color == BLACK)&amp;&amp;(s-&gt;left-&gt;color == BLACK)&amp;&amp;(s-&gt;right-&gt;color == BLACK)) &#123;</div><div class="line">            s-&gt;color = RED;</div><div class="line">            n-&gt;parent-&gt;color = BLACK;</div><div class="line">    &#125; <span class="keyword">else</span></div><div class="line">            delete_case5 (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="情形5：-S是黑色，S的左儿子是红色，S的右儿子是黑色，而N是它父亲的左儿子。在这种情形下我们在S上做右旋转，这样S的左儿子成为S的父亲和N的新兄弟。我们接着交换S和它的新父亲的颜色。所有路径仍有同样数目的黑色节点，但是现在N有了一个黑色兄弟，他的右儿子是红色的，所以我们进入了情形6。N和它的父亲都不受这个变换的影响。"><a href="#情形5：-S是黑色，S的左儿子是红色，S的右儿子是黑色，而N是它父亲的左儿子。在这种情形下我们在S上做右旋转，这样S的左儿子成为S的父亲和N的新兄弟。我们接着交换S和它的新父亲的颜色。所有路径仍有同样数目的黑色节点，但是现在N有了一个黑色兄弟，他的右儿子是红色的，所以我们进入了情形6。N和它的父亲都不受这个变换的影响。" class="headerlink" title="情形5： S是黑色，S的左儿子是红色，S的右儿子是黑色，而N是它父亲的左儿子。在这种情形下我们在S上做右旋转，这样S的左儿子成为S的父亲和N的新兄弟。我们接着交换S和它的新父亲的颜色。所有路径仍有同样数目的黑色节点，但是现在N有了一个黑色兄弟，他的右儿子是红色的，所以我们进入了情形6。N和它的父亲都不受这个变换的影响。"></a>情形5： S是黑色，S的左儿子是红色，S的右儿子是黑色，而N是它父亲的左儿子。在这种情形下我们在S上做右旋转，这样S的左儿子成为S的父亲和N的新兄弟。我们接着交换S和它的新父亲的颜色。所有路径仍有同样数目的黑色节点，但是现在N有了一个黑色兄弟，他的右儿子是红色的，所以我们进入了情形6。N和它的父亲都不受这个变换的影响。</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete_case5</span><span class="params">(struct node *n)</span></span>&#123;</div><div class="line">    struct node *s = sibling (n);</div><div class="line">    <span class="keyword">if</span>（s-&gt;color == BLACK)&#123;</div><div class="line">            <span class="keyword">if</span>((n == n-&gt;parent-&gt;left)&amp;&amp;(s-&gt;right-&gt;color == BLACK)&amp;&amp;(s-&gt;left-&gt;color == RED)) &#123; <span class="comment">// this last test is trivial too due to cases 2-4.</span></div><div class="line">                    s-&gt;color = RED;</div><div class="line">                    s-&gt;left-&gt;color = BLACK;</div><div class="line">                    rotate_right (s);</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>((n == n-&gt;parent-&gt;right)&amp;&amp;(s-&gt;left-&gt;color == BLACK)&amp;&amp;(s-&gt;right-&gt;color == RED)) &#123;<span class="comment">// this last test is trivial too due to cases 2-4.</span></div><div class="line">                    s-&gt;color = RED;</div><div class="line">                    s-&gt;right-&gt;color = BLACK;</div><div class="line">                    rotate_left (s);</div><div class="line">            &#125;</div><div class="line">    &#125;</div><div class="line">    delete_case6 (n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="情形6：-S是黑色，S的右儿子是红色，而N是它父亲的左儿子。在这种情形下我们在N的父亲上做左旋转，这样S成为N的父亲（P）和S的右儿子的父亲。我们接着交换N的父亲和S的颜色，并使S的右儿子为黑色。子树在它的根上的仍是同样的颜色，所以性质3没有被违反。但是，N现在增加了一个黑色祖先：要么N的父亲变成黑色，要么它是黑色而S被增加为一个黑色祖父。所以，通过N的路径都增加了一个黑色节点。"><a href="#情形6：-S是黑色，S的右儿子是红色，而N是它父亲的左儿子。在这种情形下我们在N的父亲上做左旋转，这样S成为N的父亲（P）和S的右儿子的父亲。我们接着交换N的父亲和S的颜色，并使S的右儿子为黑色。子树在它的根上的仍是同样的颜色，所以性质3没有被违反。但是，N现在增加了一个黑色祖先：要么N的父亲变成黑色，要么它是黑色而S被增加为一个黑色祖父。所以，通过N的路径都增加了一个黑色节点。" class="headerlink" title="情形6： S是黑色，S的右儿子是红色，而N是它父亲的左儿子。在这种情形下我们在N的父亲上做左旋转，这样S成为N的父亲（P）和S的右儿子的父亲。我们接着交换N的父亲和S的颜色，并使S的右儿子为黑色。子树在它的根上的仍是同样的颜色，所以性质3没有被违反。但是，N现在增加了一个黑色祖先：要么N的父亲变成黑色，要么它是黑色而S被增加为一个黑色祖父。所以，通过N的路径都增加了一个黑色节点。"></a>情形6： S是黑色，S的右儿子是红色，而N是它父亲的左儿子。在这种情形下我们在N的父亲上做左旋转，这样S成为N的父亲（P）和S的右儿子的父亲。我们接着交换N的父亲和S的颜色，并使S的右儿子为黑色。子树在它的根上的仍是同样的颜色，所以性质3没有被违反。但是，N现在增加了一个黑色祖先：要么N的父亲变成黑色，要么它是黑色而S被增加为一个黑色祖父。所以，通过N的路径都增加了一个黑色节点。</h4><h4 id="此时，如果一个路径不通过N，则有两种可能性："><a href="#此时，如果一个路径不通过N，则有两种可能性：" class="headerlink" title="此时，如果一个路径不通过N，则有两种可能性："></a>此时，如果一个路径不通过N，则有两种可能性：</h4><ul>
-<li>它通过N的新兄弟。那么它以前和现在都必定通过S和N的父亲，而它们只是交换了颜色。所以路径保持了同样数目的黑色节点。</li>
-<li>它通过N的新叔父，S的右儿子。那么它以前通过S、S的父亲和S的右儿子，但是现在只通过S，它被假定为它以前的父亲的颜色，和S的右儿子，它被从红色改变为黑色。合成效果是这个路径通过了同样数目的黑色节点。</li>
-<li>在任何情况下，在这些路径上的黑色节点数目都没有改变。所以我们恢复了性质4。在示意图中的白色节点可以是红色或黑色，但是在变换前后都必须指定相同的颜色。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete_case6</span><span class="params">(node n)</span></span>&#123;</div><div class="line">    node s = sibling (n);</div><div class="line">    s.color = n.parent.color;</div><div class="line">    n.parent.color = BLACK;</div><div class="line">    <span class="keyword">if</span>(n == n.parent.left)&#123;</div><div class="line">            s.right.color = BLACK;</div><div class="line">            rotate_left(n.parent);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">            s.left.color = BLACK;</div><div class="line">            rotate_right(n.parent);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>同样的，函数调用都使用了尾部递归，所以算法是原地算法。此外，在旋转之后不再做递归调用，所以进行了恒定数目（最多3次）的旋转。</p>
-</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/22/BridgePattern/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/AbstractFactoryPattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/22/AbstractFactoryPattern/" itemprop="url">
+                  Abstract Factory Pattern
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T12:21:25+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/22/AbstractFactoryPattern/" class="leancloud_visitors" data-flag-title="Abstract Factory Pattern">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Abstract-Factory-Pattern（抽象工厂模式）"><a href="#Abstract-Factory-Pattern（抽象工厂模式）" class="headerlink" title="Abstract Factory Pattern（抽象工厂模式）"></a>Abstract Factory Pattern（抽象工厂模式）</h1><h2 id="Provide-an-interface-for-creating-families-of-related-or-dependent-objects-without-specifying-their-concrete-classes-（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）"><a href="#Provide-an-interface-for-creating-families-of-related-or-dependent-objects-without-specifying-their-concrete-classes-（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）" class="headerlink" title="Provide an interface for creating families of related or dependent objects without specifying their concrete classes.（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）"></a>Provide an interface for creating families of related or dependent objects without specifying their concrete classes.（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）</h2><ul>
+<li>抽象产品（Product）：一个接口或者抽象类，定义、产品必须实现的方法</li>
+<li>具体产品（ConcreteProduct）：抽象产品的子类或者实现类</li>
+<li>抽象工厂（AbstractFactory）：一个接口或者抽象类，定义若干个抽象方法</li>
+<li>具体工厂（ConcreteFactory）：抽象工厂的实现类或者子类，重写抽象方法，使其返回具体产品的实例</li>
+<li>应用场景：提供一个创建一系列或相互依赖对象的接口，而无需知道他们具体的类，反射机制+抽象工厂（反射可以灵活地进行实例化）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/22/AbstractFactoryPattern/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1197,7 +1145,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1242,7 +1190,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1253,7 +1201,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1264,7 +1212,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

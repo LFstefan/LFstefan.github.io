@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2017/08/26/TemplateMethodPattern/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Template Method Pattern（模板方法模式）Define the skeleton of an algorithm in an operation,deferring some steps to subclasses.Template Method lets subclass redefine certain steps of an algorithm without chang">
-<meta property="og:updated_time" content="2018-03-08T03:13:20.561Z">
+<meta property="og:updated_time" content="2018-04-14T09:42:00.386Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Template Method Pattern">
 <meta name="twitter:description" content="Template Method Pattern（模板方法模式）Define the skeleton of an algorithm in an operation,deferring some steps to subclasses.Template Method lets subclass redefine certain steps of an algorithm without chang">
@@ -437,6 +437,7 @@
 <li>应用场景：非抽象方法负责定义步骤流程，钩子方法，子类可以按照抽象模板的规定步骤进行（用final修饰来强制继承不能改动），也可重写非抽象方法来自己定义步骤流程，或者还可以在确定什么样的条件下去执行算法的哪些步骤（boolean返回类型的钩子方法的用途）</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
+<a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//AbstractTemplate</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Template</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">first</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">second</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">third</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">templateMethod</span><span class="params">()</span></span>&#123;</div><div class="line">		first();</div><div class="line">		second();</div><div class="line">		third();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//ConcreteTemplate</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteTemplate</span> <span class="keyword">extends</span> <span class="title">Template</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">first</span><span class="params">()</span></span>&#123;</div><div class="line">		System.out.println(<span class="string">"首先"</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">second</span><span class="params">()</span></span>&#123;</div><div class="line">		System.out.println(<span class="string">"然后"</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">third</span><span class="params">()</span></span>&#123;</div><div class="line">		System.out.println(<span class="string">"其次"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//Test</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		Template t = <span class="keyword">new</span> ConcreteTemplate();</div><div class="line">		t.templateMethod();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
@@ -590,7 +591,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -601,7 +602,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -612,7 +613,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

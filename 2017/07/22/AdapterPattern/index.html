@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2017/07/22/AdapterPattern/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Adapter Pattern（适配器模式） Convert the inface of a class into another interface clients expect.Adapter lets classes work together that couldn’t otherwise because of incompatible interface.（将一个类的接口变换成客户端所期">
-<meta property="og:updated_time" content="2018-03-08T03:00:54.784Z">
+<meta property="og:updated_time" content="2018-04-14T09:36:24.799Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Adapter Pattern">
 <meta name="twitter:description" content="Adapter Pattern（适配器模式） Convert the inface of a class into another interface clients expect.Adapter lets classes work together that couldn’t otherwise because of incompatible interface.（将一个类的接口变换成客户端所期">
@@ -441,6 +441,7 @@
 <li>应用场景：目标和被适配器完全解耦，通过适配器来建立联系（单接口适配器）</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
+<a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Target</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ZhiLiuDian</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">privideZhiLiuDian</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//Adaptee</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JiaoLiuDian</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">privideJiaoLiuDian</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JiaoLiuDianHost</span> <span class="keyword">implements</span> <span class="title">JiaoLiuDian</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">privideJiaoLiuDian</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="string">"交流电"</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//Adapter</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Adapter</span> <span class="keyword">implements</span> <span class="title">ZhiLiuDian</span></span>&#123;</div><div class="line">	JiaoLiuDian jiao;</div><div class="line">	Adapter(JiaoLiuDian jiao)&#123;</div><div class="line">		<span class="keyword">this</span>.jiao = jiao;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">privideZhiLiuDian</span><span class="params">()</span></span>&#123;</div><div class="line">		String s = jiao.privideJiaoLiuDian();</div><div class="line">		<span class="keyword">return</span> <span class="string">"转换"</span>+s+<span class="string">"成直流电"</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//Test</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		JiaoLiuDian jiao = <span class="keyword">new</span> JiaoLiuDianHost();</div><div class="line">		System.out.println(jiao.privideJiaoLiuDian());</div><div class="line">		ZhiLiuDian zhi = <span class="keyword">new</span> Adapter(jiao);</div><div class="line">		System.out.println(zhi.privideZhiLiuDian());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
@@ -518,8 +519,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/29/BuilderPattern/" rel="prev" title="Builder Pattern">
-                Builder Pattern <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/22/FactoryPattern/" rel="prev" title="Factory Pattern">
+                Factory Pattern <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -594,7 +595,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -605,7 +606,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -616,7 +617,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

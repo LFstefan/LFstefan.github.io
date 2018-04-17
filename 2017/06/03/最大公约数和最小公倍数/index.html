@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="最大公约数和最小公倍数最大公约数123456789//欧几里德算法public long gcd(long m, long n) &amp;#123;      while(n!=0)&amp;#123;		long rem = m%n;		m = n;		n = rem;	&amp;#125;	return m;&amp;#125; 由于除法代价太大，所以接下来我们用减法来代替除法实现该算法，首先我们需要知道gcd(a,b)=">
+<meta name="description" content="最大公约数和最小公倍数最大公约数123456789//欧几里德算法public long gcd(long m, long n) &amp;#123;      while(n!=0)&amp;#123;		long rem = m%n;		m = n;		n = rem;	&amp;#125;	return m;&amp;#125;">
 <meta name="keywords" content="Java,Algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="最大公约数和最小公倍数">
 <meta property="og:url" content="https://lfstefan.github.io/2017/06/03/最大公约数和最小公倍数/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="最大公约数和最小公倍数最大公约数123456789//欧几里德算法public long gcd(long m, long n) &amp;#123;      while(n!=0)&amp;#123;		long rem = m%n;		m = n;		n = rem;	&amp;#125;	return m;&amp;#125; 由于除法代价太大，所以接下来我们用减法来代替除法实现该算法，首先我们需要知道gcd(a,b)=">
-<meta property="og:updated_time" content="2018-03-08T02:32:15.210Z">
+<meta property="og:description" content="最大公约数和最小公倍数最大公约数123456789//欧几里德算法public long gcd(long m, long n) &amp;#123;      while(n!=0)&amp;#123;		long rem = m%n;		m = n;		n = rem;	&amp;#125;	return m;&amp;#125;">
+<meta property="og:updated_time" content="2018-04-14T09:47:52.451Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="最大公约数和最小公倍数">
-<meta name="twitter:description" content="最大公约数和最小公倍数最大公约数123456789//欧几里德算法public long gcd(long m, long n) &amp;#123;      while(n!=0)&amp;#123;		long rem = m%n;		m = n;		n = rem;	&amp;#125;	return m;&amp;#125; 由于除法代价太大，所以接下来我们用减法来代替除法实现该算法，首先我们需要知道gcd(a,b)=">
+<meta name="twitter:description" content="最大公约数和最小公倍数最大公约数123456789//欧几里德算法public long gcd(long m, long n) &amp;#123;      while(n!=0)&amp;#123;		long rem = m%n;		m = n;		n = rem;	&amp;#125;	return m;&amp;#125;">
 
 
 
@@ -432,6 +432,7 @@
 
       
         <h1 id="最大公约数和最小公倍数"><a href="#最大公约数和最小公倍数" class="headerlink" title="最大公约数和最小公倍数"></a>最大公约数和最小公倍数</h1><h2 id="最大公约数"><a href="#最大公约数" class="headerlink" title="最大公约数"></a>最大公约数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//欧几里德算法</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">gcd</span><span class="params">(<span class="keyword">long</span> m, <span class="keyword">long</span> n)</span> </span>&#123;  </div><div class="line">    <span class="keyword">while</span>(n!=<span class="number">0</span>)&#123;</div><div class="line">		<span class="keyword">long</span> rem = m%n;</div><div class="line">		m = n;</div><div class="line">		n = rem;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> m;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h2 id="由于除法代价太大，所以接下来我们用减法来代替除法实现该算法，首先我们需要知道gcd-a-b-gcd-b-a-b-，即数字A和数字B的最大公因数和数字B和数字-A-B-的最大公因数是相同的，所以我们可以得出以下的算法"><a href="#由于除法代价太大，所以接下来我们用减法来代替除法实现该算法，首先我们需要知道gcd-a-b-gcd-b-a-b-，即数字A和数字B的最大公因数和数字B和数字-A-B-的最大公因数是相同的，所以我们可以得出以下的算法" class="headerlink" title="由于除法代价太大，所以接下来我们用减法来代替除法实现该算法，首先我们需要知道gcd(a,b)=gcd(b,a-b)，即数字A和数字B的最大公因数和数字B和数字(A-B)的最大公因数是相同的，所以我们可以得出以下的算法"></a>由于除法代价太大，所以接下来我们用减法来代替除法实现该算法，首先我们需要知道gcd(a,b)=gcd(b,a-b)，即数字A和数字B的最大公因数和数字B和数字(A-B)的最大公因数是相同的，所以我们可以得出以下的算法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">gcd</span><span class="params">(<span class="keyword">long</span> m, <span class="keyword">long</span> n)</span> </span>&#123;  </div><div class="line">    <span class="keyword">if</span>(m==n)</div><div class="line">		<span class="keyword">return</span> m;</div><div class="line">	<span class="keyword">else</span>&#123;</div><div class="line">		<span class="keyword">return</span> m-n&gt;<span class="number">0</span> ? gcd(n,m-n) : gcd(m,n-m);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="然而存在一个问题就是减法会导致迭代次数较多，所以我们接下来想办法降低迭代次数，我们知道一个奇数和一个偶数的最大公约数其实等于这个奇数和这个-偶数-2-的最大公约数，所以程序进一步改进为："><a href="#然而存在一个问题就是减法会导致迭代次数较多，所以我们接下来想办法降低迭代次数，我们知道一个奇数和一个偶数的最大公约数其实等于这个奇数和这个-偶数-2-的最大公约数，所以程序进一步改进为：" class="headerlink" title="然而存在一个问题就是减法会导致迭代次数较多，所以我们接下来想办法降低迭代次数，我们知道一个奇数和一个偶数的最大公约数其实等于这个奇数和这个(偶数/2)的最大公约数，所以程序进一步改进为："></a>然而存在一个问题就是减法会导致迭代次数较多，所以我们接下来想办法降低迭代次数，我们知道一个奇数和一个偶数的最大公约数其实等于这个奇数和这个(偶数/2)的最大公约数，所以程序进一步改进为：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">gcd</span><span class="params">(<span class="keyword">long</span> m, <span class="keyword">long</span> n)</span> </span>&#123;  </div><div class="line">    <span class="keyword">if</span>(m==n)</div><div class="line">		<span class="keyword">return</span> m;</div><div class="line">	<span class="comment">//m,n均为奇数</span></div><div class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(m&amp;<span class="number">1</span>==<span class="number">1</span>&amp;&amp;n&amp;<span class="number">1</span>==<span class="number">1</span>)</div><div class="line">		<span class="keyword">return</span> m-n&gt;<span class="number">0</span> ? gcd(n,m-n) : gcd(m,n-m);</div><div class="line">	<span class="comment">//m为偶数，n为奇数</span></div><div class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(m&amp;<span class="number">1</span>==<span class="number">0</span>&amp;&amp;n&amp;<span class="number">1</span>==<span class="number">1</span>)</div><div class="line">		<span class="keyword">return</span> gcd(m&gt;&gt;<span class="number">1</span>,n);</div><div class="line">	<span class="comment">//n为偶数，m为奇数</span></div><div class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(m&amp;<span class="number">1</span>==<span class="number">1</span>&amp;&amp;n&amp;<span class="number">1</span>==<span class="number">0</span>)</div><div class="line">		<span class="keyword">return</span> gcd(m,n&gt;&gt;<span class="number">1</span>);</div><div class="line">	<span class="comment">//m,n均为为偶数</span></div><div class="line">	<span class="keyword">else</span></div><div class="line">		<span class="keyword">return</span> <span class="number">2</span>*gcd(m&gt;&gt;<span class="number">1</span>,n&gt;&gt;<span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="最小公倍数"><a href="#最小公倍数" class="headerlink" title="最小公倍数"></a>最小公倍数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">zxgbs</span><span class="params">(<span class="keyword">long</span> m, <span class="keyword">long</span> n)</span> </span>&#123;  </div><div class="line">    <span class="keyword">return</span> m*n/gcd(m,n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -500,8 +501,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/27/计数排序/" rel="next" title="计数排序">
-                <i class="fa fa-chevron-left"></i> 计数排序
+              <a href="/2017/05/27/堆排序/" rel="next" title="堆排序">
+                <i class="fa fa-chevron-left"></i> 堆排序
               </a>
             
           </div>
@@ -586,7 +587,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -597,7 +598,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -608,7 +609,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

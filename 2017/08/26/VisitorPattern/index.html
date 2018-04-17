@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2017/08/26/VisitorPattern/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Visitor Pattern（访问者模式）Represent an operation to be performed on the elements of an object structure.Visitor lets you define a new operation without changing the classes of the elements on which it ope">
-<meta property="og:updated_time" content="2018-03-08T03:13:43.399Z">
+<meta property="og:updated_time" content="2018-04-14T09:41:55.806Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Visitor Pattern">
 <meta name="twitter:description" content="Visitor Pattern（访问者模式）Represent an operation to be performed on the elements of an object structure.Visitor lets you define a new operation without changing the classes of the elements on which it ope">
@@ -439,6 +439,7 @@
 <li>应用场景：双重分派（数据的存储和操作解耦）,不同的访问者访问同一元素，进行的操作不同，结果也不同，但访问这一动作共同的，只是传入的对象不同，导致操作/结果不同</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
+<a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Element</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Element</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(Visitor v)</span></span>;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">double</span> <span class="title">showElectricAmount</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">setElectricAmount</span><span class="params">(<span class="keyword">double</span> n)</span></span>; </div><div class="line">&#125;</div><div class="line"><span class="comment">//ConcreteElement</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteElement</span> <span class="keyword">extends</span> <span class="title">Element</span></span>&#123;</div><div class="line">	<span class="keyword">double</span> count;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(Visitor v)</span></span>&#123;</div><div class="line">		System.out.println(v.visitor(<span class="keyword">this</span>));</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">showElectricAmount</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> count;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setElectricAmount</span><span class="params">(<span class="keyword">double</span> n)</span></span>&#123;</div><div class="line">		count = n;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//Visitor</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Visitor</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">visitor</span><span class="params">(Element element)</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//ConcreteVisitor</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteVisitorOne</span> <span class="keyword">implements</span> <span class="title">Visitor</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">visitor</span><span class="params">(Element element)</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> element.showElectricAmount();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteVisitorTwo</span> <span class="keyword">implements</span> <span class="title">Visitor</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">visitor</span><span class="params">(Element element)</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> element.showElectricAmount()+<span class="number">1</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//Test</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		Element e = <span class="keyword">new</span> ConcreteElement();</div><div class="line">		Visitor v = <span class="keyword">new</span> ConcreteVisitorOne();</div><div class="line">		e.setElectricAmount(<span class="number">20</span>);</div><div class="line">		e.accept(v);</div><div class="line">		v = <span class="keyword">new</span> ConcreteVisitorTwo();</div><div class="line">		e.accept(v);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
@@ -506,8 +507,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/19/StrategyPattern/" rel="next" title="Strategy Pattern">
-                <i class="fa fa-chevron-left"></i> Strategy Pattern
+              <a href="/2017/08/19/Proxypattern/" rel="next" title="Proxy Pattern">
+                <i class="fa fa-chevron-left"></i> Proxy Pattern
               </a>
             
           </div>
@@ -592,7 +593,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -603,7 +604,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -614,7 +615,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

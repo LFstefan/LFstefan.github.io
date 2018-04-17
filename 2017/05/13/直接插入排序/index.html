@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="直接插入排序 将一个记录插入到已经排好序的有序表中, 从而得到一个新的,记录数增1的有序表  时间复杂度也为O(n^2), 比冒泡法和选择排序的性能要更好一些  123456789101112131415public void insertSort(int[] arr) &amp;#123;    if(arr == null || arr.length == 0)        return ;">
+<meta name="description" content="直接插入排序 将一个记录插入到已经排好序的有序表中, 从而得到一个新的,记录数增1的有序表  时间复杂度也为O(n^2), 比冒泡法和选择排序的性能要更好一些">
 <meta name="keywords" content="Java,Algorithm,Sort">
 <meta property="og:type" content="article">
 <meta property="og:title" content="直接插入排序">
 <meta property="og:url" content="https://lfstefan.github.io/2017/05/13/直接插入排序/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="直接插入排序 将一个记录插入到已经排好序的有序表中, 从而得到一个新的,记录数增1的有序表  时间复杂度也为O(n^2), 比冒泡法和选择排序的性能要更好一些  123456789101112131415public void insertSort(int[] arr) &amp;#123;    if(arr == null || arr.length == 0)        return ;">
-<meta property="og:updated_time" content="2018-03-08T02:25:54.494Z">
+<meta property="og:description" content="直接插入排序 将一个记录插入到已经排好序的有序表中, 从而得到一个新的,记录数增1的有序表  时间复杂度也为O(n^2), 比冒泡法和选择排序的性能要更好一些">
+<meta property="og:updated_time" content="2018-04-14T09:48:08.197Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="直接插入排序">
-<meta name="twitter:description" content="直接插入排序 将一个记录插入到已经排好序的有序表中, 从而得到一个新的,记录数增1的有序表  时间复杂度也为O(n^2), 比冒泡法和选择排序的性能要更好一些  123456789101112131415public void insertSort(int[] arr) &amp;#123;    if(arr == null || arr.length == 0)        return ;">
+<meta name="twitter:description" content="直接插入排序 将一个记录插入到已经排好序的有序表中, 从而得到一个新的,记录数增1的有序表  时间复杂度也为O(n^2), 比冒泡法和选择排序的性能要更好一些">
 
 
 
@@ -435,6 +435,7 @@
 <li>将一个记录插入到已经排好序的有序表中, 从而得到一个新的,记录数增1的有序表 </li>
 <li>时间复杂度也为O(n^2), 比冒泡法和选择排序的性能要更好一些</li>
 </ul>
+<a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(arr == <span class="keyword">null</span> || arr.length == <span class="number">0</span>)</div><div class="line">        <span class="keyword">return</span> ;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;arr.length; i++) &#123; <span class="comment">//假设第一个数位置时正确的；要往后移，必须要假设第一个。</span></div><div class="line">        <span class="keyword">int</span> j = i;</div><div class="line">        <span class="keyword">int</span> target = arr[i]; <span class="comment">//待插入的</span></div><div class="line">        <span class="comment">//后移</span></div><div class="line">        <span class="keyword">while</span>(j&gt;<span class="number">0</span>&amp;&amp;target&lt;arr[j-<span class="number">1</span>]) &#123;</div><div class="line">            arr[j] = arr[j-<span class="number">1</span>];</div><div class="line">            j --;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//插入 </span></div><div class="line">        arr[j] = target;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
@@ -503,8 +504,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/13/选择排序/" rel="next" title="选择排序">
-                <i class="fa fa-chevron-left"></i> 选择排序
+              <a href="/2017/05/10/矩阵相关运算/" rel="next" title="矩阵相关运算">
+                <i class="fa fa-chevron-left"></i> 矩阵相关运算
               </a>
             
           </div>
@@ -513,8 +514,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/13/冒泡排序/" rel="prev" title="冒泡排序">
-                冒泡排序 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/13/选择排序/" rel="prev" title="选择排序">
+                选择排序 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -589,7 +590,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -600,7 +601,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -611,7 +612,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

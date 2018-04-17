@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="SetHashSet（HashMap的HashMap版本）LinkedHashSet（LinkedHashMap的LinkedHashMap版本）TreeSet（TreeMap的TreeMap版本）123456789101112131415public class HashSet&amp;lt;E&amp;gt;extends AbstractSet&amp;lt;E&amp;gt;implements Set&amp;lt;E&amp;gt;">
+<meta name="description" content="SetHashSet（HashMap的HashMap版本）LinkedHashSet（LinkedHashMap的LinkedHashMap版本）TreeSet（TreeMap的TreeMap版本）">
 <meta name="keywords" content="Java,Source_Code,Set">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初窥Set源码">
 <meta property="og:url" content="https://lfstefan.github.io/2017/09/30/初窥Set源码/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="SetHashSet（HashMap的HashMap版本）LinkedHashSet（LinkedHashMap的LinkedHashMap版本）TreeSet（TreeMap的TreeMap版本）123456789101112131415public class HashSet&amp;lt;E&amp;gt;extends AbstractSet&amp;lt;E&amp;gt;implements Set&amp;lt;E&amp;gt;">
-<meta property="og:updated_time" content="2018-03-08T03:36:31.309Z">
+<meta property="og:description" content="SetHashSet（HashMap的HashMap版本）LinkedHashSet（LinkedHashMap的LinkedHashMap版本）TreeSet（TreeMap的TreeMap版本）">
+<meta property="og:updated_time" content="2018-04-14T09:42:29.400Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初窥Set源码">
-<meta name="twitter:description" content="SetHashSet（HashMap的HashMap版本）LinkedHashSet（LinkedHashMap的LinkedHashMap版本）TreeSet（TreeMap的TreeMap版本）123456789101112131415public class HashSet&amp;lt;E&amp;gt;extends AbstractSet&amp;lt;E&amp;gt;implements Set&amp;lt;E&amp;gt;">
+<meta name="twitter:description" content="SetHashSet（HashMap的HashMap版本）LinkedHashSet（LinkedHashMap的LinkedHashMap版本）TreeSet（TreeMap的TreeMap版本）">
 
 
 
@@ -431,7 +431,8 @@
       
 
       
-        <h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><h3 id="HashSet（HashMap的HashMap版本）"><a href="#HashSet（HashMap的HashMap版本）" class="headerlink" title="HashSet（HashMap的HashMap版本）"></a>HashSet（HashMap的HashMap<e,object>版本）</e,object></h3><h3 id="LinkedHashSet（LinkedHashMap的LinkedHashMap版本）"><a href="#LinkedHashSet（LinkedHashMap的LinkedHashMap版本）" class="headerlink" title="LinkedHashSet（LinkedHashMap的LinkedHashMap版本）"></a>LinkedHashSet（LinkedHashMap的LinkedHashMap<e,object>版本）</e,object></h3><h3 id="TreeSet（TreeMap的TreeMap版本）"><a href="#TreeSet（TreeMap的TreeMap版本）" class="headerlink" title="TreeSet（TreeMap的TreeMap版本）"></a>TreeSet（TreeMap的TreeMap<e,object>版本）</e,object></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashSet</span>&lt;<span class="title">E</span>&gt;<span class="keyword">extends</span> <span class="title">AbstractSet</span>&lt;<span class="title">E</span>&gt;<span class="keyword">implements</span> <span class="title">Set</span>&lt;<span class="title">E</span>&gt;, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">5024744406713321676L</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> HashMap&lt;E,Object&gt; map;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object PRESENT = <span class="keyword">new</span> Object();</div><div class="line">	<span class="comment">//构造方法，直接调用HashMap的构造方法生成entry&lt;E,Object&gt;</span></div><div class="line">	<span class="comment">//类似的所有其他构造方法均直接调用HashMap的构造方法生成</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HashSet</span><span class="params">()</span> </span>&#123;</div><div class="line">        map = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> map.put(e, PRESENT)==<span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> map.remove(o)==PRESENT;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+        <h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><h3 id="HashSet（HashMap的HashMap版本）"><a href="#HashSet（HashMap的HashMap版本）" class="headerlink" title="HashSet（HashMap的HashMap版本）"></a>HashSet（HashMap的HashMap<e,object>版本）</e,object></h3><h3 id="LinkedHashSet（LinkedHashMap的LinkedHashMap版本）"><a href="#LinkedHashSet（LinkedHashMap的LinkedHashMap版本）" class="headerlink" title="LinkedHashSet（LinkedHashMap的LinkedHashMap版本）"></a>LinkedHashSet（LinkedHashMap的LinkedHashMap<e,object>版本）</e,object></h3><h3 id="TreeSet（TreeMap的TreeMap版本）"><a href="#TreeSet（TreeMap的TreeMap版本）" class="headerlink" title="TreeSet（TreeMap的TreeMap版本）"></a>TreeSet（TreeMap的TreeMap<e,object>版本）</e,object></h3><a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashSet</span>&lt;<span class="title">E</span>&gt;<span class="keyword">extends</span> <span class="title">AbstractSet</span>&lt;<span class="title">E</span>&gt;<span class="keyword">implements</span> <span class="title">Set</span>&lt;<span class="title">E</span>&gt;, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">5024744406713321676L</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> HashMap&lt;E,Object&gt; map;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object PRESENT = <span class="keyword">new</span> Object();</div><div class="line">	<span class="comment">//构造方法，直接调用HashMap的构造方法生成entry&lt;E,Object&gt;</span></div><div class="line">	<span class="comment">//类似的所有其他构造方法均直接调用HashMap的构造方法生成</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HashSet</span><span class="params">()</span> </span>&#123;</div><div class="line">        map = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> map.put(e, PRESENT)==<span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> map.remove(o)==PRESENT;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
       
     </div>
 
@@ -508,8 +509,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/08/位数组/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/10/07/Concurrency/" rel="prev" title="Concurrency">
+                Concurrency <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -584,7 +585,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -595,7 +596,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -606,7 +607,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

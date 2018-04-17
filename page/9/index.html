@@ -327,6 +327,320 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/06/10/约瑟夫环/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/06/10/约瑟夫环/" itemprop="url">
+                  约瑟夫环
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-10T12:16:25+08:00">
+                2017-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/10/约瑟夫环/" class="leancloud_visitors" data-flag-title="约瑟夫环">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="约瑟夫环问题"><a href="#约瑟夫环问题" class="headerlink" title="约瑟夫环问题"></a>约瑟夫环问题</h1><h2 id="问题描述-：这个问题是以弗拉维奥·约瑟夫命名的，它是1世纪的一名犹太历史学家。他在自己的日记中写道，他和他的n个战友被罗马军队包围在洞中。他们讨论是自杀还是被俘，最终决定自杀，他们围成一个圈，从第1个人开始报数，报到m的人自杀，下一个人重新开始报数，如此循环，直到所有人全都自杀为止。约瑟夫斯和另外一个人是最后两个留下的人。约瑟夫斯说服了那个人，他们将向罗马军队投降，不再自杀。约瑟夫斯把他的存活归因于运气或天意，他不知道是哪一个。"><a href="#问题描述-：这个问题是以弗拉维奥·约瑟夫命名的，它是1世纪的一名犹太历史学家。他在自己的日记中写道，他和他的n个战友被罗马军队包围在洞中。他们讨论是自杀还是被俘，最终决定自杀，他们围成一个圈，从第1个人开始报数，报到m的人自杀，下一个人重新开始报数，如此循环，直到所有人全都自杀为止。约瑟夫斯和另外一个人是最后两个留下的人。约瑟夫斯说服了那个人，他们将向罗马军队投降，不再自杀。约瑟夫斯把他的存活归因于运气或天意，他不知道是哪一个。" class="headerlink" title="问题描述 ：这个问题是以弗拉维奥·约瑟夫命名的，它是1世纪的一名犹太历史学家。他在自己的日记中写道，他和他的n个战友被罗马军队包围在洞中。他们讨论是自杀还是被俘，最终决定自杀，他们围成一个圈，从第1个人开始报数，报到m的人自杀，下一个人重新开始报数，如此循环，直到所有人全都自杀为止。约瑟夫斯和另外一个人是最后两个留下的人。约瑟夫斯说服了那个人，他们将向罗马军队投降，不再自杀。约瑟夫斯把他的存活归因于运气或天意，他不知道是哪一个。"></a><strong>问题描述</strong> ：这个问题是以弗拉维奥·约瑟夫命名的，它是1世纪的一名犹太历史学家。他在自己的日记中写道，他和他的n个战友被罗马军队包围在洞中。他们讨论是自杀还是被俘，最终决定自杀，他们围成一个圈，从第1个人开始报数，报到m的人自杀，下一个人重新开始报数，如此循环，直到所有人全都自杀为止。约瑟夫斯和另外一个人是最后两个留下的人。约瑟夫斯说服了那个人，他们将向罗马军队投降，不再自杀。约瑟夫斯把他的存活归因于运气或天意，他不知道是哪一个。</h2>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/10/约瑟夫环/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/06/03/最大公约数和最小公倍数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/06/03/最大公约数和最小公倍数/" itemprop="url">
+                  最大公约数和最小公倍数
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-03T12:05:25+08:00">
+                2017-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/03/最大公约数和最小公倍数/" class="leancloud_visitors" data-flag-title="最大公约数和最小公倍数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="最大公约数和最小公倍数"><a href="#最大公约数和最小公倍数" class="headerlink" title="最大公约数和最小公倍数"></a>最大公约数和最小公倍数</h1><h2 id="最大公约数"><a href="#最大公约数" class="headerlink" title="最大公约数"></a>最大公约数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//欧几里德算法</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">gcd</span><span class="params">(<span class="keyword">long</span> m, <span class="keyword">long</span> n)</span> </span>&#123;  </div><div class="line">    <span class="keyword">while</span>(n!=<span class="number">0</span>)&#123;</div><div class="line">		<span class="keyword">long</span> rem = m%n;</div><div class="line">		m = n;</div><div class="line">		n = rem;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> m;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/03/最大公约数和最小公倍数/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/堆排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -435,508 +749,12 @@
 
       
         
-          
-            <h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><blockquote>
+          <h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><blockquote>
 <p>堆是具有下列性质的完全二叉树:每个节点的值都大于或等于其左右孩子节点的值,称为大顶堆；或者每个节点的值都小于或等于其左右孩子节点的值,称为小顶堆。</p>
 <h2 id="堆排序就是利用堆进行排序的方法-基本思想是-将待排序的序列构造成一个大顶堆-此时-整个序列的最大值就是堆顶的根结点-将它移走-其实就是将其与堆数组的末尾元素交换-此时末尾元素就是最大值-然后将剩余的n-1个序列重新构造成一个堆-这样就会得到n个元素的次大值-如此反复执行-便能得到一个有序序列了。-时间复杂度为-O-nlogn-！"><a href="#堆排序就是利用堆进行排序的方法-基本思想是-将待排序的序列构造成一个大顶堆-此时-整个序列的最大值就是堆顶的根结点-将它移走-其实就是将其与堆数组的末尾元素交换-此时末尾元素就是最大值-然后将剩余的n-1个序列重新构造成一个堆-这样就会得到n个元素的次大值-如此反复执行-便能得到一个有序序列了。-时间复杂度为-O-nlogn-！" class="headerlink" title="堆排序就是利用堆进行排序的方法.基本思想是:将待排序的序列构造成一个大顶堆.此时,整个序列的最大值就是堆顶的根结点.将它移走(其实就是将其与堆数组的末尾元素交换, 此时末尾元素就是最大值),然后将剩余的n-1个序列重新构造成一个堆,这样就会得到n个元素的次大值.如此反复执行,便能得到一个有序序列了。 时间复杂度为 O(nlogn)！"></a>堆排序就是利用堆进行排序的方法.基本思想是:将待排序的序列构造成一个大顶堆.此时,整个序列的最大值就是堆顶的根结点.将它移走(其实就是将其与堆数组的末尾元素交换, 此时末尾元素就是最大值),然后将剩余的n-1个序列重新构造成一个堆,这样就会得到n个元素的次大值.如此反复执行,便能得到一个有序序列了。 时间复杂度为 O(nlogn)！</h2></blockquote>
-<ul>
-<li>如何由一个无序序列键成一个堆？<ul>
-<li>可以直接使用线性数组来表示一个堆，由初始的无序序列建成一个堆就需要自底向上从第一个非叶元素开始挨个调整成一个堆。</li>
-</ul>
-</li>
-<li>如何在输出堆顶元素之后，调整剩余元素成为一个新的堆？<ul>
-<li>怎么调整成堆？首先是将堆顶元素和最后一个元素交换。然后比较当前堆顶元素的左右孩子节点，因为除了当前的堆顶元素，左右孩子堆均满足条件，这时需要选择当前堆顶元素与左右孩子节点的较大者（大顶堆）交换，直至叶子节点。我们称这个自堆顶自叶子的调整成为筛选。</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">heapAdjust</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> temp = arr[start];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>*start+<span class="number">1</span>; i&lt;=end; i*=<span class="number">2</span>) &#123;</div><div class="line">        <span class="comment">//左右孩子的节点分别为2*i+1,2*i+2</span></div><div class="line">        <span class="comment">//选择出左右孩子较小的下标</span></div><div class="line">        <span class="keyword">if</span>(i &lt; end &amp;&amp; arr[i] &lt; arr[i+<span class="number">1</span>]) &#123;</div><div class="line">            i ++; </div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(temp &gt;= arr[i]) &#123;</div><div class="line">            <span class="keyword">break</span>; <span class="comment">//已经为大顶堆，=保持稳定性。</span></div><div class="line">        &#125;</div><div class="line">        arr[start] = arr[i]; <span class="comment">//将子节点上移</span></div><div class="line">        start = i; <span class="comment">//下一轮筛选</span></div><div class="line">    &#125;</div><div class="line">    arr[start] = temp; <span class="comment">//插入正确的位置</span></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">heapSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(arr == <span class="keyword">null</span> || arr.length == <span class="number">0</span>)</div><div class="line">        <span class="keyword">return</span> ;</div><div class="line">    <span class="comment">//建立大顶堆</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=arr.length/<span class="number">2</span>; i&gt;=<span class="number">0</span>; i--) &#123;</div><div class="line">        heapAdjust(arr, i, arr.length-<span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=arr.length-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i--) &#123;</div><div class="line">        swap(arr, <span class="number">0</span>, i);</div><div class="line">        heapAdjust(arr, <span class="number">0</span>, i-<span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> temp = arr[i];</div><div class="line">    arr[i] = arr[j];</div><div class="line">    arr[j] = temp;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/归并排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/27/归并排序/" itemprop="url">
-                  归并排序
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/05/27/归并排序/" class="leancloud_visitors" data-flag-title="归并排序">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><h2 id="归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O-n-，时间复杂度为O-nlogn-。"><a href="#归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O-n-，时间复杂度为O-nlogn-。" class="headerlink" title="归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。"></a>归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">mergeSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(left &gt;= right)</div><div class="line">        <span class="keyword">return</span> ;</div><div class="line">    <span class="keyword">int</span> mid = (left&gt;&gt;<span class="number">1</span>) + (right&gt;&gt;<span class="number">1</span>);</div><div class="line"></div><div class="line">    mergeSort(arr, left, mid); <span class="comment">//递归排序左边</span></div><div class="line">    mergeSort(arr, mid+<span class="number">1</span>, right); <span class="comment">//递归排序右边</span></div><div class="line">    merge(arr, left, mid, right); <span class="comment">//合并</span></div><div class="line">&#125;</div><div class="line"><span class="comment">//合并两个有序数组</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> mid, <span class="keyword">int</span> right)</span> </span>&#123;</div><div class="line">    <span class="comment">//左数组[left, mid] 右数组[mid+1, right]</span></div><div class="line">    <span class="keyword">int</span>[] temp = <span class="keyword">new</span> <span class="keyword">int</span>[right - left + <span class="number">1</span>]; <span class="comment">//中间数组</span></div><div class="line">    <span class="keyword">int</span> i = left;</div><div class="line">    <span class="keyword">int</span> j = mid + <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> k = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span>(i &lt;= mid &amp;&amp; j &lt;= right) &#123;</div><div class="line">        <span class="keyword">if</span>(arr[i] &lt;= arr[j])</div><div class="line">            temp[k++] = arr[i++];</div><div class="line">        <span class="keyword">else</span></div><div class="line">            temp[k++] = arr[j++];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">while</span>(i &lt;= mid) &#123;</div><div class="line">        temp[k++] = arr[i++];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">while</span>(j &lt;= right) &#123;</div><div class="line">        temp[k++] = arr[j++];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> p=<span class="number">0</span>; p&lt;temp.length; p++) &#123;</div><div class="line">        arr[left + p] = temp[p];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/桶排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/27/桶排序/" itemprop="url">
-                  桶排序
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/05/27/桶排序/" class="leancloud_visitors" data-flag-title="桶排序">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><h2 id="桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"><a href="#桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。" class="headerlink" title="桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"></a>桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。</h2><blockquote>
-<ul>
-<li>桶排序是稳定的</li>
-<li>桶排序是常见排序里最快的一种,比快排还要快…大多数情况下</li>
-<li>桶排序非常快,但是同时也非常耗空间,基本上是最耗空间的一种排序算法</li>
-</ul>
-</blockquote>
-<ol>
-<li>假设待排序的一组数统一的分布在一个范围中，并将这一范围划分成几个子范围，也就是桶</li>
-<li>将待排序的一组数，分档规入这些子桶，并将桶中的数据进行排序</li>
-<li>将各个桶中的数据有序的合并起来</li>
-</ol>
-<h2 id="桶排序分析："><a href="#桶排序分析：" class="headerlink" title="桶排序分析："></a>桶排序分析：</h2><h3 id="桶排序利用函数的映射关系，减少了几乎所有的比较工作。实际上，桶排序的f-k-值的计算，其作用就相当于快排中划分，希尔排序中的子序列，归并排序中的子问题，已经把大量数据分割成了基本有序的数据块-桶-。然后只需要对桶中的少量数据做先进的比较排序即可。"><a href="#桶排序利用函数的映射关系，减少了几乎所有的比较工作。实际上，桶排序的f-k-值的计算，其作用就相当于快排中划分，希尔排序中的子序列，归并排序中的子问题，已经把大量数据分割成了基本有序的数据块-桶-。然后只需要对桶中的少量数据做先进的比较排序即可。" class="headerlink" title="桶排序利用函数的映射关系，减少了几乎所有的比较工作。实际上，桶排序的f(k)值的计算，其作用就相当于快排中划分，希尔排序中的子序列，归并排序中的子问题，已经把大量数据分割成了基本有序的数据块(桶)。然后只需要对桶中的少量数据做先进的比较排序即可。"></a>桶排序利用函数的映射关系，减少了几乎所有的比较工作。实际上，桶排序的f(k)值的计算，其作用就相当于快排中划分，希尔排序中的子序列，归并排序中的子问题，已经把大量数据分割成了基本有序的数据块(桶)。然后只需要对桶中的少量数据做先进的比较排序即可。</h3><ul>
-<li>对N个关键字进行桶排序的时间复杂度分为两个部分：<ul>
-<li>(1) 循环计算每个关键字的桶映射函数，这个时间复杂度是O(N)。</li>
-<li>(2) 利用先进的比较排序算法对每个桶内的所有数据进行排序，其时间复杂度为 ∑ O(Ni*logNi) 。其中Ni 为第i个桶的数据量。</li>
-</ul>
-</li>
-<li>很显然，第(2)部分是桶排序性能好坏的决定因素。尽量减少桶内数据的数量是提高效率的唯一办法(因为基于比较排序的最好平均时间复杂度只能达到O(N*logN)了)。因此，我们需要尽量做到下面两点：<ul>
-<li>(1) 映射函数f(k)能够将N个数据平均的分配到M个桶中，这样每个桶就有[N/M]个数据量。</li>
-<li>(2) 尽量的增大桶的数量。极限情况下每个桶只能得到一个数据，这样就完全避开了桶内数据的“比较”排序操作。当然，做到这一点很不容易，数据量巨大的情况下，f(k)函数会使得桶集合的数量巨大，空间浪费严重。这就是一个时间代价和空间代价的权衡问题了。</li>
-</ul>
-</li>
-</ul>
-<h3 id="对于N个待排数据，M个桶，平均每个桶-N-M-个数据的桶排序平均时间复杂度为：O-N-O-M-N-M-log-N-M-O-N-N-logN-logM-O-N-NlogN-N-logM-，当N-M时，即极限情况下每个桶只有一个数据时。桶排序的最好效率能够达到O-N-。"><a href="#对于N个待排数据，M个桶，平均每个桶-N-M-个数据的桶排序平均时间复杂度为：O-N-O-M-N-M-log-N-M-O-N-N-logN-logM-O-N-NlogN-N-logM-，当N-M时，即极限情况下每个桶只有一个数据时。桶排序的最好效率能够达到O-N-。" class="headerlink" title="对于N个待排数据，M个桶，平均每个桶[N/M]个数据的桶排序平均时间复杂度为：O(N)+O(M(N/M)log(N/M))=O(N+N(logN-logM))=O(N+NlogN-N*logM)，当N=M时，即极限情况下每个桶只有一个数据时。桶排序的最好效率能够达到O(N)。"></a>对于N个待排数据，M个桶，平均每个桶[N/M]个数据的桶排序平均时间复杂度为：O(N)+O(M<em>(N/M)</em>log(N/M))=O(N+N<em>(logN-logM))=O(N+N</em>logN-N*logM)，当N=M时，即极限情况下每个桶只有一个数据时。桶排序的最好效率能够达到O(N)。</h3><h2 id="总结：-桶排序的平均时间复杂度为线性的O-N-C-，其中C-N-logN-logM-。如果相对于同样的N，桶数量M越大，其效率越高，最好的时间复杂度达到O-N-。-当然桶排序的空间复杂度-为O-N-M-，如果输入数据非常庞大，而桶的数量也非常多，则空间代价无疑是昂贵的。"><a href="#总结：-桶排序的平均时间复杂度为线性的O-N-C-，其中C-N-logN-logM-。如果相对于同样的N，桶数量M越大，其效率越高，最好的时间复杂度达到O-N-。-当然桶排序的空间复杂度-为O-N-M-，如果输入数据非常庞大，而桶的数量也非常多，则空间代价无疑是昂贵的。" class="headerlink" title="总结： 桶排序的平均时间复杂度为线性的O(N+C)，其中C=N*(logN-logM)。如果相对于同样的N，桶数量M越大，其效率越高，最好的时间复杂度达到O(N)。 当然桶排序的空间复杂度 为O(N+M)，如果输入数据非常庞大，而桶的数量也非常多，则空间代价无疑是昂贵的。"></a>总结： 桶排序的平均时间复杂度为线性的O(N+C)，其中C=N*(logN-logM)。如果相对于同样的N，桶数量M越大，其效率越高，最好的时间复杂度达到O(N)。 当然桶排序的空间复杂度 为O(N+M)，如果输入数据非常庞大，而桶的数量也非常多，则空间代价无疑是昂贵的。</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bucketSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(arr == <span class="keyword">null</span> &amp;&amp; arr.length == <span class="number">0</span>)</div><div class="line">        <span class="keyword">return</span> ;</div><div class="line">    <span class="keyword">int</span> bucketNums = <span class="number">10</span>; <span class="comment">//这里默认为10，规定待排数[0,100)</span></div><div class="line">    List&lt;List&lt;Integer&gt;&gt; buckets = <span class="keyword">new</span> ArrayList&lt;List&lt;Integer&gt;&gt;(); <span class="comment">//桶的索引</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</div><div class="line">        buckets.add(<span class="keyword">new</span> LinkedList&lt;Integer&gt;()); <span class="comment">//用链表比较合适</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment">//划分桶</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;arr.length; i++) &#123;</div><div class="line">        buckets.get(fun(arr[i])).add(arr[i]);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//对每个桶进行排序</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;buckets.size(); i++) &#123;</div><div class="line">        <span class="keyword">if</span>(!buckets.get(i).isEmpty()) &#123;</div><div class="line">            Collections.sort(buckets.get(i)); <span class="comment">//对每个桶进行快排</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//还原排好序的数组</span></div><div class="line">    <span class="keyword">int</span> k = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(List&lt;Integer&gt; bucket : buckets) &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> ele : bucket) &#123;</div><div class="line">            arr[k++] = ele;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//映射函数</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> x / <span class="number">10</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/22/LintCode-最大数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/22/LintCode-最大数/" itemprop="url">
-                  LintCode_最大数
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-22T20:49:53+08:00">
-                2017-05-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/05/22/LintCode-最大数/" class="leancloud_visitors" data-flag-title="LintCode_最大数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
-<h3 id="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"><a href="#给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。" class="headerlink" title="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"></a>给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。</h3><h4 id="注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。"><a href="#注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。" class="headerlink" title="(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)"></a>(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)</h4><h5 id="样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。"><a href="#样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。" class="headerlink" title="样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。"></a>样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。</h5></blockquote>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h5 id="拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例-0-0-0-0-0-0-…-0-0-0-上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201-gt-120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！"><a href="#拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例-0-0-0-0-0-0-…-0-0-0-上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201-gt-120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！" class="headerlink" title="拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例[0,0,0,0,0,0,…,0,0,0]上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201&gt; 120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！"></a>拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/22/LintCode-最大数/#more" rel="contents">
+            <a class="btn" href="/2017/05/27/堆排序/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -982,7 +800,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/20/快速排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/数组打印/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -1004,8 +822,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/20/快速排序/" itemprop="url">
-                  快速排序
+                <a class="post-title-link" href="/2017/05/27/数组打印/" itemprop="url">
+                  数组打印
                 </a>
               
             
@@ -1021,8 +839,168 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T12:19:25+08:00">
-                2017-05-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
+                2017-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Arrays/" itemprop="url" rel="index">
+                    <span itemprop="name">Arrays</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/27/数组打印/" class="leancloud_visitors" data-flag-title="数组打印">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="数组打印"><a href="#数组打印" class="headerlink" title="数组打印"></a>数组打印</h2><ol>
+<li>一维数组<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> [] num = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</div><div class="line">System.out.println(num.toString());</div><div class="line"><span class="comment">//输出：[I@15db9742...</span></div><div class="line">System.out.println(Arrays.toString(num));</div><div class="line"><span class="comment">//输出：[1, 2, 3, 4, 5]</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/27/数组打印/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/计数排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/27/计数排序/" itemprop="url">
+                  计数排序
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
+                2017-05-27
               </time>
             
 
@@ -1061,7 +1039,7 @@
 
           
           
-             <span id="/2017/05/20/快速排序/" class="leancloud_visitors" data-flag-title="快速排序">
+             <span id="/2017/05/27/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1090,10 +1068,14 @@
 
       
         
-          
-            <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><h2 id="快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5-3-8-6-4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O-nlogn"><a href="#快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5-3-8-6-4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O-nlogn" class="headerlink" title="快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5,3,8,6,4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O(nlogn)"></a>快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5,3,8,6,4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O(nlogn)</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> pivotKey = arr[left];</div><div class="line">    <span class="keyword">while</span>(left &lt; right) &#123;</div><div class="line">        <span class="keyword">while</span>(left &lt; right &amp;&amp; arr[right] &gt;= pivotKey)</div><div class="line">            right --;</div><div class="line">        arr[left] = arr[right]; <span class="comment">//把小的移动到左边</span></div><div class="line">        <span class="keyword">while</span>(left &lt; right &amp;&amp; arr[left] &lt;= pivotKey)</div><div class="line">            left ++;</div><div class="line">        arr[right] = arr[left]; <span class="comment">//把大的移动到右边</span></div><div class="line">    &#125;</div><div class="line">    arr[left] = pivotKey; <span class="comment">//最后把pivot赋值到中间</span></div><div class="line">    <span class="keyword">return</span> left;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(left &gt;= right)</div><div class="line">        <span class="keyword">return</span> ;</div><div class="line">    <span class="keyword">int</span> pivotPos = partition(arr, left, right);</div><div class="line">    quickSort(arr, left, pivotPos-<span class="number">1</span>);</div><div class="line">    quickSort(arr, pivotPos+<span class="number">1</span>, right);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(arr == <span class="keyword">null</span> || arr.length == <span class="number">0</span>)</div><div class="line">        <span class="keyword">return</span> ;</div><div class="line">    quickSort(arr, <span class="number">0</span>, arr.length-<span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
+          <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"><a href="#一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！" class="headerlink" title="一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"></a>一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！</h2>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/27/计数排序/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1130,7 +1112,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1175,7 +1157,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1186,7 +1168,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1197,7 +1179,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

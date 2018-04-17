@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="问题描述 给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。 思路拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…">
+<meta name="description" content="问题描述 给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。">
 <meta name="keywords" content="Java,LintCode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LintCode_最大数">
 <meta property="og:url" content="https://lfstefan.github.io/2017/05/22/LintCode-最大数/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="问题描述 给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。 思路拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…">
-<meta property="og:updated_time" content="2017-05-22T14:01:20.000Z">
+<meta property="og:description" content="问题描述 给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。">
+<meta property="og:updated_time" content="2018-04-14T09:39:55.767Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LintCode_最大数">
-<meta name="twitter:description" content="问题描述 给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。 思路拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…">
+<meta name="twitter:description" content="问题描述 给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。">
 
 
 
@@ -433,7 +433,8 @@
       
         <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
 <h3 id="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"><a href="#给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。" class="headerlink" title="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"></a>给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。</h3><h4 id="注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。"><a href="#注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。" class="headerlink" title="(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)"></a>(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)</h4><h5 id="样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。"><a href="#样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。" class="headerlink" title="样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。"></a>样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。</h5></blockquote>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h5 id="拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例-0-0-0-0-0-0-…-0-0-0-上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201-gt-120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！"><a href="#拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例-0-0-0-0-0-0-…-0-0-0-上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201-gt-120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！" class="headerlink" title="拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例[0,0,0,0,0,0,…,0,0,0]上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201&gt; 120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！"></a>拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…<a id="more"></a>，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例[0,0,0,0,0,0,…,0,0,0]上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201&gt; 120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！</h5><h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">largestNumber</span><span class="params">(<span class="keyword">int</span>[] num)</span> </span>&#123;</div><div class="line">        String[] A = <span class="keyword">new</span> String[num.length];</div><div class="line">        <span class="keyword">int</span> check = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num.length;i++)</div><div class="line">        &#123;</div><div class="line">            A[i] = String.valueOf(num[i]);</div><div class="line">            check = Math.max(check,num[i]);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (check == <span class="number">0</span>)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"0"</span>;</div><div class="line">        &#125;</div><div class="line">        Arrays.sort(A,<span class="keyword">new</span> Comparator&lt;String&gt;()</div><div class="line">        &#123;</div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(String s1, String s2)</span></span></div><div class="line">            &#123;</div><div class="line">                <span class="keyword">return</span> (s2+s1).compareTo(s1+s2);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        StringBuilder s = <span class="keyword">new</span> StringBuilder();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num.length;i++)</div><div class="line">        &#123;</div><div class="line">            s.append(String.valueOf(A[i]));</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> s.toString();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h5 id="拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例-0-0-0-0-0-0-…-0-0-0-上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201-gt-120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！"><a href="#拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例-0-0-0-0-0-0-…-0-0-0-上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201-gt-120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！" class="headerlink" title="拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例[0,0,0,0,0,0,…,0,0,0]上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201&gt; 120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！"></a>拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…<!-- more -->，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例[0,0,0,0,0,0,…,0,0,0]上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201&gt; 120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！</h5><h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">largestNumber</span><span class="params">(<span class="keyword">int</span>[] num)</span> </span>&#123;</div><div class="line">        String[] A = <span class="keyword">new</span> String[num.length];</div><div class="line">        <span class="keyword">int</span> check = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num.length;i++)</div><div class="line">        &#123;</div><div class="line">            A[i] = String.valueOf(num[i]);</div><div class="line">            check = Math.max(check,num[i]);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (check == <span class="number">0</span>)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"0"</span>;</div><div class="line">        &#125;</div><div class="line">        Arrays.sort(A,<span class="keyword">new</span> Comparator&lt;String&gt;()</div><div class="line">        &#123;</div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(String s1, String s2)</span></span></div><div class="line">            &#123;</div><div class="line">                <span class="keyword">return</span> (s2+s1).compareTo(s1+s2);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        StringBuilder s = <span class="keyword">new</span> StringBuilder();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num.length;i++)</div><div class="line">        &#123;</div><div class="line">            s.append(String.valueOf(A[i]));</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> s.toString();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <h2 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h2><h3 id="一：以前只知道Arrays-sort-a-这一种最简单的用法，今天又收获了两种更高级的用法，其中一种在本题中已用到，总结起来Arrays-sort-排序函数有以下几种用法"><a href="#一：以前只知道Arrays-sort-a-这一种最简单的用法，今天又收获了两种更高级的用法，其中一种在本题中已用到，总结起来Arrays-sort-排序函数有以下几种用法" class="headerlink" title="一：以前只知道Arrays.sort(a[])这一种最简单的用法，今天又收获了两种更高级的用法，其中一种在本题中已用到，总结起来Arrays.sort()排序函数有以下几种用法"></a>一：以前只知道Arrays.sort(a[])这一种最简单的用法，今天又收获了两种更高级的用法，其中一种在本题中已用到，总结起来Arrays.sort()排序函数有以下几种用法</h3><ol>
 <li>Arrays.sort(a[]) 排序a数组，且规则是从小到大，a可以是int,long,double,char,flaat,Object…</li>
 <li>Arrays.sort(a[], int fromIndex, int toIndex) 排序a数组的部分，从下标fromIndex到toIndex(不包括toIndex)</li>
@@ -517,8 +518,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/27/桶排序/" rel="prev" title="桶排序">
-                桶排序 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/27/归并排序/" rel="prev" title="归并排序">
+                归并排序 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -593,7 +594,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -604,7 +605,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -615,7 +616,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

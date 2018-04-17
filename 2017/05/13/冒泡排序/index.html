@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="冒泡排序 基本思想:两两比较相邻记录的关键字,如果反序则交换 冒泡排序时间复杂度最好的情况为O(n),最坏的情况是O(n^2)  设置标志位，明显如果有一趟没有发生交换（flag = false)，说明排序已经完成 记录一轮下来标记的最后位置，下次从头部遍历到这个位置就Ok12345678910111213141516171819public void bubbleSort(int[] array">
+<meta name="description" content="冒泡排序 基本思想:两两比较相邻记录的关键字,如果反序则交换 冒泡排序时间复杂度最好的情况为O(n),最坏的情况是O(n^2)  设置标志位，明显如果有一趟没有发生交换（flag = false)，说明排序已经完成 记录一轮下来标记的最后位置，下次从头部遍历到这个位置就Ok">
 <meta name="keywords" content="Java,Algorithm,Sort">
 <meta property="og:type" content="article">
 <meta property="og:title" content="冒泡排序">
 <meta property="og:url" content="https://lfstefan.github.io/2017/05/13/冒泡排序/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="冒泡排序 基本思想:两两比较相邻记录的关键字,如果反序则交换 冒泡排序时间复杂度最好的情况为O(n),最坏的情况是O(n^2)  设置标志位，明显如果有一趟没有发生交换（flag = false)，说明排序已经完成 记录一轮下来标记的最后位置，下次从头部遍历到这个位置就Ok12345678910111213141516171819public void bubbleSort(int[] array">
-<meta property="og:updated_time" content="2018-03-08T02:23:56.388Z">
+<meta property="og:description" content="冒泡排序 基本思想:两两比较相邻记录的关键字,如果反序则交换 冒泡排序时间复杂度最好的情况为O(n),最坏的情况是O(n^2)  设置标志位，明显如果有一趟没有发生交换（flag = false)，说明排序已经完成 记录一轮下来标记的最后位置，下次从头部遍历到这个位置就Ok">
+<meta property="og:updated_time" content="2018-04-14T09:46:10.623Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="冒泡排序">
-<meta name="twitter:description" content="冒泡排序 基本思想:两两比较相邻记录的关键字,如果反序则交换 冒泡排序时间复杂度最好的情况为O(n),最坏的情况是O(n^2)  设置标志位，明显如果有一趟没有发生交换（flag = false)，说明排序已经完成 记录一轮下来标记的最后位置，下次从头部遍历到这个位置就Ok12345678910111213141516171819public void bubbleSort(int[] array">
+<meta name="twitter:description" content="冒泡排序 基本思想:两两比较相邻记录的关键字,如果反序则交换 冒泡排序时间复杂度最好的情况为O(n),最坏的情况是O(n^2)  设置标志位，明显如果有一趟没有发生交换（flag = false)，说明排序已经完成 记录一轮下来标记的最后位置，下次从头部遍历到这个位置就Ok">
 
 
 
@@ -435,9 +435,10 @@
 <li>基本思想:两两比较相邻记录的关键字,如果反序则交换</li>
 <li>冒泡排序时间复杂度最好的情况为O(n),最坏的情况是O(n^2) </li>
 <li>设置标志位，明显如果有一趟没有发生交换（flag = false)，说明排序已经完成</li>
-<li>记录一轮下来标记的最后位置，下次从头部遍历到这个位置就Ok<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span>[] array)</span></span>&#123;</div><div class="line">	<span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</div><div class="line">	<span class="keyword">int</span> n = array.length;</div><div class="line">	<span class="keyword">while</span>(flag)&#123;</div><div class="line">		flag = <span class="keyword">false</span>;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n-<span class="number">1</span>;i++)&#123;</div><div class="line">			<span class="keyword">if</span>(array[i] &gt; array[i+<span class="number">1</span>])&#123;</div><div class="line">				<span class="comment">//数据交换，将较大的数据换至数组后方</span></div><div class="line">				array[i] = array[i]^array[i+<span class="number">1</span>];</div><div class="line">				array[i+<span class="number">1</span>] = array[i]^array[i+<span class="number">1</span>];</div><div class="line">				array[i] = array[i]^array[i+<span class="number">1</span>];</div><div class="line">				<span class="comment">//设置标记，当本次循环未发生交换动作时，排序完成</span></div><div class="line">				flag = <span class="keyword">true</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">//每次循环均有一位当前最大值换至正确的位置，故每下一次循环减少一次比较</span></div><div class="line">		n--;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
+<li>记录一轮下来标记的最后位置，下次从头部遍历到这个位置就Ok</li>
 </ul>
+<a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span>[] array)</span></span>&#123;</div><div class="line">	<span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</div><div class="line">	<span class="keyword">int</span> n = array.length;</div><div class="line">	<span class="keyword">while</span>(flag)&#123;</div><div class="line">		flag = <span class="keyword">false</span>;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n-<span class="number">1</span>;i++)&#123;</div><div class="line">			<span class="keyword">if</span>(array[i] &gt; array[i+<span class="number">1</span>])&#123;</div><div class="line">				<span class="comment">//数据交换，将较大的数据换至数组后方</span></div><div class="line">				array[i] = array[i]^array[i+<span class="number">1</span>];</div><div class="line">				array[i+<span class="number">1</span>] = array[i]^array[i+<span class="number">1</span>];</div><div class="line">				array[i] = array[i]^array[i+<span class="number">1</span>];</div><div class="line">				<span class="comment">//设置标记，当本次循环未发生交换动作时，排序完成</span></div><div class="line">				flag = <span class="keyword">true</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">//每次循环均有一位当前最大值换至正确的位置，故每下一次循环减少一次比较</span></div><div class="line">		n--;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -505,8 +506,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/13/直接插入排序/" rel="next" title="直接插入排序">
-                <i class="fa fa-chevron-left"></i> 直接插入排序
+              <a href="/2017/05/13/选择排序/" rel="next" title="选择排序">
+                <i class="fa fa-chevron-left"></i> 选择排序
               </a>
             
           </div>
@@ -515,8 +516,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/20/基数排序/" rel="prev" title="基数排序">
-                基数排序 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/20/希尔排序/" rel="prev" title="希尔排序">
+                希尔排序 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -591,7 +592,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -602,7 +603,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -613,7 +614,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -1,0 +1,1475 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,Java8," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="java8新特性 本文参考自官方文档What’s New in JDK 8，内容有所筛选！  目录 Java Programming Language Lambda Expressions（Lambda表达式） Method references （方法引用） Default methods （默认方法） Repeating Annotations （重复注释） Improved type inf">
+<meta name="keywords" content="Java,Java8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java8新特性">
+<meta property="og:url" content="https://lfstefan.github.io/2017/10/21/java8新特性/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="java8新特性 本文参考自官方文档What’s New in JDK 8，内容有所筛选！  目录 Java Programming Language Lambda Expressions（Lambda表达式） Method references （方法引用） Default methods （默认方法） Repeating Annotations （重复注释） Improved type inf">
+<meta property="og:updated_time" content="2018-04-14T09:35:06.980Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java8新特性">
+<meta name="twitter:description" content="java8新特性 本文参考自官方文档What’s New in JDK 8，内容有所筛选！  目录 Java Programming Language Lambda Expressions（Lambda表达式） Method references （方法引用） Default methods （默认方法） Repeating Annotations （重复注释） Improved type inf">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2017/10/21/java8新特性/"/>
+
+
+
+
+
+  <title>java8新特性 | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/10/21/java8新特性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java8新特性
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-21T12:11:25+08:00">
+                2017-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java8/" itemprop="url" rel="index">
+                    <span itemprop="name">Java8</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/21/java8新特性/" class="leancloud_visitors" data-flag-title="java8新特性">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="java8新特性"><a href="#java8新特性" class="headerlink" title="java8新特性"></a>java8新特性</h1><blockquote>
+<p>本文参考自官方文档<a href="http://www.oracle.com/technetwork/java/javase/8-whats-new-2157071.html" target="_blank" rel="external">What’s New in JDK 8</a>，内容有所筛选！</p>
+</blockquote>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>Java Programming Language<ul>
+<li>Lambda Expressions（Lambda表达式）</li>
+<li>Method references （方法引用）</li>
+<li>Default methods （默认方法）</li>
+<li>Repeating Annotations （重复注释）</li>
+<li>Improved type inference（更好的类型推断）</li>
+<li>Method parameter reflection（方法参数反射）</li>
+</ul>
+</li>
+<li>Collections（集合）</li>
+<li>Tool（工具）<ul>
+<li>Javac tool</li>
+<li>Javadoc tool</li>
+</ul>
+</li>
+<li>Internationalization（国际化）</li>
+<li>Date-Time Package （日期时间）</li>
+<li>IO and NIO</li>
+<li>java.lang and java.util Packages<ul>
+<li>Parallel Array Sorting（并行数组排序）</li>
+<li>Standard Encoding and Decoding Base64（标准编码和解码Base64）</li>
+<li>Unsigned Arithmetic Support（无符号算术支持）</li>
+</ul>
+</li>
+<li>JDBC<ul>
+<li>The JDBC-ODBC Bridge has been removed.</li>
+<li>JDBC 4.2 introduces new features.</li>
+</ul>
+</li>
+<li>Concurrency（并发）</li>
+<li>HotSpot</li>
+</ul>
+<a id="more"></a>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="Java编程语言"><a href="#Java编程语言" class="headerlink" title="Java编程语言"></a>Java编程语言</h3><ul>
+<li><p>Lambda表达式</p>
+<blockquote>
+<p>Lambda表达式是一种新的语言功能，已在此版本中引入。它们使您能够将功能视为方法参数，或将代码视为数据。使用Lambda表达式可以更简洁地表达单方法接口（称为函数接口）的实例。</p>
+</blockquote>
+<h4 id="Lambda表达式可由逗号分隔的参数列表、-gt-符号和语句块组成（其中参数列表中的参数e的类型可以由编译器推理得出的，也可以显式指定该参数的类型），例如："><a href="#Lambda表达式可由逗号分隔的参数列表、-gt-符号和语句块组成（其中参数列表中的参数e的类型可以由编译器推理得出的，也可以显式指定该参数的类型），例如：" class="headerlink" title="Lambda表达式可由逗号分隔的参数列表、-&gt;符号和语句块组成（其中参数列表中的参数e的类型可以由编译器推理得出的，也可以显式指定该参数的类型），例如："></a>Lambda表达式可由逗号分隔的参数列表、-&gt;符号和语句块组成（其中参数列表中的参数e的类型可以由编译器推理得出的，也可以显式指定该参数的类型），例如：</h4>  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//基本语法:</span></div><div class="line"><span class="comment">//(params) -&gt; expression</span></div><div class="line"><span class="comment">//(params) -&gt; statement</span></div><div class="line"><span class="comment">//(params) -&gt; &#123; statements &#125;</span></div><div class="line">Arrays.asList( <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"d"</span> ).forEach( e -&gt; System.out.println( e ) );</div><div class="line"><span class="comment">//等价于</span></div><div class="line">Arrays.asList( <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"d"</span> ).forEach( ( String e ) -&gt; System.out.println( e ) );</div><div class="line">Arrays.asList( <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"d"</span> ).forEach( e -&gt; &#123;</div><div class="line">    System.out.print( e );</div><div class="line">    System.out.print( e );</div><div class="line">&#125; );</div></pre></td></tr></table></figure>
+<h4 id="Lambda表达式可以引用类成员和局部变量（会将这些变量隐式得转换成final），但是不能在lambda内部修改定义在域外的变量。同时Lambda表达式有返回值，返回值的类型也由编译器推理得出。如果Lambda表达式中的语句块只有一行，则可以不用使用return语句，例如"><a href="#Lambda表达式可以引用类成员和局部变量（会将这些变量隐式得转换成final），但是不能在lambda内部修改定义在域外的变量。同时Lambda表达式有返回值，返回值的类型也由编译器推理得出。如果Lambda表达式中的语句块只有一行，则可以不用使用return语句，例如" class="headerlink" title="Lambda表达式可以引用类成员和局部变量（会将这些变量隐式得转换成final），但是不能在lambda内部修改定义在域外的变量。同时Lambda表达式有返回值，返回值的类型也由编译器推理得出。如果Lambda表达式中的语句块只有一行，则可以不用使用return语句，例如"></a>Lambda表达式可以引用类成员和局部变量（会将这些变量隐式得转换成final），但是不能在lambda内部修改定义在域外的变量。同时Lambda表达式有返回值，返回值的类型也由编译器推理得出。如果Lambda表达式中的语句块只有一行，则可以不用使用return语句，例如</h4>  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">(<span class="keyword">final</span>) String separator = <span class="string">","</span>;</div><div class="line">Arrays.asList( <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"d"</span> ).forEach( ( String e ) -&gt; System.out.print( e + separator ) );</div><div class="line"><span class="comment">//Lambda表达式中语句块只有一行，可以不用使用return语句</span></div><div class="line">Arrays.asList( <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"d"</span> ).sort( ( e1, e2 ) -&gt; e1.compareTo( e2 ) );</div><div class="line">Arrays.asList( <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"d"</span> ).sort( ( e1, e2 ) -&gt; &#123;</div><div class="line">    <span class="keyword">int</span> result = e1.compareTo( e2 );</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125; );</div></pre></td></tr></table></figure>
+<h4 id="函数接口"><a href="#函数接口" class="headerlink" title="函数接口"></a>函数接口</h4><blockquote>
+<p>函数接口指的是只有一个函数的接口，这样的接口可以隐式转换为Lambda表达式。java.lang.Runnable和java.util.concurrent.Callable是函数式接口的最佳例子。在实践中，函数式接口非常脆弱：只要某个开发者在该接口中添加一个函数，则该接口就不再是函数式接口进而导致编译失败。为了克服这种代码层面的脆弱性，并显式说明某个接口是函数式接口，Java 8 提供了一个特殊的注解@FunctionalInterface（Java 库中的所有相关接口都已经带有这个注解了），举个简单的函数式接口的定义：</p>
+</blockquote>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@FunctionalInterface</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Functional</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>不过有一点需要注意，默认方法和静态方法不会破坏函数式接口的定义，因此如下的代码是合法的。</p>
+</blockquote>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@FunctionalInterface</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">FunctionalDefaultMethods</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">defaultMethod</span><span class="params">()</span> </span>&#123;            </div><div class="line">    &#125;        </div><div class="line">&#125;</div><div class="line"><span class="meta">@FunctionalInterface</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">FunctionalStaticMethods</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function">Static <span class="keyword">void</span> <span class="title">defaultMethod</span><span class="params">()</span> </span>&#123;            </div><div class="line">    &#125;        </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="lambda表达式替换匿名类"><a href="#lambda表达式替换匿名类" class="headerlink" title="lambda表达式替换匿名类"></a>lambda表达式替换匿名类</h4>  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Java 8之前：</span></div><div class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"Before Java8, too much code for too little to do"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;).start();</div><div class="line"><span class="comment">//Java 8方式：</span></div><div class="line"><span class="keyword">new</span> Thread( () -&gt; System.out.println(<span class="string">"In Java8, Lambda expression rocks !!"</span>) ).start();</div><div class="line"><span class="comment">// Java 8之前：</span></div><div class="line">Collections.sort(list, <span class="keyword">new</span> Comparator&lt;Object&gt;() &#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Object arg0, Object arg1)</span> </span>&#123;</div><div class="line">		String s1 = (String)arg0;</div><div class="line">		String s2 = (String)arg1;</div><div class="line">		<span class="keyword">return</span> s1.compareTo( s2 );</div><div class="line">	&#125;</div><div class="line">       &#125;);</div><div class="line"><span class="comment">//Java 8方式：	</span></div><div class="line">Collections.sort(list,(arg0,arg1) -&gt; &#123;</div><div class="line">           String s1 = (String)arg0;</div><div class="line">           String s2 = (String)arg1;</div><div class="line">           <span class="keyword">return</span> s1.compareTo( s2 );</div><div class="line">       &#125;);</div></pre></td></tr></table></figure>
+<p>  ####<br>Stream<e> stream()<br>Stream<t> filter(Predicate&lt;? super T&gt; predicate)<br><r> Stream<r> map(Function&lt;? super T,? extends R&gt; mapper)<br>void  forEach(Consumer&lt;? super T&gt; action)</r></r></t></e></p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">	</div></pre></td></tr></table></figure>
+</li>
+<li><p>方法引用</p>
+<blockquote>
+<p>方法引用为已有名称的方法提供易读的lambda表达式。<strong>lambda表达式内可以使用方法引用，仅当该方法不修改lambda表达式提供的参数。</strong></p>
+</blockquote>
+<ol>
+<li><p>（引用静态方法）ContainingClass :: staticMethodName</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Arrays.sort(rosterAsArray, MyComparisonProvider::staticCompare);</div></pre></td></tr></table></figure>
+</li>
+<li><p>（引用特定对象的实例方法）containsObject :: instanceMethodName</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//ComparisonProvider myComparisonProvider = new ComparisonProvider();</span></div><div class="line">Arrays.sort(rosterAsArray, myComparisonProvider::normalCompare);</div></pre></td></tr></table></figure>
+</li>
+<li><p>（引用特定类型任意对象的实例方法）ContainingType :: methodName</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">String[] stringArray = &#123; <span class="string">"Barbara"</span>, <span class="string">"James"</span>, <span class="string">"Mary"</span>, <span class="string">"John"</span>,</div><div class="line">   	<span class="string">"Patricia"</span>, <span class="string">"Robert"</span>, <span class="string">"Michael"</span>, <span class="string">"Linda"</span> &#125;;</div><div class="line">Arrays.sort(stringArray, String::compareToIgnoreCase);</div></pre></td></tr></table></figure>
+</li>
+<li><p>（引用一个构造函数）ClassName :: new</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set&lt;Person&gt; rosterSet = transferElements(roster, HashSet::<span class="keyword">new</span>);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>默认方法</p>
+<blockquote>
+<p>默认方法可以将新功能添加到库的接口，并确保与为这些接口的旧版本编写的代码的二进制兼容性。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TimeClient</span> </span>&#123;</div><div class="line">    <span class="comment">//通过接口直接调用该静态方法</span></div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">dispaly</span> <span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"static"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//该接口的实现类不强制要求重写default方法，使得接口可以添加新功能而不影响其实现类</span></div><div class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">dispaly</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"default"</span>);</div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>重复注释</p>
+<blockquote>
+<p>重复注释提供了将同一注释类型多次应用于相同的声明或类型使用的功能。Java8之前的注解有一个很大的限制是：在同一个地方不能多次使用同一个注解。Java 8打破了这个限制，引入了重复注解的概念，允许在同一个地方多次使用同一个注解。在Java 8中使用@Repeatable注解定义重复注解，实际上，这并不是语言层面的改进，而是编译器做的一个trick，底层的技术仍然相同。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Schedule</span>(dayOfMonth=<span class="string">"last"</span>)</div><div class="line"><span class="meta">@Schedule</span>(dayOfWeek=<span class="string">"Fri"</span>, hour=<span class="string">"23"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doPeriodicCleanup</span><span class="params">()</span> </span>&#123; ... &#125;</div><div class="line"><span class="comment">//The annotation type must be marked with the @Repeatable meta-annotation</span></div><div class="line"><span class="meta">@Repeatable</span>(Schedules.class)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Schedule &#123;</div><div class="line">  <span class="function">String <span class="title">dayOfMonth</span><span class="params">()</span> <span class="keyword">default</span> "first"</span>;</div><div class="line">  <span class="function">String <span class="title">dayOfWeek</span><span class="params">()</span> <span class="keyword">default</span> "Mon"</span>;</div><div class="line">  <span class="function"><span class="keyword">int</span> <span class="title">hour</span><span class="params">()</span> <span class="keyword">default</span> 12</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>更好的类型推断</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Java 8方式：	</span></div><div class="line">List&lt;String&gt; stringList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">stringList.add(<span class="string">"A"</span>);</div><div class="line">stringList.addAll(Arrays.asList());</div><div class="line"><span class="comment">//Java 8之前：	</span></div><div class="line">List&lt;String&gt; stringList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">stringList.add(<span class="string">"A"</span>);</div><div class="line">stringList.addAll(Arrays.&lt;String&gt;asList());</div></pre></td></tr></table></figure>
+</li>
+<li><p>方法参数反射</p>
+<blockquote>
+<p>您可以使用方法java.lang.reflect.Executable.getParameters获取任何方法或构造函数的形式参数的名称。 （类Method和构造函数扩展了类Executable，因此继承了方法Executable.getParameters。）但是，.class文件默认不存储形式参数名称。 要将正式参数名称存储在特定的.class文件中，从而使Reflection API能够检索正式的参数名称，请使用javac编译器的-parameters选项编译源文件。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ParameterNames</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        Method method = ParameterNames.class.getMethod( <span class="string">"main"</span>, String[].class );</div><div class="line">        <span class="keyword">for</span>( <span class="keyword">final</span> Parameter parameter: method.getParameters() ) &#123;</div><div class="line">            System.out.println( <span class="string">"Parameter: "</span> + parameter.getName() );</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<h3 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h3><ul>
+<li><p>新的java.util.stream包中的类提供了一个Stream API来支持元素流上的函数式操作。 Stream API集成到Collections API中，可以对集合进行批量操作，例如顺序或并行的map-reduce转换。</p>
+<h4 id="java-util-stream-Stream部分方法如下"><a href="#java-util-stream-Stream部分方法如下" class="headerlink" title="java.util.stream.Stream部分方法如下"></a>java.util.stream.Stream部分方法如下</h4><ul>
+<li>Stream<t> filter(Predicate&lt;? super T&gt; predicate)（过滤）</t></li>
+<li><r> Stream<r> map(Function&lt;? super T,? extends R&gt; mapper)（转换）</r></r></li>
+<li>IntStream mapToInt(ToIntFunction&lt;? super T&gt; mapper)</li>
+<li>Stream<t> distinct()（返回由此流的不同元素，去重）</t></li>
+<li>Stream<t> sorted()（默认排序）</t></li>
+<li>Stream<t> sorted(Comparator&lt;? super T&gt; comparator)（排序）</t></li>
+<li><p>Stream<t> peek(Consumer&lt;? super T&gt; action)</t></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//This method exists mainly to support debugging, where you want to see the elements as they flow past a certain point in a pipeline:</span></div><div class="line">Stream.of(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>, <span class="string">"four"</span>)</div><div class="line"> 	.filter(e -&gt; e.length() &gt; <span class="number">3</span>)</div><div class="line">	.peek(e -&gt; System.out.println(<span class="string">"Filtered value: "</span> + e))</div><div class="line">	.map(String::toUpperCase)</div><div class="line">	.peek(e -&gt; System.out.println(<span class="string">"Mapped value: "</span> + e))</div><div class="line">	.collect(Collectors.toList());</div></pre></td></tr></table></figure>
+</li>
+<li><p>Stream<t> limit(long maxSize)（限制）</t></p>
+</li>
+<li>Stream<t> skip(long n)（跳过前n个元素）</t></li>
+<li>void forEach(Consumer&lt;? super T&gt; action)（迭代）</li>
+<li>void forEachOrdered(Consumer&lt;? super T&gt; action)</li>
+<li><p>Object[] toArray()（转换成数组）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Person[] men = people.stream().filter(p -&gt; p.getGender() == MALE).toArray(Person[]::<span class="keyword">new</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p>T reduce(T identity,BinaryOperator<t> accumulator)（合并）</t></p>
+</li>
+<li>Optional<t> reduce(BinaryOperator<t> accumulator)</t></t></li>
+<li><u> U reduce(U identity,BiFunction<u,? super="" t,u=""> accumulator,BinaryOperator<u> combiner)</u></u,?></u></li>
+<li><p><r> R collect(Supplier<r> supplier,BiConsumer<r,? super="" t=""> accumulator,BiConsumer<r,r> combiner)</r,r></r,?></r></r></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//The following will accumulate strings into an ArrayList:</span></div><div class="line">List&lt;String&gt; asList = stringStream.collect(ArrayList::<span class="keyword">new</span>, ArrayList::add,ArrayList::addAll);</div><div class="line"><span class="comment">//The following will take a stream of strings and concatenates them into a single string:</span></div><div class="line">String concat = stringStream.collect(StringBuilder::<span class="keyword">new</span>, StringBuilder::append,StringBuilder::append).toString();</div></pre></td></tr></table></figure>
+</li>
+<li><p><r,a> R collect(Collector&lt;? super T,A,R&gt; collector)</r,a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//The following will accumulate strings into an ArrayList:</span></div><div class="line">List&lt;String&gt; asList = stringStream.collect(Collectors.toList());</div><div class="line"><span class="comment">//The following will classify Person objects by city:按照城市分组</span></div><div class="line">Map&lt;String, List&lt;Person&gt;&gt;peopleByCity= personStream.collect(Collectors.groupingBy(Person::getCity));</div><div class="line"><span class="comment">//The following will classify Person objects by state and city, cascading two Collectors together:按照国家和城市两项进行分组</span></div><div class="line">Map&lt;String, Map&lt;String, List&lt;Person&gt;&gt;&gt; peopleByStateAndCity= personStream.collect(Collectors.groupingBy(Person::getState,Collectors.groupingBy(Person::getCity)));</div></pre></td></tr></table></figure>
+</li>
+<li><p>Optional<t> min(Comparator&lt;? super T&gt; comparator)（最小值）</t></p>
+</li>
+<li>Optional<t> max(Comparator&lt;? super T&gt; comparator)（最大值）</t></li>
+<li>long count()（计数）</li>
+<li>boolean anyMatch(Predicate&lt;? super T&gt; predicate)（匹配）</li>
+<li>boolean allMatch(Predicate&lt;? super T&gt; predicate)</li>
+<li>boolean noneMatch(Predicate&lt;? super T&gt; predicate)</li>
+<li>Optional<t> findFirst()</t></li>
+<li>Optional<t> findAny()</t></li>
+<li>static <t> Stream<t> empty()</t></t></li>
+<li>static <t> Stream<t> of(T t)（返回包含单个元素的顺序流。）</t></t></li>
+<li>static <t> Stream<t> of(T… values)（返回顺序排列的流，其元素是指定的值。）</t></t></li>
+<li>static <t> Stream<t> concat(Stream&lt;? extends T&gt; a,Stream&lt;? extends T&gt; b)（连接）</t></t></li>
+</ul>
+<ol>
+<li><p>forEach对列表进行迭代</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Java 8之前：</span></div><div class="line">List features = Arrays.asList(<span class="string">"Lambdas"</span>, <span class="string">"Default Method"</span>, <span class="string">"Stream API"</span>, <span class="string">"Date and Time API"</span>);</div><div class="line"><span class="keyword">for</span> (String feature : features) &#123;</div><div class="line">    System.out.println(feature);</div><div class="line">&#125;</div><div class="line"><span class="comment">// Java 8之后：</span></div><div class="line">List features = Arrays.asList(<span class="string">"Lambdas"</span>, <span class="string">"Default Method"</span>, <span class="string">"Stream API"</span>, <span class="string">"Date and Time API"</span>);</div><div class="line">features.forEach(n -&gt; System.out.println(n));</div><div class="line"><span class="comment">// 使用Java 8的方法引用更方便</span></div><div class="line">features.forEach(System.out::println);</div></pre></td></tr></table></figure>
+</li>
+<li><p>map将对象进行转换，reduce结果合并</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Java 8之前：</span></div><div class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</div><div class="line"><span class="keyword">for</span> (Integer cost : costBeforeTax) &#123;</div><div class="line">    <span class="keyword">double</span> price = cost + .<span class="number">12</span>*cost;</div><div class="line">    System.out.println(price);</div><div class="line">&#125;</div><div class="line"><span class="comment">// Java 8之后：</span></div><div class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</div><div class="line">costBeforeTax.stream().map((cost) -&gt; cost + .<span class="number">12</span>*cost).forEach(System.out::println);</div><div class="line"><span class="comment">// Java 8之前：</span></div><div class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</div><div class="line"><span class="keyword">double</span> total = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (Integer cost : costBeforeTax) &#123;</div><div class="line">    <span class="keyword">double</span> price = cost + .<span class="number">12</span>*cost;</div><div class="line">    total = total + price;</div><div class="line">&#125;</div><div class="line">System.out.println(<span class="string">"Total : "</span> + total);</div><div class="line"><span class="comment">// Java 8之后：</span></div><div class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</div><div class="line"><span class="keyword">double</span> bill = costBeforeTax.stream().map((cost) -&gt; cost + .<span class="number">12</span>*cost).reduce((sum, cost) -&gt; sum + cost).get();</div><div class="line">System.out.println(<span class="string">"Total : "</span> + bill);</div></pre></td></tr></table></figure>
+</li>
+<li><p>filter元素过滤</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 创建一个字符串列表，每个字符串长度大于2</span></div><div class="line">List&lt;String&gt; filtered = strList.stream().filter(x -&gt; x.length()&gt; <span class="number">2</span>).collect(Collectors.toList());</div><div class="line">System.out.printf(<span class="string">"Original List : %s, filtered list : %s %n"</span>, strList, filtered);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>具有关键冲突的HashMap性能改进</p>
+</li>
+</ul>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><ul>
+<li>Javac工具<pre><code>javac命令的-parameters选项可用于存储形式参数名称并使Reflection API检索正式参数名称。
+Java语言规范（JLS）第15.21节中的相等运算符的类型规则现在可以通过javac命令正确执行。
+</code></pre></li>
+<li>Javadoc工具<pre><code>javadoc工具支持新的DocTree API，使您能够将Javadoc注释作为抽象语法树来遍历。
+javadoc工具支持新的Javadoc Access API，使您可以直接从Java应用程序调用Javadoc工具，而无需执行新的过程。有关更多信息，请参阅javadoc什么是新页面。
+现在，javadoc工具支持检查javadoc注释的内容，以解决可能导致运行javadoc时生成的文件中的各种问题（例如无效的HTML或可访问性问题）的问题。该功能默认启用，也可以通过新的-Xdoclint选项进行控制。有关更多详细信息，请参阅运行“javadoc -X”的输出。在javac工具中也可以使用此功能，但默认情况下它未启用。
+</code></pre></li>
+</ul>
+<h3 id="国际化"><a href="#国际化" class="headerlink" title="国际化"></a>国际化</h3><ul>
+<li>Unicode增强功能，包括对Unicode 6.2.0的支持</li>
+<li>采用Unicode CLDR数据和java.locale.providers系统属性</li>
+<li>新的日历和区域设置API</li>
+<li>能够将自定义资源包安装为扩展</li>
+<li>日期时间包 - 一组提供全面日期 - 时间模型的新包。</li>
+</ul>
+<h3 id="IO和NIO"><a href="#IO和NIO" class="headerlink" title="IO和NIO"></a>IO和NIO</h3><ul>
+<li>基于Solaris事件端口机制的Solaris新增SelectorProvider实现。要使用，使用设置为值sun.nio.ch.EventPortSelectorProvider的系统属性java.nio.channels.spi.Selector运行。</li>
+<li>减小<jdk_home> /jre/lib/charsets.jar文件的大小</jdk_home></li>
+<li>提高了java.lang.String（byte []，*）构造函数和java.lang.String.getBytes（）方法的性能。</li>
+</ul>
+<h3 id="java-lang和java-util包"><a href="#java-lang和java-util包" class="headerlink" title="java.lang和java.util包"></a>java.lang和java.util包</h3><ul>
+<li>并行数组排序</li>
+<li>标准编码和解码Base64</li>
+<li>无符号算术支持</li>
+</ul>
+<h3 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h3><pre><code>- JDBC-ODBC Bridge已被删除。
+- JDBC 4.2引入了新功能。
+</code></pre><h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><ul>
+<li>类和接口已被添加到java.util.concurrent包中。</li>
+<li>已经将方法添加到java.util.concurrent.ConcurrentHashMap类中，以支持基于新添加的流设施和lambda表达式的聚合操作。</li>
+<li>已将类添加到java.util.concurrent.atomic包以支持可伸缩的可更新变量。</li>
+<li>方法已被添加到java.util.concurrent.ForkJoinPool类中以支持公共池。</li>
+<li>已添加java.util.concurrent.locks.StampedLock类以提供基于能力的锁，其中有三种控制读/写访问的模式。</li>
+</ul>
+<h3 id="HotSpot"><a href="#HotSpot" class="headerlink" title="HotSpot"></a>HotSpot</h3><ul>
+<li>硬件内在函数被添加到使用高级加密标准（AES）。 UseAES和UseAESIntrinsics标志可用于启用英特尔硬件的基于硬件的AES内在函数。硬件必须是2010年或更新的Westmere硬件。例如，要启用硬件AES，请使用以下标志：-XX：+ UseAES -XX：+ UseAESIntrinsics，要禁用硬件AES，请使用以下标志：-XX：-UseAES -XX：-UseAESIntrinsics</li>
+<li>去除PermGen。</li>
+<li>Java编程语言中的缺省方法由方法调用的字节码指令支持。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Java8/" rel="tag"># Java8</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/14/正则表达式/" rel="next" title="正则表达式">
+                <i class="fa fa-chevron-left"></i> 正则表达式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/28/浅尝MyBatis/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#java8新特性"><span class="nav-number">1.</span> <span class="nav-text">java8新特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">1.2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java编程语言"><span class="nav-number">1.2.1.</span> <span class="nav-text">Java编程语言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Lambda表达式可由逗号分隔的参数列表、-gt-符号和语句块组成（其中参数列表中的参数e的类型可以由编译器推理得出的，也可以显式指定该参数的类型），例如："><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Lambda表达式可由逗号分隔的参数列表、->符号和语句块组成（其中参数列表中的参数e的类型可以由编译器推理得出的，也可以显式指定该参数的类型），例如：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lambda表达式可以引用类成员和局部变量（会将这些变量隐式得转换成final），但是不能在lambda内部修改定义在域外的变量。同时Lambda表达式有返回值，返回值的类型也由编译器推理得出。如果Lambda表达式中的语句块只有一行，则可以不用使用return语句，例如"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Lambda表达式可以引用类成员和局部变量（会将这些变量隐式得转换成final），但是不能在lambda内部修改定义在域外的变量。同时Lambda表达式有返回值，返回值的类型也由编译器推理得出。如果Lambda表达式中的语句块只有一行，则可以不用使用return语句，例如</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数接口"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">函数接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lambda表达式替换匿名类"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">lambda表达式替换匿名类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合"><span class="nav-number">1.2.2.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#java-util-stream-Stream部分方法如下"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">java.util.stream.Stream部分方法如下</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工具"><span class="nav-number">1.2.3.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#国际化"><span class="nav-number">1.2.4.</span> <span class="nav-text">国际化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO和NIO"><span class="nav-number">1.2.5.</span> <span class="nav-text">IO和NIO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-lang和java-util包"><span class="nav-number">1.2.6.</span> <span class="nav-text">java.lang和java.util包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDBC"><span class="nav-number">1.2.7.</span> <span class="nav-text">JDBC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发"><span class="nav-number">1.2.8.</span> <span class="nav-text">并发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HotSpot"><span class="nav-number">1.2.9.</span> <span class="nav-text">HotSpot</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

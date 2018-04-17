@@ -1,0 +1,1572 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,Database,MySQL,Oracle," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="数据库优化选取最适用的字段属性 数据库中的表越小，在它上面执行的查询也就会越快。因此，在创建表的时候，为了获得更好的性能，我们可以将表中字段的宽度设得尽可能小。 例如，邮政编码字段，CHAR(6)好过CHAR(255)和VARCHAR，同样MEDIUMINT好过BIGIN来定义整型字段（五种整型tinyint，smallint，mediumint，int，bigint）。 把字段设置为NOTNUL">
+<meta name="keywords" content="Java,Database,MySQL,Oracle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库优化">
+<meta property="og:url" content="https://lfstefan.github.io/2017/10/14/数据库优化/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="数据库优化选取最适用的字段属性 数据库中的表越小，在它上面执行的查询也就会越快。因此，在创建表的时候，为了获得更好的性能，我们可以将表中字段的宽度设得尽可能小。 例如，邮政编码字段，CHAR(6)好过CHAR(255)和VARCHAR，同样MEDIUMINT好过BIGIN来定义整型字段（五种整型tinyint，smallint，mediumint，int，bigint）。 把字段设置为NOTNUL">
+<meta property="og:updated_time" content="2018-04-14T09:34:13.331Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库优化">
+<meta name="twitter:description" content="数据库优化选取最适用的字段属性 数据库中的表越小，在它上面执行的查询也就会越快。因此，在创建表的时候，为了获得更好的性能，我们可以将表中字段的宽度设得尽可能小。 例如，邮政编码字段，CHAR(6)好过CHAR(255)和VARCHAR，同样MEDIUMINT好过BIGIN来定义整型字段（五种整型tinyint，smallint，mediumint，int，bigint）。 把字段设置为NOTNUL">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2017/10/14/数据库优化/"/>
+
+
+
+
+
+  <title>数据库优化 | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/10/14/数据库优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                数据库优化
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-14T12:11:25+08:00">
+                2017-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index">
+                    <span itemprop="name">Database</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/14/数据库优化/" class="leancloud_visitors" data-flag-title="数据库优化">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="数据库优化"><a href="#数据库优化" class="headerlink" title="数据库优化"></a>数据库优化</h2><h4 id="选取最适用的字段属性"><a href="#选取最适用的字段属性" class="headerlink" title="选取最适用的字段属性"></a>选取最适用的字段属性</h4><ul>
+<li>数据库中的表越小，在它上面执行的查询也就会越快。因此，在创建表的时候，为了获得更好的性能，我们可以将表中字段的宽度设得尽可能小。</li>
+<li>例如，邮政编码字段，CHAR(6)好过CHAR(255)和VARCHAR，同样MEDIUMINT好过BIGIN来定义整型字段（五种整型tinyint，smallint，mediumint，int，bigint）。</li>
+<li>把字段设置为NOTNULL，这样在将来执行查询的时候，数据库不用去比较NULL值。</li>
+<li>对于某些文本字段，例如“省份”或者“性别”，我们可以将它们定义为ENUM类型。因为在MySQL中，ENUM类型被当作数值型数据来处理，而数值型数据被处理起来的速度要比文本类型快得多。</li>
+</ul>
+<a id="more"></a>
+<h4 id="使用连接（JOIN）来代替子查询-Sub-Queries"><a href="#使用连接（JOIN）来代替子查询-Sub-Queries" class="headerlink" title="使用连接（JOIN）来代替子查询(Sub-Queries)"></a>使用连接（JOIN）来代替子查询(Sub-Queries)</h4><blockquote>
+<p>MySQL从4.1开始支持SQL的子查询。这个技术可以使用SELECT语句来创建一个单列的查询结果，然后把这个结果作为过滤条件用在另一个查询中。使用子查询可以一次性的完成很多逻辑上需要多个步骤才能完成的SQL操作，同时也可以避免事务或者表锁死，并且写起来也很容易。但是，有些情况下，子查询可以被更有效率的连接（JOIN）..替代。连接（JOIN）..之所以更有效率一些，是因为MySQL不需要在<strong>内存中创建临时表</strong>来完成这个逻辑上的需要两个步骤的查询工作。</p>
+</blockquote>
+<h4 id="使用联合-UNION-来代替手动创建的临时表"><a href="#使用联合-UNION-来代替手动创建的临时表" class="headerlink" title="使用联合(UNION)来代替手动创建的临时表"></a>使用联合(UNION)来代替手动创建的临时表</h4><blockquote>
+<p>MySQL从4.0的版本开始支持union查询，它可以把需要使用临时表的两条或更多的select查询合并的一个查询中。在客户端的查询会话结束的时候，临时表会被自动删除，从而保证数据库整齐、高效。使用union来创建查询的时候，我们只需要用UNION作为关键字把多个select语句连接起来就可以了，要注意的是<strong>所有select语句中的字段数目要想同</strong>。例如。<br>SELECT Name,Phone FROM client UNION SELECT Name,BirthDate FROM author</p>
+</blockquote>
+<h4 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h4><blockquote>
+<p>尽管我们可以使用子查询（Sub-Queries）、连接（JOIN）和联合（UNION）来创建各种各样的查询，但不是所有的数据库操作都可以只用一条或少数几条SQL语句就可以完成的。更多的时候是需要用到一系列的语句来完成某种工作。但是在这种情况下，当这个语句块中的某一条语句运行出错的时候，整个语句块的操作就会变得不确定起来。设想一下，要把某个数据同时插入两个相关联的表中，可能会出现这样的情况：第一个表中成功更新后，数据库突然出现意外状况，造成第二个表中的操作没有完成，这样，就会造成数据的不完整，甚至会破坏数据库中的数据。要避免这种情况，就应该使用事务，它的作用是：要么语句块中每条语句都操作成功，要么都失败。换句话说，就是可以保持数据库中数据的一致性和完整性。<strong>事物以BEGIN关键字开始，COMMIT关键字结束</strong>。在这之间的一条SQL操作失败，那么，<strong>ROLLBACK命令就可以把数据库恢复到BEGIN开始之前的状态</strong>。</p>
+</blockquote>
+<ul>
+<li>BEGIN;<br>INSERT INTO salesinfo …;<br>UPDATE inventory SET Quantity = 11 WHERE item = ‘book’;<br>COMMIT;</li>
+<li>事务的另一个重要作用是当多个用户同时使用相同的数据源时，它可以利用锁定数据库的方法来为用户提供一种安全的访问方式，这样可以保证用户的操作不被其它的用户所干扰。</li>
+</ul>
+<h4 id="锁定表"><a href="#锁定表" class="headerlink" title="锁定表"></a>锁定表</h4><blockquote>
+<p>尽管事务是维护数据库完整性的一个非常好的方法，但却因为它的独占性，有时会影响数据库的性能，尤其是在很大的应用系统中。由于在事务执行的过程中，数据库将会被锁定，因此其它的用户请求只能暂时等待直到该事务结束。如果一个数据库系统只有少数几个用户来使用，事务造成的影响不会成为一个太大的问题；但假设有成千上万的用户同时访问一个数据库系统，例如访问一个电子商务网站，就会产生比较严重的响应延迟。</p>
+</blockquote>
+<ul>
+<li>其实，有些情况下我们可以通过锁定表的方法来获得更好的性能。下面的例子就用锁定表的方法来完成前面一个例子中事务的功能。</li>
+<li>LOCKTABLE inventory WRITE<br>SELECT Quantity FROM inventory WHERE Item = ‘book’;<br>…<br>UPDATE inventory SET Quantity = 11 WHERE Item = ‘book’;<br>UNLOCKTABLES</li>
+<li>这里，我们用一个select语句取出初始数据，通过一些计算，用update语句将新值更新到表中。包含有WRITE关键字的LOCKTABLE语句可以保证在UNLOCKTABLES命令被执行之前，不会有其它的访问来对inventory进行插入、更新或者删除的操作。</li>
+</ul>
+<h4 id="使用索引"><a href="#使用索引" class="headerlink" title="使用索引"></a>使用索引</h4><ul>
+<li>索引是提高数据库性能的常用方法，它可以令数据库服务器以比没有索引快得多的速度检索特定的行，尤其是在查询语句当中包含有MAX(),MIN()和ORDERBY这些命令的时候，性能提高更为明显。</li>
+<li>那该对哪些字段建立索引呢？一般说来，索引应建立在那些将用于JOIN,WHERE判断和ORDERBY排序的字段上。尽量不要对数据库中某个含有大量重复的值的字段建立索引。对于一个ENUM类型的字段来说，出现大量重复值是很有可能的情况</li>
+</ul>
+<h4 id="优化的查询语句"><a href="#优化的查询语句" class="headerlink" title="优化的查询语句"></a>优化的查询语句</h4><ul>
+<li>首先，最好是在相同类型的字段间进行比较的操作。在MySQL3.23版之前，这甚至是一个必须的条件。例如不能将一个建有索引的INT字段和BIGINT字段进行比较；但是作为特殊的情况，在CHAR类型的字段和VARCHAR类型字段的字段大小相同的时候，可以将它们进行比较。</li>
+<li>其次，在建有索引的字段上尽量不要使用函数进行操作。例如，在一个DATE类型的字段上使用YEAE()函数时，将会使索引不能发挥应有的作用。所以，下面的两个查询虽然返回的结果一样，但后者要比前者快得多。</li>
+<li>第三，在搜索字符型字段时，我们有时会使用LIKE关键字和通配符，这种做法虽然简单，但却也是以牺牲系统性能为代价的(like ‘xxx%’可以用到索引，但是like ‘%xxx%’不行，通过覆盖索引进行优化)。<blockquote>
+<p>例如下面的查询将会比较表中的每一条记录。<br>SELECT <em> FROM books WHERE name like “MySQL%”<br>但是如果换用下面的查询，返回的结果一样，但速度就要快上很多：<br>SELECT </em> FROM books WHERE name＞=”MySQL” and name＜”MySQM”</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="数据分页处理"><a href="#数据分页处理" class="headerlink" title="数据分页处理"></a>数据分页处理</h4><ul>
+<li>客户端(应用程序或浏览器)分页：将数据从应用服务器全部下载到本地应用程序或浏览器，在应用程序或浏览器内部通过本地代码进行分页处理<ul>
+<li>优点：编码简单，减少客户端与应用服务器网络交互次数</li>
+<li>缺点：首次交互时间长，占用客户端内存</li>
+<li>适应场景：客户端与应用服务器网络延时较大，但要求后续操作流畅，如手机GPRS，超远程访问（跨国）等等。</li>
+</ul>
+</li>
+<li><p>应用服务器分页：将数据从数据库服务器全部下载到应用服务器，在应用服务器内部再进行数据筛选。以下是一个应用服务器端Java程序分页的示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">List list=executeQuery(“select * from employee order by id”);</div><div class="line">Int count= list.size();</div><div class="line">List subList= list.subList(<span class="number">10</span>, <span class="number">20</span>);</div></pre></td></tr></table></figure>
+<ul>
+<li>优点：编码简单，只需要一次SQL交互，总数据与分页数据差不多时性能较好。</li>
+<li>缺点：总数据量较多时性能较差。</li>
+<li>适应场景：数据库系统不支持分页处理，数据量较小并且可控。</li>
+</ul>
+</li>
+<li><p>数据库SQL分页：采用数据库SQL分页需要两次SQL完成，一个SQL计算总数量，一个<br>SQL返回分页后的数据</p>
+<ul>
+<li>优点：性能好</li>
+<li>缺点：编码复杂，各种数据库语法不同，需要两次SQL交互。</li>
+<li><p>oracle数据库一般采用rownum来进行分页，常用分页语法有如下两种：</p>
+<ul>
+<li><p>直接通过rownum分页：数据访问开销=索引IO+索引全部记录结果对应的表数据IO</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">select * from (</div><div class="line">         select a.*,<span class="function">rownum rn <span class="title">from</span></span></div><div class="line">                   <span class="params">(select * from product a where company_id=? order by status)</span> a</div><div class="line">         where rownum&lt;=<span class="number">20</span>)</div><div class="line">where rn&gt;<span class="number">10</span>;</div></pre></td></tr></table></figure>
+</li>
+<li><p>采用rowid分页语法：优化原理是通过纯索引找出分页记录的ROWID，再通过ROWID回表返回数据，要求内层查询和排序字段全在索引里。(数据访问开销=索引IO+索引分页结果对应的表数据IO)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function">create index myindex on <span class="title">product</span><span class="params">(company_id,status)</span></span>;</div><div class="line">select b.* from (</div><div class="line">         select * from (</div><div class="line">                   select a.*,<span class="function">rownum rn <span class="title">from</span></span></div><div class="line">                            <span class="params">(select rowid rid,status from product a where company_id=? order by status)</span> a</div><div class="line">                   where rownum&lt;=<span class="number">20</span>)</div><div class="line">         where rn&gt;<span class="number">10</span>) a, product b</div><div class="line">where a.rid=b.rowid;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="减少交互次数"><a href="#减少交互次数" class="headerlink" title="减少交互次数"></a>减少交互次数</h4><ul>
+<li>batch DML：数据库访问框架一般都提供了批量提交的接口，jdbc支持batch的提交处理方法，当你一次性要往一个表中插入1000万条数据时，如果采用普通的executeUpdate处理，那么和服务器交互次数为1000万次，按每秒钟可以向数据库服务器提交10000次估算，要完成所有工作需要1000秒。如果采用批量提交模式，1000条提交一次，那么和服务器交互次数为1万次，交互次数大大减少。采用batch操作一般不会减少很多数据库服务器的物理IO，但是会大大减少客户端与服务端的交互次数，从而减少了多次发起的网络延时开销，同时也会降低数据库的CPU开销。</li>
+<li><p>In List</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//我们也可以做一个小的优化， 如下所示，用ID IN LIST的这种方式写SQL：</span></div><div class="line">select * <span class="function">from mytable where id <span class="title">in</span><span class="params">(:id1,id2,...,idn)</span></span>;</div></pre></td></tr></table></figure>
+<ul>
+<li>通过这样处理可以大大减少SQL请求的数量，从而提高性能。那如果有10000个ID，那是不是全部放在一条SQL里处理呢？答案肯定是否定的。首先大部份数据库都会有SQL长度和IN里个数的限制，如ORACLE的IN里就不允许超过1000个值。</li>
+<li>另外当前数据库一般都是采用基于成本的优化规则，当IN数量达到一定值时有可能改变SQL执行计划，从索引访问变成全表访问，这将使性能急剧变化。随着SQL中IN的里面的值个数增加，SQL的执行计划会更复杂，占用的内存将会变大，这将会增加服务器CPU及内存成本。</li>
+<li>评估在IN里面一次放多少个值还需要考虑应用服务器本地内存的开销，有并发访问时要计算本地数据使用周期内的并发上限，否则可能会导致内存溢出。</li>
+<li>综合考虑，一般IN里面的值<strong>个数超过20个以后</strong>性能基本没什么太大变化，也特别说明不要超过100，超过后可能会引起执行计划的不稳定性及增加数据库CPU及内存成本，这个需要专业DBA评估。</li>
+<li>如果确实想使用IN而且里面数量较多时，这个情况有两种解决方式：<ul>
+<li>将in列表里面的数据放入一张中间小表，采用两个表<strong>Hash Join关联</strong>的方式处理；</li>
+<li>采用str2varList方法将字段串列表转换一个临时表处理；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="设置Fetch-Size"><a href="#设置Fetch-Size" class="headerlink" title="设置Fetch Size"></a>设置Fetch Size</h4><ul>
+<li><p>当我们采用select从数据库查询数据时，数据默认并不是一条一条返回给客户端的，也不是一次全部返回客户端的，而是<strong>根据客户端fetch_size参数处理，每次只返回fetch_size条记录，当客户端游标遍历到尾部时再从服务端取数据，直到最后全部传送完成。</strong>所以如果我们要从服务端一次取大量数据时，可以加大fetch_size，这样可以减少结果数据传输的交互次数及服务器数据准备时间，提高性能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//以下是jdbc测试的代码，采用本地数据库，表缓存在数据库CACHE中，因此没有网络连接及磁盘IO开销，客户端只遍历游标，不做任何处理，这样更能体现fetch参数的影响：</span></div><div class="line">String vsql =<span class="string">"select * from t_employee"</span>;</div><div class="line">PreparedStatement pstmt = conn.prepareStatement(vsql,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);</div><div class="line">pstmt.setFetchSize(<span class="number">1000</span>);</div><div class="line">ResultSet rs = pstmt.executeQuery(vsql);</div><div class="line"><span class="keyword">int</span> cnt = rs.getMetaData().getColumnCount();</div><div class="line">Object o;</div><div class="line"><span class="keyword">while</span> (rs.next()) &#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= cnt; i++) &#123;</div><div class="line">       o = rs.getObject(i);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>测试可以看出fetchsize对性能影响还是比较大的，但是<strong>当fetchsize大于100时就基本上没有影响了</strong>。fetchsize并不会存在一个最优的固定值，因为整体性能与记录集大小及硬件平台有关。根据测试结果建议当一次性要取大量数据时这个值设置为100左右，不要小于40。注意，<strong>fetchsize不能设置太大，如果一次取出的数据大于JVM的内存会导致内存溢出，所以建议不要超过1000</strong>，太大了也没什么性能提高，反而可能会增加内存溢出的危险。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//iBatis的SqlMapping配置文件可以对每个SQL语句指定fetchsize大小，如下所示：</div><div class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"getAllProduct"</span> <span class="attr">resultMap</span>=<span class="string">"HashMap"</span> <span class="attr">fetchSize</span>=<span class="string">"1000"</span>&gt;</span></div><div class="line">	select * from employee</div><div class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="使用存储过程"><a href="#使用存储过程" class="headerlink" title="使用存储过程"></a>使用存储过程</h4><ul>
+<li>大型数据库一般都支持存储过程，合理的利用存储过程也可以提高系统性能。如你有一个业务需要将A表的数据做一些加工然后更新到B表中，但是又不可能一条SQL完成，这时你需要如下3步操作：<ul>
+<li>a：将A表数据全部取出到客户端；</li>
+<li>b：计算出要更新的数据；</li>
+<li>c：将计算结果更新到B表。<blockquote>
+<p>如果采用存储过程你可以将整个业务逻辑封装在存储过程里，然后在客户端直接调用存储过程处理，这样可以减少网络交互的成本。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>当然，存储过程也并不是十全十美，存储过程有以下缺点：<ul>
+<li>a、不可移植性，每种数据库的内部编程语法都不太相同，当你的系统需要兼容多种数据库时最好不要用存储过程。</li>
+<li>b、学习成本高，DBA一般都擅长写存储过程，但并不是每个程序员都能写好存储过程，除非你的团队有较多的开发人员熟悉写存储过程，否则后期系统维护会产生问题。</li>
+<li>c、业务逻辑多处存在，采用存储过程后也就意味着你的系统有一些业务逻辑不是在应用程序里处理，这种架构会增加一些系统维护和调试成本。</li>
+<li>d、存储过程和常用应用程序语言不一样，它支持的函数及语法有可能不能满足需求，有些逻辑就只能通过应用程序处理。</li>
+<li>e、如果存储过程中有复杂运算的话，会增加一些数据库服务端的处理成本，对于集中式数据库可能会导致系统可扩展性问题。</li>
+<li>f、为了提高性能，数据库会把存储过程代码编译成中间运行代码(类似于java的class文件)，所以更像静态语言。当存储过程引用的对像(表、视图等等)结构改变后，存储过程需要重新编译才能生效，在24*7高并发应用场景，一般都是在线变更结构的，所以在变更的瞬间要同时编译存储过程，这可能会导致数据库瞬间压力上升引起故障(Oracle数据库就存在这样的问题)。</li>
+<li>建议：普通业务逻辑尽量不要使用存储过程，定时性的ETL任务或报表统计函数可以根据团队资源情况采用存储过程处理。</li>
+</ul>
+</li>
+</ul>
+<h4 id="使用ResultSet游标处理记录"><a href="#使用ResultSet游标处理记录" class="headerlink" title="使用ResultSet游标处理记录"></a>使用ResultSet游标处理记录</h4><ul>
+<li><p>现在大部分Java框架都是通过jdbc从数据库取出数据，然后装载到一个list里再处理，list里可能是业务Object，也可能是hashmap。<strong>由于JVM内存一般都小于4G，所以不可能一次通过sql把大量数据装载到list里</strong>。为了完成功能，很多程序员喜欢采用分页的方法处理，如一次从数据库取1000条记录，通过多次循环搞定，保证不会引起JVM Out of memory问题。以下是实现此功能的代码示例，t_employee表有10万条记录，设置分页大小为1000：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">d1 = Calendar.getInstance().getTime();</div><div class="line"><span class="comment">//第一次先取出数据总数</span></div><div class="line">String vsql = <span class="string">"select count(*) cnt from t_employee"</span>;</div><div class="line">PreparedStatement pstmt = conn.prepareStatement(vsql);</div><div class="line">ResultSet rs = pstmt.executeQuery();</div><div class="line">Integer cnt = <span class="number">0</span>;</div><div class="line"><span class="keyword">while</span> (rs.next()) &#123;</div><div class="line">         cnt = rs.getInt(<span class="string">"cnt"</span>);</div><div class="line">&#125;</div><div class="line"><span class="comment">//第二次分页取数据</span></div><div class="line">Integer lastid = <span class="number">0</span>;</div><div class="line">Integer pagesize = <span class="number">1000</span>;</div><div class="line">System.out.println(<span class="string">"cnt:"</span> + cnt);</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= cnt / pagesize; i++) &#123;</div><div class="line">         vsql = <span class="string">"select * from (select * from t_employee where id&gt;? order by id) where rownum&lt;=?"</span>;</div><div class="line">         pstmt = conn.prepareStatement(vsql);</div><div class="line">         pstmt.setFetchSize(<span class="number">1000</span>);</div><div class="line">         pstmt.setInt(<span class="number">1</span>, lastid);</div><div class="line">         pstmt.setInt(<span class="number">2</span>, pagesize);</div><div class="line">         rs = pstmt.executeQuery();</div><div class="line">         <span class="keyword">int</span> col_cnt = rs.getMetaData().getColumnCount();</div><div class="line">         Object o;</div><div class="line">         <span class="keyword">while</span> (rs.next()) &#123;</div><div class="line">                   <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= col_cnt; j++) &#123;</div><div class="line">                            o = rs.getObject(j);</div><div class="line">                   &#125;</div><div class="line">                   lastid = rs.getInt(<span class="string">"id"</span>);</div><div class="line">         &#125;</div><div class="line">         rs.close();</div><div class="line">         pstmt.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>以上代码实际执行时间为6.516秒</p>
+</li>
+<li>很多持久层框架为了尽量让程序员使用方便，封装了jdbc通过statement执行数据返回到resultset的细节，导致程序员会想采用分页的方式处理问题。实际上如果我们采用jdbc原始的resultset游标处理记录，在resultset循环读取的过程中处理记录，这样就可以一次从数据库取出所有记录。显著提高性能。</li>
+<li><p>这里需要注意的是，采用resultset游标处理记录时，应该将游标的打开方式设置为FORWARD_READONLY模式(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY)，否则会把结果缓存在JVM里，造成JVM Out of memory问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//代码示例：</span></div><div class="line">String vsql =<span class="string">"select * from t_employee"</span>;</div><div class="line">PreparedStatement pstmt = conn.prepareStatement(vsql,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);</div><div class="line">pstmt.setFetchSize(<span class="number">100</span>);</div><div class="line">ResultSet rs = pstmt.executeQuery(vsql);</div><div class="line"><span class="keyword">int</span> col_cnt = rs.getMetaData().getColumnCount();</div><div class="line">Object o;</div><div class="line"><span class="keyword">while</span> (rs.next()) &#123;</div><div class="line">         <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= col_cnt; j++) &#123;</div><div class="line">                   o = rs.getObject(j);</div><div class="line">         &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>调整后的代码实际执行时间为3.156秒</p>
+</li>
+<li>iBatis等持久层框架考虑到会有这种需求，所以也有相应的解决方案，在iBatis里我们不能采用queryForList的方法，而应用该采用<strong>queryWithRowHandler</strong>加回调事件的方式处理，如下所示：<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">MyRowHandler myrh=<span class="keyword">new</span> MyRowHandler();</div><div class="line">sqlmap.queryWithRowHandler(<span class="string">"getAllEmployee"</span>, myrh);</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyRowHandler</span> <span class="keyword">implements</span> <span class="title">RowHandler</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleRow</span><span class="params">(Object o)</span> </span>&#123;</div><div class="line">       <span class="comment">//todo something</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//iBatis的queryWithRowHandler很好的封装了resultset遍历的事件处理，效果及性能与resultset遍历一样，也不会产生JVM内存溢出。</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="使用绑定变量"><a href="#使用绑定变量" class="headerlink" title="使用绑定变量"></a>使用绑定变量</h4><ul>
+<li>绑定变量是指SQL中对变化的值采用变量参数的形式提交，而不是在SQL中直接拼写对应的值。</li>
+<li>非绑定变量写法：Select * from employee where id=1234567</li>
+<li>绑定变量写法：<ul>
+<li>Select * from employee where id=?</li>
+<li>Preparestatement.setInt(1,1234567)</li>
+</ul>
+</li>
+<li>Java中Preparestatement就是为处理绑定变量提供的对像，绑定变量有以下优点：<ol>
+<li>防止SQL注入</li>
+<li>提高SQL可读性</li>
+<li>提高SQL解析性能，不使用绑定变更我们一般称为硬解析，使用绑定变量我们称为软解析。</li>
+</ol>
+</li>
+</ul>
+<h4 id="数据库SQL执行原理"><a href="#数据库SQL执行原理" class="headerlink" title="数据库SQL执行原理"></a>数据库SQL执行原理</h4><ul>
+<li>当一条SQL发送给数据库服务器后，系统首先会将SQL字符串进行<strong>hash运算</strong>，得到hash值后再从服务器内存里的<strong>SQL缓存区中进行检索</strong>，如果有相同的SQL字符，并且确认是同一逻辑的SQL语句，则从共享池缓存中取出SQL对应的执行计划，根据执行计划读取数据并返回结果给客户端。如果在共享池中未发现相同的SQL则根据SQL逻辑<strong>生成一条新的执行计划并保存在SQL缓存区中</strong>，然后根据执行计划<strong>读取数据并返回结果</strong>给客户端。<ul>
+<li>为了更快的检索SQL是否在缓存区中，首先进行的是SQL字符串hash值对比，如果未找到则认为没有缓存，如果存在再进行下一步的准确对比，所以要命中SQL缓存区应保证SQL字符是<strong>完全一致，中间有大小写或空格都会认为是不同的SQL</strong>。</li>
+<li>如果我们不采用绑定变量，采用字符串拼接的模式生成SQL,那么每条SQL都会产生执行计划，这样会导致共享池耗尽，缓存命中率也很低。</li>
+<li>ORACLE采用自下而上的<strong>顺序解析</strong>WHERE子句,根据这个原理,表之间的连接必须写在其他WHERE条件之前, 那些可以过滤掉最大数量记录的条件必须写在WHERE子句的末尾.</li>
+</ul>
+</li>
+</ul>
+<h1 id="SQL语句总结"><a href="#SQL语句总结" class="headerlink" title="SQL语句总结"></a>SQL语句总结</h1><ul>
+<li>创建数据库<br>CREATE DATABASE database-name</li>
+<li>删除数据库<br>drop database dbname</li>
+<li>创建新表<br>DROP TABLE IF EXISTS <code>zf_jg_statistics</code>;<br>CREATE TABLE <code>zf_jg_statistics</code> (<br><code>id</code> varchar(50) NOT NULL,<br><code>corp_id</code> varchar(255) DEFAULT NULL COMMENT ‘企业id’,<br><code>corp_name</code> varchar(50) DEFAULT NULL COMMENT ‘企业名称’,<br><code>gname</code> varchar(50) DEFAULT NULL COMMENT ‘行业名称，无默认值’,<br><code>gmjj</code> varchar(50) DEFAULT NULL COMMENT ‘行业分类’,<br><code>aname</code> varchar(50) DEFAULT NULL COMMENT ‘地区名称’,<br><code>area</code> varchar(50) DEFAULT NULL COMMENT ‘地区编号’,<br><code>total</code> int(50) DEFAULT ‘0’ COMMENT ‘风险防控点数，默认值为0’,<br><code>type</code> int(2) DEFAULT NULL COMMENT ‘每日查还是月查’,<br><code>scount</code> int(50) DEFAULT ‘0’ COMMENT ‘应查询点数，默认值为0’,<br><code>detail_count</code> int(50) DEFAULT ‘0’ COMMENT ‘实查询点数，默认值为0’,<br><code>warm</code> varchar(50) DEFAULT NULL COMMENT ‘警示标示’,<br><code>frequency</code> varchar(50) DEFAULT NULL COMMENT ‘覆盖率’,<br><code>time</code> date DEFAULT NULL COMMENT ‘查询时间，无默认值’,<br><code>sync_timestamp</code> timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT ‘时间戳’,<br><code>ybtotal</code> int(255) DEFAULT ‘0’,<br><code>ybzg</code> int(255) DEFAULT ‘0’,<br><code>yb</code> varchar(255) DEFAULT NULL,<br><code>zdtotal</code> int(255) DEFAULT ‘0’,<br><code>zzgl</code> varchar(255) DEFAULT NULL,<br>PRIMARY KEY (<code>id</code>),<br>KEY <code>corp_id</code> (<code>corp_id</code>),<br>KEY <code>time</code> (<code>time</code>) USING BTREE<br>) ENGINE=MyISAM DEFAULT CHARSET=utf8;</li>
+<li>根据已有的表创建新表：<br>A：create table tab_new like tab_old<br>B：create table tab_new as select col1,col2…from tab_old definition only</li>
+<li>删除新表<br>drop table tabname</li>
+<li>增加一个列<br>Alter table tabname<br>add column col type<blockquote>
+<p>注：列增加后将不能删除。DB2中列加上后数据类型也不能改变，唯一能改变的是增加varchar类型的长度。</p>
+</blockquote>
+</li>
+<li>添加主键：<br>Alter table tabname<br>add primary key(col)</li>
+<li>删除主键：<br>Alter table tabname<br>drop primary key(col)</li>
+<li>创建索引：<br>create [unique] index idxname<br>on tabname(col….)</li>
+<li>删除索引：<br>drop index idxname<blockquote>
+<p>注：索引是不可更改的，想更改必须删除重新建。</p>
+</blockquote>
+</li>
+<li>创建视图：<br>create view viewname<br>as select statement</li>
+<li>删除视图：<br>drop view viewname</li>
+<li>选择：select *from table1 where 范围</li>
+<li>插入：insert into table1(field1,field2) values(value1,value2)</li>
+<li>删除：delete from table1 where 范围</li>
+<li>更新：update table1 set field1=value1 where 范围</li>
+<li>查找：select *from table1 where field1 like ’%value1%’—like的语法很精妙，查资料!</li>
+<li>排序：select *from table1 order by field1,field2 [desc]</li>
+<li>总数：select count as totalcount from table1</li>
+<li>求和：select sum(field1) as sumvalue from table1</li>
+<li>平均：select avg(field1) as avgvalue from table1</li>
+<li>最大：select max(field1) as maxvalue from table1</li>
+<li>最小：select min(field1) as minvalue from table1</li>
+<li>高级查询运算词<ul>
+<li>UNION 运算符通过组合其他两个结果表(例如TABLE1 和 TABLE2)并消去表中任何重复行而派生出一个结果表。当 ALL 随UNION 一起使用时(即UNION ALL)，不消除重复行。两种情况下，派生表的每一行不是来自TABLE1 就是来自 TABLE2。</li>
+<li>EXCEPT 运算符EXCEPT 运算符通过包括所有在TABLE1 中但不在 TABLE2 中的行并消除所有重复行而派生出一个结果表。当 ALL 随EXCEPT 一起使用时(EXCEPT ALL)，不消除重复行。</li>
+<li>INTERSECT 运算符INTERSECT 运算符通过只包括TABLE1 和 TABLE2 中都有的行并消除所有重复行而派生出一个结果表。当 ALL 随INTERSECT 一起使用时(INTERSECT ALL)，不消除重复行。注：使用运算词的几个查询结果行必须是一致的。</li>
+</ul>
+</li>
+<li>外连接<ul>
+<li>left (outer)join：左外连接(左连接)：结果集几包括连接表的匹配行，也包括左连接表的所有行。</li>
+<li>SQL:select a.a,a.b, a.c, b.c, b.d, b.f from a LEFT OUT JOIN b ON a.a = b.c</li>
+<li>right (outer)join:右外连接(右连接)：结果集既包括连接表的匹配连接行，也包括右连接表的所有行。</li>
+<li>full/cross (outer)join：全外连接：不仅包括符号连接表的匹配行，还包括两个连接表中的所有记录。</li>
+</ul>
+</li>
+<li>分组:Group by:一张表，一旦分组完成后，查询后只能得到组相关的信息。组相关的信息：(统计信息)count,sum,max,min,avg 分组的标准)在SQLServer中分组时：不能以text,ntext,image类型的字段作为分组依据在selecte统计函数中的字段，不能和普通的字段放在一起;</li>
+<li>修改数据库的名称:<br>sp_renamedb ‘old_name’,’new_name’</li>
+<li>复制表(只复制结构,源表名：a新表名：b) (Access可用)<ul>
+<li>法一：select *into b from a where 1&lt;&gt;1(仅用于SQlServer)</li>
+<li>法二：select top 0 * into b from a</li>
+</ul>
+</li>
+<li>拷贝表(拷贝数据,源表名：a目标表名：b) (Access可用)</li>
+<li>insert into b(a,b, c) select d,e,f from b;</li>
+<li>跨数据库之间表的拷贝(具体数据使用绝对路径)(Access可用)<ul>
+<li>insert into b(a,b, c) select d,e,f from b in ‘具体数据库’ where 条件</li>
+<li>例子：..from b in ‘“&amp;Server.MapPath(“.”)&amp;”\data.mdb” &amp;”‘ where..</li>
+</ul>
+</li>
+<li>子查询(表名1：a 表名2：b)<ul>
+<li>select a,b,c from a where a IN (select d from b) 或者: </li>
+<li>select a,b,c from a where a IN (1,2,3)</li>
+</ul>
+</li>
+<li>在线视图查询(表名1：a)<ul>
+<li>select * from (SELECT a,b,c FROM a) T where t.a &gt; 1;</li>
+</ul>
+</li>
+<li>between的用法,between限制查询数据范围时包括了边界值,not between不包括<ul>
+<li>select *from table1 where time between time1 and time2</li>
+<li>select a,b,c, from table1 where a not between 数值1 and 数值2</li>
+</ul>
+</li>
+<li>in 的使用方法<ul>
+<li>select *from table1 where a [not] in (‘值1’,’值2’,’值4’,’值6’)</li>
+</ul>
+</li>
+<li>两张关联表，删除主表中已经在副表中没有的信息</li>
+<li>delete from table1 where not exists( select *from table2 where table1.field1=table2.field1)</li>
+<li>四表联查问题：</li>
+<li>select *from a left inner join b on a.a=b.b right inner join c on a.a=c.c inner join d on a.a=d.d where …..</li>
+<li>日程安排提前五分钟提醒<ul>
+<li>SQL:select *from 日程安排 where datediff(‘minute’,f开始时间,getdate())&gt;5</li>
+</ul>
+</li>
+<li>前10条记录<ul>
+<li>select top 10 * form table1 where 范围</li>
+</ul>
+</li>
+<li>选择在每一组b值相同的数据中对应的a最大的记录的所有信息(类似这样的用法可以用于论坛每月排行榜,每月热销产品分析,按科目成绩排名,等等.)</li>
+<li>select a,b,c from tablename ta where a=(select max(a) from tablename tb where tb.b=ta.b)</li>
+<li>包括所有在TableA 中但不在 TableB和TableC 中的行并消除所有重复行而派生出一个结果表<ul>
+<li>(select a from tableA) except (select a from tableB)except (select a from tableC)</li>
+</ul>
+</li>
+<li>删除重复记录<ol>
+<li>delete from tablename where id not in (select max(id) from tablename group by col1,col2,…)</li>
+<li>select distinct *into temp from tablename</li>
+</ol>
+</li>
+<li>列出数据库里所有的表名<ul>
+<li>select name from sysobjects where type=’U’ //U代表用户</li>
+</ul>
+</li>
+<li>列出表里的所有的列名<ul>
+<li>select name from syscolumns where id=object_id(‘TableName’)</li>
+</ul>
+</li>
+<li>初始化表table1<ul>
+<li>truncate TABLE table1</li>
+</ul>
+</li>
+<li>选择从10到15的记录<ul>
+<li>select top 5 <em> from (select top 15 </em> from table order by id asc) table_别名 order by id desc</li>
+</ul>
+</li>
+<li>查看与某一个表相关的视图、存储过程、函数<ul>
+<li>select a.*from sysobjects a, syscomments b where a.id = b.id and b.text like ‘%表名%’</li>
+</ul>
+</li>
+<li>查看当前数据库中所有存储过程<ul>
+<li>select name as 存储过程名称 from sysobjects where xtype=’P’</li>
+</ul>
+</li>
+<li>查询用户创建的所有数据库<ul>
+<li>select *from master..sysdatabases D where sid not in(select sid from master..syslogins where name=’sa’)</li>
+<li>select dbid,name AS DB_NAME  from master..sysdatabases where sid &lt;&gt; 0x01</li>
+</ul>
+</li>
+<li>查询某一个表的字段和数据类型<ul>
+<li>select column_name,data_type from information_schema.columns where table_name= ‘表名’</li>
+</ul>
+</li>
+</ul>
+<h1 id="常识"><a href="#常识" class="headerlink" title="常识"></a>常识</h1><ul>
+<li>在SQL查询中：from后最多可以跟多少张表或视图：256</li>
+<li>在SQL语句中出现Order by,查询时，先排序，后取</li>
+<li>在SQL中，一个字段的最大容量是8000，而对于nvarchar(4000),由于nvarchar是Unicode码。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Database/" rel="tag"># Database</a>
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+            <a href="/tags/Oracle/" rel="tag"># Oracle</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/07/位数组/" rel="next" title="位数组">
+                <i class="fa fa-chevron-left"></i> 位数组
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/14/正则表达式/" rel="prev" title="正则表达式">
+                正则表达式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库优化"><span class="nav-number">1.</span> <span class="nav-text">数据库优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选取最适用的字段属性"><span class="nav-number">1.0.1.</span> <span class="nav-text">选取最适用的字段属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用连接（JOIN）来代替子查询-Sub-Queries"><span class="nav-number">1.0.2.</span> <span class="nav-text">使用连接（JOIN）来代替子查询(Sub-Queries)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用联合-UNION-来代替手动创建的临时表"><span class="nav-number">1.0.3.</span> <span class="nav-text">使用联合(UNION)来代替手动创建的临时表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务"><span class="nav-number">1.0.4.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁定表"><span class="nav-number">1.0.5.</span> <span class="nav-text">锁定表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用索引"><span class="nav-number">1.0.6.</span> <span class="nav-text">使用索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化的查询语句"><span class="nav-number">1.0.7.</span> <span class="nav-text">优化的查询语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据分页处理"><span class="nav-number">1.0.8.</span> <span class="nav-text">数据分页处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#减少交互次数"><span class="nav-number">1.0.9.</span> <span class="nav-text">减少交互次数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置Fetch-Size"><span class="nav-number">1.0.10.</span> <span class="nav-text">设置Fetch Size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用存储过程"><span class="nav-number">1.0.11.</span> <span class="nav-text">使用存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用ResultSet游标处理记录"><span class="nav-number">1.0.12.</span> <span class="nav-text">使用ResultSet游标处理记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用绑定变量"><span class="nav-number">1.0.13.</span> <span class="nav-text">使用绑定变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库SQL执行原理"><span class="nav-number">1.0.14.</span> <span class="nav-text">数据库SQL执行原理</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL语句总结"><span class="nav-number"></span> <span class="nav-text">SQL语句总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常识"><span class="nav-number"></span> <span class="nav-text">常识</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

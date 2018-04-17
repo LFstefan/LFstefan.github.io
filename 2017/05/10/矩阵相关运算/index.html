@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="矩阵相关运算矩阵加减法（等行等列）12345678910111213141516171819202122232425262728public int[][] add(int[][] a,int[][] b)&amp;#123;	//获取二维数组的行数	int row = a.length;	//获取二维数组的列数	int column = a[row-1].length;    int[][] c = n">
+<meta name="description" content="矩阵相关运算矩阵加减法（等行等列）">
 <meta name="keywords" content="Java,Algorithm,Matrix">
 <meta property="og:type" content="article">
 <meta property="og:title" content="矩阵相关运算">
 <meta property="og:url" content="https://lfstefan.github.io/2017/05/10/矩阵相关运算/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="矩阵相关运算矩阵加减法（等行等列）12345678910111213141516171819202122232425262728public int[][] add(int[][] a,int[][] b)&amp;#123;	//获取二维数组的行数	int row = a.length;	//获取二维数组的列数	int column = a[row-1].length;    int[][] c = n">
-<meta property="og:updated_time" content="2018-03-08T02:34:46.373Z">
+<meta property="og:description" content="矩阵相关运算矩阵加减法（等行等列）">
+<meta property="og:updated_time" content="2018-04-14T09:46:28.482Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="矩阵相关运算">
-<meta name="twitter:description" content="矩阵相关运算矩阵加减法（等行等列）12345678910111213141516171819202122232425262728public int[][] add(int[][] a,int[][] b)&amp;#123;	//获取二维数组的行数	int row = a.length;	//获取二维数组的列数	int column = a[row-1].length;    int[][] c = n">
+<meta name="twitter:description" content="矩阵相关运算矩阵加减法（等行等列）">
 
 
 
@@ -431,7 +431,8 @@
       
 
       
-        <h1 id="矩阵相关运算"><a href="#矩阵相关运算" class="headerlink" title="矩阵相关运算"></a>矩阵相关运算</h1><h2 id="矩阵加减法（等行等列）"><a href="#矩阵加减法（等行等列）" class="headerlink" title="矩阵加减法（等行等列）"></a>矩阵加减法（等行等列）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">int</span>[][] add(<span class="keyword">int</span>[][] a,<span class="keyword">int</span>[][] b)&#123;</div><div class="line">	<span class="comment">//获取二维数组的行数</span></div><div class="line">	<span class="keyword">int</span> row = a.length;</div><div class="line">	<span class="comment">//获取二维数组的列数</span></div><div class="line">	<span class="keyword">int</span> column = a[row-<span class="number">1</span>].length;</div><div class="line">    <span class="keyword">int</span>[][] c = <span class="keyword">new</span> <span class="keyword">int</span>[row][column];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;row;i++)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;column;j++)</div><div class="line">        &#123;</div><div class="line">            c[i][j]=a[i][j]+b[i][j];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> c;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">int</span>[][] sub(<span class="keyword">int</span>[][] a,<span class="keyword">int</span>[][] b)&#123;</div><div class="line">	<span class="keyword">int</span> row = a.length;</div><div class="line">	<span class="keyword">int</span> column = a[row-<span class="number">1</span>].length;</div><div class="line">    <span class="keyword">int</span>[][] c = <span class="keyword">new</span> <span class="keyword">int</span>[row][column];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;row;i++)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;column;j++)</div><div class="line">        &#123;</div><div class="line">            c[i][j]=a[i][j]-b[i][j];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> c;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <h1 id="矩阵相关运算"><a href="#矩阵相关运算" class="headerlink" title="矩阵相关运算"></a>矩阵相关运算</h1><h2 id="矩阵加减法（等行等列）"><a href="#矩阵加减法（等行等列）" class="headerlink" title="矩阵加减法（等行等列）"></a>矩阵加减法（等行等列）</h2><a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">int</span>[][] add(<span class="keyword">int</span>[][] a,<span class="keyword">int</span>[][] b)&#123;</div><div class="line">	<span class="comment">//获取二维数组的行数</span></div><div class="line">	<span class="keyword">int</span> row = a.length;</div><div class="line">	<span class="comment">//获取二维数组的列数</span></div><div class="line">	<span class="keyword">int</span> column = a[row-<span class="number">1</span>].length;</div><div class="line">    <span class="keyword">int</span>[][] c = <span class="keyword">new</span> <span class="keyword">int</span>[row][column];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;row;i++)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;column;j++)</div><div class="line">        &#123;</div><div class="line">            c[i][j]=a[i][j]+b[i][j];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> c;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">int</span>[][] sub(<span class="keyword">int</span>[][] a,<span class="keyword">int</span>[][] b)&#123;</div><div class="line">	<span class="keyword">int</span> row = a.length;</div><div class="line">	<span class="keyword">int</span> column = a[row-<span class="number">1</span>].length;</div><div class="line">    <span class="keyword">int</span>[][] c = <span class="keyword">new</span> <span class="keyword">int</span>[row][column];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;row;i++)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;column;j++)</div><div class="line">        &#123;</div><div class="line">            c[i][j]=a[i][j]-b[i][j];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> c;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="矩阵相乘（A-m-n-B-n-k-C-m-k-）"><a href="#矩阵相乘（A-m-n-B-n-k-C-m-k-）" class="headerlink" title="矩阵相乘（A[m][n]*B[n][k]=C[m][k]）"></a>矩阵相乘（A[m][n]*B[n][k]=C[m][k]）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">int</span>[][] add(<span class="keyword">int</span>[][] a,<span class="keyword">int</span>[][] b)&#123;</div><div class="line">	<span class="comment">//获取二维数组a的行数作为c的行数</span></div><div class="line">	<span class="keyword">int</span> row = a.length;</div><div class="line">	<span class="comment">//获取二维数组a的列数</span></div><div class="line">	<span class="keyword">int</span> n = a[row-<span class="number">1</span>].length;</div><div class="line">	获取二维数组b的列数作为c的列数</div><div class="line">	<span class="keyword">int</span> column = b[n-<span class="number">1</span>].length;</div><div class="line">    <span class="keyword">int</span>[][] c = <span class="keyword">new</span> <span class="keyword">int</span>[row][column];</div><div class="line">	Arrays.fill(c,<span class="number">0</span>);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;row;i++)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;column;j++)</div><div class="line">        &#123;</div><div class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;n;k++)&#123;</div><div class="line">				c[i][j]+=a[i][k]*b[k][j]</div><div class="line">			&#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> c;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
@@ -499,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/06/常用查找算法/" rel="next" title="常用查找算法">
-                <i class="fa fa-chevron-left"></i> 常用查找算法
+              <a href="/2017/05/10/海量数据处理/" rel="next" title="海量数据处理">
+                <i class="fa fa-chevron-left"></i> 海量数据处理
               </a>
             
           </div>
@@ -509,8 +510,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/10/海量数据处理/" rel="prev" title="海量数据处理">
-                海量数据处理 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/13/直接插入排序/" rel="prev" title="直接插入排序">
+                直接插入排序 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -585,7 +586,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -596,7 +597,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -607,7 +608,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

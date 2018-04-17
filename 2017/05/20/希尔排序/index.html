@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2017/05/20/希尔排序/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="希尔排序希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O(n)，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次">
-<meta property="og:updated_time" content="2018-03-08T02:37:29.783Z">
+<meta property="og:updated_time" content="2018-04-14T09:47:35.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="希尔排序">
 <meta name="twitter:description" content="希尔排序希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O(n)，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次">
@@ -431,7 +431,8 @@
       
 
       
-        <h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><h2 id="希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O-n-，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序（增量为1）。其时间复杂度为O-n-3-2-要好于直接插入排序的O-n-2"><a href="#希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O-n-，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序（增量为1）。其时间复杂度为O-n-3-2-要好于直接插入排序的O-n-2" class="headerlink" title="希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O(n)，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序（增量为1）。其时间复杂度为O(n^3/2),要好于直接插入排序的O(n^2)"></a>希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O(n)，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序（增量为1）。其时间复杂度为O(n^3/2),要好于直接插入排序的O(n^2)</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shellInsert</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> d)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=d; i&lt;arr.length; i++) &#123;</div><div class="line">        <span class="keyword">int</span> j = i - d;</div><div class="line">        <span class="keyword">int</span> temp = arr[i];    <span class="comment">//记录要插入的数据  </span></div><div class="line">        <span class="keyword">while</span> (j&gt;=<span class="number">0</span>&amp;&amp;arr[j]&gt;temp) &#123;  <span class="comment">//从后向前，找到比其小的数的位置   </span></div><div class="line">            arr[j+d] = arr[j];    <span class="comment">//向后挪动  </span></div><div class="line">            j -= d;  </div><div class="line">        &#125;  </div><div class="line"></div><div class="line">        <span class="keyword">if</span> (j != i - d)    <span class="comment">//存在比其小的数 </span></div><div class="line">            arr[j+d] = temp;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shellSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(arr == <span class="keyword">null</span> || arr.length == <span class="number">0</span>)</div><div class="line">        <span class="keyword">return</span> ;</div><div class="line">    <span class="keyword">int</span> d = arr.length / <span class="number">2</span>;</div><div class="line">    <span class="keyword">while</span>(d &gt;= <span class="number">1</span>) &#123;</div><div class="line">        shellInsert(arr, d);</div><div class="line">        d&gt;&gt;<span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><h2 id="希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O-n-，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序（增量为1）。其时间复杂度为O-n-3-2-要好于直接插入排序的O-n-2"><a href="#希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O-n-，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序（增量为1）。其时间复杂度为O-n-3-2-要好于直接插入排序的O-n-2" class="headerlink" title="希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O(n)，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序（增量为1）。其时间复杂度为O(n^3/2),要好于直接插入排序的O(n^2)"></a>希尔排序是插入排序的一种高效率的实现，也叫缩小增量排序。简单的插入排序中，如果待排序列是正序时，时间复杂度是O(n)，如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。基本思想是：先将整个待排元素序列分割成若干子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序（增量为1）。其时间复杂度为O(n^3/2),要好于直接插入排序的O(n^2)</h2><a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shellInsert</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> d)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=d; i&lt;arr.length; i++) &#123;</div><div class="line">        <span class="keyword">int</span> j = i - d;</div><div class="line">        <span class="keyword">int</span> temp = arr[i];    <span class="comment">//记录要插入的数据  </span></div><div class="line">        <span class="keyword">while</span> (j&gt;=<span class="number">0</span>&amp;&amp;arr[j]&gt;temp) &#123;  <span class="comment">//从后向前，找到比其小的数的位置   </span></div><div class="line">            arr[j+d] = arr[j];    <span class="comment">//向后挪动  </span></div><div class="line">            j -= d;  </div><div class="line">        &#125;  </div><div class="line"></div><div class="line">        <span class="keyword">if</span> (j != i - d)    <span class="comment">//存在比其小的数 </span></div><div class="line">            arr[j+d] = temp;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shellSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(arr == <span class="keyword">null</span> || arr.length == <span class="number">0</span>)</div><div class="line">        <span class="keyword">return</span> ;</div><div class="line">    <span class="keyword">int</span> d = arr.length / <span class="number">2</span>;</div><div class="line">    <span class="keyword">while</span>(d &gt;= <span class="number">1</span>) &#123;</div><div class="line">        shellInsert(arr, d);</div><div class="line">        d&gt;&gt;<span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -499,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/20/基数排序/" rel="next" title="基数排序">
-                <i class="fa fa-chevron-left"></i> 基数排序
+              <a href="/2017/05/13/冒泡排序/" rel="next" title="冒泡排序">
+                <i class="fa fa-chevron-left"></i> 冒泡排序
               </a>
             
           </div>
@@ -509,8 +510,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/20/快速排序/" rel="prev" title="快速排序">
-                快速排序 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/20/基数排序/" rel="prev" title="基数排序">
+                基数排序 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -585,7 +586,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -596,7 +597,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -607,7 +608,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
