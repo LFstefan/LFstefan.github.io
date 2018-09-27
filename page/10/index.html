@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/桶排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/AdapterPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/桶排序/" itemprop="url">
-                  桶排序
+                <a class="post-title-link" href="/2017/07/22/AdapterPattern/" itemprop="url">
+                  Adapter Pattern
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T12:21:25+08:00">
+                2017-07-22
               </time>
             
 
@@ -389,8 +389,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2017/05/27/桶排序/" class="leancloud_visitors" data-flag-title="桶排序">
+             <span id="/2017/07/22/AdapterPattern/" class="leancloud_visitors" data-flag-title="Adapter Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,10 +435,19 @@
 
       
         
-          <h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><h2 id="桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"><a href="#桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。" class="headerlink" title="桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"></a>桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。</h2>
+          <h1 id="Adapter-Pattern（适配器模式）"><a href="#Adapter-Pattern（适配器模式）" class="headerlink" title="Adapter Pattern（适配器模式）"></a>Adapter Pattern（适配器模式）</h1><blockquote>
+<p>Convert the inface of a class into another interface clients expect.Adapter lets classes work together that couldn’t otherwise because of incompatible interface.（将一个类的接口变换成客户端所期待的另一种接口，从而使原本因接口不匹配而无法在一起工作的两个类能够在一起工作。）“系统的数据和行为都正确，单接口不符时，我们应该考虑使用适配器，目的是是控制范围之外的一个原有对象与某个接口匹配。适配器模式主要用于希望复用一些现存的类，但是接口又与复用环境不一致的情况。”（《大话设计模式》）</p>
+</blockquote>
+<ul>
+<li>目标（Target）：一个接口，客户想要使用的接口</li>
+<li>被适配器（Adaptee）：一个已经存在的接口或者抽象类</li>
+<li>适配器(Adapter)：一个实现了目标接口并且含有被适配器引用的类</li>
+<li>应用场景：目标和被适配器完全解耦，通过适配器来建立联系（单接口适配器）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/桶排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/22/AdapterPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -484,7 +493,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/归并排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/FactoryPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -506,8 +515,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/归并排序/" itemprop="url">
-                  归并排序
+                <a class="post-title-link" href="/2017/07/22/FactoryPattern/" itemprop="url">
+                  Factory Pattern
                 </a>
               
             
@@ -523,8 +532,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T12:21:25+08:00">
+                2017-07-22
               </time>
             
 
@@ -546,8 +555,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -563,7 +572,7 @@
 
           
           
-             <span id="/2017/05/27/归并排序/" class="leancloud_visitors" data-flag-title="归并排序">
+             <span id="/2017/07/22/FactoryPattern/" class="leancloud_visitors" data-flag-title="Factory Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -592,10 +601,20 @@
 
       
         
-          <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><h2 id="归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O-n-，时间复杂度为O-nlogn-。"><a href="#归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O-n-，时间复杂度为O-nlogn-。" class="headerlink" title="归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。"></a>归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。</h2>
+          <h1 id="Factory-Pattern（工厂模式）"><a href="#Factory-Pattern（工厂模式）" class="headerlink" title="Factory Pattern（工厂模式）"></a>Factory Pattern（工厂模式）</h1><blockquote>
+<p>Define an interface for creating an object,but let subclass decide which class to instantiate.Factory Method lets a class defer instantiation to subclass.（定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法是一个类的实例化延迟到其子类。）</p>
+</blockquote>
+<ul>
+<li>抽象产品（Product）：一个接口或者抽象类，定义、产品必须实现的方法</li>
+<li>具体产品（ConcreteProduct）：抽象产品的子类或者实现类</li>
+<li>构造者（Creator）：一个接口或者抽象类，定义一个叫做工厂方法的抽象方法，该方法返回具体产品类的实例</li>
+<li>具体构造者（ConcreteCreator）：构造者实现类或者子类</li>
+<li>应用场景：使一个类的实例化延迟到其子类，或者是想得到某一类的子类的实例，但是却无法直接使用new（不允许与该子类形成耦合），或者不清楚该类有哪些子类可用</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/归并排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/22/FactoryPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -641,7 +660,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/计数排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/15/Java架构学习心得/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -663,8 +682,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/计数排序/" itemprop="url">
-                  计数排序
+                <a class="post-title-link" href="/2017/07/15/Java架构学习心得/" itemprop="url">
+                  Java架构学习心得(一)
                 </a>
               
             
@@ -680,8 +699,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-15T14:57:58+08:00">
+                2017-07-15
               </time>
             
 
@@ -703,8 +722,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Architecture/" itemprop="url" rel="index">
+                    <span itemprop="name">Architecture</span>
                   </a>
                 </span>
 
@@ -720,7 +739,7 @@
 
           
           
-             <span id="/2017/05/27/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
+             <span id="/2017/07/15/Java架构学习心得/" class="leancloud_visitors" data-flag-title="Java架构学习心得(一)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -749,10 +768,11 @@
 
       
         
-          <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"><a href="#一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！" class="headerlink" title="一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"></a>一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！</h2>
+          <h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><blockquote>
+<h3 id="软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c-s模式（客户端-服务器模式），在到现在的b-s模式（浏览器-服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）"><a href="#软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c-s模式（客户端-服务器模式），在到现在的b-s模式（浏览器-服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）" class="headerlink" title="软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）"></a>软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，<strong>框架</strong>应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）</h3></blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/计数排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/15/Java架构学习心得/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -798,7 +818,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/22/LintCode-最大数/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/08/浅尝MyBatis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -820,8 +840,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/22/LintCode-最大数/" itemprop="url">
-                  LintCode_最大数
+                <a class="post-title-link" href="/2017/07/08/浅尝MyBatis/" itemprop="url">
+                  浅尝MyBatis
                 </a>
               
             
@@ -837,8 +857,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-22T20:49:53+08:00">
-                2017-05-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T12:31:25+08:00">
+                2017-07-08
               </time>
             
 
@@ -861,7 +881,7 @@
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                    <span itemprop="name">Algorithm</span>
                   </a>
                 </span>
 
@@ -877,7 +897,7 @@
 
           
           
-             <span id="/2017/05/22/LintCode-最大数/" class="leancloud_visitors" data-flag-title="LintCode_最大数">
+             <span id="/2017/07/08/浅尝MyBatis/" class="leancloud_visitors" data-flag-title="浅尝MyBatis">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -906,11 +926,15 @@
 
       
         
-          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
-<h3 id="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"><a href="#给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。" class="headerlink" title="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"></a>给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。</h3><h4 id="注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。"><a href="#注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。" class="headerlink" title="(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)"></a>(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)</h4><h5 id="样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。"><a href="#样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。" class="headerlink" title="样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。"></a>样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。</h5></blockquote>
+          <h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h2 id="什么是JDBC？"><a href="#什么是JDBC？" class="headerlink" title="什么是JDBC？"></a>什么是JDBC？</h2><blockquote>
+<ul>
+<li>JDBC（Java DataBase Connectivity,java数据库连接）是一种用于执行SQL语句的Java API，可以为多种关系数据库提供统一访问，它由一组用Java语言编写的类和接口组成。JDBC提供了一种基准，据此可以构建更高级的工具和接口，使数据库开发人员能够编写数据库应用程序。</li>
+<li>有了JDBC，向各种关系数据发送SQL语句就是一件很容易的事。换言之，有了JDBC API，就不必为访问Sybase数据库专门写一个程序，为访问Oracle数据库又专门写一个程序，或为访问Informix数据库又编写另一个程序等等，程序员只需用JDBC API写一个程序就够了，它可向相应数据库发送SQL调用。同时，将Java语言和JDBC结合起来使程序员不必为不同的平台编写不同的应用程序，只须写一遍程序就可以让它在任何平台上运行，这也是Java语言“编写一次，处处运行”的优势。</li>
+</ul>
+</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/22/LintCode-最大数/#more" rel="contents">
+            <a class="btn" href="/2017/07/08/浅尝MyBatis/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -956,7 +980,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/20/快速排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/08/重温JavaEE-SSH框架/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -978,8 +1002,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/20/快速排序/" itemprop="url">
-                  快速排序
+                <a class="post-title-link" href="/2017/07/08/重温JavaEE-SSH框架/" itemprop="url">
+                  重温JavaEE_SSH框架
                 </a>
               
             
@@ -995,8 +1019,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T12:19:25+08:00">
-                2017-05-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T12:13:25+08:00">
+                2017-07-08
               </time>
             
 
@@ -1018,8 +1042,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Architecture/" itemprop="url" rel="index">
+                    <span itemprop="name">Architecture</span>
                   </a>
                 </span>
 
@@ -1035,7 +1059,7 @@
 
           
           
-             <span id="/2017/05/20/快速排序/" class="leancloud_visitors" data-flag-title="快速排序">
+             <span id="/2017/07/08/重温JavaEE-SSH框架/" class="leancloud_visitors" data-flag-title="重温JavaEE_SSH框架">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1064,10 +1088,19 @@
 
       
         
-          <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><h2 id="快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5-3-8-6-4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O-nlogn"><a href="#快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5-3-8-6-4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O-nlogn" class="headerlink" title="快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5,3,8,6,4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O(nlogn)"></a>快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5,3,8,6,4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O(nlogn)</h2>
+          <h3 id="知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞"><a href="#知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞" class="headerlink" title="知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞"></a>知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞</h3><blockquote>
+<ul>
+<li>struts2</li>
+<li>hibernate</li>
+<li>spring</li>
+<li>ssh整合及项目实例</li>
+</ul>
+</blockquote>
+<h1 id="Struts2"><a href="#Struts2" class="headerlink" title="Struts2"></a><a href="http://struts.apache.org/download.cgi" target="_blank" rel="external">Struts2</a></h1><blockquote>
+<h3 id="Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器-Controller-来建立模型与视图的数据交互。——百度百科"><a href="#Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器-Controller-来建立模型与视图的数据交互。——百度百科" class="headerlink" title="Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器(Controller)来建立模型与视图的数据交互。——百度百科"></a>Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器(Controller)来建立模型与视图的数据交互。——<a href="http://baike.baidu.com/link?url=ShHZ1EuJDaLZ_jYWb5JsokO0FymifdBhOSwZE_EE7HshozZKHtpYk2V-HVmNP7uhjru1w-h2bloxs37lWCAwDYL7TdogHByUiYkQf0_RN3-gl55RgS3XshLfdF6qO35QT-BA_SWAr73UE0D7Jxeji_" target="_blank" rel="external">百度百科</a></h3></blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/20/快速排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/08/重温JavaEE-SSH框架/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1108,7 +1141,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1153,7 +1186,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">74</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1164,7 +1197,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1175,7 +1208,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-count">65</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

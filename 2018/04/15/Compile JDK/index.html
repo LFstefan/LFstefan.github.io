@@ -1,0 +1,1397 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JAVA,JVM,JDK," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="动手编译JDK README-builds.html，每一份源码内均存在的编译指南，英语基础好的童鞋可直接参考该文档，比起网络上的资源，官方文档始终应该作为第一选择！  前言 如果你是linux操作系统小白，上来就想挑战编译jdk，那么你将会遇到重重困难，但是这同时也是一个非常好的学习机会，因为你会突然间接触到非常多的新知识，过程中的每一个坑，每一次失败都将成为你进步的垫脚石，期间需要你非常耐心的">
+<meta name="keywords" content="JAVA,JVM,JDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Compile JDK">
+<meta property="og:url" content="https://lfstefan.github.io/2018/04/15/Compile JDK/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="动手编译JDK README-builds.html，每一份源码内均存在的编译指南，英语基础好的童鞋可直接参考该文档，比起网络上的资源，官方文档始终应该作为第一选择！  前言 如果你是linux操作系统小白，上来就想挑战编译jdk，那么你将会遇到重重困难，但是这同时也是一个非常好的学习机会，因为你会突然间接触到非常多的新知识，过程中的每一个坑，每一次失败都将成为你进步的垫脚石，期间需要你非常耐心的">
+<meta property="og:updated_time" content="2018-09-17T02:46:39.972Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Compile JDK">
+<meta name="twitter:description" content="动手编译JDK README-builds.html，每一份源码内均存在的编译指南，英语基础好的童鞋可直接参考该文档，比起网络上的资源，官方文档始终应该作为第一选择！  前言 如果你是linux操作系统小白，上来就想挑战编译jdk，那么你将会遇到重重困难，但是这同时也是一个非常好的学习机会，因为你会突然间接触到非常多的新知识，过程中的每一个坑，每一次失败都将成为你进步的垫脚石，期间需要你非常耐心的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2018/04/15/Compile JDK/"/>
+
+
+
+
+
+  <title>Compile JDK | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/04/15/Compile JDK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Compile JDK
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-15T12:21:25+08:00">
+                2018-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JDK/" itemprop="url" rel="index">
+                    <span itemprop="name">JDK</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/15/Compile JDK/" class="leancloud_visitors" data-flag-title="Compile JDK">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="动手编译JDK"><a href="#动手编译JDK" class="headerlink" title="动手编译JDK"></a>动手编译JDK</h1><blockquote>
+<p>README-builds.html，每一份源码内均存在的编译指南，英语基础好的童鞋可直接参考该文档，比起网络上的资源，官方文档始终应该作为第一选择！</p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>如果你是linux操作系统小白，上来就想挑战编译jdk，那么你将会遇到重重困难，但是这同时也是一个非常好的学习机会，因为你会突然间接触到非常多的新知识，过程中的每一个坑，每一次失败都将成为你进步的垫脚石，期间需要你非常耐心的去面对和处理每一个问题，分析其原因并总结经验教训，切记不可急躁，你所花费的每一分钟都将会有所收获，急躁只会打乱你的思考，导致考虑问题的轨道产生偏差，从而绕其弯路，文章只会告诉你如何编译jdk，但不会告诉你怎么操作才能看到最后的成功标志，需要你自己去一遍思考一遍了解为何这样做，祝各位旅途愉快，到达成功的终点。（大佬们请自动忽略我的废话，直接找寻你们的目标信息即可）</p>
+</blockquote>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>材料准备</li>
+<li>编译jdk</li>
+<li>过程总结</li>
+<li>涉及知识清单</li>
+</ul>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="材料准备"><a href="#材料准备" class="headerlink" title="材料准备"></a>材料准备</h3><ul>
+<li><p>linux操作系统</p>
+<ul>
+<li>系统中常用的工具及依赖自行安装，如不清楚编译jdk需要哪些依赖及工具可参考附录</li>
+<li>系统网络状态正常，因为编译中途会涉及到下载相关依赖</li>
+<li>openjdk7，用于后续的jdk编译（这里的jdk不同于后续待编译的jdk，这里jdk是我们平时正常使用的jdk，因为jdk各个组成部分有的是用c/c++写的，有的是用java写的，所以后续编译java代码时需要用到）</li>
+<li><p>openjdk源码（此为我们后续编译的jdk源代码，版本自行选择，这里使用的7）</p>
+<ul>
+<li>获取 OpenJDK 源码大致有两种方式</li>
+<li>通过 Mercurial 代码版本管理工具从 Repository 中直接取得源码，这就需要我们先安装工具Mercurial，安装过程自行查阅资料。</li>
+</ul>
+<blockquote>
+<p>注意：使用Mercrial工具下载源码时，结果可能由于网络原因导致源码文件有所缺失，从而后续命令失败。</p>
+</blockquote>
+<ul>
+<li>从网站上下载： <a href="http://download.java.net/openjdk/jdk7/promoted/b147/openjdk-7-fcs-src-b147-27_jun_2011.zip" target="_blank" rel="external">http://download.java.net/openjdk/jdk7/promoted/b147/openjdk-7-fcs-src-b147-27_jun_2011.zip</a> </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="编译jdk"><a href="#编译jdk" class="headerlink" title="编译jdk"></a>编译jdk</h3><ul>
+<li><p>环境变量配置</p>
+<ul>
+<li><p>编辑环境变量命令：vi /etc/profile</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">语言选项,这个必须设置,否则编译好后会出现一个HashTable的NPE错</div><div class="line">export LANG=C</div><div class="line">Bootstrap JDK的安装路径。必须设置</div><div class="line">export ALT_BOOTDIR=/usr/local/java/jdk1.8.0_101 </div><div class="line"></div><div class="line">允许自动下载依赖</div><div class="line">export ALLOW_DOWNLOADS=true</div><div class="line"></div><div class="line">并行编译的线程数,设置为和CPU内核数量一致即可</div><div class="line">export HOTSPOT_BUILD_J0BS=6</div><div class="line">export ALT_PARALLEL_COMPILE_JOBS=6 </div><div class="line"></div><div class="line">比较本次build出来的映像与先前版本的差异。这对我们来说没有意义, </div><div class="line">必须设置为false,香则sanity检查会报缺少先前版本JDK的映像的错误提示。 </div><div class="line">如桌已经设置dev或者DEV_ONLY=true,这个不显式设置也行</div><div class="line">export SKIP_COMPARE_IMAGES=true</div><div class="line"></div><div class="line">使用预编译头文件,不加这个编译会更慢一些</div><div class="line">export USE_PRECOMPILED_HEADER=true</div><div class="line"></div><div class="line">要编译的内容</div><div class="line">export BUILD_LANGTOOLS=true</div><div class="line">export BUILD_JAXP=false</div><div class="line">export BUILD_JAXWS=fa1se</div><div class="line">export BUILD_CORBA=false</div><div class="line">export BUILD_HOTSPOT=true</div><div class="line">export BUILD_JDK=true</div><div class="line"></div><div class="line">要编译的版本</div><div class="line">export SKIP_DEBUG_BUILD=false</div><div class="line">export SKIP_FASTDEBUG_BUILD=true</div><div class="line">export DEBUG_NAME=debug</div><div class="line"></div><div class="line">把它设置为false可以避开javaws和浏览器Java插件之类的部分的build</div><div class="line">BUILD_DEPLOY=false</div><div class="line"></div><div class="line">把它设置为false就不会build出安装包。因为安装包里有些奇怪的依赖, </div><div class="line">但即便不build出它也已经能得到完整的JDK映像,所以还是别build它好了</div><div class="line">BUILD_INSTALL=false</div><div class="line"></div><div class="line">编译结果所存放的路径</div><div class="line">export ALT_OUTPUTDIR=/root/openjdk7/build</div><div class="line"></div><div class="line">这两个环境变量必须去掉,不然会有很诡异的事情发生（我没有具体查过这些 "诡异的</div><div class="line">事情” ,Makefile脚本裣查到有这2个变量就会提示警告)</div><div class="line">unset JAVA_HOME</div><div class="line">unset CLASSPATH</div><div class="line">make 2&gt;&amp;1 | tee $ALT_OUTPUTDIR/build.log</div></pre></td></tr></table></figure>
+</li>
+<li><p>生效环境变量命：source /etc/profile</p>
+</li>
+</ul>
+</li>
+<li><p>编译</p>
+<ul>
+<li>编译前的检测：进入到openjdk源码目录下执行命令：make sanity检测编译环境是否可行，出现Sanity check passed.结果表示测试通过可以进行编译，否则根据报错进行修改。</li>
+<li>开始编译：在openjdk源码目录下执行命令：make开始编译，过程时间长短由你所配置的环境变量有关，本次时长大约十三分钟，出现以下命令时表示编译成功。  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">成功标志：</div><div class="line">-- Build times ----------</div><div class="line">Target all_product_build</div><div class="line">Start <span class="number">2018</span>-<span class="number">09</span>-<span class="number">14</span> <span class="number">10</span>:<span class="number">45</span>:<span class="number">08</span></div><div class="line">End   <span class="number">2018</span>-<span class="number">09</span>-<span class="number">14</span> <span class="number">10</span>:<span class="number">57</span>:<span class="number">54</span></div><div class="line"><span class="number">00</span>:<span class="number">00</span>:<span class="number">05</span> corba</div><div class="line"><span class="number">00</span>:<span class="number">00</span>:<span class="number">05</span> hotspot</div><div class="line"><span class="number">00</span>:<span class="number">00</span>:<span class="number">03</span> jaxp</div><div class="line"><span class="number">00</span>:<span class="number">00</span>:<span class="number">05</span> jaxws</div><div class="line"><span class="number">00</span>:<span class="number">12</span>:<span class="number">25</span> jdk</div><div class="line"><span class="number">00</span>:<span class="number">00</span>:<span class="number">03</span> langtools</div><div class="line"><span class="number">00</span>:<span class="number">12</span>:<span class="number">46</span> TOTAL</div><div class="line">-------------------------</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>编译结果</p>
+<ul>
+<li>进入存放编译结果目录（环境变量已配置）/root/openjdk7/build下的j2sdk-image目录</li>
+<li>cd /root/openjdk7/build/j2sdk-image</li>
+<li>更换JAVA_HOME路径（j2sdk-image路径下的内容就和我们平时用的jdk内容大致一样）</li>
+<li>export JAVA_HOME=/root/openjdk7/build/j2sdk-image</li>
+<li>export PATH=$PATH:$JAVA_HOME/bin</li>
+<li>检测编译结果</li>
+<li>java -version</li>
+<li>出现版本号等信息说明编译成功可用</li>
+</ul>
+</li>
+<li><p>运行编译后的虚拟机：</p>
+<ul>
+<li>进入目录/root/openjdk7/build/hotspot/outputdir/linux_amd64_compiler2/product</li>
+<li>修改文件env.sh：vi env.sh</li>
+<li>LD_LIBRARY_PATH=.:${JAVA_HOME}/jre/lib/amd64/native_threads:${JAVA_HOME}/jre/lib/amd64:（有则不管，无则加入）</li>
+<li>export LD_LIBRARY_PATH（有则不管，无则加入）</li>
+<li>修改JAVA_HOME路径为编译后的jdk，即JAVA_HOME=/root/openjdk7/build/j2sdk-image</li>
+<li>运行命令：source ./env.sh和./gamma -version</li>
+<li>出现结果如下说明成功<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Using java runtime at: /root/openjdk7/build/j2sdk-image/jre</div><div class="line">openjdk version <span class="string">"1.7.0-internal"</span></div><div class="line"><span class="function">OpenJDK Runtime <span class="title">Environment</span> <span class="params">(build <span class="number">1.7</span><span class="number">.0</span>-internal-openjdk_2017_05_13_11_17-b00)</span></span></div><div class="line">OpenJDK 64-Bit Server <span class="title">VM</span> <span class="params">(build <span class="number">24.80</span>-b07, mixed mode)</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="过程总结"><a href="#过程总结" class="headerlink" title="过程总结"></a>过程总结</h3><ul>
+<li>首先linux系统一定要够熟练，基本命令的使用，操作系统的了解，包括jvm和jdk的组成生态环境，都对你的整个编译过程有很大的帮助</li>
+<li>前面提到过编译过程中会有相关依赖的下载（总共有三个，分别为：jaxp145_01.zip，jdk7-jaxws2_2_4-b03-2011_05_27.zip ，jdk7-jaf-2010_08_19.zip），但是实际上下载会失败，将链接地址拷贝出来到网页是可以下载的，但是编译过程中不行，本次编译实现两种解决方案，一种是将下载链接地址换成其他例如，网盘，七牛云等，一种是自行下载好放入相应文件夹中<ul>
+<li>方法一需修改配置文件 其一位置为：/root/openjdk7/jaxp/jaxp.properties，其二位置为：/root/openjdk7/jaxws/jaxws.properties</li>
+<li>将上述配置文件中jaxws_src.master.bundle.url.base=<a href="http://download.java.net/glassfish/components/jax-ws/openjdk/jdk7后面的url地址换成自己的地址即可" target="_blank" rel="external">http://download.java.net/glassfish/components/jax-ws/openjdk/jdk7后面的url地址换成自己的地址即可</a></li>
+<li>方法二将以下三个文件下载后置于OpenJDK解压后根目录下的drop目录下，并在环境变量中加入配置：export ALT_DROPS_DIR=/usr/local/src/openjdk7/drop # 注意目录Path<ul>
+<li><a href="https://netix.dl.sourceforge.net/project/jdk7src/input-archives/jdk7-jaf-2010_08_19.zip" target="_blank" rel="external">https://netix.dl.sourceforge.net/project/jdk7src/input-archives/jdk7-jaf-2010_08_19.zip</a></li>
+<li><a href="http://download.java.net/glassfish/components/jax-ws/openjdk/jdk7/jdk7-jaxws2_2_4-b03-2011_05_27.zip" target="_blank" rel="external">http://download.java.net/glassfish/components/jax-ws/openjdk/jdk7/jdk7-jaxws2_2_4-b03-2011_05_27.zip</a> </li>
+<li><a href="http://download.java.net/jaxp/1.4.5/jaxp145_01.zip" target="_blank" rel="external">http://download.java.net/jaxp/1.4.5/jaxp145_01.zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>错误：Error: time is more than 10 years from present: 1136059200000<ul>
+<li>需要修改源码目录中的一个文件，这个文件是<openjdk源码目录>/jdk/src/share/classes/java/util/CurrencyData.properties。</openjdk源码目录></li>
+<li>我们需要做的是把文件中以下的时间改为10年内的一个时间： </li>
+</ul>
+</li>
+<li>错误：JAVA_HOME must point to a valid JDK/JRE to run gamma<ul>
+<li>解决：export JAVA_HOME=/root/openjdk7/build/j2sdk-image（使用我们刚刚自己编译的jdk）</li>
+<li>echo $JAVA_HOME</li>
+</ul>
+</li>
+<li>编译jvmg版本的jdk。<ul>
+<li>make jvmg jvmg1 2&gt;&amp;1 | tee $ALT_OUTPUTDIR/build.log</li>
+<li>上面我的命令只是编译jvmg版的hotspot。所以除了jvmg目录，其他目录下是没有hotspot的。</li>
+<li>最后通过gamma启动器来启动hotspot。</li>
+</ul>
+</li>
+</ul>
+<h3 id="知识扩展"><a href="#知识扩展" class="headerlink" title="知识扩展"></a>知识扩展</h3><ul>
+<li>MD5 CheckSum：在一些场景中，比如文件传输（如插件、固件升级包等），MD5 CheckSum的作用就是用于检查文件完整性，检测文件是否被恶意篡改。编译过程中的依赖下载就用到了该技术，在配置文件/root/openjdk7/jaxp/jaxp.properties，其二位置为：/root/openjdk7/jaxws/jaxws.properties中可以看到该字段配置</li>
+</ul>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="编译涉及依赖及工具安装命令："><a href="#编译涉及依赖及工具安装命令：" class="headerlink" title="编译涉及依赖及工具安装命令："></a>编译涉及依赖及工具安装命令：</h3><blockquote>
+<p>yum install build-essential gawk m4 openjdk-6-jdk libasound2-dev libcups2-dev libxrender-dev xorg-dev xutils-dev xllproto-print-dev binutils libmotif3 libmotif-dev ant</p>
+</blockquote>
+<h3 id="各个依赖工具作用："><a href="#各个依赖工具作用：" class="headerlink" title="各个依赖工具作用："></a>各个依赖工具作用：</h3><ul>
+<li>build-essential：作用是提供编译程序必须软件包的列表信息也就是说 编译程序有了这个软件包它才知道 头文件在哪 才知道库函数在哪还会下载依赖的软件包   最后才组成一个开发环境</li>
+<li>gawk (gnu awk) ：linux下查找替换文本工具按行(或者其他文本单元)搜索文件内容,包含一个匹配模式。当有文本行匹配，awk在此行进行特别的操作。Program告诉awk该去做什么;</li>
+<li>m4 ：将输入拷贝到输出,同时将宏展开. 宏可以是内嵌的也可以是用户定义的. 除了可以展开宏,m4还有一些内建的函数,用来引用文件,执行Unix命令,整数运算,文本操作,循环等. m4既可以作为编译器的前端也可以单独作为一个宏处理器。</li>
+<li>libasound2-dev： 这是Advanced Linux Sound Architecture (ALSA)相关的依赖。 </li>
+<li>libcups2-dev： 这是Common UNIX Printing System (CUPS)相关的依赖。 </li>
+<li>binutils：GNU binutils是一组二进制工具集。包括：addr2line ar gprof nm objcopy objdump ranlib size strings strip. 本文归纳他们的常用法。ar用于建立、修改、提取档案文件(archive)。archive是一个包含多个被包含文件的单一文件（也称之为库文件），其结构保证了可以从中检索并得到原始的被包含文件（称之为archive中的member）。member的原始文件内容、模式（权限）、时间戳、所有者和组等属性都被保存在 archive中。member被提取后，他们的属性被恢复到初始状态。</li>
+<li>待补充。。。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+            <a href="/tags/JDK/" rel="tag"># JDK</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/15/初识REST/" rel="next" title="初识REST">
+                <i class="fa fa-chevron-left"></i> 初识REST
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/22/JVM/" rel="prev" title="JVM">
+                JVM <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#动手编译JDK"><span class="nav-number">1.</span> <span class="nav-text">动手编译JDK</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.2.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">1.3.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#材料准备"><span class="nav-number">1.3.1.</span> <span class="nav-text">材料准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译jdk"><span class="nav-number">1.3.2.</span> <span class="nav-text">编译jdk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过程总结"><span class="nav-number">1.3.3.</span> <span class="nav-text">过程总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#知识扩展"><span class="nav-number">1.3.4.</span> <span class="nav-text">知识扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">1.4.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译涉及依赖及工具安装命令："><span class="nav-number">1.4.1.</span> <span class="nav-text">编译涉及依赖及工具安装命令：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各个依赖工具作用："><span class="nav-number">1.4.2.</span> <span class="nav-text">各个依赖工具作用：</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
