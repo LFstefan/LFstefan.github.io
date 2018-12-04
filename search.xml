@@ -255,9 +255,9 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>Concurrency</tag>
         <tag>IO</tag>
         <tag>File</tag>
+        <tag>Concurrency</tag>
       </tags>
   </entry>
   <entry>
@@ -413,35 +413,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Singleton Pattern]]></title>
-    <url>%2F2017%2F08%2F19%2FSingletonPattern%2F</url>
-    <content type="text"><![CDATA[Singleton PatternEnsure a class has only one instance, and provide a global point of access to it.（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。） 某些类创建比较频繁，对于一些大型的对象，这是一笔很大的系统开销。 省去了new操作符，降低了系统内存的使用频率，减轻GC压力。 有些类如交易所的核心交易引擎，控制着交易流程，如果该类可以创建多个的话，系统完全乱了。（比如一个军队出现了多个司令员同时指挥，肯定会乱成一团），所以只有使用单例模式，才能保证核心交易服务器独立控制整个流程。 123456789101112131415161718192021public class Singleton &#123; /* 立即加载/恶汉模式 在使用类的时候就已经将对象创建完毕，在调用方法前，实例已经被创建 private static Singleton instance = new Singleton(); 延迟加载/懒汉模式 在调用get()方法时实例才被创建 public static Singleton getInstance() &#123; instance = new Singleton(); &#125; */ //持有私有静态实例，防止被引用，此处赋值为null，目的是实现延迟加载 private static Singleton instance = null; //私有构造方法，防止被实例化 private Singleton() &#123;&#125; //静态工程方法，创建实例 public static Singleton getInstance() &#123; if (instance == null) &#123; instance = new Singleton(); &#125; return instance; &#125; &#125; 上面的类在单线程情况下不会出错，但是如果我们把它放入多线程的环境下，就会出现问题了，如何解决？我们可以对getInstance方法加synchronized关键字，如下：123456public static synchronized Singleton getInstance() &#123; if (instance == null) &#123; instance = new Singleton(); &#125; return instance; &#125; 但是，synchronized关键字会锁住整个对象，这样的用法，在性能上会有所下降，因为每次调用getInstance()，都会对对象上锁，事实上，我们只需要在第一次创建对象的时候需要加锁，之后就不需要了，所以，我们进一步改进为：12345678910public static Singleton getInstance() &#123; if (instance == null) &#123; synchronized (instance) &#123; if (instance == null) &#123; instance = new Singleton(); &#125; &#125; &#125; return instance; &#125; 如果不了解jvm中指令重排的同学可能认为上面的改进已经算是完善了，但是，在Java指令中创建对象和赋值操作是分开进行的，也就是说instance = new Singleton()语句是分两步执行的。但是JVM并不保证这两个操作的先后顺序，也就是说有可能JVM会为新的Singleton实例分配空间，然后直接赋值给instance成员，然后再去初始化这个Singleton实例。这样就可能出错了，我们以A、B两个线程为例： a&gt;A、B线程同时进入了第一个if判断 b&gt;A首先进入synchronized块，由于instance为null，所以它执行instance = new Singleton(); c&gt;由于JVM内部的优化机制，JVM先画出了一些分配给Singleton实例的空白内存，并赋值给instance成员（注意此时JVM没有开始初始化这个实例），然后A离开了synchronized块。 d&gt;B进入synchronized块，由于instance此时不是null，因此它马上离开了synchronized块并将结果返回给调用该方法的程序。 e&gt;此时B线程打算使用Singleton实例，却发现它没有被初始化，于是错误发生了。 所以程序还是有可能发生错误，其实程序在运行过程是很复杂的，从这点我们就可以看出，在写多线程环境下的程序是有一定难度的。我们对该程序做进一步优化：1234567//静态内置类实现单例private static class SingletonFactory&#123; private static Singleton instance = new Singleton(); &#125; public static Singleton getInstance()&#123; return SingletonFactory.instance; &#125; 实际上，单例模式使用内部类来维护单例的实现，JVM内部的机制能够保证当一个类被加载的时候，这个类的加载过程是线程互斥的。这样当我们第一次调用getInstance的时候，JVM能够帮我们保证instance只被创建一次，并且会保证把赋值给instance的内存初始化完毕，这样我们就不用担心上面的问题。同时该方法也只会在第一次调用的时候使用互斥机制，这样就解决了低性能问题。这样我们可以暂时总结一个完整的单例模式如下：1234567891011121314151617181920212223242526272829303132333435363738394041public class Singleton &#123; //私有构造方法，防止被实例化 private Singleton() &#123;&#125; //此处使用一个内部类来维护单例 private static class SingletonFactory &#123; private static Singleton instance = new Singleton(); &#125; //获取实例 public static Singleton getInstance() &#123; return SingletonFactory.instance; &#125; &#125; //变形，使用static代码块实现public class Singleton &#123; private static Singleton instance = null； //私有构造方法内放置static代码块，里面实例化对象 private Singleton() &#123; static&#123; instance = new Singleton(); &#125; &#125; //获取实例 public static Singleton getInstance() &#123; return instance; &#125; &#125; //扩展，使用枚举enum实现public class Singleton &#123; public enum EnumSingleton&#123; connectionFactory； private Connection connection; private EnumSingleton&#123; ... connection = DriverManager.getConnection(url,username,password); &#125; public Connection getConnection()&#123; return connection; &#125; &#125; public static Connection getConnection() &#123; return EnumSingleton.connectionFactory.getConnection(); &#125; &#125; 静态内置类可以达到线程安全问题，但是当遇到序列化对象时，使用默认的方式运行得到的结果还是多例的12345678910111213141516171819202122232425262728293031323334353637public class MyObject implements Serializable &#123; private static final long serialVersionUID = 888L; private static class MyObjectHandler &#123; private static final MyObject myObject = new MyObject(); &#125; private MyObject() &#123;&#125; public static MyObject getInstance() &#123; return MyObjectHandler.myObject; &#125; //readResolve()方法解决序列化单例模式 protected Object readResolve() throws ObjectStreamException &#123; System.out.println("调用了readResolve方法！"); return MyObjectHandler.myObject; &#125; &#125; //输出hashCode来验证序列化前后对象是否为同一个public class SaveAndRead &#123; public static void main(String[] args) &#123; try &#123; MyObject myObject = MyObject.getInstance(); FileOutputStream fosRef = new FileOutputStream(new File("myObjectFile.txt")); ObjectOutputStream oosRef = new ObjectOutputStream(fosRef); oosRef.writeObject(myObject); oosRef.close(); fosRef.close(); System.out.println(myObject.hashCode()); &#125; catch (Exception e) &#123; e.printStackTrace(); &#125; try &#123; FileInputStream fisRef = new FileInputStream(new File("myObjectFile.txt")); ObjectInputStream iosRef = new ObjectInputStream(fisRef); MyObject myObject = (MyObject) iosRef.readObject(); iosRef.close(); fisRef.close(); System.out.println(myObject.hashCode()); &#125; catch (Exception e) &#123; e.printStackTrace(); &#125; &#125; &#125;]]></content>
-      <categories>
-        <category>Pattern</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Pattern</tag>
-        <tag>Creational_Pattern</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Strategy Pattern]]></title>
     <url>%2F2017%2F08%2F19%2FStrategyPattern%2F</url>
     <content type="text"><![CDATA[Strategy Pattern（策略模式）Define a family of algorithms, encapsulate each one, and make them interchangeable.（定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。） 策略（Strategy）：一个接口 上下文（Context）：依赖于策略接口的类（组合关系） 具体策略（ConcreteStrategy）：策略接口的实现类 应用场景：一个类定义了多种行为构成了多个条件分支（封装算法的细节） javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354//Strategypublic interface Strategy&#123; public double computerAverage(double [] a); &#125;//Contextpublic class AverageScore&#123; //组合 Strategy stratrgy; public void setStrategy(Strategy stratrgy)&#123; this.stratrgy = stratrgy; &#125; public double getAverage(double [] a)&#123; return stratrgy.computerAverage(a); &#125;&#125;//ConcreteStrategypublic class StrategyA implements Strategy &#123; public double computerAverage(double [] a)&#123; double average = 0; for (double i : a) &#123; average += i; &#125; average /=a.length; return average; &#125;&#125;import java.util.Arrays;public class StrategyB implements Strategy &#123; public double computerAverage(double [] a)&#123; double average = 0; Arrays.sort(a); for (int i = 1;i &lt; a.length-1 ;i++ ) &#123; average += a[i]; &#125; average /=(a.length-2); return average; &#125;&#125;//Testpublic class Application&#123; public static void main(String[] args) &#123; double [] tuple = new double[]&#123;90,90,98,87,76,45&#125;; AverageScore ave = new AverageScore(); //策略A ave.setStrategy(new StrategyA()); double score = ave.getAverage(tuple); //策略B ave.setStrategy(new StrategyB()); double score1 = ave.getAverage(tuple); System.out.printf("%10f %10f",score,score1); &#125;&#125;]]></content>
-      <categories>
-        <category>Pattern</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Pattern</tag>
-        <tag>Behavioral_Pattern</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[State Pattern]]></title>
-    <url>%2F2017%2F08%2F19%2FStatePattern%2F</url>
-    <content type="text"><![CDATA[State Pattern（状态模式）Allow an object to alter its behavior when its internal state changes.The object will appear to change its class.（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。） 抽象状态（State）：一个接口或者抽象类 环境（Context）：依赖于策略接口的类（组合关系） 具体状态（ConcreteState）：状态接口（抽象类）的实现类（扩展类） 应用场景：一个对象的状态依赖于它的行为，状态随着行为的改变为改变 javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108//Statepublic abstract class State&#123; public abstract void shoot(); public abstract void loadBullets();&#125;//Contextpublic class Gun&#123; public State stateThree,stateTwo,stateOne,stateNull; public State state; public Gun()&#123; stateThree = new BulletStateThree(this); stateTwo = new BulletStateTwo(this); stateOne = new BulletStateOne(this); stateNull = new BulletStateNull(this); state = stateThree; &#125; public void setState(State state)&#123; this.state = state; &#125; public void fire()&#123; state.shoot(); &#125; public void load()&#123; state.loadBullets(); &#125;&#125;//ConcreteStatepublic class BulletStateNull extends State&#123; Gun gun; BulletStateNull(Gun gun)&#123; this.gun = gun; &#125; public void shoot()&#123; System.out.println("没有子弹了！"); &#125; public void loadBullets()&#123; System.out.println("装弹-------"); gun.setState(gun.stateThree); &#125;&#125;public class BulletStateOne extends State&#123; Gun gun; BulletStateOne(Gun gun)&#123; this.gun = gun; &#125; public void shoot()&#123; System.out.println("射出一颗子弹！"); gun.setState(gun.stateNull); &#125; public void loadBullets()&#123; System.out.println("无法装弹！"); &#125;&#125;public class BulletStateTwo extends State&#123; Gun gun; BulletStateTwo(Gun gun)&#123; this.gun = gun; &#125; public void shoot()&#123; System.out.println("射出一颗子弹！"); gun.setState(gun.stateOne); &#125; public void loadBullets()&#123; System.out.println("无法装弹！"); &#125;&#125;public class BulletStateThree extends State&#123; Gun gun; BulletStateThree(Gun gun)&#123; this.gun = gun; &#125; public void shoot()&#123; System.out.println("射出一颗子弹！"); gun.setState(gun.stateTwo); //gun,setState(new BulletStateTwo(gun)); &#125; public void loadBullets()&#123; System.out.println("无法装弹！"); &#125;&#125;//Testpublic class Application &#123; public static void main(String[] args) &#123; Gun gun = new Gun(); gun.fire(); gun.fire(); gun.fire(); gun.fire(); gun.load(); gun.fire(); &#125;&#125;]]></content>
       <categories>
         <category>Pattern</category>
       </categories>
@@ -462,6 +436,32 @@
         <tag>Java</tag>
         <tag>Pattern</tag>
         <tag>Structural_Pattern</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[State Pattern]]></title>
+    <url>%2F2017%2F08%2F19%2FStatePattern%2F</url>
+    <content type="text"><![CDATA[State Pattern（状态模式）Allow an object to alter its behavior when its internal state changes.The object will appear to change its class.（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。） 抽象状态（State）：一个接口或者抽象类 环境（Context）：依赖于策略接口的类（组合关系） 具体状态（ConcreteState）：状态接口（抽象类）的实现类（扩展类） 应用场景：一个对象的状态依赖于它的行为，状态随着行为的改变为改变 javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108//Statepublic abstract class State&#123; public abstract void shoot(); public abstract void loadBullets();&#125;//Contextpublic class Gun&#123; public State stateThree,stateTwo,stateOne,stateNull; public State state; public Gun()&#123; stateThree = new BulletStateThree(this); stateTwo = new BulletStateTwo(this); stateOne = new BulletStateOne(this); stateNull = new BulletStateNull(this); state = stateThree; &#125; public void setState(State state)&#123; this.state = state; &#125; public void fire()&#123; state.shoot(); &#125; public void load()&#123; state.loadBullets(); &#125;&#125;//ConcreteStatepublic class BulletStateNull extends State&#123; Gun gun; BulletStateNull(Gun gun)&#123; this.gun = gun; &#125; public void shoot()&#123; System.out.println("没有子弹了！"); &#125; public void loadBullets()&#123; System.out.println("装弹-------"); gun.setState(gun.stateThree); &#125;&#125;public class BulletStateOne extends State&#123; Gun gun; BulletStateOne(Gun gun)&#123; this.gun = gun; &#125; public void shoot()&#123; System.out.println("射出一颗子弹！"); gun.setState(gun.stateNull); &#125; public void loadBullets()&#123; System.out.println("无法装弹！"); &#125;&#125;public class BulletStateTwo extends State&#123; Gun gun; BulletStateTwo(Gun gun)&#123; this.gun = gun; &#125; public void shoot()&#123; System.out.println("射出一颗子弹！"); gun.setState(gun.stateOne); &#125; public void loadBullets()&#123; System.out.println("无法装弹！"); &#125;&#125;public class BulletStateThree extends State&#123; Gun gun; BulletStateThree(Gun gun)&#123; this.gun = gun; &#125; public void shoot()&#123; System.out.println("射出一颗子弹！"); gun.setState(gun.stateTwo); //gun,setState(new BulletStateTwo(gun)); &#125; public void loadBullets()&#123; System.out.println("无法装弹！"); &#125;&#125;//Testpublic class Application &#123; public static void main(String[] args) &#123; Gun gun = new Gun(); gun.fire(); gun.fire(); gun.fire(); gun.fire(); gun.load(); gun.fire(); &#125;&#125;]]></content>
+      <categories>
+        <category>Pattern</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Pattern</tag>
+        <tag>Behavioral_Pattern</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Singleton Pattern]]></title>
+    <url>%2F2017%2F08%2F19%2FSingletonPattern%2F</url>
+    <content type="text"><![CDATA[Singleton PatternEnsure a class has only one instance, and provide a global point of access to it.（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。） 某些类创建比较频繁，对于一些大型的对象，这是一笔很大的系统开销。 省去了new操作符，降低了系统内存的使用频率，减轻GC压力。 有些类如交易所的核心交易引擎，控制着交易流程，如果该类可以创建多个的话，系统完全乱了。（比如一个军队出现了多个司令员同时指挥，肯定会乱成一团），所以只有使用单例模式，才能保证核心交易服务器独立控制整个流程。 123456789101112131415161718192021public class Singleton &#123; /* 立即加载/恶汉模式 在使用类的时候就已经将对象创建完毕，在调用方法前，实例已经被创建 private static Singleton instance = new Singleton(); 延迟加载/懒汉模式 在调用get()方法时实例才被创建 public static Singleton getInstance() &#123; instance = new Singleton(); &#125; */ //持有私有静态实例，防止被引用，此处赋值为null，目的是实现延迟加载 private static Singleton instance = null; //私有构造方法，防止被实例化 private Singleton() &#123;&#125; //静态工程方法，创建实例 public static Singleton getInstance() &#123; if (instance == null) &#123; instance = new Singleton(); &#125; return instance; &#125; &#125; 上面的类在单线程情况下不会出错，但是如果我们把它放入多线程的环境下，就会出现问题了，如何解决？我们可以对getInstance方法加synchronized关键字，如下：123456public static synchronized Singleton getInstance() &#123; if (instance == null) &#123; instance = new Singleton(); &#125; return instance; &#125; 但是，synchronized关键字会锁住整个对象，这样的用法，在性能上会有所下降，因为每次调用getInstance()，都会对对象上锁，事实上，我们只需要在第一次创建对象的时候需要加锁，之后就不需要了，所以，我们进一步改进为：12345678910public static Singleton getInstance() &#123; if (instance == null) &#123; synchronized (instance) &#123; if (instance == null) &#123; instance = new Singleton(); &#125; &#125; &#125; return instance; &#125; 如果不了解jvm中指令重排的同学可能认为上面的改进已经算是完善了，但是，在Java指令中创建对象和赋值操作是分开进行的，也就是说instance = new Singleton()语句是分两步执行的。但是JVM并不保证这两个操作的先后顺序，也就是说有可能JVM会为新的Singleton实例分配空间，然后直接赋值给instance成员，然后再去初始化这个Singleton实例。这样就可能出错了，我们以A、B两个线程为例： a&gt;A、B线程同时进入了第一个if判断 b&gt;A首先进入synchronized块，由于instance为null，所以它执行instance = new Singleton(); c&gt;由于JVM内部的优化机制，JVM先画出了一些分配给Singleton实例的空白内存，并赋值给instance成员（注意此时JVM没有开始初始化这个实例），然后A离开了synchronized块。 d&gt;B进入synchronized块，由于instance此时不是null，因此它马上离开了synchronized块并将结果返回给调用该方法的程序。 e&gt;此时B线程打算使用Singleton实例，却发现它没有被初始化，于是错误发生了。 所以程序还是有可能发生错误，其实程序在运行过程是很复杂的，从这点我们就可以看出，在写多线程环境下的程序是有一定难度的。我们对该程序做进一步优化：1234567//静态内置类实现单例private static class SingletonFactory&#123; private static Singleton instance = new Singleton(); &#125; public static Singleton getInstance()&#123; return SingletonFactory.instance; &#125; 实际上，单例模式使用内部类来维护单例的实现，JVM内部的机制能够保证当一个类被加载的时候，这个类的加载过程是线程互斥的。这样当我们第一次调用getInstance的时候，JVM能够帮我们保证instance只被创建一次，并且会保证把赋值给instance的内存初始化完毕，这样我们就不用担心上面的问题。同时该方法也只会在第一次调用的时候使用互斥机制，这样就解决了低性能问题。这样我们可以暂时总结一个完整的单例模式如下：1234567891011121314151617181920212223242526272829303132333435363738394041public class Singleton &#123; //私有构造方法，防止被实例化 private Singleton() &#123;&#125; //此处使用一个内部类来维护单例 private static class SingletonFactory &#123; private static Singleton instance = new Singleton(); &#125; //获取实例 public static Singleton getInstance() &#123; return SingletonFactory.instance; &#125; &#125; //变形，使用static代码块实现public class Singleton &#123; private static Singleton instance = null； //私有构造方法内放置static代码块，里面实例化对象 private Singleton() &#123; static&#123; instance = new Singleton(); &#125; &#125; //获取实例 public static Singleton getInstance() &#123; return instance; &#125; &#125; //扩展，使用枚举enum实现public class Singleton &#123; public enum EnumSingleton&#123; connectionFactory； private Connection connection; private EnumSingleton&#123; ... connection = DriverManager.getConnection(url,username,password); &#125; public Connection getConnection()&#123; return connection; &#125; &#125; public static Connection getConnection() &#123; return EnumSingleton.connectionFactory.getConnection(); &#125; &#125; 静态内置类可以达到线程安全问题，但是当遇到序列化对象时，使用默认的方式运行得到的结果还是多例的12345678910111213141516171819202122232425262728293031323334353637public class MyObject implements Serializable &#123; private static final long serialVersionUID = 888L; private static class MyObjectHandler &#123; private static final MyObject myObject = new MyObject(); &#125; private MyObject() &#123;&#125; public static MyObject getInstance() &#123; return MyObjectHandler.myObject; &#125; //readResolve()方法解决序列化单例模式 protected Object readResolve() throws ObjectStreamException &#123; System.out.println("调用了readResolve方法！"); return MyObjectHandler.myObject; &#125; &#125; //输出hashCode来验证序列化前后对象是否为同一个public class SaveAndRead &#123; public static void main(String[] args) &#123; try &#123; MyObject myObject = MyObject.getInstance(); FileOutputStream fosRef = new FileOutputStream(new File("myObjectFile.txt")); ObjectOutputStream oosRef = new ObjectOutputStream(fosRef); oosRef.writeObject(myObject); oosRef.close(); fosRef.close(); System.out.println(myObject.hashCode()); &#125; catch (Exception e) &#123; e.printStackTrace(); &#125; try &#123; FileInputStream fisRef = new FileInputStream(new File("myObjectFile.txt")); ObjectInputStream iosRef = new ObjectInputStream(fisRef); MyObject myObject = (MyObject) iosRef.readObject(); iosRef.close(); fisRef.close(); System.out.println(myObject.hashCode()); &#125; catch (Exception e) &#123; e.printStackTrace(); &#125; &#125; &#125;]]></content>
+      <categories>
+        <category>Pattern</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Pattern</tag>
+        <tag>Creational_Pattern</tag>
       </tags>
   </entry>
   <entry>
@@ -517,19 +517,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Flyweight Pattern]]></title>
-    <url>%2F2017%2F08%2F05%2FFlyweightPattern%2F</url>
-    <content type="text"><![CDATA[Flyweight Pattern（享元模式）Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。） 享元接口（Flyweight）：一个接口，定义了享元对外公开内部数据的方法以及接受外部数据的方法 具体享元（ConcreteFlyweight）：享元接口的实现类的实例 享元工厂(FlyweightFactory)：一个类，负责创建和管理享元实例，其他对象对享元的请求必须通过工厂才能获得一个享元对象的实例引用 应用场景：利用一个叫做享元的对象来为其他对象提供共享的状态，且保证其他对象不能更改享元中的数据 javac -encoding UTF-8 Application.java 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374//Flyweightpublic interface Flyweight&#123; public double getWeight(); public double getWidth(); public double getLength();&#125;//ConcreteFlyweightpublic class Car&#123; Flyweight flyweight; String color; double power; Car(Flyweight flyweight,String color,double power)&#123; this.flyweight = flyweight; this.color = color; this.power = power; &#125; public void print()&#123; System.out.println(color); System.out.println(power); System.out.println(flyweight.getWeight()); System.out.println(flyweight.getWidth()); System.out.println(flyweight.getLength()); &#125;&#125;//FlyweightFactorypublic class FlyweightFactory&#123; static FlyweightFactory factory = new FlyweightFactory(); static Flyweight intrinsic; private FlyweightFactory()&#123;&#125; public static FlyweightFactory getFactory()&#123; return factory; &#125; public Flyweight getFlyweight()&#123; intrinsic = new DateCar(1.43,1.45,5.21); return intrinsic; &#125; //内部类 class DateCar implements Flyweight&#123; private double weight; private double width; private double length; //私有构造方法，不允许其他程序直接使用享元类来直接创建享元对象 private DateCar(double weight,double width,double length)&#123; this.weight = weight; this.width = width; this.length = length; &#125; public double getWeight()&#123; return weight; &#125; public double getWidth()&#123; return width; &#125; public double getLength()&#123; return length; &#125; &#125;&#125;//Testpublic class Application&#123; public static void main(String[] args) &#123; FlyweightFactory factory = FlyweightFactory.getFactory(); Flyweight carIntrinsic = factory.getFlyweight(); Car one = new Car(carIntrinsic,"red",5000); Car two = new Car(carIntrinsic,"blue",3000); one.print(); two.print(); &#125;&#125;]]></content>
-      <categories>
-        <category>Pattern</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Pattern</tag>
-        <tag>Structural_Pattern</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Interpreter Pattern]]></title>
     <url>%2F2017%2F08%2F05%2FInterpreterPattern%2F</url>
     <content type="text"><![CDATA[Interpreter Pattern（解释器模式）Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。） 123456789101112131415161718192021222324252627282930313233343536373839404142434445//public interface Expression &#123; public int interpret(Context context); &#125; public class Plus implements Expression &#123; @Override public int interpret(Context context) &#123; return context.getNum1()+context.getNum2(); &#125; &#125; public class Minus implements Expression &#123; @Override public int interpret(Context context) &#123; return context.getNum1()-context.getNum2(); &#125; &#125; public class Context &#123; private int num1; private int num2; public Context(int num1, int num2) &#123; this.num1 = num1; this.num2 = num2; &#125; public int getNum1() &#123; return num1; &#125; public void setNum1(int num1) &#123; this.num1 = num1; &#125; public int getNum2() &#123; return num2; &#125; public void setNum2(int num2) &#123; this.num2 = num2; &#125; &#125; //Testpublic class Test &#123; public static void main(String[] args) &#123; // 计算9+2-8的值 int result = new Minus().interpret((new Context(new Plus() .interpret(new Context(9, 2)), 8))); System.out.println(result); &#125; &#125;]]></content>
@@ -556,9 +543,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Decorator Pattern]]></title>
-    <url>%2F2017%2F08%2F05%2FDecoratorPattern%2F</url>
-    <content type="text"><![CDATA[Decorator Pattern（装饰模式）Attach additional responsibilities to an object dynamically keeping the same interface.Decorators provide a flexible alternative to subclassing for extending functionality.（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。） 抽象组件（Component）:抽象类，定义需要进行装饰的方法，被装饰角色 具体组件（ConcreteComponent）:抽象组件的一个子类 装饰（Decorator）：也是抽象组件的一个子类，装饰者角色 具体装饰（ConcreteDecorator）：装饰的一个非抽象子类 应用场景：动态的给对象添加一些额外的方法，改进类的某个对象的功能，调用同样的方法，不一样的结果 javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233343536373839404142//Componentpublic abstract class Bird&#123; public abstract int fly();&#125;//ConcreteComponentpublic class Sparrow extends Bird&#123; private final static int DISTANCE = 100; public int fly()&#123; return DISTANCE; &#125;&#125;//Decoratorpublic abstract class Decorator extends Bird&#123; Bird bird; Decorator()&#123;&#125; Decorator(Bird bird)&#123; this.bird = bird; &#125;&#125;//ConcreteDecoratorpublic class ConcreteDecorator extends Decorator&#123; private final static int DISTANCE = 50; ConcreteDecorator(Bird bird)&#123; super(bird); &#125; public int fly()&#123; return bird.fly()+DISTANCE; &#125;&#125;//Testpublic class Application&#123; public static void main(String[] args) &#123; Bird bird = new Sparrow(); System.out.println(bird.fly()); bird = new ConcreteDecorator(bird); System.out.println(bird.fly()); bird = new ConcreteDecorator(bird); System.out.println(bird.fly()); &#125;&#125;]]></content>
+    <title><![CDATA[Flyweight Pattern]]></title>
+    <url>%2F2017%2F08%2F05%2FFlyweightPattern%2F</url>
+    <content type="text"><![CDATA[Flyweight Pattern（享元模式）Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。） 享元接口（Flyweight）：一个接口，定义了享元对外公开内部数据的方法以及接受外部数据的方法 具体享元（ConcreteFlyweight）：享元接口的实现类的实例 享元工厂(FlyweightFactory)：一个类，负责创建和管理享元实例，其他对象对享元的请求必须通过工厂才能获得一个享元对象的实例引用 应用场景：利用一个叫做享元的对象来为其他对象提供共享的状态，且保证其他对象不能更改享元中的数据 javac -encoding UTF-8 Application.java 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374//Flyweightpublic interface Flyweight&#123; public double getWeight(); public double getWidth(); public double getLength();&#125;//ConcreteFlyweightpublic class Car&#123; Flyweight flyweight; String color; double power; Car(Flyweight flyweight,String color,double power)&#123; this.flyweight = flyweight; this.color = color; this.power = power; &#125; public void print()&#123; System.out.println(color); System.out.println(power); System.out.println(flyweight.getWeight()); System.out.println(flyweight.getWidth()); System.out.println(flyweight.getLength()); &#125;&#125;//FlyweightFactorypublic class FlyweightFactory&#123; static FlyweightFactory factory = new FlyweightFactory(); static Flyweight intrinsic; private FlyweightFactory()&#123;&#125; public static FlyweightFactory getFactory()&#123; return factory; &#125; public Flyweight getFlyweight()&#123; intrinsic = new DateCar(1.43,1.45,5.21); return intrinsic; &#125; //内部类 class DateCar implements Flyweight&#123; private double weight; private double width; private double length; //私有构造方法，不允许其他程序直接使用享元类来直接创建享元对象 private DateCar(double weight,double width,double length)&#123; this.weight = weight; this.width = width; this.length = length; &#125; public double getWeight()&#123; return weight; &#125; public double getWidth()&#123; return width; &#125; public double getLength()&#123; return length; &#125; &#125;&#125;//Testpublic class Application&#123; public static void main(String[] args) &#123; FlyweightFactory factory = FlyweightFactory.getFactory(); Flyweight carIntrinsic = factory.getFlyweight(); Car one = new Car(carIntrinsic,"red",5000); Car two = new Car(carIntrinsic,"blue",3000); one.print(); two.print(); &#125;&#125;]]></content>
       <categories>
         <category>Pattern</category>
       </categories>
@@ -569,16 +556,16 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Command Pattern]]></title>
-    <url>%2F2017%2F07%2F29%2FCommandPattern%2F</url>
-    <content type="text"><![CDATA[Command Pattern（命令模式）Encapsulate a request as an object,thereby letting you parameterize clients with different requests,queue or log requests, and support undoable operations.（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。） 命令（Command）：一个接口，封装请求的若干方法 请求者（Invoker）：包含Command接口变量的类的实例（组合关系） 接收者（Receiver）：一个类的实例，执行与请求有关的操作 具体命令（ConcreteCommand）：Command接口的实现类 应用场景：请求者与接收者不直接交互，消除彼此的耦合（将命令拆分），命令的撤销（栈的应用）：”\b” 退格键 javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293//Commandpublic interface BattleCommand&#123; abstract void execute();&#125;//Invokerpublic class ArmySuperior&#123; public BattleCommand command; public void setBattleCommand(BattleCommand command)&#123; this.command = command; &#125; public void startExecuteCommand()&#123; command.execute(); &#125;&#125;//Receiverpublic interface Army&#123; public void attack();&#125;public class ArmyA implements Army&#123; public void attack()&#123; System.out.println("炮火攻打县城A外围"); System.out.println("坦克进攻"); System.out.println("步兵进攻"); &#125;&#125;public class ArmyB implements Army&#123; public void attack()&#123; System.out.println("在敌人增援路上埋地雷"); System.out.println("在战壕里射击增援的敌人"); &#125;&#125;public class ArmyC implements Army&#123; public void attack()&#123; System.out.println("佯攻县城B"); &#125;&#125;//ConcreteCommandpublic class CommandA implements BattleCommand&#123; Army army; public CommandA(Army army)&#123; this.army = army; &#125; public void execute()&#123; army.attack(); &#125;&#125;public class CommandB implements BattleCommand&#123; Army army; public CommandB(Army army)&#123; this.army = army; &#125; public void execute()&#123; army.attack(); &#125;&#125;public class CommandC implements BattleCommand&#123; Army army; public CommandC(Army army)&#123; this.army = army; &#125; public void execute()&#123; army.attack(); &#125;&#125;//Testpublic class Application &#123; public static void main(String[] args) &#123; ArmySuperior superior = new ArmySuperior(); Army army = new ArmyA(); BattleCommand command = new CommandA(army); superior.setBattleCommand(command); superior.startExecuteCommand(); army = new ArmyB(); command = new CommandB(army); superior.setBattleCommand(command); superior.startExecuteCommand(); army = new ArmyC(); command = new CommandC(army); superior.setBattleCommand(command); superior.startExecuteCommand(); &#125;&#125;]]></content>
+    <title><![CDATA[Decorator Pattern]]></title>
+    <url>%2F2017%2F08%2F05%2FDecoratorPattern%2F</url>
+    <content type="text"><![CDATA[Decorator Pattern（装饰模式）Attach additional responsibilities to an object dynamically keeping the same interface.Decorators provide a flexible alternative to subclassing for extending functionality.（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。） 抽象组件（Component）:抽象类，定义需要进行装饰的方法，被装饰角色 具体组件（ConcreteComponent）:抽象组件的一个子类 装饰（Decorator）：也是抽象组件的一个子类，装饰者角色 具体装饰（ConcreteDecorator）：装饰的一个非抽象子类 应用场景：动态的给对象添加一些额外的方法，改进类的某个对象的功能，调用同样的方法，不一样的结果 javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233343536373839404142//Componentpublic abstract class Bird&#123; public abstract int fly();&#125;//ConcreteComponentpublic class Sparrow extends Bird&#123; private final static int DISTANCE = 100; public int fly()&#123; return DISTANCE; &#125;&#125;//Decoratorpublic abstract class Decorator extends Bird&#123; Bird bird; Decorator()&#123;&#125; Decorator(Bird bird)&#123; this.bird = bird; &#125;&#125;//ConcreteDecoratorpublic class ConcreteDecorator extends Decorator&#123; private final static int DISTANCE = 50; ConcreteDecorator(Bird bird)&#123; super(bird); &#125; public int fly()&#123; return bird.fly()+DISTANCE; &#125;&#125;//Testpublic class Application&#123; public static void main(String[] args) &#123; Bird bird = new Sparrow(); System.out.println(bird.fly()); bird = new ConcreteDecorator(bird); System.out.println(bird.fly()); bird = new ConcreteDecorator(bird); System.out.println(bird.fly()); &#125;&#125;]]></content>
       <categories>
         <category>Pattern</category>
       </categories>
       <tags>
         <tag>Java</tag>
         <tag>Pattern</tag>
-        <tag>Behavioral_Pattern</tag>
+        <tag>Structural_Pattern</tag>
       </tags>
   </entry>
   <entry>
@@ -621,6 +608,19 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Command Pattern]]></title>
+    <url>%2F2017%2F07%2F29%2FCommandPattern%2F</url>
+    <content type="text"><![CDATA[Command Pattern（命令模式）Encapsulate a request as an object,thereby letting you parameterize clients with different requests,queue or log requests, and support undoable operations.（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。） 命令（Command）：一个接口，封装请求的若干方法 请求者（Invoker）：包含Command接口变量的类的实例（组合关系） 接收者（Receiver）：一个类的实例，执行与请求有关的操作 具体命令（ConcreteCommand）：Command接口的实现类 应用场景：请求者与接收者不直接交互，消除彼此的耦合（将命令拆分），命令的撤销（栈的应用）：”\b” 退格键 javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293//Commandpublic interface BattleCommand&#123; abstract void execute();&#125;//Invokerpublic class ArmySuperior&#123; public BattleCommand command; public void setBattleCommand(BattleCommand command)&#123; this.command = command; &#125; public void startExecuteCommand()&#123; command.execute(); &#125;&#125;//Receiverpublic interface Army&#123; public void attack();&#125;public class ArmyA implements Army&#123; public void attack()&#123; System.out.println("炮火攻打县城A外围"); System.out.println("坦克进攻"); System.out.println("步兵进攻"); &#125;&#125;public class ArmyB implements Army&#123; public void attack()&#123; System.out.println("在敌人增援路上埋地雷"); System.out.println("在战壕里射击增援的敌人"); &#125;&#125;public class ArmyC implements Army&#123; public void attack()&#123; System.out.println("佯攻县城B"); &#125;&#125;//ConcreteCommandpublic class CommandA implements BattleCommand&#123; Army army; public CommandA(Army army)&#123; this.army = army; &#125; public void execute()&#123; army.attack(); &#125;&#125;public class CommandB implements BattleCommand&#123; Army army; public CommandB(Army army)&#123; this.army = army; &#125; public void execute()&#123; army.attack(); &#125;&#125;public class CommandC implements BattleCommand&#123; Army army; public CommandC(Army army)&#123; this.army = army; &#125; public void execute()&#123; army.attack(); &#125;&#125;//Testpublic class Application &#123; public static void main(String[] args) &#123; ArmySuperior superior = new ArmySuperior(); Army army = new ArmyA(); BattleCommand command = new CommandA(army); superior.setBattleCommand(command); superior.startExecuteCommand(); army = new ArmyB(); command = new CommandB(army); superior.setBattleCommand(command); superior.startExecuteCommand(); army = new ArmyC(); command = new CommandC(army); superior.setBattleCommand(command); superior.startExecuteCommand(); &#125;&#125;]]></content>
+      <categories>
+        <category>Pattern</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Pattern</tag>
+        <tag>Behavioral_Pattern</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Bridge Pattern]]></title>
     <url>%2F2017%2F07%2F22%2FBridgePattern%2F</url>
     <content type="text"><![CDATA[Bridge Pattern（桥梁模式）Decouple an abstraction from its implementation so that the two can vary independently.（将抽象和实现解耦，使得两者可以独立的变化。） 抽象（Abstraction）：一个抽象类，含有实现者声明的变量， 实现者（Implementor）：一个接口，定义基本操作 细化抽象（RefinedAbstraction）：抽象的子类 具体实现者（ConcreteImplementor）：实现者的实现类 应用场景：分离实现和抽象，将抽象中方法的重要实现部分交给另外一个抽象类的子类或者接口的类 javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354//Abstractionpublic abstract class BookEdit&#123; BookWriter [] author; String [] seriesBookName; public abstract void planBook(String [] s,String [] a); public abstract void releaseBook();&#125;//Implementorpublic interface BookWriter&#123; public void startWriterBook(String bookName); public String getName();&#125;//RefinedAbstractionpublic class TUBookEdit extends BookEdit&#123; public void planBook(String [] s,String [] a)&#123; seriesBookName = s; author = new BookAuthor[seriesBookName.length]; for (int i = 0;i &lt; seriesBookName.length ;i++ ) &#123; author[i] = new BookAuthor(a[i]); author[i].startWriterBook(seriesBookName[i]); &#125; &#125; public void releaseBook()&#123; System.out.println("图书有关信息"); for (int i = 0;i &lt; seriesBookName.length ;i++ ) &#123; System.out.print("书名："+seriesBookName[i]+"-------"); System.out.println("作者："+author[i].getName()); &#125; &#125;&#125;//ConcreteImplementorpublic class BookAuthor implements BookWriter&#123; String name; BookAuthor(String s)&#123; name = s; &#125; public void startWriterBook(String s)&#123; System.out.println(name+"编著了"+s); &#125; public String getName()&#123; return name; &#125;&#125;//Testpublic class Application&#123; public static void main(String[] args) &#123; TUBookEdit zhang = new TUBookEdit(); String seriesBookName [] = &#123;"C程序设计","Java程序设计","XML程序设计"&#125;; String authorName [] = &#123;"张三","李四","王五"&#125;; zhang.planBook(seriesBookName,authorName); zhang.releaseBook(); &#125;&#125;]]></content>
@@ -630,20 +630,7 @@
       <tags>
         <tag>Java</tag>
         <tag>Pattern</tag>
-        <tag>创建型模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Adapter Pattern]]></title>
-    <url>%2F2017%2F07%2F22%2FAdapterPattern%2F</url>
-    <content type="text"><![CDATA[Adapter Pattern（适配器模式） Convert the inface of a class into another interface clients expect.Adapter lets classes work together that couldn’t otherwise because of incompatible interface.（将一个类的接口变换成客户端所期待的另一种接口，从而使原本因接口不匹配而无法在一起工作的两个类能够在一起工作。）“系统的数据和行为都正确，单接口不符时，我们应该考虑使用适配器，目的是是控制范围之外的一个原有对象与某个接口匹配。适配器模式主要用于希望复用一些现存的类，但是接口又与复用环境不一致的情况。”（《大话设计模式》） 目标（Target）：一个接口，客户想要使用的接口 被适配器（Adaptee）：一个已经存在的接口或者抽象类 适配器(Adapter)：一个实现了目标接口并且含有被适配器引用的类 应用场景：目标和被适配器完全解耦，通过适配器来建立联系（单接口适配器） javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233//Targetpublic interface ZhiLiuDian&#123; public String privideZhiLiuDian();&#125;//Adapteepublic interface JiaoLiuDian&#123; public String privideJiaoLiuDian();&#125;public class JiaoLiuDianHost implements JiaoLiuDian&#123; public String privideJiaoLiuDian()&#123; return "交流电"; &#125;&#125;//Adapterpublic class Adapter implements ZhiLiuDian&#123; JiaoLiuDian jiao; Adapter(JiaoLiuDian jiao)&#123; this.jiao = jiao; &#125; public String privideZhiLiuDian()&#123; String s = jiao.privideJiaoLiuDian(); return "转换"+s+"成直流电"; &#125;&#125;//Testpublic class Application&#123; public static void main(String[] args) &#123; JiaoLiuDian jiao = new JiaoLiuDianHost(); System.out.println(jiao.privideJiaoLiuDian()); ZhiLiuDian zhi = new Adapter(jiao); System.out.println(zhi.privideZhiLiuDian()); &#125;&#125;]]></content>
-      <categories>
-        <category>Pattern</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Pattern</tag>
-        <tag>Structural_Pattern</tag>
+        <tag>Creational_Pattern</tag>
       </tags>
   </entry>
   <entry>
@@ -657,6 +644,19 @@
         <tag>Java</tag>
         <tag>Pattern</tag>
         <tag>Creational_Pattern</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Adapter Pattern]]></title>
+    <url>%2F2017%2F07%2F22%2FAdapterPattern%2F</url>
+    <content type="text"><![CDATA[Adapter Pattern（适配器模式） Convert the inface of a class into another interface clients expect.Adapter lets classes work together that couldn’t otherwise because of incompatible interface.（将一个类的接口变换成客户端所期待的另一种接口，从而使原本因接口不匹配而无法在一起工作的两个类能够在一起工作。）“系统的数据和行为都正确，单接口不符时，我们应该考虑使用适配器，目的是是控制范围之外的一个原有对象与某个接口匹配。适配器模式主要用于希望复用一些现存的类，但是接口又与复用环境不一致的情况。”（《大话设计模式》） 目标（Target）：一个接口，客户想要使用的接口 被适配器（Adaptee）：一个已经存在的接口或者抽象类 适配器(Adapter)：一个实现了目标接口并且含有被适配器引用的类 应用场景：目标和被适配器完全解耦，通过适配器来建立联系（单接口适配器） javac -encoding UTF-8 Application.java 123456789101112131415161718192021222324252627282930313233//Targetpublic interface ZhiLiuDian&#123; public String privideZhiLiuDian();&#125;//Adapteepublic interface JiaoLiuDian&#123; public String privideJiaoLiuDian();&#125;public class JiaoLiuDianHost implements JiaoLiuDian&#123; public String privideJiaoLiuDian()&#123; return "交流电"; &#125;&#125;//Adapterpublic class Adapter implements ZhiLiuDian&#123; JiaoLiuDian jiao; Adapter(JiaoLiuDian jiao)&#123; this.jiao = jiao; &#125; public String privideZhiLiuDian()&#123; String s = jiao.privideJiaoLiuDian(); return "转换"+s+"成直流电"; &#125;&#125;//Testpublic class Application&#123; public static void main(String[] args) &#123; JiaoLiuDian jiao = new JiaoLiuDianHost(); System.out.println(jiao.privideJiaoLiuDian()); ZhiLiuDian zhi = new Adapter(jiao); System.out.println(zhi.privideZhiLiuDian()); &#125;&#125;]]></content>
+      <categories>
+        <category>Pattern</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Pattern</tag>
+        <tag>Structural_Pattern</tag>
       </tags>
   </entry>
   <entry>
@@ -795,19 +795,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[MySql_DATE_FORMAT_分组查询]]></title>
-    <url>%2F2017%2F05%2F27%2FMySql_DATE_FORMAT_%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2%2F</url>
-    <content type="text"><![CDATA[MySql_DATEFORMAT分组查询12345678&lt;!-- 按日查询 --&gt; SELECT DATE_FORMAT(created_date,'%Y-%m-%d') as time,sum(money) money FROM o_finance_detail where org_id = 1000 GROUP BY time &lt;!-- 按月查询 --&gt; SELECT DATE_FORMAT(created_date,'%Y-%m') as time,sum(money) money FROM o_finance_detail where org_id = 1000 GROUP BY time &lt;!-- 按年查询 --&gt; SELECT DATE_FORMAT(created_date,'%Y') as time,sum(money) money FROM o_finance_detail where org_id = 1000 GROUP BY time &lt;!-- 按周查询 --&gt; SELECT DATE_FORMAT(created_date,'%Y-%u') as time,sum(money) money FROM o_finance_detail where org_id = 1000 GROUP BY time DATE_FORMAT(date,format) :根据format字符串格式化date值。下列修饰符可以被用在format字符串中： %M 月名字(January……December) %W 星期名字(Sunday……Saturday) %D 有英语前缀的月份的日期(1st, 2nd, 3rd, 等等。） %Y 年, 数字, 4 位 %y 年, 数字, 2 位 %a 缩写的星期名字(Sun……Sat) %d 月份中的天数, 数字(00……31) %e 月份中的天数, 数字(0……31) …]]></content>
-      <categories>
-        <category>MySql</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>MySql</tag>
-        <tag>Data</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[计数排序]]></title>
     <url>%2F2017%2F05%2F27%2F%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%2F</url>
     <content type="text"><![CDATA[计数排序一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！ 123456789101112131415161718192021222324public void countSort(int[] arr) &#123; if(arr == null || arr.length == 0) return ; int max = max(arr);//获取被排序序列中的最大值来开辟新数组 int[] count = new int[max+1]; Arrays.fill(count, 0); for(int i=0; i&lt;arr.length; i++) &#123; count[arr[i]] ++; &#125; int k = 0; for(int i=0; i&lt;=max; i++) &#123; for(int j=0; j&lt;count[i]; j++) &#123; arr[k++] = i; &#125; &#125;&#125;public int max(int[] arr) &#123; int max = Integer.MIN_VALUE; for(int ele : arr) &#123; if(ele &gt; max) max = ele; &#125; return max;&#125;]]></content>
@@ -834,15 +821,16 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[数组打印]]></title>
-    <url>%2F2017%2F05%2F27%2F%E6%95%B0%E7%BB%84%E6%89%93%E5%8D%B0%2F</url>
-    <content type="text"><![CDATA[数组打印 一维数组12345int [] num = &#123;1,2,3,4,5&#125;;System.out.println(num.toString());//输出：[I@15db9742...System.out.println(Arrays.toString(num));//输出：[1, 2, 3, 4, 5] 二维数组123456789101112int [][] nums = &#123;&#123;1,2&#125;,&#123;3,4,5&#125;,&#123;6,7&#125;&#125;;System.out.println(Arrays.toString(nums));//输出：[[I@6d06d69c, [I@7852e922, [I@4e25154f]...System.out.println(Arrays.deepToString(nums));//输出：[[1, 2], [3, 4, 5], [6, 7]]//补充int [][] a = new int[][]&#123;&#123;1,2,3&#125;,&#123;4,5,6&#125;,&#123;7,8,9&#125;&#125;;int [][] b = new int[][]&#123;&#123;1,2,3&#125;,&#123;4,5,6&#125;,&#123;7,8,9&#125;&#125;;System.out.println(Arrays.equals(a, b));//输出：FALSESystem.out.println(Arrays.deepEquals(a, b));//输出：TRUE 附上：工具类Arrays部分源码解读123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146public class Arrays &#123; private static final int MIN_ARRAY_SORT_GRAN = 1 &lt;&lt; 13; //排序底层采用快排实现 public static void sort(int[] a) &#123; DualPivotQuicksort.sort(a, 0, a.length - 1, null, 0, 0); &#125; //二分查找 public static int binarySearch(long[] a, long key) &#123; return binarySearch0(a, 0, a.length, key); &#125; //一维数组简单判定相等 public static boolean equals(long[] a, long[] a2) &#123; if (a==a2) return true; if (a==null || a2==null) return false; int length = a.length; if (a2.length != length) return false; for (int i=0; i&lt;length; i++) if (a[i] != a2[i]) return false; return true; &#125; //多维数组或复杂对象深度判定相等 public static boolean deepEquals(Object[] a1, Object[] a2) &#123; if (a1 == a2) return true; if (a1 == null || a2==null) return false; int length = a1.length; if (a2.length != length) return false; for (int i = 0; i &lt; length; i++) &#123; Object e1 = a1[i]; Object e2 = a2[i]; if (e1 == e2) continue; if (e1 == null) return false; // Figure out whether the two elements are equal boolean eq = deepEquals0(e1, e2); if (!eq) return false; &#125; return true; &#125; //数组填充，只能以同一个值填充数组 public static void fill(long[] a, long val) &#123; for (int i = 0, len = a.length; i &lt; len; i++) a[i] = val; &#125; //Arrays.asList()返回的是ArrayList类型，其底层构成仍然是数组 public static &lt;T&gt; List&lt;T&gt; asList(T... a) &#123; return new ArrayList&lt;&gt;(a); &#125; private static class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;implements RandomAccess, java.io.Serializable&#123; private static final long serialVersionUID = -2764017481108945198L; private final E[] a; ArrayList(E[] array) &#123; a = Objects.requireNonNull(array); &#125; ... &#125; //一维数组打印 public static String toString(int[] a) &#123; if (a == null) return "null"; int iMax = a.length - 1; if (iMax == -1) return "[]"; StringBuilder b = new StringBuilder(); b.append('['); for (int i = 0; ; i++) &#123; b.append(a[i]); if (i == iMax) return b.append(']').toString(); b.append(", "); &#125; &#125; //多维数组或对象数组打印 public static String deepToString(Object[] a) &#123; if (a == null) return "null"; int bufLen = 20 * a.length; if (a.length != 0 &amp;&amp; bufLen &lt;= 0) bufLen = Integer.MAX_VALUE; StringBuilder buf = new StringBuilder(bufLen); deepToString(a, buf, new HashSet&lt;Object[]&gt;()); return buf.toString(); &#125; private static void deepToString(Object[] a, StringBuilder buf,Set&lt;Object[]&gt; dejaVu) &#123; if (a == null) &#123; buf.append("null"); return; &#125; int iMax = a.length - 1; if (iMax == -1) &#123; buf.append("[]"); return; &#125; dejaVu.add(a); buf.append('['); for (int i = 0; ; i++) &#123; Object element = a[i]; if (element == null) &#123; buf.append("null"); &#125; else &#123; //获取子元素类型 Class&lt;?&gt; eClass = element.getClass(); //如果子元素类型是数组类型，进而判定是哪一种数组类型 if (eClass.isArray()) &#123; if (eClass == byte[].class) buf.append(toString((byte[]) element)); else if (eClass == short[].class) buf.append(toString((short[]) element)); else if (eClass == int[].class) buf.append(toString((int[]) element)); else if (eClass == long[].class) buf.append(toString((long[]) element)); else if (eClass == char[].class) buf.append(toString((char[]) element)); else if (eClass == float[].class) buf.append(toString((float[]) element)); else if (eClass == double[].class) buf.append(toString((double[]) element)); else if (eClass == boolean[].class) buf.append(toString((boolean[]) element)); else &#123; // element is an array of object references if (dejaVu.contains(element)) buf.append("[...]"); else deepToString((Object[])element, buf, dejaVu); &#125; &#125; else &#123; // element is non-null and not an array buf.append(element.toString()); &#125; &#125; if (i == iMax) break; buf.append(", "); &#125; buf.append(']'); dejaVu.remove(a); &#125;&#125;]]></content>
+    <title><![CDATA[MySql_DATE_FORMAT_分组查询]]></title>
+    <url>%2F2017%2F05%2F27%2FMySql_DATE_FORMAT_%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2%2F</url>
+    <content type="text"><![CDATA[MySql_DATEFORMAT分组查询12345678&lt;!-- 按日查询 --&gt; SELECT DATE_FORMAT(created_date,'%Y-%m-%d') as time,sum(money) money FROM o_finance_detail where org_id = 1000 GROUP BY time &lt;!-- 按月查询 --&gt; SELECT DATE_FORMAT(created_date,'%Y-%m') as time,sum(money) money FROM o_finance_detail where org_id = 1000 GROUP BY time &lt;!-- 按年查询 --&gt; SELECT DATE_FORMAT(created_date,'%Y') as time,sum(money) money FROM o_finance_detail where org_id = 1000 GROUP BY time &lt;!-- 按周查询 --&gt; SELECT DATE_FORMAT(created_date,'%Y-%u') as time,sum(money) money FROM o_finance_detail where org_id = 1000 GROUP BY time DATE_FORMAT(date,format) :根据format字符串格式化date值。下列修饰符可以被用在format字符串中： %M 月名字(January……December) %W 星期名字(Sunday……Saturday) %D 有英语前缀的月份的日期(1st, 2nd, 3rd, 等等。） %Y 年, 数字, 4 位 %y 年, 数字, 2 位 %a 缩写的星期名字(Sun……Sat) %d 月份中的天数, 数字(00……31) %e 月份中的天数, 数字(0……31) …]]></content>
       <categories>
-        <category>Arrays</category>
+        <category>MySql</category>
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>Arrays</tag>
+        <tag>MySql</tag>
+        <tag>Data</tag>
       </tags>
   </entry>
   <entry>
@@ -859,6 +847,18 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[数组打印]]></title>
+    <url>%2F2017%2F05%2F27%2F%E6%95%B0%E7%BB%84%E6%89%93%E5%8D%B0%2F</url>
+    <content type="text"><![CDATA[数组打印 一维数组12345int [] num = &#123;1,2,3,4,5&#125;;System.out.println(num.toString());//输出：[I@15db9742...System.out.println(Arrays.toString(num));//输出：[1, 2, 3, 4, 5] 二维数组123456789101112int [][] nums = &#123;&#123;1,2&#125;,&#123;3,4,5&#125;,&#123;6,7&#125;&#125;;System.out.println(Arrays.toString(nums));//输出：[[I@6d06d69c, [I@7852e922, [I@4e25154f]...System.out.println(Arrays.deepToString(nums));//输出：[[1, 2], [3, 4, 5], [6, 7]]//补充int [][] a = new int[][]&#123;&#123;1,2,3&#125;,&#123;4,5,6&#125;,&#123;7,8,9&#125;&#125;;int [][] b = new int[][]&#123;&#123;1,2,3&#125;,&#123;4,5,6&#125;,&#123;7,8,9&#125;&#125;;System.out.println(Arrays.equals(a, b));//输出：FALSESystem.out.println(Arrays.deepEquals(a, b));//输出：TRUE 附上：工具类Arrays部分源码解读123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146public class Arrays &#123; private static final int MIN_ARRAY_SORT_GRAN = 1 &lt;&lt; 13; //排序底层采用快排实现 public static void sort(int[] a) &#123; DualPivotQuicksort.sort(a, 0, a.length - 1, null, 0, 0); &#125; //二分查找 public static int binarySearch(long[] a, long key) &#123; return binarySearch0(a, 0, a.length, key); &#125; //一维数组简单判定相等 public static boolean equals(long[] a, long[] a2) &#123; if (a==a2) return true; if (a==null || a2==null) return false; int length = a.length; if (a2.length != length) return false; for (int i=0; i&lt;length; i++) if (a[i] != a2[i]) return false; return true; &#125; //多维数组或复杂对象深度判定相等 public static boolean deepEquals(Object[] a1, Object[] a2) &#123; if (a1 == a2) return true; if (a1 == null || a2==null) return false; int length = a1.length; if (a2.length != length) return false; for (int i = 0; i &lt; length; i++) &#123; Object e1 = a1[i]; Object e2 = a2[i]; if (e1 == e2) continue; if (e1 == null) return false; // Figure out whether the two elements are equal boolean eq = deepEquals0(e1, e2); if (!eq) return false; &#125; return true; &#125; //数组填充，只能以同一个值填充数组 public static void fill(long[] a, long val) &#123; for (int i = 0, len = a.length; i &lt; len; i++) a[i] = val; &#125; //Arrays.asList()返回的是ArrayList类型，其底层构成仍然是数组 public static &lt;T&gt; List&lt;T&gt; asList(T... a) &#123; return new ArrayList&lt;&gt;(a); &#125; private static class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;implements RandomAccess, java.io.Serializable&#123; private static final long serialVersionUID = -2764017481108945198L; private final E[] a; ArrayList(E[] array) &#123; a = Objects.requireNonNull(array); &#125; ... &#125; //一维数组打印 public static String toString(int[] a) &#123; if (a == null) return "null"; int iMax = a.length - 1; if (iMax == -1) return "[]"; StringBuilder b = new StringBuilder(); b.append('['); for (int i = 0; ; i++) &#123; b.append(a[i]); if (i == iMax) return b.append(']').toString(); b.append(", "); &#125; &#125; //多维数组或对象数组打印 public static String deepToString(Object[] a) &#123; if (a == null) return "null"; int bufLen = 20 * a.length; if (a.length != 0 &amp;&amp; bufLen &lt;= 0) bufLen = Integer.MAX_VALUE; StringBuilder buf = new StringBuilder(bufLen); deepToString(a, buf, new HashSet&lt;Object[]&gt;()); return buf.toString(); &#125; private static void deepToString(Object[] a, StringBuilder buf,Set&lt;Object[]&gt; dejaVu) &#123; if (a == null) &#123; buf.append("null"); return; &#125; int iMax = a.length - 1; if (iMax == -1) &#123; buf.append("[]"); return; &#125; dejaVu.add(a); buf.append('['); for (int i = 0; ; i++) &#123; Object element = a[i]; if (element == null) &#123; buf.append("null"); &#125; else &#123; //获取子元素类型 Class&lt;?&gt; eClass = element.getClass(); //如果子元素类型是数组类型，进而判定是哪一种数组类型 if (eClass.isArray()) &#123; if (eClass == byte[].class) buf.append(toString((byte[]) element)); else if (eClass == short[].class) buf.append(toString((short[]) element)); else if (eClass == int[].class) buf.append(toString((int[]) element)); else if (eClass == long[].class) buf.append(toString((long[]) element)); else if (eClass == char[].class) buf.append(toString((char[]) element)); else if (eClass == float[].class) buf.append(toString((float[]) element)); else if (eClass == double[].class) buf.append(toString((double[]) element)); else if (eClass == boolean[].class) buf.append(toString((boolean[]) element)); else &#123; // element is an array of object references if (dejaVu.contains(element)) buf.append("[...]"); else deepToString((Object[])element, buf, dejaVu); &#125; &#125; else &#123; // element is non-null and not an array buf.append(element.toString()); &#125; &#125; if (i == iMax) break; buf.append(", "); &#125; buf.append(']'); dejaVu.remove(a); &#125;&#125;]]></content>
+      <categories>
+        <category>Arrays</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Arrays</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[LintCode_最大数]]></title>
     <url>%2F2017%2F05%2F22%2FLintCode-%E6%9C%80%E5%A4%A7%E6%95%B0%2F</url>
     <content type="text"><![CDATA[问题描述 给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。 思路拿到题目的第一反应就是比较大小嘛，但是继续往下想发现比较条件有点繁琐，同位数的直接比较大小即可，不同位数就比较麻烦了，需要一位一位进行比较…，然后突然间就想到了全排列，其实数据量比较小的时候是可以的，但是数据量大的情况就不行了，于是我卡在了数据样例[0,0,0,0,0,0,…,0,0,0]上，而且全然做了无用功，所以思路又回到了比较排序上，但是没想到什么好的比较方案，最终还是上网找了找资料，发现一个新思路，去比较两个数字组合后的大小，然后选择结果较大的组合，比如1和20，我们直接去比较120和201的大小，很明显201&gt; 120，所以1应该在20后面。这样一来比较就变得灰常容易，整个算法也瞬间简单明了起来！题解1234567891011121314151617181920212223242526public String largestNumber(int[] num) &#123; String[] A = new String[num.length]; int check = 0; for (int i=0;i&lt;num.length;i++) &#123; A[i] = String.valueOf(num[i]); check = Math.max(check,num[i]); &#125; if (check == 0) &#123; return "0"; &#125; Arrays.sort(A,new Comparator&lt;String&gt;() &#123; public int compare(String s1, String s2) &#123; return (s2+s1).compareTo(s1+s2); &#125; &#125;); StringBuilder s = new StringBuilder(); for (int i=0;i&lt;num.length;i++) &#123; s.append(String.valueOf(A[i])); &#125; return s.toString(); &#125; 收获一：以前只知道Arrays.sort(a[])这一种最简单的用法，今天又收获了两种更高级的用法，其中一种在本题中已用到，总结起来Arrays.sort()排序函数有以下几种用法 Arrays.sort(a[]) 排序a数组，且规则是从小到大，a可以是int,long,double,char,flaat,Object… Arrays.sort(a[], int fromIndex, int toIndex) 排序a数组的部分，从下标fromIndex到toIndex(不包括toIndex) Arrays.sort(T[] a, Comparator&lt;? super T&gt; c) 排序a数组，按照比较器中的规则 12345class MyComparator implements Comparator&lt;Integer&gt;&#123; public int compare(Integer s1, Integer s2) &#123; return (s2+s1).compareTo(s1+s2); &#125; &#125; 二：匿名内部类，think in java中研究了好久，只是一直没怎么使用过，如今又看到了，却也感觉熟悉而陌生，所以再拿出来简单说道说道，看代码1234567Arrays.sort(A,new Comparator&lt;String&gt;() &#123; public int compare(String s1, String s2) &#123; return (s2+s1).compareTo(s1+s2); &#125; &#125;); 完整类为123456789101112public class Main &#123; public static void main(String[] args) &#123; String[] a = &#123;9, 8, 7, 2, 3, 4, 1, 0, 6, 5&#125;; Comparator cmp = new MyComparator(); Arrays.sort(a, cmp); &#125; &#125; class MyComparator implements Comparator&lt;String&gt;&#123; public int compare(String s1, String s2) &#123; return (s2+s1).compareTo(s1+s2); &#125; &#125;]]></content>
@@ -868,19 +868,6 @@
       <tags>
         <tag>Java</tag>
         <tag>LintCode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[快速排序]]></title>
-    <url>%2F2017%2F05%2F20%2F%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[快速排序快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5,3,8,6,4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O(nlogn) 12345678910111213141516171819202122232425public int partition(int[] arr, int left, int right) &#123; int pivotKey = arr[left]; while(left &lt; right) &#123; while(left &lt; right &amp;&amp; arr[right] &gt;= pivotKey) right --; arr[left] = arr[right]; //把小的移动到左边 while(left &lt; right &amp;&amp; arr[left] &lt;= pivotKey) left ++; arr[right] = arr[left]; //把大的移动到右边 &#125; arr[left] = pivotKey; //最后把pivot赋值到中间 return left;&#125;public void quickSort(int[] arr, int left, int right) &#123; if(left &gt;= right) return ; int pivotPos = partition(arr, left, right); quickSort(arr, left, pivotPos-1); quickSort(arr, pivotPos+1, right);&#125;public void sort(int[] arr) &#123; if(arr == null || arr.length == 0) return ; quickSort(arr, 0, arr.length-1);&#125;]]></content>
-      <categories>
-        <category>Algorithm</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Algorithm</tag>
-        <tag>Sort</tag>
       </tags>
   </entry>
   <entry>
@@ -910,6 +897,19 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[快速排序]]></title>
+    <url>%2F2017%2F05%2F20%2F%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[快速排序快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5,3,8,6,4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O(nlogn) 12345678910111213141516171819202122232425public int partition(int[] arr, int left, int right) &#123; int pivotKey = arr[left]; while(left &lt; right) &#123; while(left &lt; right &amp;&amp; arr[right] &gt;= pivotKey) right --; arr[left] = arr[right]; //把小的移动到左边 while(left &lt; right &amp;&amp; arr[left] &lt;= pivotKey) left ++; arr[right] = arr[left]; //把大的移动到右边 &#125; arr[left] = pivotKey; //最后把pivot赋值到中间 return left;&#125;public void quickSort(int[] arr, int left, int right) &#123; if(left &gt;= right) return ; int pivotPos = partition(arr, left, right); quickSort(arr, left, pivotPos-1); quickSort(arr, pivotPos+1, right);&#125;public void sort(int[] arr) &#123; if(arr == null || arr.length == 0) return ; quickSort(arr, 0, arr.length-1);&#125;]]></content>
+      <categories>
+        <category>Algorithm</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Algorithm</tag>
+        <tag>Sort</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[冒泡排序]]></title>
     <url>%2F2017%2F05%2F13%2F%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%2F</url>
     <content type="text"><![CDATA[冒泡排序 基本思想:两两比较相邻记录的关键字,如果反序则交换 冒泡排序时间复杂度最好的情况为O(n),最坏的情况是O(n^2) 设置标志位，明显如果有一趟没有发生交换（flag = false)，说明排序已经完成 记录一轮下来标记的最后位置，下次从头部遍历到这个位置就Ok 12345678910111213141516171819public void bubbleSort(int[] array)&#123; boolean flag = true; int n = array.length; while(flag)&#123; flag = false; for(int i = 0;i &lt; n-1;i++)&#123; if(array[i] &gt; array[i+1])&#123; //数据交换，将较大的数据换至数组后方 array[i] = array[i]^array[i+1]; array[i+1] = array[i]^array[i+1]; array[i] = array[i]^array[i+1]; //设置标记，当本次循环未发生交换动作时，排序完成 flag = true; &#125; &#125; //每次循环均有一位当前最大值换至正确的位置，故每下一次循环减少一次比较 n--; &#125;&#125;]]></content>
@@ -923,9 +923,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[选择排序]]></title>
-    <url>%2F2017%2F05%2F13%2F%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[选择排序 通过n-i次关键字之间的比较,从n-i+1 个记录中选择关键字最小的记录,并和第i(1&lt;=i&lt;=n)个记录交换之 尽管与冒泡排序同为O(n^2),但简单选择排序的性能要略优于冒泡排序 12345678910111213141516171819202122public static void selectSort(int[] arr) &#123; if(arr == null || arr.length == 0) return ; int minIndex = 0; for(int i=0; i&lt;arr.length-1; i++) &#123; //只需要比较n-1次 minIndex = i; for(int j=i+1;j&lt;arr.length; j++) &#123; //从i+1开始比较，因为minIndex默认为i了，i就没必要比了。 if(arr[j]&lt;arr[minIndex]) &#123; minIndex = j; &#125; &#125; if(minIndex != i) &#123; //如果minIndex不为i，说明找到了更小的值，交换之。 swap(arr, i, minIndex); &#125; &#125;&#125;public static void swap(int[] arr, int i, int j) &#123; int temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;&#125;]]></content>
+    <title><![CDATA[直接插入排序]]></title>
+    <url>%2F2017%2F05%2F13%2F%E7%9B%B4%E6%8E%A5%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[直接插入排序 将一个记录插入到已经排好序的有序表中, 从而得到一个新的,记录数增1的有序表 时间复杂度也为O(n^2), 比冒泡法和选择排序的性能要更好一些 123456789101112131415public void insertSort(int[] arr) &#123; if(arr == null || arr.length == 0) return ; for(int i=1; i&lt;arr.length; i++) &#123; //假设第一个数位置时正确的；要往后移，必须要假设第一个。 int j = i; int target = arr[i]; //待插入的 //后移 while(j&gt;0&amp;&amp;target&lt;arr[j-1]) &#123; arr[j] = arr[j-1]; j --; &#125; //插入 arr[j] = target; &#125;&#125;]]></content>
       <categories>
         <category>Algorithm</category>
       </categories>
@@ -936,9 +936,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[直接插入排序]]></title>
-    <url>%2F2017%2F05%2F13%2F%E7%9B%B4%E6%8E%A5%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[直接插入排序 将一个记录插入到已经排好序的有序表中, 从而得到一个新的,记录数增1的有序表 时间复杂度也为O(n^2), 比冒泡法和选择排序的性能要更好一些 123456789101112131415public void insertSort(int[] arr) &#123; if(arr == null || arr.length == 0) return ; for(int i=1; i&lt;arr.length; i++) &#123; //假设第一个数位置时正确的；要往后移，必须要假设第一个。 int j = i; int target = arr[i]; //待插入的 //后移 while(j&gt;0&amp;&amp;target&lt;arr[j-1]) &#123; arr[j] = arr[j-1]; j --; &#125; //插入 arr[j] = target; &#125;&#125;]]></content>
+    <title><![CDATA[选择排序]]></title>
+    <url>%2F2017%2F05%2F13%2F%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[选择排序 通过n-i次关键字之间的比较,从n-i+1 个记录中选择关键字最小的记录,并和第i(1&lt;=i&lt;=n)个记录交换之 尽管与冒泡排序同为O(n^2),但简单选择排序的性能要略优于冒泡排序 12345678910111213141516171819202122public static void selectSort(int[] arr) &#123; if(arr == null || arr.length == 0) return ; int minIndex = 0; for(int i=0; i&lt;arr.length-1; i++) &#123; //只需要比较n-1次 minIndex = i; for(int j=i+1;j&lt;arr.length; j++) &#123; //从i+1开始比较，因为minIndex默认为i了，i就没必要比了。 if(arr[j]&lt;arr[minIndex]) &#123; minIndex = j; &#125; &#125; if(minIndex != i) &#123; //如果minIndex不为i，说明找到了更小的值，交换之。 swap(arr, i, minIndex); &#125; &#125;&#125;public static void swap(int[] arr, int i, int j) &#123; int temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;&#125;]]></content>
       <categories>
         <category>Algorithm</category>
       </categories>
