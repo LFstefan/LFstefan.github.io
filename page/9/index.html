@@ -491,7 +491,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/InterpreterPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FlyweightPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -513,8 +513,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/InterpreterPattern/" itemprop="url">
-                  Interpreter Pattern
+                <a class="post-title-link" href="/2017/08/05/FlyweightPattern/" itemprop="url">
+                  Flyweight Pattern
                 </a>
               
             
@@ -570,7 +570,7 @@
 
           
           
-             <span id="/2017/08/05/InterpreterPattern/" class="leancloud_visitors" data-flag-title="Interpreter Pattern">
+             <span id="/2017/08/05/FlyweightPattern/" class="leancloud_visitors" data-flag-title="Flyweight Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -599,10 +599,16 @@
 
       
         
-          <h1 id="Interpreter-Pattern（解释器模式）"><a href="#Interpreter-Pattern（解释器模式）" class="headerlink" title="Interpreter Pattern（解释器模式）"></a>Interpreter Pattern（解释器模式）</h1><h2 id="Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"><a href="#Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）" class="headerlink" title="Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"></a>Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）</h2>
+          <h1 id="Flyweight-Pattern（享元模式）"><a href="#Flyweight-Pattern（享元模式）" class="headerlink" title="Flyweight Pattern（享元模式）"></a>Flyweight Pattern（享元模式）</h1><h2 id="Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）"><a href="#Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）" class="headerlink" title="Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）"></a>Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）</h2><ul>
+<li>享元接口（Flyweight）：一个接口，定义了享元对外公开内部数据的方法以及接受外部数据的方法</li>
+<li>具体享元（ConcreteFlyweight）：享元接口的实现类的实例</li>
+<li>享元工厂(FlyweightFactory)：一个类，负责创建和管理享元实例，其他对象对享元的请求必须通过工厂才能获得一个享元对象的实例引用</li>
+<li>应用场景：利用一个叫做享元的对象来为其他对象提供共享的状态，且保证其他对象不能更改享元中的数据</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/InterpreterPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/05/FlyweightPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -810,7 +816,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FlyweightPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/InterpreterPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -832,8 +838,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/FlyweightPattern/" itemprop="url">
-                  Flyweight Pattern
+                <a class="post-title-link" href="/2017/08/05/InterpreterPattern/" itemprop="url">
+                  Interpreter Pattern
                 </a>
               
             
@@ -889,7 +895,7 @@
 
           
           
-             <span id="/2017/08/05/FlyweightPattern/" class="leancloud_visitors" data-flag-title="Flyweight Pattern">
+             <span id="/2017/08/05/InterpreterPattern/" class="leancloud_visitors" data-flag-title="Interpreter Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -918,16 +924,10 @@
 
       
         
-          <h1 id="Flyweight-Pattern（享元模式）"><a href="#Flyweight-Pattern（享元模式）" class="headerlink" title="Flyweight Pattern（享元模式）"></a>Flyweight Pattern（享元模式）</h1><h2 id="Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）"><a href="#Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）" class="headerlink" title="Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）"></a>Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）</h2><ul>
-<li>享元接口（Flyweight）：一个接口，定义了享元对外公开内部数据的方法以及接受外部数据的方法</li>
-<li>具体享元（ConcreteFlyweight）：享元接口的实现类的实例</li>
-<li>享元工厂(FlyweightFactory)：一个类，负责创建和管理享元实例，其他对象对享元的请求必须通过工厂才能获得一个享元对象的实例引用</li>
-<li>应用场景：利用一个叫做享元的对象来为其他对象提供共享的状态，且保证其他对象不能更改享元中的数据</li>
-<li>javac -encoding UTF-8 Application.java</li>
-</ul>
+          <h1 id="Interpreter-Pattern（解释器模式）"><a href="#Interpreter-Pattern（解释器模式）" class="headerlink" title="Interpreter Pattern（解释器模式）"></a>Interpreter Pattern（解释器模式）</h1><h2 id="Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"><a href="#Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）" class="headerlink" title="Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"></a>Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）</h2>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/FlyweightPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/05/InterpreterPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -973,7 +973,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/CompositePattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/CommandPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -995,7 +995,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/29/CompositePattern/" itemprop="url">
+                <a class="post-title-link" href="/2017/07/29/CommandPattern/" itemprop="url">
                   Command Pattern
                 </a>
               
@@ -1052,7 +1052,7 @@
 
           
           
-             <span id="/2017/07/29/CompositePattern/" class="leancloud_visitors" data-flag-title="Command Pattern">
+             <span id="/2017/07/29/CommandPattern/" class="leancloud_visitors" data-flag-title="Command Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1081,16 +1081,17 @@
 
       
         
-          <h1 id="Composite-Pattern（组合模式）"><a href="#Composite-Pattern（组合模式）" class="headerlink" title="Composite Pattern（组合模式）"></a>Composite Pattern（组合模式）</h1><h2 id="Compose-objects-into-tree-structure-to-represent-part-whole-hierarchies-Composite-lets-clients-treat-individual-objects-and-compositions-of-objects-uniformly-（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）"><a href="#Compose-objects-into-tree-structure-to-represent-part-whole-hierarchies-Composite-lets-clients-treat-individual-objects-and-compositions-of-objects-uniformly-（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）" class="headerlink" title="Compose objects into tree structure to represent part-whole hierarchies.Composite lets clients treat individual objects and compositions of objects uniformly.（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）"></a>Compose objects into tree structure to represent part-whole hierarchies.Composite lets clients treat individual objects and compositions of objects uniformly.（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）</h2><ul>
-<li>抽象组件（Component）:一个接口或者抽象类，定义了个体对象和组合对象需要实现的关于原子操作的方法</li>
-<li>Composite节点（Composite Node）:实现了Component接口的类，其中可包含其他Composite节点（组合对象）</li>
-<li>Leaf节点（Leaf Node）：实现了Component接口的类，不可包含其他Composite节点或者Leaf节点（个体对象）</li>
-<li>应用场景：个体对象和组合对象实现于同一接口，形成树形结构（部分-整体层次结构）</li>
+          <h1 id="Command-Pattern（命令模式）"><a href="#Command-Pattern（命令模式）" class="headerlink" title="Command Pattern（命令模式）"></a>Command Pattern（命令模式）</h1><h2 id="Encapsulate-a-request-as-an-object-thereby-letting-you-parameterize-clients-with-different-requests-queue-or-log-requests-and-support-undoable-operations-（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。）"><a href="#Encapsulate-a-request-as-an-object-thereby-letting-you-parameterize-clients-with-different-requests-queue-or-log-requests-and-support-undoable-operations-（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。）" class="headerlink" title="Encapsulate a request as an object,thereby letting you parameterize clients with different requests,queue or log requests, and support undoable operations.（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。）"></a>Encapsulate a request as an object,thereby letting you parameterize clients with different requests,queue or log requests, and support undoable operations.（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。）</h2><ul>
+<li>命令（Command）：一个接口，封装请求的若干方法</li>
+<li>请求者（Invoker）：包含Command接口变量的类的实例（组合关系）</li>
+<li>接收者（Receiver）：一个类的实例，执行与请求有关的操作</li>
+<li>具体命令（ConcreteCommand）：Command接口的实现类</li>
+<li>应用场景：请求者与接收者不直接交互，消除彼此的耦合（将命令拆分），命令的撤销（栈的应用）：”\b” 退格键</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/29/CompositePattern/#more" rel="contents">
+            <a class="btn" href="/2017/07/29/CommandPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1187,7 +1188,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1198,7 +1199,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-count">74</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
