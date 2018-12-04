@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/04/08/RedisTheory/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Redis底层技术实现与原理 本篇以《Rdeis设计与实现》为阅读基础，总结提炼其中一些知识点   底层数据结构 内存回收机制 对象共享 单机数据库 RDB持久化 AOF持久化 事件 复制 redis集群  &amp;lt;- more -&amp;gt; 基本底层实现SDS动态字符串（redis内部自定义字符串）12345Struct sdshdr&amp;#123; Int len;字符串长度，不包括结束符‘/0’">
-<meta property="og:updated_time" content="2018-09-04T09:49:26.664Z">
+<meta property="og:updated_time" content="2018-11-27T01:17:12.241Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RedisTheory">
 <meta name="twitter:description" content="Redis底层技术实现与原理 本篇以《Rdeis设计与实现》为阅读基础，总结提炼其中一些知识点   底层数据结构 内存回收机制 对象共享 单机数据库 RDB持久化 AOF持久化 事件 复制 redis集群  &amp;lt;- more -&amp;gt; 基本底层实现SDS动态字符串（redis内部自定义字符串）12345Struct sdshdr&amp;#123; Int len;字符串长度，不包括结束符‘/0’">
@@ -524,7 +524,29 @@
 <li>Zset结构同时使用跳跃链表（有序排列集合元素，可实现范围型操作）和字典（O(1)复杂度查找集合元素值） </li>
 <li>当集合每个元素的长度都小于64字节并且元素数量小于128个时，使用ziplist编码，否则使用skiplist编码 </li>
 </ul>
-<h2 id="内存回收机制"><a href="#内存回收机制" class="headerlink" title="内存回收机制"></a>内存回收机制</h2><p>引用计数技术 </p>
+<h3 id="Bit-arrays位数组"><a href="#Bit-arrays位数组" class="headerlink" title="Bit arrays位数组"></a>Bit arrays位数组</h3><blockquote>
+<p>Bitmaps are not an actual data type, but a set of bit-oriented operations defined on the String type.</p>
+</blockquote>
+<ul>
+<li>位数组并属于真正的数据类型，只是字符类型的一种位操作方式</li>
+<li>二进制安全，最大长度为512M，可以设置2^32中不同的位</li>
+<li>可单一操作，设置某一位为1或0，或者获取某一位的位值，也可<br>一组位进行的操作，例如将某一范围的位值设置为1或0</li>
+<li>极大的节约内存空间</li>
+<li>用户访问网站记录，访问记为1，否记为0，可节约非常大的内存空间，同时可以快速计算出用户访问网站的总天数</li>
+</ul>
+<blockquote>
+<p>To split a bitmap across different keys instead of setting all the bits into a key, a trivial strategy is just to store M bits per key and obtain the key name with bit-number/M and the Nth bit to address inside the key with bit-number MOD M.</p>
+</blockquote>
+<h3 id="HyperLogLogs"><a href="#HyperLogLogs" class="headerlink" title="HyperLogLogs"></a>HyperLogLogs</h3><ul>
+<li>HyperLogLog是用于计算唯一事物的概率数据结构（从技术上讲，这被称为估计集合的基数）。</li>
+</ul>
+<h2 id="内存回收机制"><a href="#内存回收机制" class="headerlink" title="内存回收机制"></a>内存回收机制</h2><ul>
+<li>不会立马回收内存</li>
+<li>内存使用量取决于峰值内存使用量</li>
+<li>内存分配器会机智的合理利用尚未回收的内存</li>
+<li>若不设置最大内存，将会耗尽机器内存资源</li>
+</ul>
+<p>引用计数技术 </p>
 <h2 id="对象共享"><a href="#对象共享" class="headerlink" title="对象共享"></a>对象共享</h2><blockquote>
 <p>对象的空转时长（当前时间-lru） </p>
 </blockquote>
@@ -768,7 +790,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-count">80</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -779,7 +801,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -790,7 +812,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">75</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -843,7 +865,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis底层技术实现与原理"><span class="nav-number">1.</span> <span class="nav-text">Redis底层技术实现与原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本底层实现"><span class="nav-number">1.1.</span> <span class="nav-text">基本底层实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SDS动态字符串（redis内部自定义字符串）"><span class="nav-number">1.1.1.</span> <span class="nav-text">SDS动态字符串（redis内部自定义字符串）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双向链表"><span class="nav-number">1.1.2.</span> <span class="nav-text">双向链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希表"><span class="nav-number">1.1.3.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典"><span class="nav-number">1.1.4.</span> <span class="nav-text">字典</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"><span class="nav-number">1.1.5.</span> <span class="nav-text">跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整数集合"><span class="nav-number">1.1.6.</span> <span class="nav-text">整数集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩列表"><span class="nav-number">1.1.7.</span> <span class="nav-text">压缩列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象-redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象"><span class="nav-number">1.1.8.</span> <span class="nav-text">对象-(redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串对象"><span class="nav-number">1.1.9.</span> <span class="nav-text">字符串对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表对象"><span class="nav-number">1.1.10.</span> <span class="nav-text">列表对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希对象"><span class="nav-number">1.1.11.</span> <span class="nav-text">哈希对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合对象"><span class="nav-number">1.1.12.</span> <span class="nav-text">集合对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序集合对象"><span class="nav-number">1.1.13.</span> <span class="nav-text">有序集合对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存回收机制"><span class="nav-number">1.2.</span> <span class="nav-text">内存回收机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象共享"><span class="nav-number">1.3.</span> <span class="nav-text">对象共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单机数据库"><span class="nav-number">1.4.</span> <span class="nav-text">单机数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）"><span class="nav-number">1.5.</span> <span class="nav-text">RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）"><span class="nav-number">1.6.</span> <span class="nav-text">AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件：redis服务器就是一个事件驱动程序"><span class="nav-number">1.7.</span> <span class="nav-text">事件：redis服务器就是一个事件驱动程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制"><span class="nav-number">1.8.</span> <span class="nav-text">复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis集群"><span class="nav-number">1.9.</span> <span class="nav-text">redis集群</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis底层技术实现与原理"><span class="nav-number">1.</span> <span class="nav-text">Redis底层技术实现与原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本底层实现"><span class="nav-number">1.1.</span> <span class="nav-text">基本底层实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SDS动态字符串（redis内部自定义字符串）"><span class="nav-number">1.1.1.</span> <span class="nav-text">SDS动态字符串（redis内部自定义字符串）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双向链表"><span class="nav-number">1.1.2.</span> <span class="nav-text">双向链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希表"><span class="nav-number">1.1.3.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典"><span class="nav-number">1.1.4.</span> <span class="nav-text">字典</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"><span class="nav-number">1.1.5.</span> <span class="nav-text">跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整数集合"><span class="nav-number">1.1.6.</span> <span class="nav-text">整数集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩列表"><span class="nav-number">1.1.7.</span> <span class="nav-text">压缩列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象-redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象"><span class="nav-number">1.1.8.</span> <span class="nav-text">对象-(redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串对象"><span class="nav-number">1.1.9.</span> <span class="nav-text">字符串对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表对象"><span class="nav-number">1.1.10.</span> <span class="nav-text">列表对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希对象"><span class="nav-number">1.1.11.</span> <span class="nav-text">哈希对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合对象"><span class="nav-number">1.1.12.</span> <span class="nav-text">集合对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序集合对象"><span class="nav-number">1.1.13.</span> <span class="nav-text">有序集合对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bit-arrays位数组"><span class="nav-number">1.1.14.</span> <span class="nav-text">Bit arrays位数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HyperLogLogs"><span class="nav-number">1.1.15.</span> <span class="nav-text">HyperLogLogs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存回收机制"><span class="nav-number">1.2.</span> <span class="nav-text">内存回收机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象共享"><span class="nav-number">1.3.</span> <span class="nav-text">对象共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单机数据库"><span class="nav-number">1.4.</span> <span class="nav-text">单机数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）"><span class="nav-number">1.5.</span> <span class="nav-text">RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）"><span class="nav-number">1.6.</span> <span class="nav-text">AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件：redis服务器就是一个事件驱动程序"><span class="nav-number">1.7.</span> <span class="nav-text">事件：redis服务器就是一个事件驱动程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制"><span class="nav-number">1.8.</span> <span class="nav-text">复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis集群"><span class="nav-number">1.9.</span> <span class="nav-text">redis集群</span></a></li></ol></li></ol></div>
             
 
           </div>

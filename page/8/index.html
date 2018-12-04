@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/InterpreterPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/19/SingletonPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/InterpreterPattern/" itemprop="url">
-                  Interpreter Pattern
+                <a class="post-title-link" href="/2017/08/19/SingletonPattern/" itemprop="url">
+                  Singleton Pattern
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
-                2017-08-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:17:20+08:00">
+                2017-08-19
               </time>
             
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2017/08/05/InterpreterPattern/" class="leancloud_visitors" data-flag-title="Interpreter Pattern">
+             <span id="/2017/08/19/SingletonPattern/" class="leancloud_visitors" data-flag-title="Singleton Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,10 +435,14 @@
 
       
         
-          <h1 id="Interpreter-Pattern（解释器模式）"><a href="#Interpreter-Pattern（解释器模式）" class="headerlink" title="Interpreter Pattern（解释器模式）"></a>Interpreter Pattern（解释器模式）</h1><h2 id="Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"><a href="#Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）" class="headerlink" title="Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"></a>Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）</h2>
+          <h1 id="Singleton-Pattern"><a href="#Singleton-Pattern" class="headerlink" title="Singleton Pattern"></a>Singleton Pattern</h1><h2 id="Ensure-a-class-has-only-one-instance-and-provide-a-global-point-of-access-to-it-（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）"><a href="#Ensure-a-class-has-only-one-instance-and-provide-a-global-point-of-access-to-it-（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）" class="headerlink" title="Ensure a class has only one instance, and provide a global point of access to it.（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）"></a>Ensure a class has only one instance, and provide a global point of access to it.（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）</h2><ol>
+<li>某些类创建比较频繁，对于一些大型的对象，这是一笔很大的系统开销。</li>
+<li>省去了new操作符，降低了系统内存的使用频率，减轻GC压力。</li>
+<li>有些类如交易所的核心交易引擎，控制着交易流程，如果该类可以创建多个的话，系统完全乱了。（比如一个军队出现了多个司令员同时指挥，肯定会乱成一团），所以只有使用单例模式，才能保证核心交易服务器独立控制整个流程。</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/InterpreterPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/19/SingletonPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -484,7 +488,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FacadePattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/ObserverPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -506,8 +510,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/FacadePattern/" itemprop="url">
-                  Facade Pattern
+                <a class="post-title-link" href="/2017/08/12/ObserverPattern/" itemprop="url">
+                  Observer Pattern
                 </a>
               
             
@@ -523,8 +527,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
-                2017-08-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
+                2017-08-12
               </time>
             
 
@@ -563,7 +567,7 @@
 
           
           
-             <span id="/2017/08/05/FacadePattern/" class="leancloud_visitors" data-flag-title="Facade Pattern">
+             <span id="/2017/08/12/ObserverPattern/" class="leancloud_visitors" data-flag-title="Observer Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -592,15 +596,17 @@
 
       
         
-          <h1 id="Facade-Pattern（门面模式）"><a href="#Facade-Pattern（门面模式）" class="headerlink" title="Facade Pattern（门面模式）"></a>Facade Pattern（门面模式）</h1><h2 id="Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。"><a href="#Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。" class="headerlink" title="Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)"></a>Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)</h2><ul>
-<li>子系统（Subsystem）:若干类的集合，均不包含外观类的实例引用</li>
-<li>外观（Facade）：一个含有子系统中全部或者部分类的实例引用的类</li>
-<li>应用场景：跟踪系统使用情况（经过同一个接口），更换系统（只需更改外观接口的代码）</li>
+          <h1 id="Observer-Pattern（观察者模式）"><a href="#Observer-Pattern（观察者模式）" class="headerlink" title="Observer Pattern（观察者模式）"></a>Observer Pattern（观察者模式）</h1><h2 id="Define-a-one-to-many-dependency-between-objects-so-that-when-one-object-changes-state-all-its-dependents-are-notified-and-updated-automatically-（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）"><a href="#Define-a-one-to-many-dependency-between-objects-so-that-when-one-object-changes-state-all-its-dependents-are-notified-and-updated-automatically-（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）" class="headerlink" title="Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）"></a>Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）</h2><ul>
+<li>主题（Subject）：一个接口,规定具体主题需要实现的方法</li>
+<li>观察者（Observer）：一个接口，规定了具体观察者用来获取数据的方法</li>
+<li>具体主题(ConcreteSubject)：主题接口的实现类，该实例包含观察者所关心的数据（经常变动），含有观察者的引用，以便在数据发生变化时通知观察者更新数据</li>
+<li>具体观察者(ConcreteObserver)：观察者接口的实现类，含有具体主题的引用，以便于具体主题将自己添加/删除到其集合中去，成为该主题的观察者</li>
+<li>应用场景：观察者对于主题中的数据可采用两种方法——“拉”数据或者——-“推”数据,即主题主动将数据更新推送给观察者，或者只是通知观察者数据已更新，观察者自己调用主题方法实现数据更新，适用于一个对象数据更新时需要通知其他对象（或者让其自行更新）</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/FacadePattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/12/ObserverPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +652,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FlyweightPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/MementoPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -668,8 +674,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/FlyweightPattern/" itemprop="url">
-                  Flyweight Pattern
+                <a class="post-title-link" href="/2017/08/12/MementoPattern/" itemprop="url">
+                  Memento Pattern
                 </a>
               
             
@@ -685,8 +691,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
-                2017-08-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
+                2017-08-12
               </time>
             
 
@@ -725,7 +731,7 @@
 
           
           
-             <span id="/2017/08/05/FlyweightPattern/" class="leancloud_visitors" data-flag-title="Flyweight Pattern">
+             <span id="/2017/08/12/MementoPattern/" class="leancloud_visitors" data-flag-title="Memento Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -754,16 +760,10 @@
 
       
         
-          <h1 id="Flyweight-Pattern（享元模式）"><a href="#Flyweight-Pattern（享元模式）" class="headerlink" title="Flyweight Pattern（享元模式）"></a>Flyweight Pattern（享元模式）</h1><h2 id="Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）"><a href="#Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）" class="headerlink" title="Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）"></a>Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）</h2><ul>
-<li>享元接口（Flyweight）：一个接口，定义了享元对外公开内部数据的方法以及接受外部数据的方法</li>
-<li>具体享元（ConcreteFlyweight）：享元接口的实现类的实例</li>
-<li>享元工厂(FlyweightFactory)：一个类，负责创建和管理享元实例，其他对象对享元的请求必须通过工厂才能获得一个享元对象的实例引用</li>
-<li>应用场景：利用一个叫做享元的对象来为其他对象提供共享的状态，且保证其他对象不能更改享元中的数据</li>
-<li>javac -encoding UTF-8 Application.java</li>
-</ul>
+          <h1 id="Memento-Pattern（备忘录模式）"><a href="#Memento-Pattern（备忘录模式）" class="headerlink" title="Memento Pattern（备忘录模式）"></a>Memento Pattern（备忘录模式）</h1><h2 id="Without-violating-encapsulation，-capture-and-externalize-an-object’s-internal-state-so-that-the-object-can-be-restored-to-this-state-later-（在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，这样以后就可将该对象恢复到原来保存的状态。）"><a href="#Without-violating-encapsulation，-capture-and-externalize-an-object’s-internal-state-so-that-the-object-can-be-restored-to-this-state-later-（在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，这样以后就可将该对象恢复到原来保存的状态。）" class="headerlink" title="Without violating encapsulation， capture and externalize an object’s internal state so that the object can be restored to this state later.（在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，这样以后就可将该对象恢复到原来保存的状态。）"></a>Without violating encapsulation， capture and externalize an object’s internal state so that the object can be restored to this state later.（在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，这样以后就可将该对象恢复到原来保存的状态。）</h2><h2 id="Original类是原始类，里面有需要保存的属性value及创建一个备忘录类，用来保存value值。Memento类是备忘录类，Storage类是存储备忘录的类，持有Memento类的实例"><a href="#Original类是原始类，里面有需要保存的属性value及创建一个备忘录类，用来保存value值。Memento类是备忘录类，Storage类是存储备忘录的类，持有Memento类的实例" class="headerlink" title="Original类是原始类，里面有需要保存的属性value及创建一个备忘录类，用来保存value值。Memento类是备忘录类，Storage类是存储备忘录的类，持有Memento类的实例"></a>Original类是原始类，里面有需要保存的属性value及创建一个备忘录类，用来保存value值。Memento类是备忘录类，Storage类是存储备忘录的类，持有Memento类的实例</h2>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/FlyweightPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/12/MementoPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -809,7 +809,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/DecoratorPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/MediatorPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -831,8 +831,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/DecoratorPattern/" itemprop="url">
-                  Decorator Pattern
+                <a class="post-title-link" href="/2017/08/12/MediatorPattern/" itemprop="url">
+                  Mediator Pattern
                 </a>
               
             
@@ -848,8 +848,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
-                2017-08-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
+                2017-08-12
               </time>
             
 
@@ -888,7 +888,7 @@
 
           
           
-             <span id="/2017/08/05/DecoratorPattern/" class="leancloud_visitors" data-flag-title="Decorator Pattern">
+             <span id="/2017/08/12/MediatorPattern/" class="leancloud_visitors" data-flag-title="Mediator Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -917,17 +917,17 @@
 
       
         
-          <h1 id="Decorator-Pattern（装饰模式）"><a href="#Decorator-Pattern（装饰模式）" class="headerlink" title="Decorator Pattern（装饰模式）"></a>Decorator Pattern（装饰模式）</h1><h2 id="Attach-additional-responsibilities-to-an-object-dynamically-keeping-the-same-interface-Decorators-provide-a-flexible-alternative-to-subclassing-for-extending-functionality-（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。）"><a href="#Attach-additional-responsibilities-to-an-object-dynamically-keeping-the-same-interface-Decorators-provide-a-flexible-alternative-to-subclassing-for-extending-functionality-（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。）" class="headerlink" title="Attach additional responsibilities to an object dynamically keeping the same interface.Decorators provide a flexible alternative to subclassing for extending functionality.（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。）"></a>Attach additional responsibilities to an object dynamically keeping the same interface.Decorators provide a flexible alternative to subclassing for extending functionality.（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。）</h2><ul>
-<li>抽象组件（Component）:抽象类，定义需要进行装饰的方法，被装饰角色</li>
-<li>具体组件（ConcreteComponent）:抽象组件的一个子类</li>
-<li>装饰（Decorator）：也是抽象组件的一个子类，装饰者角色</li>
-<li>具体装饰（ConcreteDecorator）：装饰的一个非抽象子类</li>
-<li>应用场景：动态的给对象添加一些额外的方法，改进类的某个对象的功能，调用同样的方法，不一样的结果</li>
+          <h1 id="Mediator-Pattern（中介者模式）"><a href="#Mediator-Pattern（中介者模式）" class="headerlink" title="Mediator Pattern（中介者模式）"></a>Mediator Pattern（中介者模式）</h1><h2 id="Define-an-object-that-encapsulates-how-a-set-of-objects-interact-Mediator-promotes-loose-couping-by-keeping-objects-from-referring-to-each-other-explicitly-and-it-lets-you-vary-their-interaction-independently-（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）"><a href="#Define-an-object-that-encapsulates-how-a-set-of-objects-interact-Mediator-promotes-loose-couping-by-keeping-objects-from-referring-to-each-other-explicitly-and-it-lets-you-vary-their-interaction-independently-（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）" class="headerlink" title="Define an object that encapsulates how a set of objects interact.Mediator promotes loose couping by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently.（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）"></a>Define an object that encapsulates how a set of objects interact.Mediator promotes loose couping by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently.（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）</h2><ul>
+<li>中介者（Mediator）：一个接口，定义同事Colleague对象中间用于通信的方法</li>
+<li>具体中介者（Invoker）：Mefiator接口的实现类，包含具体同事ConcreteColleague对象的引用</li>
+<li>同事（Colleague）：一个接口，定义具体同事要是实现的方法</li>
+<li>具体同事（ConcreteColleague）：同事接口的实现类，同事包含中介者的引用，同事之间也可以相互交流</li>
+<li>应用场景：避免同事对象之间显示的引用，将同事之间的通信交由中介来负责</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/DecoratorPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/12/MediatorPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -973,7 +973,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/CompositePattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/PrototypePattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -995,8 +995,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/29/CompositePattern/" itemprop="url">
-                  Command Pattern
+                <a class="post-title-link" href="/2017/08/12/PrototypePattern/" itemprop="url">
+                  Prototype Pattern
                 </a>
               
             
@@ -1012,8 +1012,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T12:11:25+08:00">
-                2017-07-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
+                2017-08-12
               </time>
             
 
@@ -1052,7 +1052,7 @@
 
           
           
-             <span id="/2017/07/29/CompositePattern/" class="leancloud_visitors" data-flag-title="Command Pattern">
+             <span id="/2017/08/12/PrototypePattern/" class="leancloud_visitors" data-flag-title="Prototype Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1081,16 +1081,15 @@
 
       
         
-          <h1 id="Composite-Pattern（组合模式）"><a href="#Composite-Pattern（组合模式）" class="headerlink" title="Composite Pattern（组合模式）"></a>Composite Pattern（组合模式）</h1><h2 id="Compose-objects-into-tree-structure-to-represent-part-whole-hierarchies-Composite-lets-clients-treat-individual-objects-and-compositions-of-objects-uniformly-（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）"><a href="#Compose-objects-into-tree-structure-to-represent-part-whole-hierarchies-Composite-lets-clients-treat-individual-objects-and-compositions-of-objects-uniformly-（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）" class="headerlink" title="Compose objects into tree structure to represent part-whole hierarchies.Composite lets clients treat individual objects and compositions of objects uniformly.（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）"></a>Compose objects into tree structure to represent part-whole hierarchies.Composite lets clients treat individual objects and compositions of objects uniformly.（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）</h2><ul>
-<li>抽象组件（Component）:一个接口或者抽象类，定义了个体对象和组合对象需要实现的关于原子操作的方法</li>
-<li>Composite节点（Composite Node）:实现了Component接口的类，其中可包含其他Composite节点（组合对象）</li>
-<li>Leaf节点（Leaf Node）：实现了Component接口的类，不可包含其他Composite节点或者Leaf节点（个体对象）</li>
-<li>应用场景：个体对象和组合对象实现于同一接口，形成树形结构（部分-整体层次结构）</li>
+          <h1 id="Prototype-Pattern（原型模式）"><a href="#Prototype-Pattern（原型模式）" class="headerlink" title="Prototype Pattern（原型模式）"></a>Prototype Pattern（原型模式）</h1><h2 id="Specify-the-kinds-of-objects-to-create-using-a-prototypical-instance-and-create-new-objects-by-copying-this-prototype-（用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。）"><a href="#Specify-the-kinds-of-objects-to-create-using-a-prototypical-instance-and-create-new-objects-by-copying-this-prototype-（用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。）" class="headerlink" title="Specify the kinds of objects to create using a prototypical instance,and create new objects by copying this prototype.（用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。）"></a>Specify the kinds of objects to create using a prototypical instance,and create new objects by copying this prototype.（用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。）</h2><ul>
+<li>抽象原型（Prototype）：一个接口，定义对象复制自身的方法</li>
+<li>具体原型（ConcretePrototype）：抽象原型的实现类</li>
+<li>应用场景：通过复制原型创建新的对象(序列化/反序列化，Class.clone()克隆，深度克隆)</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/29/CompositePattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/12/PrototypePattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1131,7 +1130,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1176,7 +1175,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-count">80</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1187,7 +1186,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1198,7 +1197,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">75</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

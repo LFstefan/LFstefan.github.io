@@ -92,7 +92,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Oracle," />
 
 
 
@@ -110,15 +110,17 @@
 
 
 
-<meta name="description" content="一只奋进的小菜鸟">
-<meta property="og:type" content="website">
-<meta property="og:title" content="染心">
-<meta property="og:url" content="https://lfstefan.github.io/archives/2018/06/index.html">
+<meta name="description" content="Oracle命令集  基本命令 INSERT ALL /FIRST,MERGE INTO maven使用oracle依赖指南">
+<meta name="keywords" content="Oracle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle命令集">
+<meta property="og:url" content="https://lfstefan.github.io/2018/03/25/Oracle命令集/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="一只奋进的小菜鸟">
+<meta property="og:description" content="Oracle命令集  基本命令 INSERT ALL /FIRST,MERGE INTO maven使用oracle依赖指南">
+<meta property="og:updated_time" content="2018-12-04T06:02:11.258Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="染心">
-<meta name="twitter:description" content="一只奋进的小菜鸟">
+<meta name="twitter:title" content="Oracle命令集">
+<meta name="twitter:description" content="Oracle命令集  基本命令 INSERT ALL /FIRST,MERGE INTO maven使用oracle依赖指南">
 
 
 
@@ -146,13 +148,13 @@
 
 
 
-  <link rel="canonical" href="https://lfstefan.github.io/archives/2018/06/"/>
+  <link rel="canonical" href="https://lfstefan.github.io/2018/03/25/Oracle命令集/"/>
 
 
 
 
 
-  <title>归档 | 染心</title>
+  <title>Oracle命令集 | 染心</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -177,7 +179,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
     <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -315,65 +317,293 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-       
-        
-      好! 目前共计 74 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/03/25/Oracle命令集/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Oracle命令集
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T12:17:20+08:00">
+                2018-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Oracle/" itemprop="url" rel="index">
+                    <span itemprop="name">Oracle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/25/Oracle命令集/" class="leancloud_visitors" data-flag-title="Oracle命令集">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <h1 id="Oracle命令集"><a href="#Oracle命令集" class="headerlink" title="Oracle命令集"></a>Oracle命令集</h1><blockquote>
+<ul>
+<li>基本命令</li>
+<li>INSERT ALL /FIRST,MERGE INTO</li>
+<li>maven使用oracle依赖指南</li>
+</ul>
+</blockquote>
+<a id="more"></a>
+<ul>
+<li>启动监听，供客户端链接：lsnrctl start</li>
+<li>以管理员身份接入：sqlplus / as sysdba</li>
+<li>以用户名/密码接入：sqlplus GAEA/GAEA</li>
+<li>启动实例：startup</li>
+<li>使用@或者start执行sql脚本文件：@TEST/START TEST</li>
+<li>判定数据库版本位数：select * from v$version</li>
+<li>创建临时表空间<br>  <code>CREATE TEMPORARY TABLESPACE TABLESPACE_NAME
+  LOGGING
+  TEMPFILE &#39;D:\LIUFEIN\..&#39;
+  SIZE 50M
+  AUTOEXTED ON NEXT 50M 
+  MAXSIZE 100M
+  EXTEND MANAGEMENT LOCAL UNIFORM SIZE 1M;</code> </li>
+<li>创建数据表空间<br>  <code>CREATE TABLESPACE TABLESPACE_NAME
+  LOGGING
+  DATAFILE &#39;D:/&#39;
+  SIZE 50M
+  AUTOEXTED ON NEXT 50M 
+  MAXSIZE UNLIMITED
+  EXTEND MANAGEMENT LOCAL AUTOALLOCATE;</code></li>
+<li>删除表空间：<br>  <code>DROP TABLESPACE TABLESPACE_NAME</code><br>  <code>DROP TABLESPACE TABLESAPCE_NAME INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINT（包含数据文件级联关系）</code></li>
+<li>创建用户并制定默认表空间<br>  <code>CREATE USER ADMIN IDENTIFIED BY 123
+  DEFAULT TABLESPACE TABLESPACE_NAME</code></li>
+<li>修改用户默认表空间<br>  <code>ALTER USER USER_NAME DEFAULT TABLESPACE TABLESPACE_NAME</code></li>
+<li>用户授权<br> <code>GRANT CONNECT,RESOURCE,DBA TO ADMIN</code><br>  <code>GRANT CONNECT,RESOURCE,DBA TO ADMIN WITH ADMIN OPTION</code></li>
+<li>删除用户及级联关系<br>  <code>DROP USER AMMIN CASCADE</code></li>
+<li>查看系统所有表空间<br>  <code>SELECT TABLESPACE_NAME FROM DBA_TABLESPACES;</code></li>
+<li>查看当前用户下的所有表空间<br>  <code>SELECT TABLESPACE_NAME FROM USER_TABLESPACES;</code></li>
+<li>查看所有用户<br>  <code>SELECT USERNAME FROM DBA_USERS;</code></li>
+<li>查看当前用户下所有的数据表<br>  <code>SELECT TABLE_NAME FROM USER_TABLES;</code></li>
+<li>查看系统中所有的数据表<br>  <code>SELECT TABLE_NAME FROM DBA_TABLES;</code></li>
+<li>查看表结构<br>  <code>DESC GAEA.DEMO_LF;</code></li>
+<li><p>查看系统权限和对象权限<br>  <code>select * from dba_sys_privs;</code><br>  <code>select * from dba_tab_privs;</code></p>
+</li>
+<li><p>多表插入,之间的界限必须明确，否则会发生数据重复插入，多个表中可以条件插入，也可无条件插入<br>  <code>INSERT ALL 
+  INTO SMALL_ORDER VALUES ()
+  INTO MIDDLE_ORDER VALUES ()
+  INTO LARGE_ORDER VALUES ()
+  SELECT ORDER_ID,SUM(ORDER) FROM ORDER_TABLE GROUP BY ORDER_ID;</code></p>
+</li>
+<li>使用all多表中可能存在重复数据行<br>  <code>INSERT ALL 
+  WHEN SUM_ORDER &lt; 100 THEN
+  INTO SMALL_ORDER
+  WHEN SUM_ORDER &gt;=100 AND SUM_ORDER &lt;=500 THEN
+  INTO MIDDLE_ORDER
+  ELSE
+  INTO LARGE_ORDER
+  SELECT ORDER_ID,SUM(ORDER) FROM ORDER_TABLE GROUP BY ORDER_ID;</code></li>
+<li>使用first多表中不可能存在重复数据行<br>  <code>INSERT FIRST 
+  WHEN SUM_ORDER &lt; 100 THEN
+  INTO SMALL_ORDER
+  WHEN SUM_ORDER &gt;=100 AND SUM_ORDER &lt;=500 THEN
+  INTO MIDDLE_ORDER
+  ELSE
+  INTO LARGE_ORDER
+  SELECT ORDER_ID,SUM(ORDER) FROM ORDER_TABLE GROUP BY ORDER_ID;</code></li>
+</ul>
+<h3 id="解决insertOrUpdate这种需求而应用而生的新语法"><a href="#解决insertOrUpdate这种需求而应用而生的新语法" class="headerlink" title="解决insertOrUpdate这种需求而应用而生的新语法"></a>解决insertOrUpdate这种需求而应用而生的新语法</h3><ul>
+<li>Merge Into的原理是，从using 搜出来的结果逐条与on条件匹配，</li>
+<li>然后决定是update还是Insert。 当USING后面的sql没有查询到数据的时候，Merge Into语句是不会执行update和Insert操作的。</li>
+<li>所以要想让Merge Into正常运行，要保证USING 后面的SELECT有数据。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">MERGE INTO TABLE_TEMP T</div><div class="line">USING(</div><div class="line">	SELECT TABLE_ID TABLE_NAME FROM TABLE_DATA WHERE TABLE_NAME=&apos;&apos;</div><div class="line">) E</div><div class="line">ON (T.ID=E.ID)</div><div class="line">WHEN MATCHED THEN </div><div class="line">	UPDATE ...</div><div class="line">	DELETE ...</div><div class="line">WHEN NOT MATCHED  THEN</div><div class="line">	INSERT INTO ...</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="maven使用oracle依赖指南"><a href="#maven使用oracle依赖指南" class="headerlink" title="maven使用oracle依赖指南"></a>maven使用oracle依赖指南</h3><ul>
+<li>maven安装oracle驱动命令：<ul>
+<li>cd 驱动包目录下或者写明具体驱动包位置</li>
+<li>maven环境变量配置好或者进入maven的bin目录下执行命令</li>
+<li>mvn install:install-file -DgroupId=com.oracle -DartifactId=oracle7 -Dversion=7.0.0 -Dpackaging=jar -Dfile=D:\Administrator\Tools\maven\repository\com\oracle\oracle7\7.0.0\oracle7-7.0.0.jar</li>
+<li>执行完命令后去对应的文件夹下验证是否安装成功</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2018">2018</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
         </div>
       
       
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
 
       
+    </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
+    <div>
+      
         
-            <a class="post-title-link" href="/2018/06/24/hello-world/" itemprop="url">
-              
-                <span itemprop="name">Hello World</span>
-              
-            </a>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Oracle/" rel="tag"># Oracle</a>
+          
+        </div>
+      
+
+      
         
-      </h1>
+      
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-06-24T17:20:58+08:00"
-              content="2018-06-24" >
-          06-24
-        </time>
-      </div>
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/18/MySql命令集/" rel="next" title="MySql命令集">
+                <i class="fa fa-chevron-left"></i> MySql命令集
+              </a>
+            
+          </div>
 
-    </header>
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/01/Java描绘数据统计图/" rel="prev" title="Java描绘数据统计图">
+                Java描绘数据统计图 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
-  </section>
-
-  
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -381,6 +611,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
 
         </div>
         
@@ -400,8 +636,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -416,7 +661,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-count">80</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -427,7 +672,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -438,7 +683,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">75</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -481,6 +726,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Oracle命令集"><span class="nav-number">1.</span> <span class="nav-text">Oracle命令集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决insertOrUpdate这种需求而应用而生的新语法"><span class="nav-number">1.0.1.</span> <span class="nav-text">解决insertOrUpdate这种需求而应用而生的新语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maven使用oracle依赖指南"><span class="nav-number">1.0.2.</span> <span class="nav-text">maven使用oracle依赖指南</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -599,11 +860,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
 
 
   
@@ -636,6 +895,10 @@
   
     
 
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
     
   
 

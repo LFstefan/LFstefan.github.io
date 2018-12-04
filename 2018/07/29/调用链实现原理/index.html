@@ -1,0 +1,1319 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Distributed Tracing,kafka," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="调用链实现原理  调用链的产生 调用链跟踪原理 调用链系统设计与实现">
+<meta name="keywords" content="Distributed Tracing,kafka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Distributed Tracing Design and Architecture">
+<meta property="og:url" content="https://lfstefan.github.io/2018/07/29/调用链实现原理/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="调用链实现原理  调用链的产生 调用链跟踪原理 调用链系统设计与实现">
+<meta property="og:updated_time" content="2018-12-04T06:00:51.381Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Distributed Tracing Design and Architecture">
+<meta name="twitter:description" content="调用链实现原理  调用链的产生 调用链跟踪原理 调用链系统设计与实现">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2018/07/29/调用链实现原理/"/>
+
+
+
+
+
+  <title>Distributed Tracing Design and Architecture | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/07/29/调用链实现原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Distributed Tracing Design and Architecture
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T12:17:20+08:00">
+                2018-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Distributed/" itemprop="url" rel="index">
+                    <span itemprop="name">Distributed</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/29/调用链实现原理/" class="leancloud_visitors" data-flag-title="Distributed Tracing Design and Architecture">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="调用链实现原理"><a href="#调用链实现原理" class="headerlink" title="调用链实现原理"></a>调用链实现原理</h1><blockquote>
+<ul>
+<li>调用链的产生</li>
+<li>调用链跟踪原理</li>
+<li>调用链系统设计与实现</li>
+</ul>
+</blockquote>
+<a id="more"></a>
+<h2 id="调用链的产生"><a href="#调用链的产生" class="headerlink" title="调用链的产生"></a>调用链的产生</h2><ul>
+<li>简单来说：微服务架构中系统众多，系统间的交互复杂，调用关系错综复杂，导致在特殊情况下难以快速定位和解决问题，因此，调用链应用而生。</li>
+</ul>
+<blockquote>
+<p>举个简单的例子：客户反馈问题，开发和运维人员从服务A开始查起，确定服务A没有问题，然后将问题传递到服务B中开始排查，确认服务B没有问题后，又将问题传到服务C排查…以此类推，知道排查出问题所在。<br>如果问题出在A服务，我们可以很快的定位到问题并解决问题，但是如果问题在最后一个被调用的服务，那么我们需要将之前所有的服务全部排查一遍才能定位到问题，不仅浪费时间，而且做了很多的无用功。倘若有了调用链，我们可以直接定位到问题所在的服务，节省时间又避免无用功的发生。</p>
+</blockquote>
+<h2 id="调用链跟踪原理"><a href="#调用链跟踪原理" class="headerlink" title="调用链跟踪原理"></a>调用链跟踪原理</h2><h3 id="每一个微服务架构系统即使再复杂都会有一个入口，而这个入口我们可以将其看作一棵树的树根root，之后所发生的所有调用关系我们可以看作是由树根衍生出来的树干与树枝，这样所有的系统调用关系就被抽象成了一颗复杂的树，而基于树-的特性，我们可以沿着某一分叉找到一条完整的调用关系，因此我们可以给每个不同的分叉定义不用的唯一标识来区分不同的调用链，这样每一条的完整的调用链关系就被我们抽象了出来，但是调用链内的各个服务调用顺序还没有明确，虽然有些服务的调用顺序并不会对最终结果造成影响，但是有些却会产生对系统致命的影响，所以我们再次利用树的层次特性来给同一分支中不同节点定义先后顺序。这样，复杂的微服务系统之间的调用关系就变得一目了然。"><a href="#每一个微服务架构系统即使再复杂都会有一个入口，而这个入口我们可以将其看作一棵树的树根root，之后所发生的所有调用关系我们可以看作是由树根衍生出来的树干与树枝，这样所有的系统调用关系就被抽象成了一颗复杂的树，而基于树-的特性，我们可以沿着某一分叉找到一条完整的调用关系，因此我们可以给每个不同的分叉定义不用的唯一标识来区分不同的调用链，这样每一条的完整的调用链关系就被我们抽象了出来，但是调用链内的各个服务调用顺序还没有明确，虽然有些服务的调用顺序并不会对最终结果造成影响，但是有些却会产生对系统致命的影响，所以我们再次利用树的层次特性来给同一分支中不同节点定义先后顺序。这样，复杂的微服务系统之间的调用关系就变得一目了然。" class="headerlink" title="每一个微服务架构系统即使再复杂都会有一个入口，而这个入口我们可以将其看作一棵树的树根root，之后所发生的所有调用关系我们可以看作是由树根衍生出来的树干与树枝，这样所有的系统调用关系就被抽象成了一颗复杂的树，而基于树 的特性，我们可以沿着某一分叉找到一条完整的调用关系，因此我们可以给每个不同的分叉定义不用的唯一标识来区分不同的调用链，这样每一条的完整的调用链关系就被我们抽象了出来，但是调用链内的各个服务调用顺序还没有明确，虽然有些服务的调用顺序并不会对最终结果造成影响，但是有些却会产生对系统致命的影响，所以我们再次利用树的层次特性来给同一分支中不同节点定义先后顺序。这样，复杂的微服务系统之间的调用关系就变得一目了然。"></a>每一个微服务架构系统即使再复杂都会有一个入口，而这个入口我们可以将其看作一棵树的树根root，之后所发生的所有调用关系我们可以看作是由树根衍生出来的树干与树枝，这样所有的系统调用关系就被抽象成了一颗复杂的树，而基于树 的特性，我们可以沿着某一分叉找到一条完整的调用关系，因此我们可以给每个不同的分叉定义不用的唯一标识来区分不同的调用链，这样每一条的完整的调用链关系就被我们抽象了出来，但是调用链内的各个服务调用顺序还没有明确，虽然有些服务的调用顺序并不会对最终结果造成影响，但是有些却会产生对系统致命的影响，所以我们再次利用树的层次特性来给同一分支中不同节点定义先后顺序。这样，复杂的微服务系统之间的调用关系就变得一目了然。</h3><blockquote>
+<p>谷歌dapper为例：采用http协议头携带标记信息（信息包含调用链唯一流水id=traceID（用于找寻所有属于同一请求的调用点放入同一集合中），调用层次spanID，调用顺序parentSpanID（用于将处在同一调用链中的不同点分层和记录调用顺序）；最后形成完整的树形调用链供可视化，同时便于记录出错节点和各个节点详细信息）</p>
+<h3 id="spanID-64位整型值：产生策略"><a href="#spanID-64位整型值：产生策略" class="headerlink" title="spanID=64位整型值：产生策略"></a>spanID=64位整型值：产生策略</h3><ol>
+<li>随机数[-2^63,2^63-1]</li>
+<li>分布式全局唯一流水号（发号器）</li>
+<li>spanID携带所有父类节点时会携带太多的冗余信息</li>
+</ol>
+</blockquote>
+<h2 id="调用链系统设计与实现"><a href="#调用链系统设计与实现" class="headerlink" title="调用链系统设计与实现"></a>调用链系统设计与实现</h2><h4 id="调用链系统的构成"><a href="#调用链系统的构成" class="headerlink" title="调用链系统的构成"></a>调用链系统的构成</h4><ul>
+<li>采集器：从业务系统中将远程服务的调用信息收集并发送给处理器</li>
+<li>处理器；接受从采集器传递过来的服务调用信息并聚合调用链，将其存储到分布式数据存储中，以及对调用链进行分析输出给监控和报警系统。</li>
+<li>分布式存储系统：存储海量的调用链数据，并支持灵活的查询和搜索的功能。</li>
+<li>调用链展示系统：查询展示调用链信息    </li>
+</ul>
+<h4 id="traceID，spanID的传递："><a href="#traceID，spanID的传递：" class="headerlink" title="traceID，spanID的传递："></a>traceID，spanID的传递：</h4><ol>
+<li>java应用内：本地线程传递</li>
+<li>服务间：通信协议中传递，restful风格使用http头传递，rpc使用序列化协议上增加定制化字段</li>
+<li>主子线程，非核心链路异步处理，创建子线程时，traceID和spanID一同传递下去</li>
+<li>消息队列传递：调用链跟踪失效，采用更改队列底层协议或者业务侵入手动增加字段实现</li>
+<li>缓存数据库：将调用链traceID和spanID与访问数据关联</li>
+</ol>
+<h4 id="调用链信息的采集（将traceID，spanID等信息传到采集器处理）："><a href="#调用链信息的采集（将traceID，spanID等信息传到采集器处理）：" class="headerlink" title="调用链信息的采集（将traceID，spanID等信息传到采集器处理）："></a>调用链信息的采集（将traceID，spanID等信息传到采集器处理）：</h4><ol>
+<li>侵入业务代码，代码中编写（不推荐）</li>
+<li>AOP推送，同样侵入了业务代码，但是AOP可独立开发</li>
+<li>javaAgent字节码增强（虚拟机级别支持的AOP实现方式）</li>
+<li>调用信息随日志推送到日志中心然后再处理                                                 </li>
+</ol>
+<h4 id="采集器数据的推送"><a href="#采集器数据的推送" class="headerlink" title="采集器数据的推送"></a>采集器数据的推送</h4><blockquote>
+<p>采集器收集的数据必须从业务系统中推送到调用链的处理器上，并且推送过程中必须保证不能影响业务系统的正常运行，及绝对不能直接使用业务线程来发送调用信息，一般采用异步线程池发送，同时异步线程池与处理器之间必须采用有界队列做缓冲，避免出现数据积压后导致应用内存耗光的情况。</p>
+</blockquote>
+<ul>
+<li>kafka消息队列（处于采集器和处理器中间，面对大流量高峰采集信息起到消峰作用）</li>
+<li>UDP推送：无连接传输层协议，效率比tcp或之上的协议高得多</li>
+</ul>
+<h3 id="不同的调用链组成业务链（多个请求建立连接（例如，下单，支付，退款），多个树形调用链组成森林业务链）"><a href="#不同的调用链组成业务链（多个请求建立连接（例如，下单，支付，退款），多个树形调用链组成森林业务链）" class="headerlink" title="不同的调用链组成业务链（多个请求建立连接（例如，下单，支付，退款），多个树形调用链组成森林业务链）"></a>不同的调用链组成业务链（多个请求建立连接（例如，下单，支付，退款），多个树形调用链组成森林业务链）</h3>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Distributed-Tracing/" rel="tag"># Distributed Tracing</a>
+          
+            <a href="/tags/kafka/" rel="tag"># kafka</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/22/Redis Commands/" rel="next" title="Redis Commands">
+                <i class="fa fa-chevron-left"></i> Redis Commands
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#调用链实现原理"><span class="nav-number">1.</span> <span class="nav-text">调用链实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#调用链的产生"><span class="nav-number">1.1.</span> <span class="nav-text">调用链的产生</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用链跟踪原理"><span class="nav-number">1.2.</span> <span class="nav-text">调用链跟踪原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#每一个微服务架构系统即使再复杂都会有一个入口，而这个入口我们可以将其看作一棵树的树根root，之后所发生的所有调用关系我们可以看作是由树根衍生出来的树干与树枝，这样所有的系统调用关系就被抽象成了一颗复杂的树，而基于树-的特性，我们可以沿着某一分叉找到一条完整的调用关系，因此我们可以给每个不同的分叉定义不用的唯一标识来区分不同的调用链，这样每一条的完整的调用链关系就被我们抽象了出来，但是调用链内的各个服务调用顺序还没有明确，虽然有些服务的调用顺序并不会对最终结果造成影响，但是有些却会产生对系统致命的影响，所以我们再次利用树的层次特性来给同一分支中不同节点定义先后顺序。这样，复杂的微服务系统之间的调用关系就变得一目了然。"><span class="nav-number">1.2.1.</span> <span class="nav-text">每一个微服务架构系统即使再复杂都会有一个入口，而这个入口我们可以将其看作一棵树的树根root，之后所发生的所有调用关系我们可以看作是由树根衍生出来的树干与树枝，这样所有的系统调用关系就被抽象成了一颗复杂的树，而基于树 的特性，我们可以沿着某一分叉找到一条完整的调用关系，因此我们可以给每个不同的分叉定义不用的唯一标识来区分不同的调用链，这样每一条的完整的调用链关系就被我们抽象了出来，但是调用链内的各个服务调用顺序还没有明确，虽然有些服务的调用顺序并不会对最终结果造成影响，但是有些却会产生对系统致命的影响，所以我们再次利用树的层次特性来给同一分支中不同节点定义先后顺序。这样，复杂的微服务系统之间的调用关系就变得一目了然。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spanID-64位整型值：产生策略"><span class="nav-number">1.2.2.</span> <span class="nav-text">spanID=64位整型值：产生策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用链系统设计与实现"><span class="nav-number">1.3.</span> <span class="nav-text">调用链系统设计与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#调用链系统的构成"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">调用链系统的构成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traceID，spanID的传递："><span class="nav-number">1.3.0.2.</span> <span class="nav-text">traceID，spanID的传递：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用链信息的采集（将traceID，spanID等信息传到采集器处理）："><span class="nav-number">1.3.0.3.</span> <span class="nav-text">调用链信息的采集（将traceID，spanID等信息传到采集器处理）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#采集器数据的推送"><span class="nav-number">1.3.0.4.</span> <span class="nav-text">采集器数据的推送</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同的调用链组成业务链（多个请求建立连接（例如，下单，支付，退款），多个树形调用链组成森林业务链）"><span class="nav-number">1.3.1.</span> <span class="nav-text">不同的调用链组成业务链（多个请求建立连接（例如，下单，支付，退款），多个树形调用链组成森林业务链）</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

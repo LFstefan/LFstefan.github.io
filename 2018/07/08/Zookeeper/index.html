@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="Zookeeper What is Zookeeper ? Why use Zookeeper ? Theory Leader Election  Deploy  How to use ? Command Line API Curator    What is Zookeeper ? ZK被多数人认为是一个注册中心，在分布式架构中像服务提供者和服务消费者之间的一个枢纽站，服务提供者将服务注册在注册">
+<meta name="description" content="Zookeeper What is Zookeeper ? Why use Zookeeper ? Theory Leader Election  Deploy  How to use ? Command Line API Curator">
 <meta name="keywords" content="Zookeeper,Distributed,Provider,Consumer,RegistrationCenter">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Zookeeper">
 <meta property="og:url" content="https://lfstefan.github.io/2018/07/08/Zookeeper/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="Zookeeper What is Zookeeper ? Why use Zookeeper ? Theory Leader Election  Deploy  How to use ? Command Line API Curator    What is Zookeeper ? ZK被多数人认为是一个注册中心，在分布式架构中像服务提供者和服务消费者之间的一个枢纽站，服务提供者将服务注册在注册">
-<meta property="og:updated_time" content="2018-09-05T02:19:26.218Z">
+<meta property="og:description" content="Zookeeper What is Zookeeper ? Why use Zookeeper ? Theory Leader Election  Deploy  How to use ? Command Line API Curator">
+<meta property="og:updated_time" content="2018-12-04T05:51:55.121Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zookeeper">
-<meta name="twitter:description" content="Zookeeper What is Zookeeper ? Why use Zookeeper ? Theory Leader Election  Deploy  How to use ? Command Line API Curator    What is Zookeeper ? ZK被多数人认为是一个注册中心，在分布式架构中像服务提供者和服务消费者之间的一个枢纽站，服务提供者将服务注册在注册">
+<meta name="twitter:description" content="Zookeeper What is Zookeeper ? Why use Zookeeper ? Theory Leader Election  Deploy  How to use ? Command Line API Curator">
 
 
 
@@ -444,6 +444,7 @@
 </ul>
 </li>
 </ul>
+<a id="more"></a>
 <h3 id="What-is-Zookeeper"><a href="#What-is-Zookeeper" class="headerlink" title="What is Zookeeper ?"></a>What is Zookeeper ?</h3><blockquote>
 <p>ZK被多数人认为是一个注册中心，在分布式架构中像服务提供者和服务消费者之间的一个枢纽站，服务提供者将服务注册在注册中心以供服务消费者来获取消费，支持一对一，一对多，多对一，多对多等模式，其原理简单来讲，就是服务提供者在注册中心注册自己的服务地址，并通过一定端口将自己的服务暴露出去，消费者想要使用提供者所提供的服务时，首先需要去注册中心匹配相应的服务以获取该具体服务提供的地址，然后才能去访问该服务提供者以消费该服务，多对多模式中，如果同一时间消费者大量的涌入注册中心去访问同一服务，ZK还具有负载均衡的作用来有效的分配大量的请求流量。 </p>
 </blockquote>
@@ -471,7 +472,7 @@
 </li>
 <li><p>利用临时顺序节点来实现 </p>
 <blockquote>
-<p>Zookeeper中有一种节点叫做顺序节点ZooKeeper中还有一种名为临时节点的节点，临时节点由某个客户端创建，当客户端与ZooKeeper集群断开连接，则开节点自动被删除。 </p>
+<p>Zookeeper中有一种节点叫做顺序节点ZooKeeper中还有一种名为临时节点的节点，临时节点由某个客户端创建，当客户端与ZooKeeper集群断开连接，则该节点自动被删除。 </p>
 </blockquote>
 <ul>
 <li>客户端调用create()方法创建名为“locknode/guid-lock-”的节点，需要注意的是，这里节点的创建类型需要设置为EPHEMERAL_SEQUENTIAL。 </li>
@@ -784,6 +785,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/07/15/分布式通信/" rel="prev" title="分布式通信">
+                分布式通信 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -856,7 +861,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-count">80</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -867,7 +872,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -878,7 +883,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">75</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -92,7 +92,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="REST,Restful,RPC,SOAP,MVC," />
+  <meta name="keywords" content="RPC,REST,Restful,SOAP,MVC," />
 
 
 
@@ -111,13 +111,13 @@
 
 
 <meta name="description" content="初识REST rest是什么，来源，起因，未来 restAPI接口设计 get方法，接口中添加注解@GET，实现类无需再添加注解，安全（读取资源不会对其状态做改动），幂等（外系统对接口的多次访问，得到的资源状态是一致的） 资源命名，面向资源，名词为主（rpc，面向动作，动词为主） head，option方法与get方法类似 put，http写请求方法，用于更新或添加资源，幂等，不安全（凡是涉及写请">
-<meta name="keywords" content="REST,Restful,RPC,SOAP,MVC">
+<meta name="keywords" content="RPC,REST,Restful,SOAP,MVC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初识REST">
 <meta property="og:url" content="https://lfstefan.github.io/2018/04/15/初识REST/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="初识REST rest是什么，来源，起因，未来 restAPI接口设计 get方法，接口中添加注解@GET，实现类无需再添加注解，安全（读取资源不会对其状态做改动），幂等（外系统对接口的多次访问，得到的资源状态是一致的） 资源命名，面向资源，名词为主（rpc，面向动作，动词为主） head，option方法与get方法类似 put，http写请求方法，用于更新或添加资源，幂等，不安全（凡是涉及写请">
-<meta property="og:updated_time" content="2018-09-21T09:15:14.723Z">
+<meta property="og:updated_time" content="2018-12-04T05:52:36.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初识REST">
 <meta name="twitter:description" content="初识REST rest是什么，来源，起因，未来 restAPI接口设计 get方法，接口中添加注解@GET，实现类无需再添加注解，安全（读取资源不会对其状态做改动），幂等（外系统对接口的多次访问，得到的资源状态是一致的） 资源命名，面向资源，名词为主（rpc，面向动作，动词为主） head，option方法与get方法类似 put，http写请求方法，用于更新或添加资源，幂等，不安全（凡是涉及写请">
@@ -443,7 +443,35 @@
 </ul>
 </li>
 </ul>
+<a id="more"></a>
 <p>jersey的AOP功能：HK2依赖实现，无需配置，实现接口即可</p>
+<p>Providers：jersey支持多种表述类型，其原因为底层实现提providers具备对不同格式的处理能力，其内部提供了丰富的MessageBodyReader和MessageBodyWriter接口实现类来处理不同的格式表述。</p>
+<ul>
+<li>MessageBodyReader<t>消息体处理器接口：用于将传输流转换成java类型对象，业务系统启用该实现类有两种方式，一为：使用注解@Provider定义实现类，业务系统启动时自动探测并加载，二为：编码注册到Application类或者其子类中，业务系统启动时加载Application类或其子类时一并加载<ul>
+<li>MessageBodyReader接口中定义了两个方法，isReadable()判定是否可以反序列化，和readFrom()具体反序列化操作</li>
+</ul>
+</t></li>
+<li><p>MessageBodyReader<t>接口，负责将java对象转换为流，即序列化过程，包含方法isWriteable()和wroteTo()</t></p>
+</li>
+<li><p>上下文provider：ContextResolver<t>接口的方法getContext()，入参表述对象类型，出参上下文泛型</t></p>
+</li>
+</ul>
+<h3 id="请求流程："><a href="#请求流程：" class="headerlink" title="请求流程："></a>请求流程：</h3><p>流程角色：用户，rest客户端，rest服务器</p>
+<ol>
+<li>用户提交请求，客户端接收请求（客户端请求过滤器）</li>
+<li>客户端拦截器，对客户端序列化操作的的拦截</li>
+<li>客户端消息体写处理器执行序列化，流程过度到服务器</li>
+<li>服务器接收请求，服务器前置请求过滤器</li>
+<li>根据请求匹配资源，服务器后置请求过滤器</li>
+<li>服务器读拦截器，拦截服务器的反序列化操作</li>
+<li>服务器消息体读处理器，对数据流反序列化，执行匹配的资源方法</li>
+<li>请求资源处理完毕，服务器响应过滤器</li>
+<li>服务器写拦截器，对服务器序列化到客户端的操作进行拦截</li>
+<li>服务器消息体写处理器执行序列化，流程返回客户端</li>
+<li>客户端接收响应，客户端响应过滤器</li>
+<li>客户端响应实例response返回用户一侧，用户执行respinse.readEntity，客户端读拦截器，对客户端反序列化进行拦截</li>
+<li>客户端消息体读处理器执行反序列化</li>
+</ol>
 <ul>
 <li><p>rest和rpc的区别<br>rest的web服务提供的方法信息存在http方法中<br>rpc的web服务提供的方法信息存在http信封中</p>
 </li>
@@ -522,11 +550,11 @@
       
         <div class="post-tags">
           
+            <a href="/tags/RPC/" rel="tag"># RPC</a>
+          
             <a href="/tags/REST/" rel="tag"># REST</a>
           
             <a href="/tags/Restful/" rel="tag"># Restful</a>
-          
-            <a href="/tags/RPC/" rel="tag"># RPC</a>
           
             <a href="/tags/SOAP/" rel="tag"># SOAP</a>
           
@@ -629,7 +657,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-count">80</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -640,7 +668,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -651,7 +679,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">75</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -704,7 +732,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#初识REST"><span class="nav-number">1.</span> <span class="nav-text">初识REST</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#初识REST"><span class="nav-number">1.</span> <span class="nav-text">初识REST</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#请求流程："><span class="nav-number">1.0.1.</span> <span class="nav-text">请求流程：</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

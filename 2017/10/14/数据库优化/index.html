@@ -92,7 +92,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java,Database,MySQL,Oracle," />
+  <meta name="keywords" content="Java,Oracle,Database,MySQL," />
 
 
 
@@ -111,13 +111,13 @@
 
 
 <meta name="description" content="数据库优化选取最适用的字段属性 数据库中的表越小，在它上面执行的查询也就会越快。因此，在创建表的时候，为了获得更好的性能，我们可以将表中字段的宽度设得尽可能小。 例如，邮政编码字段，CHAR(6)好过CHAR(255)和VARCHAR，同样MEDIUMINT好过BIGIN来定义整型字段（五种整型tinyint，smallint，mediumint，int，bigint）。 把字段设置为NOTNUL">
-<meta name="keywords" content="Java,Database,MySQL,Oracle">
+<meta name="keywords" content="Java,Oracle,Database,MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库优化">
 <meta property="og:url" content="https://lfstefan.github.io/2017/10/14/数据库优化/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="数据库优化选取最适用的字段属性 数据库中的表越小，在它上面执行的查询也就会越快。因此，在创建表的时候，为了获得更好的性能，我们可以将表中字段的宽度设得尽可能小。 例如，邮政编码字段，CHAR(6)好过CHAR(255)和VARCHAR，同样MEDIUMINT好过BIGIN来定义整型字段（五种整型tinyint，smallint，mediumint，int，bigint）。 把字段设置为NOTNUL">
-<meta property="og:updated_time" content="2018-04-14T09:34:13.331Z">
+<meta property="og:updated_time" content="2018-12-03T03:19:47.055Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库优化">
 <meta name="twitter:description" content="数据库优化选取最适用的字段属性 数据库中的表越小，在它上面执行的查询也就会越快。因此，在创建表的时候，为了获得更好的性能，我们可以将表中字段的宽度设得尽可能小。 例如，邮政编码字段，CHAR(6)好过CHAR(255)和VARCHAR，同样MEDIUMINT好过BIGIN来定义整型字段（五种整型tinyint，smallint，mediumint，int，bigint）。 把字段设置为NOTNUL">
@@ -587,143 +587,6 @@
 </ul>
 </li>
 </ul>
-<h1 id="SQL语句总结"><a href="#SQL语句总结" class="headerlink" title="SQL语句总结"></a>SQL语句总结</h1><ul>
-<li>创建数据库<br>CREATE DATABASE database-name</li>
-<li>删除数据库<br>drop database dbname</li>
-<li>创建新表<br>DROP TABLE IF EXISTS <code>zf_jg_statistics</code>;<br>CREATE TABLE <code>zf_jg_statistics</code> (<br><code>id</code> varchar(50) NOT NULL,<br><code>corp_id</code> varchar(255) DEFAULT NULL COMMENT ‘企业id’,<br><code>corp_name</code> varchar(50) DEFAULT NULL COMMENT ‘企业名称’,<br><code>gname</code> varchar(50) DEFAULT NULL COMMENT ‘行业名称，无默认值’,<br><code>gmjj</code> varchar(50) DEFAULT NULL COMMENT ‘行业分类’,<br><code>aname</code> varchar(50) DEFAULT NULL COMMENT ‘地区名称’,<br><code>area</code> varchar(50) DEFAULT NULL COMMENT ‘地区编号’,<br><code>total</code> int(50) DEFAULT ‘0’ COMMENT ‘风险防控点数，默认值为0’,<br><code>type</code> int(2) DEFAULT NULL COMMENT ‘每日查还是月查’,<br><code>scount</code> int(50) DEFAULT ‘0’ COMMENT ‘应查询点数，默认值为0’,<br><code>detail_count</code> int(50) DEFAULT ‘0’ COMMENT ‘实查询点数，默认值为0’,<br><code>warm</code> varchar(50) DEFAULT NULL COMMENT ‘警示标示’,<br><code>frequency</code> varchar(50) DEFAULT NULL COMMENT ‘覆盖率’,<br><code>time</code> date DEFAULT NULL COMMENT ‘查询时间，无默认值’,<br><code>sync_timestamp</code> timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT ‘时间戳’,<br><code>ybtotal</code> int(255) DEFAULT ‘0’,<br><code>ybzg</code> int(255) DEFAULT ‘0’,<br><code>yb</code> varchar(255) DEFAULT NULL,<br><code>zdtotal</code> int(255) DEFAULT ‘0’,<br><code>zzgl</code> varchar(255) DEFAULT NULL,<br>PRIMARY KEY (<code>id</code>),<br>KEY <code>corp_id</code> (<code>corp_id</code>),<br>KEY <code>time</code> (<code>time</code>) USING BTREE<br>) ENGINE=MyISAM DEFAULT CHARSET=utf8;</li>
-<li>根据已有的表创建新表：<br>A：create table tab_new like tab_old<br>B：create table tab_new as select col1,col2…from tab_old definition only</li>
-<li>删除新表<br>drop table tabname</li>
-<li>增加一个列<br>Alter table tabname<br>add column col type<blockquote>
-<p>注：列增加后将不能删除。DB2中列加上后数据类型也不能改变，唯一能改变的是增加varchar类型的长度。</p>
-</blockquote>
-</li>
-<li>添加主键：<br>Alter table tabname<br>add primary key(col)</li>
-<li>删除主键：<br>Alter table tabname<br>drop primary key(col)</li>
-<li>创建索引：<br>create [unique] index idxname<br>on tabname(col….)</li>
-<li>删除索引：<br>drop index idxname<blockquote>
-<p>注：索引是不可更改的，想更改必须删除重新建。</p>
-</blockquote>
-</li>
-<li>创建视图：<br>create view viewname<br>as select statement</li>
-<li>删除视图：<br>drop view viewname</li>
-<li>选择：select *from table1 where 范围</li>
-<li>插入：insert into table1(field1,field2) values(value1,value2)</li>
-<li>删除：delete from table1 where 范围</li>
-<li>更新：update table1 set field1=value1 where 范围</li>
-<li>查找：select *from table1 where field1 like ’%value1%’—like的语法很精妙，查资料!</li>
-<li>排序：select *from table1 order by field1,field2 [desc]</li>
-<li>总数：select count as totalcount from table1</li>
-<li>求和：select sum(field1) as sumvalue from table1</li>
-<li>平均：select avg(field1) as avgvalue from table1</li>
-<li>最大：select max(field1) as maxvalue from table1</li>
-<li>最小：select min(field1) as minvalue from table1</li>
-<li>高级查询运算词<ul>
-<li>UNION 运算符通过组合其他两个结果表(例如TABLE1 和 TABLE2)并消去表中任何重复行而派生出一个结果表。当 ALL 随UNION 一起使用时(即UNION ALL)，不消除重复行。两种情况下，派生表的每一行不是来自TABLE1 就是来自 TABLE2。</li>
-<li>EXCEPT 运算符EXCEPT 运算符通过包括所有在TABLE1 中但不在 TABLE2 中的行并消除所有重复行而派生出一个结果表。当 ALL 随EXCEPT 一起使用时(EXCEPT ALL)，不消除重复行。</li>
-<li>INTERSECT 运算符INTERSECT 运算符通过只包括TABLE1 和 TABLE2 中都有的行并消除所有重复行而派生出一个结果表。当 ALL 随INTERSECT 一起使用时(INTERSECT ALL)，不消除重复行。注：使用运算词的几个查询结果行必须是一致的。</li>
-</ul>
-</li>
-<li>外连接<ul>
-<li>left (outer)join：左外连接(左连接)：结果集几包括连接表的匹配行，也包括左连接表的所有行。</li>
-<li>SQL:select a.a,a.b, a.c, b.c, b.d, b.f from a LEFT OUT JOIN b ON a.a = b.c</li>
-<li>right (outer)join:右外连接(右连接)：结果集既包括连接表的匹配连接行，也包括右连接表的所有行。</li>
-<li>full/cross (outer)join：全外连接：不仅包括符号连接表的匹配行，还包括两个连接表中的所有记录。</li>
-</ul>
-</li>
-<li>分组:Group by:一张表，一旦分组完成后，查询后只能得到组相关的信息。组相关的信息：(统计信息)count,sum,max,min,avg 分组的标准)在SQLServer中分组时：不能以text,ntext,image类型的字段作为分组依据在selecte统计函数中的字段，不能和普通的字段放在一起;</li>
-<li>修改数据库的名称:<br>sp_renamedb ‘old_name’,’new_name’</li>
-<li>复制表(只复制结构,源表名：a新表名：b) (Access可用)<ul>
-<li>法一：select *into b from a where 1&lt;&gt;1(仅用于SQlServer)</li>
-<li>法二：select top 0 * into b from a</li>
-</ul>
-</li>
-<li>拷贝表(拷贝数据,源表名：a目标表名：b) (Access可用)</li>
-<li>insert into b(a,b, c) select d,e,f from b;</li>
-<li>跨数据库之间表的拷贝(具体数据使用绝对路径)(Access可用)<ul>
-<li>insert into b(a,b, c) select d,e,f from b in ‘具体数据库’ where 条件</li>
-<li>例子：..from b in ‘“&amp;Server.MapPath(“.”)&amp;”\data.mdb” &amp;”‘ where..</li>
-</ul>
-</li>
-<li>子查询(表名1：a 表名2：b)<ul>
-<li>select a,b,c from a where a IN (select d from b) 或者: </li>
-<li>select a,b,c from a where a IN (1,2,3)</li>
-</ul>
-</li>
-<li>在线视图查询(表名1：a)<ul>
-<li>select * from (SELECT a,b,c FROM a) T where t.a &gt; 1;</li>
-</ul>
-</li>
-<li>between的用法,between限制查询数据范围时包括了边界值,not between不包括<ul>
-<li>select *from table1 where time between time1 and time2</li>
-<li>select a,b,c, from table1 where a not between 数值1 and 数值2</li>
-</ul>
-</li>
-<li>in 的使用方法<ul>
-<li>select *from table1 where a [not] in (‘值1’,’值2’,’值4’,’值6’)</li>
-</ul>
-</li>
-<li>两张关联表，删除主表中已经在副表中没有的信息</li>
-<li>delete from table1 where not exists( select *from table2 where table1.field1=table2.field1)</li>
-<li>四表联查问题：</li>
-<li>select *from a left inner join b on a.a=b.b right inner join c on a.a=c.c inner join d on a.a=d.d where …..</li>
-<li>日程安排提前五分钟提醒<ul>
-<li>SQL:select *from 日程安排 where datediff(‘minute’,f开始时间,getdate())&gt;5</li>
-</ul>
-</li>
-<li>前10条记录<ul>
-<li>select top 10 * form table1 where 范围</li>
-</ul>
-</li>
-<li>选择在每一组b值相同的数据中对应的a最大的记录的所有信息(类似这样的用法可以用于论坛每月排行榜,每月热销产品分析,按科目成绩排名,等等.)</li>
-<li>select a,b,c from tablename ta where a=(select max(a) from tablename tb where tb.b=ta.b)</li>
-<li>包括所有在TableA 中但不在 TableB和TableC 中的行并消除所有重复行而派生出一个结果表<ul>
-<li>(select a from tableA) except (select a from tableB)except (select a from tableC)</li>
-</ul>
-</li>
-<li>删除重复记录<ol>
-<li>delete from tablename where id not in (select max(id) from tablename group by col1,col2,…)</li>
-<li>select distinct *into temp from tablename</li>
-</ol>
-</li>
-<li>列出数据库里所有的表名<ul>
-<li>select name from sysobjects where type=’U’ //U代表用户</li>
-</ul>
-</li>
-<li>列出表里的所有的列名<ul>
-<li>select name from syscolumns where id=object_id(‘TableName’)</li>
-</ul>
-</li>
-<li>初始化表table1<ul>
-<li>truncate TABLE table1</li>
-</ul>
-</li>
-<li>选择从10到15的记录<ul>
-<li>select top 5 <em> from (select top 15 </em> from table order by id asc) table_别名 order by id desc</li>
-</ul>
-</li>
-<li>查看与某一个表相关的视图、存储过程、函数<ul>
-<li>select a.*from sysobjects a, syscomments b where a.id = b.id and b.text like ‘%表名%’</li>
-</ul>
-</li>
-<li>查看当前数据库中所有存储过程<ul>
-<li>select name as 存储过程名称 from sysobjects where xtype=’P’</li>
-</ul>
-</li>
-<li>查询用户创建的所有数据库<ul>
-<li>select *from master..sysdatabases D where sid not in(select sid from master..syslogins where name=’sa’)</li>
-<li>select dbid,name AS DB_NAME  from master..sysdatabases where sid &lt;&gt; 0x01</li>
-</ul>
-</li>
-<li>查询某一个表的字段和数据类型<ul>
-<li>select column_name,data_type from information_schema.columns where table_name= ‘表名’</li>
-</ul>
-</li>
-</ul>
-<h1 id="常识"><a href="#常识" class="headerlink" title="常识"></a>常识</h1><ul>
-<li>在SQL查询中：from后最多可以跟多少张表或视图：256</li>
-<li>在SQL语句中出现Order by,查询时，先排序，后取</li>
-<li>在SQL中，一个字段的最大容量是8000，而对于nvarchar(4000),由于nvarchar是Unicode码。</li>
-</ul>
 
       
     </div>
@@ -776,11 +639,11 @@
           
             <a href="/tags/Java/" rel="tag"># Java</a>
           
+            <a href="/tags/Oracle/" rel="tag"># Oracle</a>
+          
             <a href="/tags/Database/" rel="tag"># Database</a>
           
             <a href="/tags/MySQL/" rel="tag"># MySQL</a>
-          
-            <a href="/tags/Oracle/" rel="tag"># Oracle</a>
           
         </div>
       
@@ -879,7 +742,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-count">80</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -890,7 +753,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -901,7 +764,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">75</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -954,7 +817,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库优化"><span class="nav-number">1.</span> <span class="nav-text">数据库优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选取最适用的字段属性"><span class="nav-number">1.0.1.</span> <span class="nav-text">选取最适用的字段属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用连接（JOIN）来代替子查询-Sub-Queries"><span class="nav-number">1.0.2.</span> <span class="nav-text">使用连接（JOIN）来代替子查询(Sub-Queries)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用联合-UNION-来代替手动创建的临时表"><span class="nav-number">1.0.3.</span> <span class="nav-text">使用联合(UNION)来代替手动创建的临时表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务"><span class="nav-number">1.0.4.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁定表"><span class="nav-number">1.0.5.</span> <span class="nav-text">锁定表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用索引"><span class="nav-number">1.0.6.</span> <span class="nav-text">使用索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化的查询语句"><span class="nav-number">1.0.7.</span> <span class="nav-text">优化的查询语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据分页处理"><span class="nav-number">1.0.8.</span> <span class="nav-text">数据分页处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#减少交互次数"><span class="nav-number">1.0.9.</span> <span class="nav-text">减少交互次数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置Fetch-Size"><span class="nav-number">1.0.10.</span> <span class="nav-text">设置Fetch Size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用存储过程"><span class="nav-number">1.0.11.</span> <span class="nav-text">使用存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用ResultSet游标处理记录"><span class="nav-number">1.0.12.</span> <span class="nav-text">使用ResultSet游标处理记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用绑定变量"><span class="nav-number">1.0.13.</span> <span class="nav-text">使用绑定变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库SQL执行原理"><span class="nav-number">1.0.14.</span> <span class="nav-text">数据库SQL执行原理</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL语句总结"><span class="nav-number"></span> <span class="nav-text">SQL语句总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常识"><span class="nav-number"></span> <span class="nav-text">常识</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库优化"><span class="nav-number">1.</span> <span class="nav-text">数据库优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选取最适用的字段属性"><span class="nav-number">1.0.1.</span> <span class="nav-text">选取最适用的字段属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用连接（JOIN）来代替子查询-Sub-Queries"><span class="nav-number">1.0.2.</span> <span class="nav-text">使用连接（JOIN）来代替子查询(Sub-Queries)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用联合-UNION-来代替手动创建的临时表"><span class="nav-number">1.0.3.</span> <span class="nav-text">使用联合(UNION)来代替手动创建的临时表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务"><span class="nav-number">1.0.4.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁定表"><span class="nav-number">1.0.5.</span> <span class="nav-text">锁定表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用索引"><span class="nav-number">1.0.6.</span> <span class="nav-text">使用索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化的查询语句"><span class="nav-number">1.0.7.</span> <span class="nav-text">优化的查询语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据分页处理"><span class="nav-number">1.0.8.</span> <span class="nav-text">数据分页处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#减少交互次数"><span class="nav-number">1.0.9.</span> <span class="nav-text">减少交互次数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置Fetch-Size"><span class="nav-number">1.0.10.</span> <span class="nav-text">设置Fetch Size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用存储过程"><span class="nav-number">1.0.11.</span> <span class="nav-text">使用存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用ResultSet游标处理记录"><span class="nav-number">1.0.12.</span> <span class="nav-text">使用ResultSet游标处理记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用绑定变量"><span class="nav-number">1.0.13.</span> <span class="nav-text">使用绑定变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库SQL执行原理"><span class="nav-number">1.0.14.</span> <span class="nav-text">数据库SQL执行原理</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

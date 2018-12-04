@@ -1,0 +1,1526 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Redis Commands APPEND key value：若key存在，在其value（必须为string类型）后面追加字符串 AUTH password：服务器访问权限设置，在配置文件redis.conf中配置requirepass 字段的值即可实现服务器的加密操作，客户端需使用命令auth password来获取权限才能执行命令">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis Commands">
+<meta property="og:url" content="https://lfstefan.github.io/2018/07/22/Redis Commands/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="Redis Commands APPEND key value：若key存在，在其value（必须为string类型）后面追加字符串 AUTH password：服务器访问权限设置，在配置文件redis.conf中配置requirepass 字段的值即可实现服务器的加密操作，客户端需使用命令auth password来获取权限才能执行命令">
+<meta property="og:updated_time" content="2018-12-04T06:00:57.958Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis Commands">
+<meta name="twitter:description" content="Redis Commands APPEND key value：若key存在，在其value（必须为string类型）后面追加字符串 AUTH password：服务器访问权限设置，在配置文件redis.conf中配置requirepass 字段的值即可实现服务器的加密操作，客户端需使用命令auth password来获取权限才能执行命令">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2018/07/22/Redis Commands/"/>
+
+
+
+
+
+  <title>Redis Commands | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/07/22/Redis Commands/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Redis Commands
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T12:17:20+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/Redis Commands/" class="leancloud_visitors" data-flag-title="Redis Commands">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Redis-Commands"><a href="#Redis-Commands" class="headerlink" title="Redis Commands"></a>Redis Commands</h1><ol>
+<li>APPEND key value：若key存在，在其value（必须为string类型）后面追加字符串</li>
+<li>AUTH password：服务器访问权限设置，在配置文件redis.conf中配置requirepass 字段的值即可实现服务器的加密操作，客户端需使用命令auth password来获取权限才能执行命令</li>
+</ol>
+<a id="more"></a>
+<ol>
+<li>BGREWRITEAOF</li>
+<li>BGSAVE</li>
+<li>BITCOUNT key [start end]：计算key中位为1的数量 *</li>
+<li>BITFIELD：*</li>
+<li>BITOP：按位操作，与，或，异或，非<ol>
+<li>BITOP AND destkey srckey1 srckey2 srckey3 … srckeyN</li>
+<li>BITOP OR destkey srckey1 srckey2 srckey3 … srckeyN</li>
+<li>BITOP XOR destkey srckey1 srckey2 srckey3 … srckeyN</li>
+<li>BITOP NOT destkey srckey</li>
+</ol>
+</li>
+<li>BITPOS key bit [start] [end]：返回key中第一位为1或者0的位置（可自定义范围）</li>
+<li>BLPOP key [key …] timeout：返回非空list（key）的第一个元素</li>
+<li>BRPOP key [key …] timeout：返回非空list（key）的最后一个元素</li>
+<li>BRPOPLPUSH source destination timeout：source非空时，等效于命令RPOPLPUSH source destination，source为空时，阻断连接至超时</li>
+<li>RPOPLPUSH source destination：将source的最后一个元素移除放置到destination的第一元素位置</li>
+<li>BZPOPMIN key [key …] timeout：从第一个非空排序sets（key）中返回并移除最小值</li>
+<li>BZPOPMAX key [key …] timeout：从第一个非空排序sets（key）中返回并移除最大值</li>
+<li>CLIENT ID：返回当前客户端id</li>
+<li>CLIENT KILL [ip:port] [ID client-id] [TYPE normal|master|slave|pubsub] [ADDR ip:port] [SKIPME yes/no]：关闭指定客户端连接</li>
+<li>CLIENT LIST [TYPE normal|master|replica|pubsub]：获取客户端连接列表</li>
+<li>CLIENT GETNAME：获取当前连接名</li>
+<li>CLIENT PAUSE timeout：暂停客户端一段时间</li>
+<li>CLIENT REPLY ON|OFF|SKIP：设置服务器对客户端的响应</li>
+<li>CLIENT SETNAME connection-name：设置当前连接的客户端名称</li>
+<li>CLIENT UNBLOCK client-id [TIMEOUT|ERROR]：</li>
+<li>CLUSTER ADDSLOTS slot [slot …]：集群模式下，将slot槽位分配给客户端节点</li>
+<li>CLUSTER COUNT-FAILURE-REPORTS node-id：统计集群中，节点失败报告的次数，用来判定该节点是否不可达</li>
+<li>CLUSTER COUNTKEYSINSLOT slot：统计某一槽位slot中key的数量</li>
+<li>CLUSTER DELSLOTS slot [slot …]：删除集群中节点对应服务器的槽位</li>
+<li>CLUSTER FAILOVER [FORCE|TAKEOVER]：该命令只能发送给集群中的复制节点来手动故障转移moster主节点</li>
+<li>CLUSTER FORGET node-id：从集群节点表中移除该节点，即将该节点从集群中踢出去，由于集群中所有节点都能感知到其他节点的存在，所以想要完全从集群中移除，需要给所有的已存在节点发送该命令</li>
+<li>CLUSTER GETKEYSINSLOT slot count：获取指定槽位slot中指定数量count的key值数组集合</li>
+<li>CLUSTER INFO：集群节点信息</li>
+<li>CLUSTER KEYSLOT key：获取key所在的槽位slot</li>
+<li>CLUSTER MEET ip port：强制与其他节点连接交互</li>
+<li>CLUSTER NODES：获取集群节点配置</li>
+<li>CLUSTER REPLICATE node-id：重新配置一个节点作为moster的复制节点</li>
+<li>CLUSTER RESET [HARD|SOFT]：重置集群节点，Note that this command does not work for masters if they hold one or more keys</li>
+<li>CLUSTER SAVECONFIG：强制节点保存节点配置到本地磁盘</li>
+<li>CLUSTER SET-CONFIG-EPOCH config-epoch：</li>
+<li>CLUSTER SETSLOT slot IMPORTING|MIGRATING|STABLE|NODE [node-id]：<ol>
+<li>MIGRATING subcommand: Set a hash slot in migrating state.</li>
+<li>IMPORTING subcommand: Set a hash slot in importing state.</li>
+<li>STABLE subcommand: Clear any importing / migrating state from hash slot.</li>
+<li>NODE subcommand: Bind the hash slot to a different node.</li>
+</ol>
+</li>
+<li>CLUSTER SLAVES node-id：列出moster节点的复本节点</li>
+<li>CLUSTER REPLICAS node-id：列出moster节点的复本节点</li>
+<li>CLUSTER SLOTS：返回集群槽位与redis实例匹配的详细信息</li>
+<li>COMMAND：获取命令细节</li>
+<li>COMMAND COUNT：统计命令总数</li>
+<li>COMMAND GETKEYS：获取命令中的key数组</li>
+<li>COMMAND INFO command-name [command-name …]：命令的具体信息</li>
+<li>CONFIG GET parameter：获取配置参数的值</li>
+<li>CONFIG REWRITE：重新写配置文件</li>
+<li>CONFIG SET parameter value：设置配置参数为value</li>
+<li>CONFIG RESETSTAT：重置配置文件信息</li>
+<li>DBSIZE：返回当前所选数据库中key的数量</li>
+<li>DEBUG OBJECT key：获取key的debug信息</li>
+<li>DEBUG SEGFAULT：让服务器崩溃</li>
+<li>DECR key：key的值减一</li>
+<li>DECRBY key decrement：key值减少指定值</li>
+<li>DEL key [key …]：删除key（可多个）</li>
+<li>DISCARD：刷新事务中所有先前排队的命令，并将连接状态恢复为正常。</li>
+<li>DUMP key：序列化key中的value值以redis特定格式，并将其返回</li>
+<li>ECHO message：输出所给的字符串</li>
+<li>EVAL script numkeys key [key …] arg [arg …]：</li>
+<li>EVALSHA sha1 numkeys key [key …] arg [arg …]：</li>
+<li>EXEC：执行事务中所有先前排队的命令，并将连接状态恢复为正常。</li>
+<li>EXISTS key [key …]：判定key是否存在</li>
+<li>EXPIRE key seconds：设置key的生存周期</li>
+<li>EXPIREAT key timestamp：设置key的生存周期（timestamp表示以unix时间为基准，1970.01.01）</li>
+<li>FLUSHALL [ASYNC]：移除所有数据库中所有key</li>
+<li>FLUSHDB [ASYNC]：移除当前数据库中所有key</li>
+<li>GEOADD key longitude latitude member [longitude latitude member …]：</li>
+<li>GEOHASH key member [member …]：</li>
+<li>。。。</li>
+<li>GET key：获取key值</li>
+<li>GETBIT key offset：返回偏移后的位值</li>
+<li>GETRANGE key start end：获取字串</li>
+<li>GETSET key value：设置新值，返回旧值</li>
+<li>HDEL key field [field …]：从key中存储的哈希中删除指定的字段</li>
+<li>HEXISTS key field：判定key中存储的哈希中是否存在指定的字段</li>
+<li>HGET key field：从key中存储的哈希中获取指定的字段</li>
+<li>HGETALL key：获取key存储哈希中所有的字段值</li>
+<li>HINCRBY key field increment：将key存储的哈希值中给定字段增加给定的数值（integer）</li>
+<li>HINCRBYFLOAT key field increment：将key存储的哈希值中给定字段增加给定的数值（float）</li>
+<li>HKEYS key：返回key中存储的哈希值中所有字段的值</li>
+<li>HLEN key：获取key中存储的哈希值中的字段数量</li>
+<li>HMGET key field [field …]：从key中存储的哈希中获取指定的字段的值</li>
+<li>HMSET key field value [field value …]：从key中存储的哈希中设定多个指定的字段以指定的值</li>
+<li>HSET key field value：从key中存储的哈希中设定指定的字段以指定的值</li>
+<li>HSETNX key field value：从key中存储的哈希中设定指定的字段以指定的值（当且仅当field不存在是成立，否则，不做任何操作）</li>
+<li>HSTRLEN key field：获取key中存储的哈希中设定指定字段值的长度</li>
+<li>HVALS key：获取key中存储的哈希的所有值</li>
+<li>INCR key：key值自增加一</li>
+<li>INCRBY key increment：key值自增指定值</li>
+<li>INCRBYFLOAT key increment：key值自增指定值（float）</li>
+<li>INFO [section]：获取服务器信息数据</li>
+<li>KEYS pattern：找到所有的与所给pattern相匹配的key</li>
+<li>LASTSAVE：返回最后一次成功保存到磁盘的unix时间戳</li>
+<li>LINDEX key index：获取list中第index个元素</li>
+<li>LINSERT key BEFORE|AFTER pivot value：在list中某元素前或者后插入元素</li>
+<li>LLEN key：获取list的长度</li>
+<li>LPOP key：获取并移除list中第一个元素</li>
+<li>LPUSH key value [value …]：在list头不插入多个元素</li>
+<li>LPUSHX key value：list头中key元素存在时给key赋值value，否则不做任何操作</li>
+<li>LRANGE key start stop：获取list中所给范围的值</li>
+<li>LREM key count value：<ol>
+<li>count &gt; 0: Remove elements equal to value moving from head to tail.</li>
+<li>count &lt; 0: Remove elements equal to value moving from tail to head.</li>
+<li>count = 0: Remove all elements equal to value.</li>
+</ol>
+</li>
+<li>LSET key index value：给list中第index个key赋值为value</li>
+<li>LTRIM key start stop：给list中所给范围内的元素去空格trim操作</li>
+<li>MEMORY DOCTOR：报告内存问题及意见</li>
+<li>MEMORY HELP：返回描述不同子命令的帮助文档</li>
+<li>MEMORY MALLOC-STATS：提供内存分配器的内部统计报告。</li>
+<li>MEMORY PURGE：要求内存分配器释放空间</li>
+<li>MEMORY STATS：显示内存使用详细内容</li>
+<li>MEMORY USAGE key [SAMPLES count]：显示key的内存使用</li>
+<li>MGET key [key …]：返回多个key的值</li>
+<li>MIGRATE host port key|”” destination-db timeout [COPY] [REPLACE] [KEYS key [key …]]：redis实例之间的转换</li>
+<li>MONITOR：实时监听服务器所有的请求</li>
+<li>MOVE key db：移动key到另一个数据库</li>
+<li>MSET key value [key value …]：设置多个key的值</li>
+<li>MSETNX key value [key value …]：设置多个key的值，仅当所有的key都不存在时成立</li>
+<li>MULTI：标记事务块的开始</li>
+<li>OBJECT subcommand [arguments [arguments …]]：<ol>
+<li>OBJECT REFCOUNT <key> returns the number of references of the value associated with the ecified key. This command is mainly useful for debugging.</key></li>
+<li>OBJECT ENCODING <key> returns the kind of internal representation used in order to store the value associated with a key.</key></li>
+<li>OBJECT IDLETIME <key> returns the number of seconds since the object stored at the specified key is idle (not requested by read or write operations). While the value is returned in seconds the actual resolution of this timer is 10 seconds, but may vary in future implementations. This subcommand is available when maxmemory-policy is set to an LRU policy or noeviction.</key></li>
+<li>OBJECT FREQ <key> returns the logarithmic access frequency counter of the object stored at the specified key. This subcommand is available when maxmemory-policy is set to an LFU policy.</key></li>
+<li>OBJECT HELP returns a succint help text.</li>
+</ol>
+</li>
+<li>PERSIST key：去除key中含有的timeout设置</li>
+<li>PEXPIRE key milliseconds：设置key的timeout，单位milliseconds而不是秒</li>
+<li>PEXPIREAT key milliseconds-timestamp：设置key的timeout已unix时间为准，单位milliseconds</li>
+<li>PFADD key element [element …]：将所有元素参数element添加到存储在指定为第一个参数key的变量名称的HyperLogLog数据结构中。</li>
+<li>PFCOUNT key [key …]：</li>
+<li>PFMERGE destkey sourcekey [sourcekey …]：合并多个hyberloglog为一个</li>
+<li>PING [message]：ping通服务器</li>
+<li>PSETEX key milliseconds value：设置key的value中和timeout</li>
+<li>PSUBSCRIBE pattern [pattern …]：监听发布到渠道的消息中与所给格式匹配的消息</li>
+<li>PUBSUB subcommand [argument [argument …]]：检测pub、sub子系统的状态</li>
+<li>PTTL key：获取key的timeout，单位milliseconds</li>
+<li>PUBLISH channel message：发布一个消息到渠道</li>
+<li>PUNSUBSCRIBE [pattern [pattern …]]：停止监听发布到渠道的消息中与所给格式匹配的消息</li>
+<li>QUIT：关闭连接</li>
+<li>RANDOMKEY：从当前数据库中随机返回一个key</li>
+<li>READONLY：允许连接对集群复制节点进行读操作</li>
+<li>READWRITE：禁止连接对集群子节点的读操作</li>
+<li>RENAME key newkey：重命名key</li>
+<li>RENAMENX key newkey：重命名key，并且新名字不存在</li>
+<li>RESTORE key ttl serialized-value [REPLACE]：创建一个key，其值为从提供的序列化的值</li>
+<li>ROLE：返回当前实例的角色</li>
+<li>RPOP key：返回并移除list的最后一个元素</li>
+<li>RPOPLPUSH source destination：从source list移除最后一个元素放入destination list中，并返回改元素</li>
+<li>RPUSH key value [value …]：在list末尾插入多个元素</li>
+<li>RPUSHX key value：仅当list存在时，插入元素key</li>
+<li>SADD key member [member …]：添加一个元素到set中</li>
+<li>SAVE：同步保存数据库到本地磁盘</li>
+<li>SCARD key：获取set中元素的数量</li>
+<li>SCRIPT DEBUG YES|SYNC|NO：对当前执行的脚本设置debug模式</li>
+<li>SCRIPT EXISTS sha1 [sha1 …]：在脚本缓存中检测执行脚本的存在性</li>
+<li>SCRIPT FLUSH：清空脚本缓存</li>
+<li>SCRIPT KILL：停止当前执行的脚本</li>
+<li>SCRIPT LOAD script：加载lua脚本到脚本缓存中</li>
+<li>SDIFF key [key …]：返回第一个set中元素与其他所有set中的元素不相同的元素set集合</li>
+<li>SDIFFSTORE destination key [key …]：将第一个set中元素与其他所有set中的元素不相同的元素放入目标destination key中</li>
+<li>SELECT index：切换redis的逻辑数据库</li>
+<li>SET key value [expiration EX seconds|PX milliseconds] [NX|XX]：设置key一个string类型的value值</li>
+<li>SETBIT key offset value：设置key中所存储的值的特定偏移的位的值</li>
+<li>SETEX key seconds value：设置一个key的value值和timeout（单位秒）</li>
+<li>SETNX key value：设置key的值，仅当key不存在的时候</li>
+<li>SETRANGE key offset value：从给定的偏移出开始，覆盖key中的value值</li>
+<li>SHUTDOWN [NOSAVE|SAVE]：同步保存数据库到本地磁盘然后停止服务</li>
+<li>SINTER key [key …]：返回多个set中公共的元素集合</li>
+<li>SINTERSTORE destination key [key …]：返回多个set中的公共元素到指定元素的destination中</li>
+<li>SISMEMBER key member：如果member在key中，返回1，否则返回0；</li>
+<li>SLAVEOF host port：</li>
+<li>REPLICAOF host port：</li>
+<li>SLOWLOG subcommand [argument]：管理redis的慢查询日志，读取或者重置。</li>
+<li>SMEMBERS key：返回set中所有的元素</li>
+<li>SMOVE source destination member：将member从源set移动到目标set</li>
+<li>SORT key [BY pattern] [LIMIT offset count] [GET pattern [GET pattern …]] [ASC|DESC] [ALPHA] [STORE destination]：排序集合中的元素</li>
+<li>SPOP key [count]：从set中随机返回并移除一个或者多个元素</li>
+<li>SRANDMEMBER key [count]：获取set中的一个或多个随机元素</li>
+<li>SREM key member [member …]：移除一个或多个set中的元素</li>
+<li>STRLEN key：获取key中value值的长度</li>
+<li>SUBSCRIBE channel [channel …]：监听发布到给定渠道的消息</li>
+<li>SUNION key [key …]：合并多个set集合</li>
+<li>SUNIONSTORE destination key [key …]：合并多个set集合到指定元素中</li>
+<li>SWAPDB index index：交换两个数据库</li>
+<li>TIME：返回服务器当前时间</li>
+<li>TOUCH key [key …]：修改key的最后一次访问时间，返回修改key的个数</li>
+<li>TTL key：获取key的timeout</li>
+<li>TYPE key：返回key的类型</li>
+<li>UNSUBSCRIBE [channel [channel …]]：停止监听发布到给定渠道的消息</li>
+<li>UNLINK key [key …]：用不同线程将key从keyspace移除，真正的删除操作最后同步</li>
+<li>UNWATCH：清空所有的监听</li>
+<li>WAIT numreplicas timeout：暂停当前客户端操作直到所有的写命令成功执行并且被特定数量的复制节点知道</li>
+<li>WATCH key [key …]：设置监听</li>
+<li>ZADD key [NX|XX] [CH] [INCR] score member [score member …]：添加一个或几个member到排序set中，若已存在key，则更新</li>
+<li>ZCARD key：获取排序set中的元素数量</li>
+<li>ZCOUNT key min max：统计排序set中key的值在min和max之间的key的数量</li>
+<li>ZINCRBY key increment member：给排序set中的member元素的值增加increment</li>
+<li>ZINTERSTORE destination numkeys key [key …] [WEIGHTS weight [weight …]] [AGGREGATE SUM|MIN|MAX]：</li>
+<li>ZLEXCOUNT key min max：当排序集中的所有元素都插入相同的分数时，为了强制执行词典排序，此命令返回键中有序集合中元素的数量，其值介于min和max之间。</li>
+<li>ZPOPMAX key [count]：返回并移除排序set中key的值最大的哪一个元素</li>
+<li>ZPOPMIN key [count]：返回并移除排序set中key的值最小的哪一个元素</li>
+<li>ZRANGE key start stop [WITHSCORES]：返回排序set中给定范围的元素</li>
+<li>ZRANGEBYLEX key min max [LIMIT offset count]：返回排序set中给定范围的元素（当排序集中的所有元素都插入相同的分数时，为了强制执行词典排序）</li>
+<li>ZREVRANGEBYLEX key max min [LIMIT offset count]：返回排序set中给定范围的元素（当排序集中的所有元素都插入相同的分数时，为了强制执行词典排序）顺序从高到低</li>
+<li>ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]：返回排序set中给定key的score值范围的元素</li>
+<li>ZRANK key member：返回排序set中给定元素的index</li>
+<li>ZREM key member [member …]：从排序set中删除一个或多个元素</li>
+<li>ZREMRANGEBYLEX key min max：删除排序set中给定范围的所有元素（当排序集中的所有元素都插入相同的分数时，为了强制执行词典排序）</li>
+<li>ZREMRANGEBYRANK key start stop：根据index删除排序set中给定范围的元素</li>
+<li>ZREMRANGEBYSCORE key min max：根据score值删除排序set中给定范围的元素</li>
+<li>ZREVRANGE key start stop [WITHSCORES]：返回按照index给定范围的排序set中元素，score顺序由高到低</li>
+<li>ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]：返回按照score给定范围的排序set中元素，score顺序由高到低</li>
+<li>ZREVRANK key member：返回排序set中按照score由高到低排好序后的给定的member的index</li>
+<li>ZSCORE key member：返回排序set中元素的score</li>
+<li>ZUNIONSTORE destination numkeys key [key …] [WEIGHTS weight [weight …]] [AGGREGATE SUM|MIN|MAX]：存储多个排序set到指定destination中</li>
+<li>SCAN cursor [MATCH pattern] [COUNT count]：逐步迭代key space元素集合。</li>
+<li>SSCAN key cursor [MATCH pattern] [COUNT count]：逐步迭代set元素集合。</li>
+<li>HSCAN key cursor [MATCH pattern] [COUNT count]：逐步迭代hash filed和value。</li>
+<li>ZSCAN key cursor [MATCH pattern] [COUNT count]：逐步迭代set元素和对应的score值。</li>
+<li>XINFO [CONSUMERS key groupname] [GROUPS key] [STREAM key] [HELP]：检索有关流和关联的使用者组的不同信息</li>
+<li>XADD key ID field string [field string …]：在已有的key实体流后衔接实体流，key不存在则创建一个新的</li>
+<li>XTRIM key MAXLEN [~] count：</li>
+<li>XDEL key ID [ID …]：从流中删除指定的实体</li>
+<li>XRANGE key start end [COUNT count]：返回流中给定范围的元素</li>
+<li>XREVRANGE key end start [COUNT count]：返回流中给定范围的元素（逆序）</li>
+<li>XLEN key：返回流中实体的数量</li>
+<li>XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key …] ID [ID …]：从一个或多个流中读取数据，只返回ID大于调用者报告的最后一个接收ID的条目</li>
+<li>XGROUP [CREATE key groupname id-or-$] [SETID key groupname id-or-$] [DESTROY key groupname] [DELCONSUMER key groupname consumername]：创建，销毁，管理使用者组</li>
+<li>XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] STREAMS key [key …] ID [ID …]：</li>
+<li>XACK key group ID [ID …]：</li>
+<li>XCLAIM key group consumer min-idle-time ID [ID …] [IDLE ms] [TIME ms-unix-time] [RETRYCOUNT count] [FORCE] [JUSTID]：</li>
+<li>XPENDING key group [start end count] [consumer]：</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/15/分布式通信/" rel="next" title="分布式通信">
+                <i class="fa fa-chevron-left"></i> 分布式通信
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/29/调用链实现原理/" rel="prev" title="Distributed Tracing Design and Architecture">
+                Distributed Tracing Design and Architecture <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-Commands"><span class="nav-number">1.</span> <span class="nav-text">Redis Commands</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

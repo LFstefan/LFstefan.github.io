@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/11/11/LintCode_MergeKSortedLists/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/04/01/Java描绘数据统计图/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/11/11/LintCode_MergeKSortedLists/" itemprop="url">
-                  LintCode_Merge K Sorted Lists
+                <a class="post-title-link" href="/2018/04/01/Java描绘数据统计图/" itemprop="url">
+                  Java描绘数据统计图
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T20:49:53+08:00">
-                2017-11-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-01T12:13:25+08:00">
+                2018-04-01
               </time>
             
 
@@ -389,8 +389,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithms/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithms</span>
+                  <a href="/categories/ECharts/" itemprop="url" rel="index">
+                    <span itemprop="name">ECharts</span>
                   </a>
                 </span>
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2017/11/11/LintCode_MergeKSortedLists/" class="leancloud_visitors" data-flag-title="LintCode_Merge K Sorted Lists">
+             <span id="/2018/04/01/Java描绘数据统计图/" class="leancloud_visitors" data-flag-title="Java描绘数据统计图">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,534 +435,11 @@
 
       
         
-          
-            <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><blockquote>
-<p>Merge k sorted linked lists and return it as one sorted list.<br>Analyze and describe its complexity.</p>
-</blockquote>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
-<li>合并K个有序链表，且不去重，首先联想到的是合并两个有序单链表的思路，然年顺势往下推，遍历K个有序单链表，依次与前面的结果相合并，最后返回结果，实现代码入下：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> lists: a list of ListNode</div><div class="line">     * <span class="doctag">@return</span>: The head of one sorted list.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeKLists</span><span class="params">(List&lt;ListNode&gt; lists)</span> </span>&#123;  </div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">        ListNode listNode = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (lists == <span class="keyword">null</span>)</div><div class="line">            <span class="keyword">return</span> listNode;</div><div class="line">        <span class="keyword">if</span>(lists.size() == <span class="number">0</span> || lists.isEmpty())</div><div class="line">            <span class="keyword">return</span> listNode;</div><div class="line">        <span class="keyword">for</span> (ListNode node : lists) &#123;</div><div class="line">            <span class="keyword">if</span> (node == <span class="keyword">null</span>)</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            listNode = mergeList(listNode,node);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> listNode;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeList</span><span class="params">(ListNode tempNode,ListNode tempNode1)</span></span>&#123;</div><div class="line">        ListNode listNode = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        ListNode tempListNode = listNode;</div><div class="line">        <span class="keyword">while</span>(tempNode!=<span class="keyword">null</span>&amp;&amp;tempNode1!=<span class="keyword">null</span>)&#123;</div><div class="line">            <span class="keyword">if</span>(tempNode.val&lt;tempNode1.val)&#123;</div><div class="line">                tempListNode.next = tempNode;</div><div class="line">                tempListNode = tempNode;</div><div class="line">                tempNode = tempNode.next;</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                tempListNode.next = tempNode1;</div><div class="line">                tempListNode = tempNode1;</div><div class="line">                tempNode1 = tempNode1.next;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(tempNode!=<span class="keyword">null</span>)</div><div class="line">            tempListNode.next = tempNode;</div><div class="line">        <span class="keyword">if</span>(tempNode1!=<span class="keyword">null</span>)</div><div class="line">            tempListNode.next = tempNode1;</div><div class="line">        <span class="keyword">return</span> listNode.next;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>改进，上述由于是直接遍历List，所以循环次数（即合并次数）为n，但是我们可以通过两两合并（参照二叉树结构从子节点向上合并，最终到达根节点）来降低黑冰次数为n/2，参考答案代码如下：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> lists: a list of ListNode</div><div class="line">     * <span class="doctag">@return</span>: The head of one sorted list.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeKLists</span><span class="params">(List&lt;ListNode&gt; lists)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (lists.size() == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> mergeHelper(lists, <span class="number">0</span>, lists.size() - <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//借助递归来实现List的不断二等分</span></div><div class="line">    <span class="function"><span class="keyword">private</span> ListNode <span class="title">mergeHelper</span><span class="params">(List&lt;ListNode&gt; lists, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (start == end) &#123;</div><div class="line">            <span class="keyword">return</span> lists.get(start);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> mid = start + (end - start) / <span class="number">2</span>;</div><div class="line">        ListNode left = mergeHelper(lists, start, mid);</div><div class="line">        ListNode right = mergeHelper(lists, mid + <span class="number">1</span>, end);</div><div class="line">        <span class="keyword">return</span> mergeTwoLists(left, right);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> ListNode <span class="title">mergeTwoLists</span><span class="params">(ListNode list1, ListNode list2)</span> </span>&#123;</div><div class="line">        ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        ListNode tail = dummy;</div><div class="line">        <span class="keyword">while</span> (list1 != <span class="keyword">null</span> &amp;&amp; list2 != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (list1.val &lt; list2.val) &#123;</div><div class="line">                tail.next = list1;</div><div class="line">                tail = list1;</div><div class="line">                list1 = list1.next;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                tail.next = list2;</div><div class="line">                tail = list2;</div><div class="line">                list2 = list2.next;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (list1 != <span class="keyword">null</span>) &#123;</div><div class="line">            tail.next = list1;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            tail.next = list2;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> dummy.next;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/11/04/LintCode_MinStack/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/11/04/LintCode_MinStack/" itemprop="url">
-                  LintCode_Min Stack
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-04T20:49:53+08:00">
-                2017-11-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithms/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithms</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/11/04/LintCode_MinStack/" class="leancloud_visitors" data-flag-title="LintCode_Min Stack">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><blockquote>
-<p>Implement a stack with min() function, which will return the smallest number in the stack.<br>It should support push, pop and min operation all in O(1) cost.</p>
-</blockquote>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
-<li>最直接的想法，遍历求最小值，每次入栈和出栈都会造成遍历的发生</li>
-<li>改进：从一开始就比较每一个入栈的值，将最小值存入MIN中，但是，出栈依然会导致MIN值的缺失，从而触发遍历求最小值，我只想到这里。。。代码入下：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinStack</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> MIN = Integer.MIN_VALUE;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MinStack</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// do intialization if necessary</span></div><div class="line">        stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * @param number: An integer</div><div class="line">     * @return: nothing</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> number)</span> </span>&#123;</div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">        <span class="keyword">if</span>(MIN==Integer.MIN_VALUE)&#123;</div><div class="line">            MIN = number;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            MIN = number&gt;MIN?MIN:number;</div><div class="line">        &#125;</div><div class="line">    	stack.push(number);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * @return: An integer</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">    	<span class="keyword">int</span> topValue = stack.pop();</div><div class="line">    	<span class="keyword">if</span>(topValue==MIN)&#123;</div><div class="line">    		MIN = getMin();</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">return</span> topValue;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * @return: An integer</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">min</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">    	<span class="keyword">return</span> MIN;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getMin</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">if</span>(stack.isEmpty())&#123;</div><div class="line">        	MIN = Integer.MIN_VALUE;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">	        	MIN = stack.peek();</div><div class="line">	        	<span class="keyword">for</span>(Integer value:stack)&#123;</div><div class="line">	        		MIN = value&gt;MIN?MIN:value;</div><div class="line">	        	&#125;</div><div class="line">        &#125;</div><div class="line">    	<span class="keyword">return</span> MIN;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>动态规划的思路，同样是从一开始就比较每一个入栈的值，然后将<strong>当前</strong>栈中的最小值存入另一个栈中，这样在入栈的时候就记录好了该元素发生入栈操作和出栈操作时候栈中的最小值，避免了遍历找寻最小值的时间，代码入下：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinStack</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack;</div><div class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; minStack;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MinStack</span><span class="params">()</span> </span>&#123;</div><div class="line">        stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">        minStack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> number)</span> </span>&#123;</div><div class="line">        stack.push(number);</div><div class="line">        <span class="keyword">if</span> (minStack.isEmpty()) &#123;</div><div class="line">            minStack.push(number);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            minStack.push(Math.min(number, minStack.peek()));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</div><div class="line">        minStack.pop();</div><div class="line">        <span class="keyword">return</span> stack.pop();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">min</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> minStack.peek();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// version 2, save more space. but space complexity doesn't change.</span></div><div class="line"><span class="comment">//相同最小值将不会重复存入栈中，节省栈空间</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinStack</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack;</div><div class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; minStack;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MinStack</span><span class="params">()</span> </span>&#123;</div><div class="line">        stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">        minStack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> number)</span> </span>&#123;</div><div class="line">        stack.push(number);</div><div class="line">        <span class="keyword">if</span> (minStack.empty() == <span class="keyword">true</span>)</div><div class="line">            minStack.push(number);</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// 这里考虑的相等的情况也会继续push</span></div><div class="line">        <span class="keyword">if</span> (minStack.peek() &gt;= number)</div><div class="line">            minStack.push(number);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (stack.peek().equals(minStack.peek()) ) </div><div class="line">            minStack.pop();</div><div class="line">        <span class="keyword">return</span> stack.pop();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">min</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> minStack.peek();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/10/28/LintCode_ImplementQueueByTwoStacks/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/28/LintCode_ImplementQueueByTwoStacks/" itemprop="url">
-                  LintCode_ImplementQueueByTwoStacks
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-28T20:49:53+08:00">
-                2017-10-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithms/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithms</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/10/28/LintCode_ImplementQueueByTwoStacks/" class="leancloud_visitors" data-flag-title="LintCode_ImplementQueueByTwoStacks">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><blockquote>
-<p>As the title described, you should only use <strong>two stacks to implement a queue’s actions</strong>.<br>The queue should support push(element), pop() and top() where pop is pop the first(a.k.a front) element in the queue.<br>Both pop and top methods should return the value of first element.</p>
-</blockquote>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><blockquote>
-<p>第一反应就是一个栈来存正序入队列的值，另一个存反序，入队列的时候往正序栈中添加，出队列的时候从反序栈中取栈顶，但是，两个栈的关系一直没有梳理清晰，直到看了提供标准答案才豁然卡朗，还是智商有点捉急啊。</p>
-<ul>
-<li>两个栈的关系其实跟我一开始想的一样，栈A用来存入队列正序值，栈B用来存逆序，入队列的值负责往A中进入，出队列的时候先判定B是否为空，不为空，说明之前入队列进来的值还没有走光，B可以继续进行出队列操作，若B为空，则需要将A中值逆序放入B中，然后在进行出队列操作！</li>
-<li>注意：这里的正序和逆序指的是元素的先来后到的顺序，不是大小顺序</li>
-</ul>
-<p>后来发现java提供的栈方法就可以很简洁的实现队列的操作（相当于底层方法帮助我们实现了这个功能）代码入下：</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImplementQueuebyTwoStacks</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> Stack&lt;Integer&gt; queue = <span class="keyword">null</span>;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">MyQueue</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// do intialization if necessary</span></div><div class="line">		queue = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * @param element: An integer</div><div class="line">     * @return: nothing</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> element)</span> </span>&#123;</div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">    	queue.push(element);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * @return: An integer</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">    	<span class="keyword">int</span> headValue = queue.firstElement();<span class="comment">//获取栈底元素</span></div><div class="line">    	queue.remove(<span class="number">0</span>);<span class="comment">//移除栈底元素</span></div><div class="line">    	<span class="keyword">return</span> headValue;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/*</span></div><div class="line">     * @return: An integer</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">top</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">    	<span class="keyword">return</span> queue.firstElement();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//以下是官方标准代码</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyQueue</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack1;</div><div class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack2;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyQueue</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="comment">// do initialization if necessary</span></div><div class="line">       stack1 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">       stack2 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">stack2ToStack1</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">while</span>(! stack2.isEmpty())&#123;</div><div class="line">            stack1.push(stack2.pop());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> element)</span> </span>&#123;</div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">        stack2.push(element);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">        <span class="keyword">if</span>(stack1.empty() == <span class="keyword">true</span>)&#123;</div><div class="line">            <span class="keyword">this</span>.stack2ToStack1();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> stack1.pop();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">top</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// write your code here</span></div><div class="line">        <span class="keyword">if</span>(stack1.empty() == <span class="keyword">true</span>)&#123;</div><div class="line">            <span class="keyword">this</span>.stack2ToStack1();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> stack1.peek();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/10/21/java8新特性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/21/java8新特性/" itemprop="url">
-                  java8新特性
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-21T12:11:25+08:00">
-                2017-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java8/" itemprop="url" rel="index">
-                    <span itemprop="name">Java8</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/10/21/java8新特性/" class="leancloud_visitors" data-flag-title="java8新特性">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="java8新特性"><a href="#java8新特性" class="headerlink" title="java8新特性"></a>java8新特性</h1><blockquote>
-<p>本文参考自官方文档<a href="http://www.oracle.com/technetwork/java/javase/8-whats-new-2157071.html" target="_blank" rel="external">What’s New in JDK 8</a>，内容有所筛选！</p>
-</blockquote>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li>Java Programming Language<ul>
-<li>Lambda Expressions（Lambda表达式）</li>
-<li>Method references （方法引用）</li>
-<li>Default methods （默认方法）</li>
-<li>Repeating Annotations （重复注释）</li>
-<li>Improved type inference（更好的类型推断）</li>
-<li>Method parameter reflection（方法参数反射）</li>
-</ul>
-</li>
-<li>Collections（集合）</li>
-<li>Tool（工具）<ul>
-<li>Javac tool</li>
-<li>Javadoc tool</li>
-</ul>
-</li>
-<li>Internationalization（国际化）</li>
-<li>Date-Time Package （日期时间）</li>
-<li>IO and NIO</li>
-<li>java.lang and java.util Packages<ul>
-<li>Parallel Array Sorting（并行数组排序）</li>
-<li>Standard Encoding and Decoding Base64（标准编码和解码Base64）</li>
-<li>Unsigned Arithmetic Support（无符号算术支持）</li>
-</ul>
-</li>
-<li>JDBC<ul>
-<li>The JDBC-ODBC Bridge has been removed.</li>
-<li>JDBC 4.2 introduces new features.</li>
-</ul>
-</li>
-<li>Concurrency（并发）</li>
-<li>HotSpot</li>
-</ul>
+          <h3 id="Java描绘数据统计图"><a href="#Java描绘数据统计图" class="headerlink" title="Java描绘数据统计图"></a>Java描绘数据统计图</h3><h4 id="ECharts"><a href="#ECharts" class="headerlink" title="ECharts"></a><a href="http://echarts.baidu.com/" title="echarts" target="_blank" rel="external">ECharts</a></h4><blockquote>
+<h4 id="最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！"><a href="#最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！" class="headerlink" title="最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！"></a>最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！</h4></blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/21/java8新特性/#more" rel="contents">
+            <a class="btn" href="/2018/04/01/Java描绘数据统计图/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1008,7 +485,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/10/21/IO详解/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/03/25/Oracle命令集/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -1030,8 +507,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/10/21/IO详解/" itemprop="url">
-                  IO详解
+                <a class="post-title-link" href="/2018/03/25/Oracle命令集/" itemprop="url">
+                  Oracle命令集
                 </a>
               
             
@@ -1047,8 +524,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-21T12:11:25+08:00">
-                2017-10-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T12:17:20+08:00">
+                2018-03-25
               </time>
             
 
@@ -1070,8 +547,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/IO/" itemprop="url" rel="index">
-                    <span itemprop="name">IO</span>
+                  <a href="/categories/Oracle/" itemprop="url" rel="index">
+                    <span itemprop="name">Oracle</span>
                   </a>
                 </span>
 
@@ -1087,7 +564,7 @@
 
           
           
-             <span id="/2017/10/21/IO详解/" class="leancloud_visitors" data-flag-title="IO详解">
+             <span id="/2018/03/25/Oracle命令集/" class="leancloud_visitors" data-flag-title="Oracle命令集">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1116,208 +593,504 @@
 
       
         
-          
-            <h1 id="java8新特性"><a href="#java8新特性" class="headerlink" title="java8新特性"></a>java8新特性</h1><blockquote>
-<p>本文参考自官方文档<a href="http://www.oracle.com/technetwork/java/javase/8-whats-new-2157071.html" target="_blank" rel="external">What’s New in JDK 8</a>，内容有所筛选！</p>
+          <h1 id="Oracle命令集"><a href="#Oracle命令集" class="headerlink" title="Oracle命令集"></a>Oracle命令集</h1><blockquote>
+<ul>
+<li>基本命令</li>
+<li>INSERT ALL /FIRST,MERGE INTO</li>
+<li>maven使用oracle依赖指南</li>
+</ul>
 </blockquote>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li><p>BufferedInputStream</p>
-<ul>
-<li>BufferedInputStream(InputStream in)<br>Creates a BufferedInputStream and saves its argument, the input stream in, for later use.</li>
-<li>BufferedInputStream(InputStream in, int size)<br>Creates a BufferedInputStream with the specified buffer size, and saves its argument, the input stream in, for later use.</li>
-</ul>
-</li>
-<li><p>BufferedOutputStream</p>
-<ul>
-<li>BufferedOutputStream(OutputStream out)<br>Creates a new buffered output stream to write data to the specified underlying output stream.</li>
-<li>BufferedOutputStream(OutputStream out, int size)<br>Creates a new buffered output stream to write data to the specified underlying output stream with the specified buffer size.</li>
-</ul>
-</li>
-<li><p>BufferedReader</p>
-<ul>
-<li>BufferedReader(Reader in)<br>Creates a buffering character-input stream that uses a default-sized input buffer.</li>
-<li>BufferedReader(Reader in, int sz)<br>Creates a buffering character-input stream that uses an input buffer of the specified size.</li>
-</ul>
-</li>
-<li><p>BufferedWriter</p>
-<ul>
-<li>BufferedWriter(Writer out)<br>Creates a buffered character-output stream that uses a default-sized output buffer.</li>
-<li>BufferedWriter(Writer out, int sz)<br>Creates a new buffered character-output stream that uses an output buffer of the given size.</li>
-</ul>
-</li>
-<li>ByteArrayInputStream<ul>
-<li>ByteArrayInputStream(byte[] buf)<br>Creates a ByteArrayInputStream so that it uses buf as its buffer array.</li>
-<li>ByteArrayInputStream(byte[] buf, int offset, int length)<br>Creates ByteArrayInputStream that uses buf as its buffer array.</li>
-</ul>
-</li>
-<li>ByteArrayOutputStream<ul>
-<li>ByteArrayOutputStream()<br>Creates a new byte array output stream.</li>
-<li>ByteArrayOutputStream(int size)<br>Creates a new byte array output stream, with a buffer capacity of the specified size, in bytes.</li>
-</ul>
-</li>
-<li><p>CharArrayReader</p>
-<ul>
-<li>CharArrayReader(char[] buf)<br>Creates a CharArrayReader from the specified array of chars.</li>
-<li>CharArrayReader(char[] buf, int offset, int length)<br>Creates a CharArrayReader from the specified array of chars.</li>
-</ul>
-</li>
-<li><p>CharArrayWriter</p>
-<ul>
-<li>CharArrayWriter()<br>Creates a new CharArrayWriter.</li>
-<li>CharArrayWriter(int initialSize)<br>Creates a new CharArrayWriter with the specified initial size.</li>
-</ul>
-</li>
-<li><p>Console</p>
-</li>
-<li><p>DataInputStream</p>
-<ul>
-<li>DataInputStream(InputStream in)<br>Creates a DataInputStream that uses the specified underlying InputStream.</li>
-</ul>
-</li>
-<li><p>DataOutputStream</p>
-<ul>
-<li>DataOutputStream(OutputStream out)<br>Creates a new data output stream to write data to the specified underlying output stream.</li>
-</ul>
-</li>
-<li>File<ul>
-<li>File(File parent, String child)<br>Creates a new File instance from a parent abstract pathname and a child pathname string.</li>
-<li>File(String pathname)<br>Creates a new File instance by converting the given pathname string into an abstract pathname.</li>
-<li>File(String parent, String child)<br>Creates a new File instance from a parent pathname string and a child pathname string.</li>
-<li>File(URI uri)<br>Creates a new File instance by converting the given file: URI into an abstract pathname.</li>
-</ul>
-</li>
-<li>FileDescriptor</li>
-<li>FileInputStream<ul>
-<li>FileInputStream(File file)<br>Creates a FileInputStream by opening a connection to an actual file, the file named by the File object file in the file system.</li>
-<li>FileInputStream(FileDescriptor fdObj)<br>Creates a FileInputStream by using the file descriptor fdObj, which represents an existing connection to an actual file in the file system.</li>
-<li>FileInputStream(String name)<br>Creates a FileInputStream by opening a connection to an actual file, the file named by the path name name in the file system.</li>
-</ul>
-</li>
-<li>FileOutputStream<ul>
-<li>FileOutputStream(File file)<br>Creates a file output stream to write to the file represented by the specified File object.</li>
-<li>FileOutputStream(File file, boolean append)<br>Creates a file output stream to write to the file represented by the specified File object.</li>
-<li>FileOutputStream(FileDescriptor fdObj)<br>Creates a file output stream to write to the specified file descriptor, which represents an existing connection to an actual file in the file system.</li>
-<li>FileOutputStream(String name)<br>Creates a file output stream to write to the file with the specified name.</li>
-<li>FileOutputStream(String name, boolean append)<br>Creates a file output stream to write to the file with the specified name.</li>
-</ul>
-</li>
-<li>FilePermission</li>
-<li><p>FileReader</p>
-<ul>
-<li>FileReader(File file)<br>Creates a new FileReader, given the File to read from.</li>
-<li>FileReader(FileDescriptor fd)<br>Creates a new FileReader, given the FileDescriptor to read from.</li>
-<li>FileReader(String fileName)<br>Creates a new FileReader, given the name of the file to read from.</li>
-</ul>
-</li>
-<li><p>FileWriter</p>
-<ul>
-<li>FileWriter(File file)<br>Constructs a FileWriter object given a File object.</li>
-<li>FileWriter(File file, boolean append)<br>Constructs a FileWriter object given a File object.</li>
-<li>FileWriter(FileDescriptor fd)<br>Constructs a FileWriter object associated with a file descriptor.</li>
-<li>FileWriter(String fileName)<br>Constructs a FileWriter object given a file name.</li>
-<li>FileWriter(String fileName, boolean append)<br>Constructs a FileWriter object given a file name with a boolean indicating whether or not to append the data written.</li>
-</ul>
-</li>
-<li><p>FilterInputStream</p>
-</li>
-<li>FilterOutputStream</li>
-<li>FilterReader</li>
-<li>FilterWriter</li>
-<li>InputStream<ul>
-<li>InputStream() </li>
-</ul>
-</li>
-<li><p>InputStreamReader</p>
-<ul>
-<li>InputStreamReader(InputStream in)<br>Creates an InputStreamReader that uses the default charset.</li>
-<li>InputStreamReader(InputStream in, Charset cs)<br>Creates an InputStreamReader that uses the given charset.</li>
-<li>InputStreamReader(InputStream in, CharsetDecoder dec)<br>Creates an InputStreamReader that uses the given charset decoder.</li>
-<li>InputStreamReader(InputStream in, String charsetName)<br>Creates an InputStreamReader that uses the named charset.</li>
-</ul>
-</li>
-<li><p>LineNumberInputStream</p>
-</li>
-<li>LineNumberReader</li>
-<li>ObjectInputStream</li>
-<li>ObjectInputStream.GetField</li>
-<li>ObjectOutputStream</li>
-<li>ObjectOutputStream.PutField</li>
-<li>ObjectStreamClass</li>
-<li>ObjectStreamField</li>
-<li>OutputStream<ul>
-<li>OutputStream() </li>
-</ul>
-</li>
-<li>OutputStreamWriter<ul>
-<li>OutputStreamWriter(OutputStream out)<br>Creates an OutputStreamWriter that uses the default character encoding.</li>
-<li>OutputStreamWriter(OutputStream out, Charset cs)<br>Creates an OutputStreamWriter that uses the given charset.</li>
-<li>OutputStreamWriter(OutputStream out, CharsetEncoder enc)<br>Creates an OutputStreamWriter that uses the given charset encoder.</li>
-<li>OutputStreamWriter(OutputStream out, String charsetName)<br>Creates an OutputStreamWriter that uses the named charset.</li>
-</ul>
-</li>
-<li><p>PipedInputStream</p>
-<ul>
-<li>PipedInputStream()<br>Creates a PipedInputStream so that it is not yet connected.</li>
-<li>PipedInputStream(int pipeSize)<br>Creates a PipedInputStream so that it is not yet connected and uses the specified pipe size for the pipe’s buffer.</li>
-<li>PipedInputStream(PipedOutputStream src)<br>Creates a PipedInputStream so that it is connected to the piped output stream src.</li>
-<li>PipedInputStream(PipedOutputStream src, int pipeSize)<br>Creates a PipedInputStream so that it is connected to the piped output stream src and uses the specified pipe size for the pipe’s buffer.</li>
-</ul>
-</li>
-<li><p>PipedOutputStream</p>
-<ul>
-<li>PipedOutputStream()<br>Creates a piped output stream that is not yet connected to a piped input stream.</li>
-<li>PipedOutputStream(PipedInputStream snk)<br>Creates a piped output stream connected to the specified piped input stream.</li>
-</ul>
-</li>
-<li>PipedReader<ul>
-<li>PipedReader()<br>Creates a PipedReader so that it is not yet connected.</li>
-<li>PipedReader(int pipeSize)<br>Creates a PipedReader so that it is not yet connected and uses the specified pipe size for the pipe’s buffer.</li>
-<li>PipedReader(PipedWriter src)<br>Creates a PipedReader so that it is connected to the piped writer src.</li>
-<li>PipedReader(PipedWriter src, int pipeSize)<br>Creates a PipedReader so that it is connected to the piped writer src and uses the specified pipe size for the pipe’s buffer.</li>
-</ul>
-</li>
-<li>PipedWriter<ul>
-<li>PipedWriter()<br>Creates a piped writer that is not yet connected to a piped reader.</li>
-<li>PipedWriter(PipedReader snk)<br>Creates a piped writer connected to the specified piped reader.</li>
-</ul>
-</li>
-<li>PrintStream</li>
-<li>PrintWriter</li>
-<li>PushbackInputStream</li>
-<li>PushbackReader</li>
-<li>RandomAccessFile<ul>
-<li>RandomAccessFile(File file, String mode)<br>Creates a random access file stream to read from, and optionally to write to, the file specified by the File argument.</li>
-<li>RandomAccessFile(String name, String mode)<br>Creates a random access file stream to read from, and optionally to write to, a file with the specified name.</li>
-</ul>
-</li>
-<li><p>Reader</p>
-<ul>
-<li>Reader()<br>Creates a new character-stream reader whose critical sections will synchronize on the reader itself.</li>
-<li>protected    Reader(Object lock)<br>Creates a new character-stream reader whose critical sections will synchronize on the given object.</li>
-</ul>
-</li>
-<li><p>SequenceInputStream</p>
-</li>
-<li>SerializablePermission</li>
-<li>StreamTokenizer</li>
-<li>StringBufferInputStream</li>
-<li>StringReader<ul>
-<li>StringReader(String s)<br>Creates a new string reader.</li>
-</ul>
-</li>
-<li>StringWriter<ul>
-<li>StringWriter()<br>Create a new string writer using the default initial string-buffer size.</li>
-<li>StringWriter(int initialSize)<br>Create a new string writer using the specified initial string-buffer size.</li>
-</ul>
-</li>
-<li>Writer<ul>
-<li>Writer()<br>Creates a new character-stream writer whose critical sections will synchronize on the writer itself.</li>
-<li>protected    Writer(Object lock)<br>Creates a new character-stream writer whose critical sections will synchronize on the given object.</li>
-</ul>
-</li>
-</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/25/Oracle命令集/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/03/18/MySql命令集/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/03/18/MySql命令集/" itemprop="url">
+                  MySql命令集
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-18T12:17:20+08:00">
+                2018-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySql/" itemprop="url" rel="index">
+                    <span itemprop="name">MySql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/18/MySql命令集/" class="leancloud_visitors" data-flag-title="MySql命令集">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="MySql命令集"><a href="#MySql命令集" class="headerlink" title="MySql命令集"></a>MySql命令集</h1><blockquote>
+<ul>
+<li>安装/更新/启动/登陆/授权</li>
+<li>从建库到删库</li>
+<li>复杂查询</li>
+</ul>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/18/MySql命令集/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/03/11/Maven_SettingsReference/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/03/11/Maven_SettingsReference/" itemprop="url">
+                  Maven_SettingsReference
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T12:17:20+08:00">
+                2018-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Maven/" itemprop="url" rel="index">
+                    <span itemprop="name">Maven</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/11/Maven_SettingsReference/" class="leancloud_visitors" data-flag-title="Maven_SettingsReference">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Settings-Reference"><a href="#Settings-Reference" class="headerlink" title="Settings Reference"></a>Settings Reference</h1><p>maven配置文件settings.xml可能存在于两个位置</p>
+<ul>
+<li>The Maven install: ${maven.home}/conf/settings.xml—全局设置</li>
+<li>A user’s install: ${user.home}/.m2/settings.xml—用户设置</li>
+<li>当两者共存时，配置信息合并，用户设置优先</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/11/Maven_SettingsReference/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/11/18/LintCode_LongestConsecutiveSequence/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/18/LintCode_LongestConsecutiveSequence/" itemprop="url">
+                  LintCode_Longest Consecutive Sequence
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-18T20:49:53+08:00">
+                2017-11-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithms/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithms</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/18/LintCode_LongestConsecutiveSequence/" class="leancloud_visitors" data-flag-title="LintCode_Longest Consecutive Sequence">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><blockquote>
+<p>Given an unsorted array of integers, find the length of the longest consecutive elements sequence.<br>Clarification：Your algorithm should run in O(n) complexity.</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/18/LintCode_LongestConsecutiveSequence/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1354,7 +1127,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1399,7 +1172,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-count">80</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1410,7 +1183,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1421,7 +1194,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">75</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
