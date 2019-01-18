@@ -327,170 +327,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/MediatorPattern/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/12/MediatorPattern/" itemprop="url">
-                  Mediator Pattern
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
-                2017-08-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Pattern/" itemprop="url" rel="index">
-                    <span itemprop="name">Pattern</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/08/12/MediatorPattern/" class="leancloud_visitors" data-flag-title="Mediator Pattern">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Mediator-Pattern（中介者模式）"><a href="#Mediator-Pattern（中介者模式）" class="headerlink" title="Mediator Pattern（中介者模式）"></a>Mediator Pattern（中介者模式）</h1><h2 id="Define-an-object-that-encapsulates-how-a-set-of-objects-interact-Mediator-promotes-loose-couping-by-keeping-objects-from-referring-to-each-other-explicitly-and-it-lets-you-vary-their-interaction-independently-（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）"><a href="#Define-an-object-that-encapsulates-how-a-set-of-objects-interact-Mediator-promotes-loose-couping-by-keeping-objects-from-referring-to-each-other-explicitly-and-it-lets-you-vary-their-interaction-independently-（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）" class="headerlink" title="Define an object that encapsulates how a set of objects interact.Mediator promotes loose couping by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently.（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）"></a>Define an object that encapsulates how a set of objects interact.Mediator promotes loose couping by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently.（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）</h2><ul>
-<li>中介者（Mediator）：一个接口，定义同事Colleague对象中间用于通信的方法</li>
-<li>具体中介者（Invoker）：Mefiator接口的实现类，包含具体同事ConcreteColleague对象的引用</li>
-<li>同事（Colleague）：一个接口，定义具体同事要是实现的方法</li>
-<li>具体同事（ConcreteColleague）：同事接口的实现类，同事包含中介者的引用，同事之间也可以相互交流</li>
-<li>应用场景：避免同事对象之间显示的引用，将同事之间的通信交由中介来负责</li>
-<li>javac -encoding UTF-8 Application.java</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/MediatorPattern/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/PrototypePattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -653,7 +489,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/InterpreterPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/MementoPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -675,8 +511,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/InterpreterPattern/" itemprop="url">
-                  Interpreter Pattern
+                <a class="post-title-link" href="/2017/08/12/MementoPattern/" itemprop="url">
+                  Memento Pattern
                 </a>
               
             
@@ -692,8 +528,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
-                2017-08-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
+                2017-08-12
               </time>
             
 
@@ -732,7 +568,7 @@
 
           
           
-             <span id="/2017/08/05/InterpreterPattern/" class="leancloud_visitors" data-flag-title="Interpreter Pattern">
+             <span id="/2017/08/12/MementoPattern/" class="leancloud_visitors" data-flag-title="Memento Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -761,10 +597,174 @@
 
       
         
-          <h1 id="Interpreter-Pattern（解释器模式）"><a href="#Interpreter-Pattern（解释器模式）" class="headerlink" title="Interpreter Pattern（解释器模式）"></a>Interpreter Pattern（解释器模式）</h1><h2 id="Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"><a href="#Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）" class="headerlink" title="Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"></a>Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）</h2>
+          <h1 id="Memento-Pattern（备忘录模式）"><a href="#Memento-Pattern（备忘录模式）" class="headerlink" title="Memento Pattern（备忘录模式）"></a>Memento Pattern（备忘录模式）</h1><h2 id="Without-violating-encapsulation，-capture-and-externalize-an-object’s-internal-state-so-that-the-object-can-be-restored-to-this-state-later-（在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，这样以后就可将该对象恢复到原来保存的状态。）"><a href="#Without-violating-encapsulation，-capture-and-externalize-an-object’s-internal-state-so-that-the-object-can-be-restored-to-this-state-later-（在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，这样以后就可将该对象恢复到原来保存的状态。）" class="headerlink" title="Without violating encapsulation， capture and externalize an object’s internal state so that the object can be restored to this state later.（在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，这样以后就可将该对象恢复到原来保存的状态。）"></a>Without violating encapsulation， capture and externalize an object’s internal state so that the object can be restored to this state later.（在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，这样以后就可将该对象恢复到原来保存的状态。）</h2><h2 id="Original类是原始类，里面有需要保存的属性value及创建一个备忘录类，用来保存value值。Memento类是备忘录类，Storage类是存储备忘录的类，持有Memento类的实例"><a href="#Original类是原始类，里面有需要保存的属性value及创建一个备忘录类，用来保存value值。Memento类是备忘录类，Storage类是存储备忘录的类，持有Memento类的实例" class="headerlink" title="Original类是原始类，里面有需要保存的属性value及创建一个备忘录类，用来保存value值。Memento类是备忘录类，Storage类是存储备忘录的类，持有Memento类的实例"></a>Original类是原始类，里面有需要保存的属性value及创建一个备忘录类，用来保存value值。Memento类是备忘录类，Storage类是存储备忘录的类，持有Memento类的实例</h2>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/InterpreterPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/12/MementoPattern/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/ObserverPattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/12/ObserverPattern/" itemprop="url">
+                  Observer Pattern
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/12/ObserverPattern/" class="leancloud_visitors" data-flag-title="Observer Pattern">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Observer-Pattern（观察者模式）"><a href="#Observer-Pattern（观察者模式）" class="headerlink" title="Observer Pattern（观察者模式）"></a>Observer Pattern（观察者模式）</h1><h2 id="Define-a-one-to-many-dependency-between-objects-so-that-when-one-object-changes-state-all-its-dependents-are-notified-and-updated-automatically-（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）"><a href="#Define-a-one-to-many-dependency-between-objects-so-that-when-one-object-changes-state-all-its-dependents-are-notified-and-updated-automatically-（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）" class="headerlink" title="Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）"></a>Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）</h2><ul>
+<li>主题（Subject）：一个接口,规定具体主题需要实现的方法</li>
+<li>观察者（Observer）：一个接口，规定了具体观察者用来获取数据的方法</li>
+<li>具体主题(ConcreteSubject)：主题接口的实现类，该实例包含观察者所关心的数据（经常变动），含有观察者的引用，以便在数据发生变化时通知观察者更新数据</li>
+<li>具体观察者(ConcreteObserver)：观察者接口的实现类，含有具体主题的引用，以便于具体主题将自己添加/删除到其集合中去，成为该主题的观察者</li>
+<li>应用场景：观察者对于主题中的数据可采用两种方法——“拉”数据或者——-“推”数据,即主题主动将数据更新推送给观察者，或者只是通知观察者数据已更新，观察者自己调用主题方法实现数据更新，适用于一个对象数据更新时需要通知其他对象（或者让其自行更新）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/12/ObserverPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -974,7 +974,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FlyweightPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/InterpreterPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -996,8 +996,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/FlyweightPattern/" itemprop="url">
-                  Flyweight Pattern
+                <a class="post-title-link" href="/2017/08/05/InterpreterPattern/" itemprop="url">
+                  Interpreter Pattern
                 </a>
               
             
@@ -1053,7 +1053,7 @@
 
           
           
-             <span id="/2017/08/05/FlyweightPattern/" class="leancloud_visitors" data-flag-title="Flyweight Pattern">
+             <span id="/2017/08/05/InterpreterPattern/" class="leancloud_visitors" data-flag-title="Interpreter Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1082,16 +1082,10 @@
 
       
         
-          <h1 id="Flyweight-Pattern（享元模式）"><a href="#Flyweight-Pattern（享元模式）" class="headerlink" title="Flyweight Pattern（享元模式）"></a>Flyweight Pattern（享元模式）</h1><h2 id="Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）"><a href="#Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）" class="headerlink" title="Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）"></a>Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）</h2><ul>
-<li>享元接口（Flyweight）：一个接口，定义了享元对外公开内部数据的方法以及接受外部数据的方法</li>
-<li>具体享元（ConcreteFlyweight）：享元接口的实现类的实例</li>
-<li>享元工厂(FlyweightFactory)：一个类，负责创建和管理享元实例，其他对象对享元的请求必须通过工厂才能获得一个享元对象的实例引用</li>
-<li>应用场景：利用一个叫做享元的对象来为其他对象提供共享的状态，且保证其他对象不能更改享元中的数据</li>
-<li>javac -encoding UTF-8 Application.java</li>
-</ul>
+          <h1 id="Interpreter-Pattern（解释器模式）"><a href="#Interpreter-Pattern（解释器模式）" class="headerlink" title="Interpreter Pattern（解释器模式）"></a>Interpreter Pattern（解释器模式）</h1><h2 id="Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"><a href="#Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）" class="headerlink" title="Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"></a>Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）</h2>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/FlyweightPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/05/InterpreterPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1177,7 +1171,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">88</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1188,7 +1182,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1199,7 +1193,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">84</span>
+                <span class="site-state-item-count">86</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
