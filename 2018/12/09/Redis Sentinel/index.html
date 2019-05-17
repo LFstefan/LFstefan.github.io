@@ -1,0 +1,1459 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis,Sentinel," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Redis Sentinel  哨兵能干什么？ 什么是哨兵模式？ 如何启动redis以哨兵模式？ 如何配置哨兵？ 部署哨兵模式需要注意什么？ 哨兵API 如何添加或者移除哨兵？ 订阅/发布消息">
+<meta name="keywords" content="Redis,Sentinel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis Sentinel">
+<meta property="og:url" content="https://lfstefan.github.io/2018/12/09/Redis Sentinel/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="Redis Sentinel  哨兵能干什么？ 什么是哨兵模式？ 如何启动redis以哨兵模式？ 如何配置哨兵？ 部署哨兵模式需要注意什么？ 哨兵API 如何添加或者移除哨兵？ 订阅/发布消息">
+<meta property="og:updated_time" content="2019-05-17T09:32:14.187Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis Sentinel">
+<meta name="twitter:description" content="Redis Sentinel  哨兵能干什么？ 什么是哨兵模式？ 如何启动redis以哨兵模式？ 如何配置哨兵？ 部署哨兵模式需要注意什么？ 哨兵API 如何添加或者移除哨兵？ 订阅/发布消息">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2018/12/09/Redis Sentinel/"/>
+
+
+
+
+
+  <title>Redis Sentinel | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/12/09/Redis Sentinel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Redis Sentinel
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-09T20:49:53+08:00">
+                2018-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/12/09/Redis Sentinel/" class="leancloud_visitors" data-flag-title="Redis Sentinel">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Redis-Sentinel"><a href="#Redis-Sentinel" class="headerlink" title="Redis Sentinel"></a>Redis Sentinel</h1><blockquote>
+<ul>
+<li>哨兵能干什么？</li>
+<li>什么是哨兵模式？</li>
+<li>如何启动redis以哨兵模式？</li>
+<li>如何配置哨兵？</li>
+<li>部署哨兵模式需要注意什么？</li>
+<li>哨兵API</li>
+<li>如何添加或者移除哨兵？</li>
+<li>订阅/发布消息</li>
+</ul>
+</blockquote>
+<a id="more"></a>
+<h2 id="哨兵能干什么？"><a href="#哨兵能干什么？" class="headerlink" title="哨兵能干什么？"></a>哨兵能干什么？</h2><ul>
+<li>监控：监控主从实例是否正常运行</li>
+<li>通知：通知系统管理员、编程人员，运行实例出错了</li>
+<li>自动失败策略：当master实例不在正常运行时，自动将其中一个slave上升为master，其他slave重新配置新的master，应用使用redis服务器通知的新master地址进行连接</li>
+<li>配置提供者：哨兵作为客户端连接的权限关卡，所有的客户端连接哨兵索要master的连接地址，当master宕机时，哨兵会报告新master地址</li>
+</ul>
+<h2 id="什么是哨兵模式？"><a href="#什么是哨兵模式？" class="headerlink" title="什么是哨兵模式？"></a>什么是哨兵模式？</h2><ul>
+<li>哨兵模式是一种分布式系统</li>
+<li>哨兵本身设计被运行在多个哨兵进程协同工作的环境中</li>
+<li>保证master停止工作判定的正确性，多个哨兵同意方能确认该master真正停止工作</li>
+<li>拥有故障转移系统本身就是一个单一的故障点并不是一件好事。</li>
+</ul>
+<h2 id="如何启动redis以哨兵模式？"><a href="#如何启动redis以哨兵模式？" class="headerlink" title="如何启动redis以哨兵模式？"></a>如何启动redis以哨兵模式？</h2><ul>
+<li>redis-sentinel /path/to/sentinel.conf</li>
+<li>redis-server /path/to/sentinel.conf –sentinel</li>
+<li>均需要配置文件sentinel.conf</li>
+<li>哨兵模式启动默认端口TCP：26379，确保该端口开启保证哨兵之间的通话和决策，否则故障转移功能将无法奏效</li>
+</ul>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>至少三个哨兵实例保证</li>
+<li>三个哨兵实例之间不能存在失败依赖关系，即将其放置到不同的物理服务器上或者不同的可用空间</li>
+<li>由于Redis使用异步复制，因此不保证在失败期间保留已确认的写入，但是可以将写入丢失控制在一定时间内</li>
+<li>并不是所有的客户端都会被哨兵模式支持，比较的流行的会</li>
+<li>开发环境的多次测试才能换来生产环境的高可用安全</li>
+<li><strong>哨兵和docker混合使用时，要注意地址转换和端口匹配</strong></li>
+</ul>
+</blockquote>
+<h2 id="如何配置哨兵？"><a href="#如何配置哨兵？" class="headerlink" title="如何配置哨兵？"></a>如何配置哨兵？</h2><ul>
+<li>配置文件<ul>
+<li><code>sentinel monitor &lt;master-group-name&gt; &lt;ip&gt; &lt;port&gt; &lt;quorum&gt;</code><ul>
+<li>quorum参数：决策master不可达的哨兵数量<ul>
+<li>该参数仅仅用来检测master不可达，真正实际执行失败策略需要得到哨兵集群中大部分哨兵的决策同意，也就是说，当检测master不可达的哨兵数量达到quorum参数设置值的时候，检测不可达的其中一台哨兵可以尝试执行失败策略，但是如果该数量并没有到达哨兵集群数量的大多数，则失败策略实际并不会执行；只有当集群数量中大多数均认为该master不可达才会被授权真正实行失败策略。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>sentinel &lt;option_name&gt; &lt;master_name&gt; &lt;option_value&gt;</code><ul>
+<li>down-after-milliseconds：认为该master不可达的时间限制，单位毫秒</li>
+<li>parallel-syncs：失败策略执行后，同一时间可以重新配置新master地址的salve个数，该值设置越小，失败策略完成的越慢；</li>
+</ul>
+</li>
+<li>所有配置均可在运行时通过sentinel set命令设置</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//只要mastername命名不同，哨兵即可配置多个master（可含有任意数量的slave）</div><div class="line">sentinel monitor mastername 127.0.0.1 6379 2</div><div class="line">sentinel down-after-milliseconds mastername 60000</div><div class="line">sentinel failover-timeout mastername 180000</div><div class="line">sentinel parallel-syncs mastername 1</div><div class="line"></div><div class="line">sentinel monitor mastername1 127.0.0.1 6379 2</div><div class="line">sentinel down-after-milliseconds mastername1 60000</div><div class="line">sentinel failover-timeout mastername1 180000</div><div class="line">sentinel parallel-syncs mastername1 1</div></pre></td></tr></table></figure>
+<h2 id="部署哨兵模式需要注意什么？"><a href="#部署哨兵模式需要注意什么？" class="headerlink" title="部署哨兵模式需要注意什么？"></a>部署哨兵模式需要注意什么？</h2><ul>
+<li>请至少部署三个哨兵实例在不同的物理机上（满足分布式的高可用）</li>
+<li>当master不可达后，失败策略完成之前，连接该master的客户端上的所有写操作将会永久性丢失<ul>
+<li>解决方案：设置master被检测到不可同步写记录到指定数量的slave，然后指定时间后不再接受写操作</li>
+<li>min-slaves-to-write 1（数量）</li>
+<li>min-slaves-max-lag 10（时间/s）</li>
+</ul>
+</li>
+<li>当服务器资源无法承载哨兵模式的最小数量3，可以将哨兵和客户端放置在一起</li>
+<li>docker的端口映射：不同应用的同一端口会被docker映射成不同的端口暴露出去</li>
+<li>端口和ip的映射可能对哨兵模式造成的影响<ul>
+<li>哨兵之间的自动发现是基于发送接收hello message给他们所监听的端口和ip，重要的是他们不知道啥叫ip、端口映射。</li>
+<li>当展示master下的slave时，所有的slave会被列出在master的输出上，其中信息时通过tcp连接获得，而端口是在tcp三次握手时得到，映射操作可能会造成端口有误</li>
+</ul>
+</li>
+</ul>
+<h2 id="实战指南"><a href="#实战指南" class="headerlink" title="实战指南"></a>实战指南</h2><ul>
+<li>三个哨兵实例配置 文件如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">port 5000</div><div class="line">sentinel monitor mymaster 127.0.0.1 6379 2</div><div class="line">sentinel down-after-milliseconds mymaster 5000</div><div class="line">sentinel failover-timeout mymaster 60000</div><div class="line">sentinel parallel-syncs mymaster 1</div><div class="line">port 5001</div><div class="line">sentinel monitor mymaster 127.0.0.1 6379 2</div><div class="line">sentinel down-after-milliseconds mymaster 5000</div><div class="line">sentinel failover-timeout mymaster 60000</div><div class="line">sentinel parallel-syncs mymaster 1</div><div class="line">port 5002</div><div class="line">sentinel monitor mymaster 127.0.0.1 6379 2</div><div class="line">sentinel down-after-milliseconds mymaster 5000</div><div class="line">sentinel failover-timeout mymaster 60000</div><div class="line">sentinel parallel-syncs mymaster 1</div></pre></td></tr></table></figure>
+<ul>
+<li>redis-cli -p 5000：客户端登录哨兵实例1</li>
+<li>sentinel master mymaster：查看被监控master信息<ul>
+<li>flags：表示master状态，master表示正常， s_down or o_down 表示异常</li>
+</ul>
+</li>
+<li>SENTINEL slaves mymaster：查看slave信息</li>
+<li>SENTINEL sentinels mymaster：查看哨兵信息</li>
+<li>SENTINEL get-master-addr-by-name mymaster：获取当前master的ip信息</li>
+<li>redis-cli -p 6379 DEBUG sleep 30：手动测试失败策略，之后可查看master的ip信息已变更</li>
+</ul>
+<h2 id="哨兵API"><a href="#哨兵API" class="headerlink" title="哨兵API"></a>哨兵API</h2><ul>
+<li>PING：连通性检测</li>
+<li>sentinel masters：显示多有被监视的master列表和其状态</li>
+<li>sentinel master <master name="">：显示指定master状态</master></li>
+<li>sentinel slaves <master mame="">：显示指定master下所有的slave的状态信息</master></li>
+<li>sentinel sentinels <master name="">：显示指定master的哨兵列表信息状态</master></li>
+<li>sentinel get-master-addr-by-name <master name="">：返回指定master的ip和端口</master></li>
+<li>sentinel reset pattern&gt;：重置所有匹配到的master状态，清空所有目前的数据</li>
+<li>sentinel failover <master name="">：如果master不可达，强制启动失败策略，不经过哨兵的同意</master></li>
+<li>sentinel flushconfig：强制哨兵重写磁盘配置文件，包括当前哨兵状态</li>
+<li>重新配置哨兵在运行时<ul>
+<li>哨兵订阅命令可以使得哨兵实例的配置跟新变得自动化，避免人为手动每个实例去更改</li>
+<li>sentinel monitor <name> <ip> <port> <quorum>：根据所给信息重新配置哨兵的监控master</quorum></port></ip></name></li>
+<li>sentinel remove <name>：移除指定master</name></li>
+<li>sentinel set <name> <opiton> <value>：更改指定master的配置参数</value></opiton></name></li>
+</ul>
+</li>
+</ul>
+<h2 id="如何添加或者移除哨兵？"><a href="#如何添加或者移除哨兵？" class="headerlink" title="如何添加或者移除哨兵？"></a>如何添加或者移除哨兵？</h2><ul>
+<li>基于哨兵的自动发现机制，只需要启动一台配置好当前活跃的master的哨兵实例即可，10秒中便内便会自动被其他哨兵发现并添加到哨兵列表中</li>
+<li>若需要一次性添加多台哨兵实例，建议一台一台添加，等待其他所有的哨兵已经知晓被添加的第一台实例后再添加第二台</li>
+<li>由于哨兵永远不会忘记已经见过的其他哨兵，所以哨兵的移除有些复杂<ul>
+<li>停止想要移除的哨兵实例进程</li>
+<li>发送sentinel reset * 命令给所有其他哨兵实例，每个哨兵实例发送命令的时间间隔至少30秒</li>
+<li>检查所有哨兵是否同意当前活跃哨兵实例个数（sentinel master mastername）</li>
+</ul>
+</li>
+</ul>
+<h2 id="移除旧master或者不可达的slave"><a href="#移除旧master或者不可达的slave" class="headerlink" title="移除旧master或者不可达的slave"></a>移除旧master或者不可达的slave</h2><ul>
+<li>哨兵不会忘记所给master的所有的slave，即使他们不可达很长一段时间</li>
+<li>发送命令sentinel reset mastername 给所有的哨兵，未来10秒哨兵会刷新slave列表，仅仅添加当前正在从master同步信息的slave</li>
+</ul>
+<h2 id="订阅-发布消息"><a href="#订阅-发布消息" class="headerlink" title="订阅/发布消息"></a>订阅/发布消息</h2><ul>
+<li>客户端可以使用Sentinel，因为它是Redis兼容的发布/订阅服务器（但您不能使用PUBLISH），以便SUBSCRIBE或PSUBSCRIBE到频道并获得有关特定事件的通知。</li>
+<li>频道名称和事件名称一致</li>
+<li>PSUBSCRIBE *可以订阅所有频道得到所有信息</li>
+<li>+reset-master <instance details="">：订阅master重置reset信息</instance></li>
+<li><instance details="">==<instance-type> <name> <ip> <port> @ <master-name> <master-ip> <master-port></master-port></master-ip></master-name></port></ip></name></instance-type></instance></li>
+<li>更多订阅信息命令请看：<a href="https://redis.io/topics/sentinel" title="Redis--Pub/Sub Messages" target="_blank" rel="external">Redis–Pub/Sub Messages</a></li>
+</ul>
+<h2 id="salve由优先级"><a href="#salve由优先级" class="headerlink" title="salve由优先级"></a>salve由优先级</h2><ul>
+<li>redis有一个配置参数叫做slave-priority</li>
+<li>哨兵根据这个信息来选出失败策略后新的master</li>
+<li>slave优先级设置为0,表示永远不可能晋升为master</li>
+<li>优先级数字越小，越有可能晋升为master</li>
+</ul>
+<h2 id="权限问题"><a href="#权限问题" class="headerlink" title="权限问题"></a>权限问题</h2><ul>
+<li>如果master配置需要客户端登录密码，则slave连接master同样需要该密码<ul>
+<li>requirepass：在master中，设置密码校验跳过对于那些无需验证的客户端</li>
+<li>masterauth：在slave中，设置被master已认证，便于进行主从同步</li>
+</ul>
+</li>
+<li>哨兵连接配置了requirepass的master时需要使用一下命令<ul>
+<li>sentinel auth-pass <master-group-name> <pass><br>哨兵实例权限配置（redis5.0.1之后支持）</pass></master-group-name></li>
+</ul>
+</li>
+<li>requirepass “your_password_here”配置后所有的客户端连接均需要密码，哨兵之间的通讯也需要该密码</li>
+<li>意味着所有的哨兵实例中配置同样的密码</li>
+</ul>
+<h2 id="哨兵模式的细节实现"><a href="#哨兵模式的细节实现" class="headerlink" title="哨兵模式的细节实现"></a>哨兵模式的细节实现</h2><ul>
+<li>自动发现机制<ul>
+<li>哨兵实例之间通过订阅/发布机制来互通信交换信息检测对方状态</li>
+<li>该特性的实现通过往名为<strong>sentinel</strong>:hello的频道发送hello消息</li>
+<li>每一个哨兵发布一条消息到它所监控的每一个master和slave发布/订阅频道<strong>sentinel</strong>:hello上，每两秒，公布他们目前的ip，port和运行id</li>
+<li>每个哨兵订阅了每一个master和slave和频道<strong>sentinel</strong>:hello，去寻找未知的哨兵，一旦发现，加入本master的哨兵列表</li>
+<li>hello信息包括当前master的完整配置信息，以供哨兵更新旧的配置信息</li>
+<li>新哨兵加入之前总要检测目前列表中是否已存在同样runid的哨兵实例，确保移除添加互不冲突</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Sentinel是一个系统，其中每个进程将始终尝试将最后一个逻辑配置强制应用于受监视实例集。</p>
+</blockquote>
+<ul>
+<li><p>slave选举和优先级</p>
+<ul>
+<li>衡量标准严格按照以下顺序进行</li>
+<li>和master失连时间（超过10次master配置的超时时间，取消选举资格）</li>
+<li>salve优先级设置（优先级数字设置低的优先）</li>
+<li>同步进度（同步进度快的优先）</li>
+<li>运行id（小的运行id优先）</li>
+</ul>
+</li>
+<li><p>epochs配置</p>
+<ul>
+<li>标记配置版本信息，每一次失败策略触发更换master均会导致配置版本信息的迭代</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>更多实现细节待补充。。。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+            <a href="/tags/Sentinel/" rel="tag"># Sentinel</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/02/MySql插入去重/" rel="next" title="MySql插入去重">
+                <i class="fa fa-chevron-left"></i> MySql插入去重
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/23/MySQL Replication/" rel="prev" title="Replication">
+                Replication <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">107</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">105</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-Sentinel"><span class="nav-number">1.</span> <span class="nav-text">Redis Sentinel</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#哨兵能干什么？"><span class="nav-number">1.1.</span> <span class="nav-text">哨兵能干什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是哨兵模式？"><span class="nav-number">1.2.</span> <span class="nav-text">什么是哨兵模式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何启动redis以哨兵模式？"><span class="nav-number">1.3.</span> <span class="nav-text">如何启动redis以哨兵模式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何配置哨兵？"><span class="nav-number">1.4.</span> <span class="nav-text">如何配置哨兵？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署哨兵模式需要注意什么？"><span class="nav-number">1.5.</span> <span class="nav-text">部署哨兵模式需要注意什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实战指南"><span class="nav-number">1.6.</span> <span class="nav-text">实战指南</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哨兵API"><span class="nav-number">1.7.</span> <span class="nav-text">哨兵API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何添加或者移除哨兵？"><span class="nav-number">1.8.</span> <span class="nav-text">如何添加或者移除哨兵？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移除旧master或者不可达的slave"><span class="nav-number">1.9.</span> <span class="nav-text">移除旧master或者不可达的slave</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#订阅-发布消息"><span class="nav-number">1.10.</span> <span class="nav-text">订阅/发布消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#salve由优先级"><span class="nav-number">1.11.</span> <span class="nav-text">salve由优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限问题"><span class="nav-number">1.12.</span> <span class="nav-text">权限问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哨兵模式的细节实现"><span class="nav-number">1.13.</span> <span class="nav-text">哨兵模式的细节实现</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

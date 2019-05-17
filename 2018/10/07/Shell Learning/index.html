@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/10/07/Shell Learning/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Shell Learning  linux常用命令 输入输出重定向 管道符 | 编写shell脚本 定时任务 周期任务 /dev/zero和/dev/null">
-<meta property="og:updated_time" content="2018-12-25T01:11:07.560Z">
+<meta property="og:updated_time" content="2019-02-13T09:06:53.790Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell Learning">
 <meta name="twitter:description" content="Shell Learning  linux常用命令 输入输出重定向 管道符 | 编写shell脚本 定时任务 周期任务 /dev/zero和/dev/null">
@@ -485,10 +485,15 @@
 <li>netstat -ano|findstr “49157” 精确查询端口情况，查看被占用端口对应的PID</li>
 <li>tasklist|findstr “102760” 根据pid查询占用服务</li>
 <li>taskkill /f /t /im Tencentdl.exe：结束占用进程</li>
-</ul>
-<h2 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h2><blockquote>
+<li>w：该命令显示的信息很丰富，第一行从左至右显示的信息一次为：时间、系统运行时间、登录用户数、平均负载，这些数据里最应该关注当为load average后的3个数值。第一个数值表示1分钟内系统的平均负载值，第二个数值表示为5分钟内系统的平均负载值，第三个表示15分钟内系统的平均负载值。这里着重看第一个值，它表示单位时间段内使用CPU的活动进程数，值越大就说明服务器压力越大，一般情况下只要这个值不超过服务器的CPU数量就没有关系。如果服务器CPU数量为8，那么值小于8就说明当前服务器没有压力，否则就要关注一下。</li>
+<li>cat /proc/cpuinfo：查看服务器有几个CPU</li>
+<li>vmstat：查看当前系统具体是哪里有压力，显示的结果共分为六部分：procs、memory、swap、io、system、cpu。（vmstat 1每隔一秒输出一次；vmstat 1 5每隔一秒输出一次，共五次）</li>
+<li>sar：（yum install -y sysstat安装命令）可以监控系统几乎所有资源的状态</li>
+<li>sar -n DEV：查看网卡流量<h2 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h2><blockquote>
 <p>标准输入重定向：stdin 0<br>标准输出重定向：stdout 1<br>错误输出重定向：stderr 2</p>
 </blockquote>
+</li>
+</ul>
 <h3 id="重定向符号的使用"><a href="#重定向符号的使用" class="headerlink" title="重定向符号的使用"></a>重定向符号的使用</h3><ul>
 <li>命令 &lt; 文件：文件作为命令的标准输入</li>
 <li>命令  &lt;&lt; 分界符：从标准输入中读取，知道遇到分界符</li>
@@ -616,8 +621,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/05/MySql DROP DATABASE Syntax/" rel="next" title="MySql DROP DATABASE Syntax">
-                <i class="fa fa-chevron-left"></i> MySql DROP DATABASE Syntax
+              <a href="/2018/09/30/DECODE Function/" rel="next" title="DECODE">
+                <i class="fa fa-chevron-left"></i> DECODE
               </a>
             
           </div>
@@ -626,8 +631,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/21/Linux File Transfer/" rel="prev" title="Linux File Transfer">
-                Linux File Transfer <i class="fa fa-chevron-right"></i>
+              <a href="/2018/10/14/JAVA_SizeOf/" rel="prev" title="Java SizeOf">
+                Java SizeOf <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -702,7 +707,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">88</span>
+                <span class="site-state-item-count">107</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -713,7 +718,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">40</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -724,7 +729,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

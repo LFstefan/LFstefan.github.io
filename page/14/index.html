@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/06/17/B树和B+树/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/MediatorPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/06/17/B树和B+树/" itemprop="url">
-                  B树和B+树
+                <a class="post-title-link" href="/2017/08/12/MediatorPattern/" itemprop="url">
+                  Mediator Pattern
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-17T12:14:25+08:00">
-                2017-06-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
+                2017-08-12
               </time>
             
 
@@ -389,8 +389,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Data-Structure/" itemprop="url" rel="index">
-                    <span itemprop="name">Data_Structure</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2017/06/17/B树和B+树/" class="leancloud_visitors" data-flag-title="B树和B+树">
+             <span id="/2017/08/12/MediatorPattern/" class="leancloud_visitors" data-flag-title="Mediator Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,15 +435,17 @@
 
       
         
-          <ul>
-<li>平衡查找树中的2-3树以及其实现红黑树。2-3树种，一个节点最多有2个key，而红黑树则使用染色的方式来标识这两个key。</li>
+          <h1 id="Mediator-Pattern（中介者模式）"><a href="#Mediator-Pattern（中介者模式）" class="headerlink" title="Mediator Pattern（中介者模式）"></a>Mediator Pattern（中介者模式）</h1><h2 id="Define-an-object-that-encapsulates-how-a-set-of-objects-interact-Mediator-promotes-loose-couping-by-keeping-objects-from-referring-to-each-other-explicitly-and-it-lets-you-vary-their-interaction-independently-（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）"><a href="#Define-an-object-that-encapsulates-how-a-set-of-objects-interact-Mediator-promotes-loose-couping-by-keeping-objects-from-referring-to-each-other-explicitly-and-it-lets-you-vary-their-interaction-independently-（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）" class="headerlink" title="Define an object that encapsulates how a set of objects interact.Mediator promotes loose couping by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently.（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）"></a>Define an object that encapsulates how a set of objects interact.Mediator promotes loose couping by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently.（用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示的相互作用，从而使其耦合松散，而且可以独立的改变它们之间的交互。）</h2><ul>
+<li>中介者（Mediator）：一个接口，定义同事Colleague对象中间用于通信的方法</li>
+<li>具体中介者（Invoker）：Mefiator接口的实现类，包含具体同事ConcreteColleague对象的引用</li>
+<li>同事（Colleague）：一个接口，定义具体同事要是实现的方法</li>
+<li>具体同事（ConcreteColleague）：同事接口的实现类，同事包含中介者的引用，同事之间也可以相互交流</li>
+<li>应用场景：避免同事对象之间显示的引用，将同事之间的通信交由中介来负责</li>
+<li>javac -encoding UTF-8 Application.java</li>
 </ul>
-<blockquote>
-<p>维基百科对B树的定义为“在计算机科学中，B树（B-tree）是一种树状数据结构，它能够存储数据、对其进行排序并允许以O(log n)的时间复杂度运行进行查找、顺序读取、插入和删除的数据结构。B树，概括来说是一个节点可以拥有多于2个子节点的二叉查找树。与自平衡二叉查找树不同，B树为系统最优化大块数据的读和写操作。B-tree算法减少定位记录时所经历的中间过程，从而加快存取速度。普遍运用在数据库和文件系统。</p>
-</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/06/17/B树和B+树/#more" rel="contents">
+            <a class="btn" href="/2017/08/12/MediatorPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -489,7 +491,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/06/10/约瑟夫环/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FacadePattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -511,8 +513,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/06/10/约瑟夫环/" itemprop="url">
-                  约瑟夫环
+                <a class="post-title-link" href="/2017/08/05/FacadePattern/" itemprop="url">
+                  Facade Pattern
                 </a>
               
             
@@ -528,8 +530,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-10T12:16:25+08:00">
-                2017-06-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
+                2017-08-05
               </time>
             
 
@@ -551,8 +553,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -568,7 +570,7 @@
 
           
           
-             <span id="/2017/06/10/约瑟夫环/" class="leancloud_visitors" data-flag-title="约瑟夫环">
+             <span id="/2017/08/05/FacadePattern/" class="leancloud_visitors" data-flag-title="Facade Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -597,10 +599,15 @@
 
       
         
-          <h1 id="约瑟夫环问题"><a href="#约瑟夫环问题" class="headerlink" title="约瑟夫环问题"></a>约瑟夫环问题</h1><h2 id="问题描述-：这个问题是以弗拉维奥·约瑟夫命名的，它是1世纪的一名犹太历史学家。他在自己的日记中写道，他和他的n个战友被罗马军队包围在洞中。他们讨论是自杀还是被俘，最终决定自杀，他们围成一个圈，从第1个人开始报数，报到m的人自杀，下一个人重新开始报数，如此循环，直到所有人全都自杀为止。约瑟夫斯和另外一个人是最后两个留下的人。约瑟夫斯说服了那个人，他们将向罗马军队投降，不再自杀。约瑟夫斯把他的存活归因于运气或天意，他不知道是哪一个。"><a href="#问题描述-：这个问题是以弗拉维奥·约瑟夫命名的，它是1世纪的一名犹太历史学家。他在自己的日记中写道，他和他的n个战友被罗马军队包围在洞中。他们讨论是自杀还是被俘，最终决定自杀，他们围成一个圈，从第1个人开始报数，报到m的人自杀，下一个人重新开始报数，如此循环，直到所有人全都自杀为止。约瑟夫斯和另外一个人是最后两个留下的人。约瑟夫斯说服了那个人，他们将向罗马军队投降，不再自杀。约瑟夫斯把他的存活归因于运气或天意，他不知道是哪一个。" class="headerlink" title="问题描述 ：这个问题是以弗拉维奥·约瑟夫命名的，它是1世纪的一名犹太历史学家。他在自己的日记中写道，他和他的n个战友被罗马军队包围在洞中。他们讨论是自杀还是被俘，最终决定自杀，他们围成一个圈，从第1个人开始报数，报到m的人自杀，下一个人重新开始报数，如此循环，直到所有人全都自杀为止。约瑟夫斯和另外一个人是最后两个留下的人。约瑟夫斯说服了那个人，他们将向罗马军队投降，不再自杀。约瑟夫斯把他的存活归因于运气或天意，他不知道是哪一个。"></a><strong>问题描述</strong> ：这个问题是以弗拉维奥·约瑟夫命名的，它是1世纪的一名犹太历史学家。他在自己的日记中写道，他和他的n个战友被罗马军队包围在洞中。他们讨论是自杀还是被俘，最终决定自杀，他们围成一个圈，从第1个人开始报数，报到m的人自杀，下一个人重新开始报数，如此循环，直到所有人全都自杀为止。约瑟夫斯和另外一个人是最后两个留下的人。约瑟夫斯说服了那个人，他们将向罗马军队投降，不再自杀。约瑟夫斯把他的存活归因于运气或天意，他不知道是哪一个。</h2>
+          <h1 id="Facade-Pattern（门面模式）"><a href="#Facade-Pattern（门面模式）" class="headerlink" title="Facade Pattern（门面模式）"></a>Facade Pattern（门面模式）</h1><h2 id="Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。"><a href="#Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。" class="headerlink" title="Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)"></a>Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)</h2><ul>
+<li>子系统（Subsystem）:若干类的集合，均不包含外观类的实例引用</li>
+<li>外观（Facade）：一个含有子系统中全部或者部分类的实例引用的类</li>
+<li>应用场景：跟踪系统使用情况（经过同一个接口），更换系统（只需更改外观接口的代码）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/06/10/约瑟夫环/#more" rel="contents">
+            <a class="btn" href="/2017/08/05/FacadePattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +653,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/06/03/最大公约数和最小公倍数/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/DecoratorPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -668,8 +675,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/06/03/最大公约数和最小公倍数/" itemprop="url">
-                  最大公约数和最小公倍数
+                <a class="post-title-link" href="/2017/08/05/DecoratorPattern/" itemprop="url">
+                  Decorator Pattern
                 </a>
               
             
@@ -685,8 +692,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-03T12:05:25+08:00">
-                2017-06-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
+                2017-08-05
               </time>
             
 
@@ -708,8 +715,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -725,7 +732,7 @@
 
           
           
-             <span id="/2017/06/03/最大公约数和最小公倍数/" class="leancloud_visitors" data-flag-title="最大公约数和最小公倍数">
+             <span id="/2017/08/05/DecoratorPattern/" class="leancloud_visitors" data-flag-title="Decorator Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -754,10 +761,17 @@
 
       
         
-          <h1 id="最大公约数和最小公倍数"><a href="#最大公约数和最小公倍数" class="headerlink" title="最大公约数和最小公倍数"></a>最大公约数和最小公倍数</h1><h2 id="最大公约数"><a href="#最大公约数" class="headerlink" title="最大公约数"></a>最大公约数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//欧几里德算法</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">gcd</span><span class="params">(<span class="keyword">long</span> m, <span class="keyword">long</span> n)</span> </span>&#123;  </div><div class="line">    <span class="keyword">while</span>(n!=<span class="number">0</span>)&#123;</div><div class="line">		<span class="keyword">long</span> rem = m%n;</div><div class="line">		m = n;</div><div class="line">		n = rem;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> m;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <h1 id="Decorator-Pattern（装饰模式）"><a href="#Decorator-Pattern（装饰模式）" class="headerlink" title="Decorator Pattern（装饰模式）"></a>Decorator Pattern（装饰模式）</h1><h2 id="Attach-additional-responsibilities-to-an-object-dynamically-keeping-the-same-interface-Decorators-provide-a-flexible-alternative-to-subclassing-for-extending-functionality-（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。）"><a href="#Attach-additional-responsibilities-to-an-object-dynamically-keeping-the-same-interface-Decorators-provide-a-flexible-alternative-to-subclassing-for-extending-functionality-（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。）" class="headerlink" title="Attach additional responsibilities to an object dynamically keeping the same interface.Decorators provide a flexible alternative to subclassing for extending functionality.（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。）"></a>Attach additional responsibilities to an object dynamically keeping the same interface.Decorators provide a flexible alternative to subclassing for extending functionality.（动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。）</h2><ul>
+<li>抽象组件（Component）:抽象类，定义需要进行装饰的方法，被装饰角色</li>
+<li>具体组件（ConcreteComponent）:抽象组件的一个子类</li>
+<li>装饰（Decorator）：也是抽象组件的一个子类，装饰者角色</li>
+<li>具体装饰（ConcreteDecorator）：装饰的一个非抽象子类</li>
+<li>应用场景：动态的给对象添加一些额外的方法，改进类的某个对象的功能，调用同样的方法，不一样的结果</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/06/03/最大公约数和最小公倍数/#more" rel="contents">
+            <a class="btn" href="/2017/08/05/DecoratorPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -803,7 +817,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/计数排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/InterpreterPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -825,8 +839,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/计数排序/" itemprop="url">
-                  计数排序
+                <a class="post-title-link" href="/2017/08/05/InterpreterPattern/" itemprop="url">
+                  Interpreter Pattern
                 </a>
               
             
@@ -842,8 +856,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
+                2017-08-05
               </time>
             
 
@@ -865,8 +879,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -882,7 +896,7 @@
 
           
           
-             <span id="/2017/05/27/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
+             <span id="/2017/08/05/InterpreterPattern/" class="leancloud_visitors" data-flag-title="Interpreter Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -911,10 +925,10 @@
 
       
         
-          <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"><a href="#一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！" class="headerlink" title="一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"></a>一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！</h2>
+          <h1 id="Interpreter-Pattern（解释器模式）"><a href="#Interpreter-Pattern（解释器模式）" class="headerlink" title="Interpreter Pattern（解释器模式）"></a>Interpreter Pattern（解释器模式）</h1><h2 id="Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"><a href="#Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）" class="headerlink" title="Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"></a>Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）</h2>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/计数排序/#more" rel="contents">
+            <a class="btn" href="/2017/08/05/InterpreterPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -960,7 +974,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/归并排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FlyweightPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -982,8 +996,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/归并排序/" itemprop="url">
-                  归并排序
+                <a class="post-title-link" href="/2017/08/05/FlyweightPattern/" itemprop="url">
+                  Flyweight Pattern
                 </a>
               
             
@@ -999,8 +1013,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
+                2017-08-05
               </time>
             
 
@@ -1022,8 +1036,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -1039,7 +1053,7 @@
 
           
           
-             <span id="/2017/05/27/归并排序/" class="leancloud_visitors" data-flag-title="归并排序">
+             <span id="/2017/08/05/FlyweightPattern/" class="leancloud_visitors" data-flag-title="Flyweight Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1068,10 +1082,16 @@
 
       
         
-          <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><h2 id="归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O-n-，时间复杂度为O-nlogn-。"><a href="#归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O-n-，时间复杂度为O-nlogn-。" class="headerlink" title="归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。"></a>归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。</h2>
+          <h1 id="Flyweight-Pattern（享元模式）"><a href="#Flyweight-Pattern（享元模式）" class="headerlink" title="Flyweight Pattern（享元模式）"></a>Flyweight Pattern（享元模式）</h1><h2 id="Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）"><a href="#Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）" class="headerlink" title="Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）"></a>Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）</h2><ul>
+<li>享元接口（Flyweight）：一个接口，定义了享元对外公开内部数据的方法以及接受外部数据的方法</li>
+<li>具体享元（ConcreteFlyweight）：享元接口的实现类的实例</li>
+<li>享元工厂(FlyweightFactory)：一个类，负责创建和管理享元实例，其他对象对享元的请求必须通过工厂才能获得一个享元对象的实例引用</li>
+<li>应用场景：利用一个叫做享元的对象来为其他对象提供共享的状态，且保证其他对象不能更改享元中的数据</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/归并排序/#more" rel="contents">
+            <a class="btn" href="/2017/08/05/FlyweightPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1112,7 +1132,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1157,7 +1177,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">88</span>
+                <span class="site-state-item-count">107</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1168,7 +1188,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">40</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1179,7 +1199,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

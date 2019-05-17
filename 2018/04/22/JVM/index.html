@@ -122,7 +122,7 @@
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/GC%E6%97%A5%E5%BF%97.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%9B%BE.png">
-<meta property="og:updated_time" content="2018-12-04T05:54:21.861Z">
+<meta property="og:updated_time" content="2019-05-07T07:19:03.614Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM">
 <meta name="twitter:description" content="步入java虚拟机的世界 内存管理 运行时数据区域 内存分配与回收   虚拟机对象 垃圾回收 垃圾回收算法 垃圾收集器   GC日志 class文件 类加载机制   建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！">
@@ -457,6 +457,9 @@
 <p>建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！</p>
 </blockquote>
 <a id="more"></a>
+<blockquote>
+<p>包括一套字节码指令集、一组寄存器、一个栈、 一个垃圾回收，堆 和 一个存储方法</p>
+</blockquote>
 <h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h3 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h3><ul>
 <li><p>程序计数器(线程私有)</p>
 <blockquote>
@@ -482,7 +485,14 @@
 <li>一个JAVA 程序独占一个JAVA虚拟机实例。 </li>
 <li>所以每个JAVA程序都有自己的堆空间，彼此互不干扰。 </li>
 </ul>
-<p>堆中的的分代：YoungGen（新生代，存放新生对象或年龄不大的对象）{Eden  +  From Survivor  +  To Survivor} OldGen（老生代，存放大对象或者年龄较大的对象） </p>
+</blockquote>
+</li>
+<li><p>堆中的的分代：</p>
+<blockquote>
+<ul>
+<li>YoungGen（新生代，存放新生对象或年龄不大的对象）{Eden(8/10)  +  From Survivor(1/10)  +  To Survivor(1/10)}，占堆的1/3 </li>
+<li>OldGen（老生代，存放大对象或者年龄较大的对象），占堆的2/3</li>
+</ul>
 </blockquote>
 </li>
 <li><p>方法区</p>
@@ -500,12 +510,30 @@
 <p>本地函数库直接分配内存，由堆中一个DirectorByteBuffer指向引用操作</p>
 </blockquote>
 </li>
+<li><p>永久代 PermGen</p>
+<blockquote>
+<p>指内存的永久保存区域，主要存放 Class 和 Meta（元数据）的信息,Class 在被加载的时候被 放入永久区域，它和和存放实例的区域不同,GC 不会在主程序运行期对永久区域进行清理。所以这 也导致了永久代的区域会随着加载的Class的增多而胀满，最终抛出OOM异常。<br><strong> “PermGen space”其实指的就是方法区。不过方法区和“PermGen space”又有着本质的区别。前者是 JVM 的规范，而后者则是 JVM 规范的一种实现，并且只有 HotSpot 才有 “PermGen space”，而对于其他类型的虚拟机，如 JRockit（Oracle）、J9（IBM） 并没有“PermGen space”。由于方法区主要存储类的相关信息，所以对于动态生成类的情况比较容易出现永久代的内存溢出。</strong></p>
+</blockquote>
+</li>
+<li><p>JAVA8与元数据 </p>
+<blockquote>
+<p>在Java8中，永久代已经被移除，被一个称为“元数据区”（元空间）的区域所取代。元空间 的本质和永久代类似，元空间与永久代之间最大的区别在于：元空间并不在虚拟机中，而是使用 本地内存。因此，默认情况下，元空间的大小仅受本地内存限制。类的元数据放入 native memory, 字符串池和类的静态变量放入 java 堆中，这样可以加载多少类的元数据就不再由 MaxPermSize控制, 而由系统的实际可用空间来控制。 </p>
+</blockquote>
+</li>
 </ul>
 <h3 id="内存分配与回收"><a href="#内存分配与回收" class="headerlink" title="内存分配与回收"></a>内存分配与回收</h3><ul>
 <li>大多数情况下，对象直接在Eden区域分配，如果该区域不够，则虚拟机进行一次minorGC</li>
 </ul>
 <blockquote>
-<p>minorGC：新生代GC，由于新生代对象生命周期较短，朝生夕灭，所以minorGC较为频繁，速度较快<br>majorGC：老年代GC，大对象，周期较长，不频繁，速度比minorGC慢十倍左右，一般majorGC的发生总会伴随着至少一次的minorGC</p>
+<p>minorGC：新生代GC，由于新生代对象生命周期较短，朝生夕灭，所以minorGC较为频繁，速度较快</p>
+</blockquote>
+<h3 id="以复制算法为例，minorGC一次的全过程如下"><a href="#以复制算法为例，minorGC一次的全过程如下" class="headerlink" title="以复制算法为例，minorGC一次的全过程如下"></a>以复制算法为例，minorGC一次的全过程如下</h3><ol>
+<li>eden 、 servicorFrom 复制到 ServicorTo ，年龄 + 1：首先，把Eden和ServivorFrom区域中存活的对象复制到ServicorTo区域（如果有对象的年 龄以及达到了老年的标准，则赋值到老年代区），同时把这些对象的年龄+1（如果 ServicorTo 不 够位置了就放到老年区）； </li>
+<li>清空 eden 、 servicorFrom 然后，清空Eden和ServicorFrom中的对象； </li>
+<li>ServicorTo和 ServicorFrom互换：最后，ServicorTo和ServicorFrom互换，原ServicorTo成为下一次GC时的ServicorFrom 区。 </li>
+</ol>
+<blockquote>
+<p>majorGC：老年代GC，大对象，周期较长，不频繁，速度比minorGC慢十倍左右，一般majorGC的发生总会伴随着至少一次的minorGC</p>
 </blockquote>
 <ul>
 <li>大对象直接在老年代分配（应该尽量避免短命大对象）<ul>
@@ -577,13 +605,13 @@
 <li>标记整理算法：先标记，后移动可用空间到一起，然后统一清除剩下的</li>
 <li>分代回收算法：按生存周期划分内存空间，不同空间采用不同的回收算法。新生代（复制算法）老年代（对象存活率高，采用标记清除/整理算法）</li>
 </ul>
-<h3 id="垃圾收集器：内存回收的具体实现"><a href="#垃圾收集器：内存回收的具体实现" class="headerlink" title="垃圾收集器：内存回收的具体实现"></a>垃圾收集器：内存回收的具体实现</h3><pre><code>- serial：单线程+stop the world-----新生代收集器
-- parnew：多线程版本的serial-----新生代收集器
-- paralel scavenge：关注点在高吞吐量，提高cpu效率，多线程，新生代收集器
-- seri old：serial的老年代收集器版本，单线程
+<h3 id="垃圾收集器：内存回收的具体实现"><a href="#垃圾收集器：内存回收的具体实现" class="headerlink" title="垃圾收集器：内存回收的具体实现"></a>垃圾收集器：内存回收的具体实现</h3><pre><code>- serial：单线程+stop the world-----新生代收集器（单线程、复制算法） 
+- parnew：多线程版本的serial-----新生代收集器（Serial+多线程） 
+- paralel scavenge：关注点在高吞吐量，提高cpu效率，新生代收集器（多线程复制算法、高效） 
+- seri old：serial的老年代收集器版本，（单线程标记整理算法 ）
 - paralel old：paralel scavenge的老年代收集器版本，多线程
-- cms：强调一次GC过程的最短停顿时间，
-- g1收集器
+- cms：（多线程标记清除算法）强调一次GC过程的最短停顿时间，老年代收集器
+- g1：最前沿成果，基于标记-整理算法，不产生内存碎片。 可以非常精确控制停顿时间，在不牺牲吞吐量前提下，实现低停顿垃圾回收。 
 </code></pre><h2 id="GC日志阅读"><a href="#GC日志阅读" class="headerlink" title="GC日志阅读"></a>GC日志阅读</h2><blockquote>
 <p>GC日志的阅读有助于处理遇到的内存问题，就好比看日志调试bug一样</p>
 </blockquote>
@@ -667,6 +695,33 @@
 </li>
 <li>双亲委派模型：类加载器收到类加载请求后，将请求委派给父加载器，所有的请求最终被传送到启动类加载器上，只有父加载器自己无法完成加载后，子加载器才会自己加载，</li>
 </ul>
+<h2 id="Jvm参数"><a href="#Jvm参数" class="headerlink" title="Jvm参数"></a>Jvm参数</h2><h3 id="生产实例-UCC"><a href="#生产实例-UCC" class="headerlink" title="生产实例-UCC"></a>生产实例-UCC</h3><p>-server ：选择服务器应用程序运行时优化。 目录服务器将需要更长的时间来启动和“预热”，但将进行更积极的优化以产生更高的吞吐量。<br>-d64 ：仅适用于64位的机器，默认是32位机器<br>-Xmx8g ：jvm最大堆内存空间大小<br>-Xms8g ：jvm最小堆内存空间大小<br>-Xmn1g ：年轻代占内存大小<br>-XX:PermSize=512m 设置永久代大小，避免内存泄露异常java.lang.OutOfMemoryError: PermGen space<br>-Xss2m ：分配给单个线程的空间<br>-XX:+DisableExplicitGC ：防止外部应用程序强制进行昂贵的垃圾收集。 如果使用jstatd或其他基于RMI的应用程序来监视Oracle Unified Directory，则应考虑使用此选项以避免意外暂停。<br>-XX:+UseConcMarkSweepGC ：选择CMS垃圾收集器。 此垃圾收集器设置为低暂停时间。 这将导致Java应用程序具有较低的平均吞吐量，但CPU密集型垃圾收集要短得多。 在具有响应时间限制的环境中，此选项是必需的。<br>-XX:+CMSParallelRemarkEnabled<br>-XX:+UseCMSCompactAtFullCollection<br>-XX:LargePageSizeInBytes=128m<br>-XX:+UseFastAccessorMethods<br>-XX:+UseCMSInitiatingOccupancyOnly<br>-XX:CMSInitiatingOccupancyFraction=70 ：选择GC开始的级别。 默认值为68％。<br>-XX:+PrintGCDetails ：打印GC细节<br>-XX:+PrintGCTimeStamps ：打印垃圾收集时间戳以帮助调试。<br>-Xloggc:./logs/gc.log<br>-XX:-HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=./logs”</p>
+<h3 id="生产实例-CMC"><a href="#生产实例-CMC" class="headerlink" title="生产实例-CMC"></a>生产实例-CMC</h3><p>-server<br>-Xmx8g<br>-Xms8g<br>-Xmn256m<br>-Xss256k<br>-XX:+PrintGCDetails<br>-XX:+PrintGCTimeStamps<br>-Xloggc:./logs/gc.log<br>-XX:-HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=./logs”</p>
+<ul>
+<li><p>垃圾收集器参数<br>-XX:+UseSerialGC<br>-XX:+UseParallelGC<br>-XX:+USeParNewGC<br>-XX:+UseG1GC<br>-XX:+UseParallelOldGC ：选择并行的老年代垃圾收集器。 此垃圾收集器设置为高吞吐量。 它将使import-ldif实用程序的平均吞吐量最大化，代价是偶尔停止世界的垃圾收集。</p>
+</li>
+<li><p>GC日志参数<br>-XX:+UseGCLogFileRotation<br>-XX:NumberOfGCLogFiles=&lt; number of log files &gt;<br>-XX:GCLogFileSize=&lt; file size &gt;[ unit ]<br>-Xloggc:/path/to/gc.log</p>
+</li>
+<li><p>内存溢出参数<br>-XX:+HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=./java_pid<pid>.hprof<br>-XX:OnOutOfMemoryError=”&lt; cmd args &gt;;&lt; cmd args &gt;”<br>  -XX:OnOutOfMemoryError=”shutdown -r”<br>-XX:+UseGCOverheadLimit</pid></p>
+</li>
+<li><p>其他参数<br>-XX:+UseStringDeduplication ：Java 8u20引入了这个JVM参数，通过创建相同String的太多实例来减少不必要的内存使用; 这通过将重复的String值减少到单个全局char []数组来优化堆内存<br>-XX:LargePageSizeInBytes ：设置用于Java堆的大页面大小; 它采用GB / MB / KB的参数; 通过更大的页面大小，我们可以更好地利用虚拟内存硬件资源; 但是，这可能会导致PermGen的空间大小增加，从而可以强制减小Java堆空间的大小<br>-XX:MaxHeapFreeRatio：在GC之后设置堆的最大自由百分比以避免收缩。<br>-XX:MinHeapFreeRatio ：GC后设置堆的最小自由百分比以避免扩展; 监视堆使用情况，您可以使用JDK附带的VisualVM。<br>-XX:SurvivorRatio ：eden/survivor空间大小的比例<br>-XX:+UseStringCache: 字符串缓存<br>-XX:+UseCompressedStrings:压缩字符串</p>
+</li>
+</ul>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>Categories of JVM arguments （Jvm参数分类）</p>
+<ol>
+<li><p>Standard Options (-D but not only).<br>These are the most commonly used options that are supported by all implementations of the JVM.<br>You use -D to specify System properties but most of them don’t have any prefix :-verbose, -showversion, and so for…</p>
+</li>
+<li><p>Non-Standard Options (prefixed with -X)<br>These options are general purpose options that are specific to the Java HotSpot Virtual Machine.<br>For example : -Xmssize, -Xmxsize</p>
+</li>
+<li><p>Advanced Runtime Options (prefixed with -XX)<br>These options control the runtime behavior of the Java HotSpot VM.</p>
+</li>
+<li><p>Advanced JIT Compiler Options (prefixed with -XX)<br>These options control the dynamic just-in-time (JIT) compilation performed by the Java HotSpot VM.</p>
+</li>
+<li><p>Advanced Serviceability Options (prefixed with -XX)<br>These options provide the ability to gather system information and perform extensive debugging.</p>
+</li>
+<li><p>Advanced Garbage Collection Options (prefixed with -XX)<br>These options control how garbage collection (GC) is performed by the Java HotSpot VM.</p>
+</li>
+</ol>
 
       
     </div>
@@ -822,7 +877,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">88</span>
+                <span class="site-state-item-count">107</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -833,7 +888,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">40</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -844,7 +899,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -897,7 +952,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#步入java虚拟机的世界"><span class="nav-number">1.</span> <span class="nav-text">步入java虚拟机的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">1.1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.1.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收"><span class="nav-number">1.1.2.</span> <span class="nav-text">内存分配与回收</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机对象"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收"><span class="nav-number">1.3.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判定对象可以进行回收"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何判定对象可以进行回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">1.3.2.</span> <span class="nav-text">垃圾回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器：内存回收的具体实现"><span class="nav-number">1.3.3.</span> <span class="nav-text">垃圾收集器：内存回收的具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC日志阅读"><span class="nav-number">1.4.</span> <span class="nav-text">GC日志阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识class文件"><span class="nav-number">1.5.</span> <span class="nav-text">认识class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class文件校验"><span class="nav-number">1.5.1.</span> <span class="nav-text">Class文件校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">1.6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载过程"><span class="nav-number">1.6.1.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">1.6.2.</span> <span class="nav-text">类加载器</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#步入java虚拟机的世界"><span class="nav-number">1.</span> <span class="nav-text">步入java虚拟机的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">1.1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.1.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收"><span class="nav-number">1.1.2.</span> <span class="nav-text">内存分配与回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以复制算法为例，minorGC一次的全过程如下"><span class="nav-number">1.1.3.</span> <span class="nav-text">以复制算法为例，minorGC一次的全过程如下</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机对象"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收"><span class="nav-number">1.3.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判定对象可以进行回收"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何判定对象可以进行回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">1.3.2.</span> <span class="nav-text">垃圾回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器：内存回收的具体实现"><span class="nav-number">1.3.3.</span> <span class="nav-text">垃圾收集器：内存回收的具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC日志阅读"><span class="nav-number">1.4.</span> <span class="nav-text">GC日志阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识class文件"><span class="nav-number">1.5.</span> <span class="nav-text">认识class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class文件校验"><span class="nav-number">1.5.1.</span> <span class="nav-text">Class文件校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">1.6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载过程"><span class="nav-number">1.6.1.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">1.6.2.</span> <span class="nav-text">类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jvm参数"><span class="nav-number">1.7.</span> <span class="nav-text">Jvm参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-UCC"><span class="nav-number">1.7.1.</span> <span class="nav-text">生产实例-UCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-CMC"><span class="nav-number">1.7.2.</span> <span class="nav-text">生产实例-CMC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.8.</span> <span class="nav-text">扩展</span></a></li></ol></li></ol></div>
             
 
           </div>
