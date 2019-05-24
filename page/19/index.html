@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/数组打印/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/MySql_DATE_FORMAT_分组查询/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/数组打印/" itemprop="url">
-                  数组打印
+                <a class="post-title-link" href="/2017/05/27/MySql_DATE_FORMAT_分组查询/" itemprop="url">
+                  MySql_DATE_FORMAT_分组查询
                 </a>
               
             
@@ -389,8 +389,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Arrays/" itemprop="url" rel="index">
-                    <span itemprop="name">Arrays</span>
+                  <a href="/categories/MySql/" itemprop="url" rel="index">
+                    <span itemprop="name">MySql</span>
                   </a>
                 </span>
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2017/05/27/数组打印/" class="leancloud_visitors" data-flag-title="数组打印">
+             <span id="/2017/05/27/MySql_DATE_FORMAT_分组查询/" class="leancloud_visitors" data-flag-title="MySql_DATE_FORMAT_分组查询">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,13 +435,167 @@
 
       
         
-          <h2 id="数组打印"><a href="#数组打印" class="headerlink" title="数组打印"></a>数组打印</h2><ol>
-<li>一维数组<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> [] num = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</div><div class="line">System.out.println(num.toString());</div><div class="line"><span class="comment">//输出：[I@15db9742...</span></div><div class="line">System.out.println(Arrays.toString(num));</div><div class="line"><span class="comment">//输出：[1, 2, 3, 4, 5]</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
+          <h3 id="MySql-DATEFORMAT分组查询"><a href="#MySql-DATEFORMAT分组查询" class="headerlink" title="MySql_DATEFORMAT分组查询"></a>MySql_DATE<em>FORMAT</em>分组查询</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- 按日查询 --&gt;</span>  </div><div class="line">SELECT DATE_FORMAT(created_date,'%Y-%m-%d') as time,sum(money) money FROM o_finance_detail where org_id = 1000  GROUP BY  time  </div><div class="line"><span class="comment">&lt;!-- 按月查询 --&gt;</span>  </div><div class="line">SELECT DATE_FORMAT(created_date,'%Y-%m') as time,sum(money)  money FROM o_finance_detail where org_id = 1000  GROUP BY  time  </div><div class="line"><span class="comment">&lt;!-- 按年查询 --&gt;</span>  </div><div class="line">SELECT DATE_FORMAT(created_date,'%Y') as time,sum(money)  money FROM o_finance_detail where org_id = 1000  GROUP BY  time   </div><div class="line"><span class="comment">&lt;!-- 按周查询 --&gt;</span>  </div><div class="line">SELECT DATE_FORMAT(created_date,'%Y-%u') as time,sum(money)  money FROM o_finance_detail where org_id = 1000  GROUP BY  time</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/数组打印/#more" rel="contents">
+            <a class="btn" href="/2017/05/27/MySql_DATE_FORMAT_分组查询/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/计数排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/27/计数排序/" itemprop="url">
+                  计数排序
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
+                2017-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/27/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"><a href="#一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！" class="headerlink" title="一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"></a>一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！</h2>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/27/计数排序/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +800,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/计数排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/桶排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -668,8 +822,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/计数排序/" itemprop="url">
-                  计数排序
+                <a class="post-title-link" href="/2017/05/27/桶排序/" itemprop="url">
+                  桶排序
                 </a>
               
             
@@ -725,7 +879,7 @@
 
           
           
-             <span id="/2017/05/27/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
+             <span id="/2017/05/27/桶排序/" class="leancloud_visitors" data-flag-title="桶排序">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -754,10 +908,10 @@
 
       
         
-          <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"><a href="#一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！" class="headerlink" title="一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"></a>一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！</h2>
+          <h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><h2 id="桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"><a href="#桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。" class="headerlink" title="桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"></a>桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。</h2>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/计数排序/#more" rel="contents">
+            <a class="btn" href="/2017/05/27/桶排序/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -803,7 +957,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/22/LintCode-最大数/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/数组打印/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -825,8 +979,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/22/LintCode-最大数/" itemprop="url">
-                  LintCode_最大数
+                <a class="post-title-link" href="/2017/05/27/数组打印/" itemprop="url">
+                  数组打印
                 </a>
               
             
@@ -842,8 +996,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-22T20:49:53+08:00">
-                2017-05-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
+                2017-05-27
               </time>
             
 
@@ -865,8 +1019,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/categories/Arrays/" itemprop="url" rel="index">
+                    <span itemprop="name">Arrays</span>
                   </a>
                 </span>
 
@@ -882,7 +1036,7 @@
 
           
           
-             <span id="/2017/05/22/LintCode-最大数/" class="leancloud_visitors" data-flag-title="LintCode_最大数">
+             <span id="/2017/05/27/数组打印/" class="leancloud_visitors" data-flag-title="数组打印">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -911,168 +1065,13 @@
 
       
         
-          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
-<h3 id="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"><a href="#给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。" class="headerlink" title="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"></a>给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。</h3><h4 id="注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。"><a href="#注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。" class="headerlink" title="(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)"></a>(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)</h4><h5 id="样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。"><a href="#样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。" class="headerlink" title="样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。"></a>样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。</h5></blockquote>
+          <h2 id="数组打印"><a href="#数组打印" class="headerlink" title="数组打印"></a>数组打印</h2><ol>
+<li>一维数组<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> [] num = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</div><div class="line">System.out.println(num.toString());</div><div class="line"><span class="comment">//输出：[I@15db9742...</span></div><div class="line">System.out.println(Arrays.toString(num));</div><div class="line"><span class="comment">//输出：[1, 2, 3, 4, 5]</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/22/LintCode-最大数/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/20/快速排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/20/快速排序/" itemprop="url">
-                  快速排序
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T12:19:25+08:00">
-                2017-05-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/05/20/快速排序/" class="leancloud_visitors" data-flag-title="快速排序">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><h2 id="快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5-3-8-6-4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O-nlogn"><a href="#快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5-3-8-6-4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O-nlogn" class="headerlink" title="快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5,3,8,6,4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O(nlogn)"></a>快速排序在实际应用当中确实是表现最好的排序算法。但其思想是来自冒泡排序，冒泡排序是通过相邻元素的比较和交换把最小的冒泡到最顶端，而快速排序是比较和交换小数和大数，这样一来不仅把小数冒泡到上面，同时也把大数沉到下面。举个栗子：对5,3,8,6,4这个无序序列进行快速排序，思路是右指针从尾部找比基准数小的，左指针从头部找比基准数大的，然后交换之。通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。时间复杂度为O(nlogn)</h2>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/05/20/快速排序/#more" rel="contents">
+            <a class="btn" href="/2017/05/27/数组打印/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1158,7 +1157,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">108</span>
+                <span class="site-state-item-count">110</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1180,7 +1179,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">106</span>
+                <span class="site-state-item-count">108</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
