@@ -967,7 +967,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/26/VisitorPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/26/TemplateMethodPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -989,8 +989,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/26/VisitorPattern/" itemprop="url">
-                  Visitor Pattern
+                <a class="post-title-link" href="/2017/08/26/TemplateMethodPattern/" itemprop="url">
+                  Template Method Pattern
                 </a>
               
             
@@ -1046,7 +1046,7 @@
 
           
           
-             <span id="/2017/08/26/VisitorPattern/" class="leancloud_visitors" data-flag-title="Visitor Pattern">
+             <span id="/2017/08/26/TemplateMethodPattern/" class="leancloud_visitors" data-flag-title="Template Method Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1075,17 +1075,15 @@
 
       
         
-          <h1 id="Visitor-Pattern（访问者模式）"><a href="#Visitor-Pattern（访问者模式）" class="headerlink" title="Visitor Pattern（访问者模式）"></a>Visitor Pattern（访问者模式）</h1><h2 id="Represent-an-operation-to-be-performed-on-the-elements-of-an-object-structure-Visitor-lets-you-define-a-new-operation-without-changing-the-classes-of-the-elements-on-which-it-operates-（封装一些作用于某种数据结构中的各种元素，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。）"><a href="#Represent-an-operation-to-be-performed-on-the-elements-of-an-object-structure-Visitor-lets-you-define-a-new-operation-without-changing-the-classes-of-the-elements-on-which-it-operates-（封装一些作用于某种数据结构中的各种元素，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。）" class="headerlink" title="Represent an operation to be performed on the elements of an object structure.Visitor lets you define a new operation without changing the classes of the elements on which it operates.（封装一些作用于某种数据结构中的各种元素，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。）"></a>Represent an operation to be performed on the elements of an object structure.Visitor lets you define a new operation without changing the classes of the elements on which it operates.（封装一些作用于某种数据结构中的各种元素，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。）</h2><ul>
-<li>抽象元素（Element）：一个抽象类，定义了接受访问者的accept方法</li>
-<li>具体元素（ConcreteElement）：Element的子类</li>
-<li>抽象访问者(Visitor)：一个接口，定义了操作具体元素的方法</li>
-<li>具体访问者(ConcreteVisitor)：抽象访问者接口的实现类</li>
-<li>应用场景：双重分派（数据的存储和操作解耦）,不同的访问者访问同一元素，进行的操作不同，结果也不同，但访问这一动作共同的，只是传入的对象不同，导致操作/结果不同</li>
+          <h1 id="Template-Method-Pattern（模板方法模式）"><a href="#Template-Method-Pattern（模板方法模式）" class="headerlink" title="Template Method Pattern（模板方法模式）"></a>Template Method Pattern（模板方法模式）</h1><h2 id="Define-the-skeleton-of-an-algorithm-in-an-operation-deferring-some-steps-to-subclasses-Template-Method-lets-subclass-redefine-certain-steps-of-an-algorithm-without-changing-the-algorithm’s-structure-（定义一个操作中的算法框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可以重定义该算法的某些特定步骤。）"><a href="#Define-the-skeleton-of-an-algorithm-in-an-operation-deferring-some-steps-to-subclasses-Template-Method-lets-subclass-redefine-certain-steps-of-an-algorithm-without-changing-the-algorithm’s-structure-（定义一个操作中的算法框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可以重定义该算法的某些特定步骤。）" class="headerlink" title="Define the skeleton of an algorithm in an operation,deferring some steps to subclasses.Template Method lets subclass redefine certain steps of an algorithm without changing the algorithm’s structure. （定义一个操作中的算法框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可以重定义该算法的某些特定步骤。）"></a>Define the skeleton of an algorithm in an operation,deferring some steps to subclasses.Template Method lets subclass redefine certain steps of an algorithm without changing the algorithm’s structure. （定义一个操作中的算法框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可以重定义该算法的某些特定步骤。）</h2><ul>
+<li>抽象模板（AbstractTemplate）：一个抽象类,定义若干方法表示一个算法的步骤，有抽象方法也有非抽象方法，抽象方法表示原子操作，非抽象方法表示原子步骤</li>
+<li>具体模板（ConcreteTemplate）：抽象模板的子类，实现抽象模板的原子操作</li>
+<li>应用场景：非抽象方法负责定义步骤流程，钩子方法，子类可以按照抽象模板的规定步骤进行（用final修饰来强制继承不能改动），也可重写非抽象方法来自己定义步骤流程，或者还可以在确定什么样的条件下去执行算法的哪些步骤（boolean返回类型的钩子方法的用途）</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/26/VisitorPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/26/TemplateMethodPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1193,7 +1191,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">108</span>
+                <span class="site-state-item-count">107</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

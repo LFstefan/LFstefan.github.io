@@ -489,7 +489,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/10/07/位数组/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/10/07/BitSet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -511,8 +511,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/10/07/位数组/" itemprop="url">
-                  位数组
+                <a class="post-title-link" href="/2017/10/07/BitSet/" itemprop="url">
+                  BitSet
                 </a>
               
             
@@ -551,8 +551,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bit-Aarray/" itemprop="url" rel="index">
-                    <span itemprop="name">Bit_Aarray</span>
+                  <a href="/categories/BitSet/" itemprop="url" rel="index">
+                    <span itemprop="name">BitSet</span>
                   </a>
                 </span>
 
@@ -568,7 +568,7 @@
 
           
           
-             <span id="/2017/10/07/位数组/" class="leancloud_visitors" data-flag-title="位数组">
+             <span id="/2017/10/07/BitSet/" class="leancloud_visitors" data-flag-title="BitSet">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -597,10 +597,12 @@
 
       
         
-          <h2 id="位数组"><a href="#位数组" class="headerlink" title="位数组"></a>位数组</h2>
+          <h2 id="BitSet"><a href="#BitSet" class="headerlink" title="BitSet"></a>BitSet</h2><blockquote>
+<p>BitSet：用来操作位的数据结构，可实现指定的位的值反转，设置，获取，清空等；<br>经常用于海量数据中的去重，判重，判存，排序等操作<br>当使用一位表示一个数字时，一个1G的空间，有 8<em>1024</em>1024<em>1024=8.58</em>10^9bit，也就是可以表示85亿个不同的数。</p>
+</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/07/位数组/#more" rel="contents">
+            <a class="btn" href="/2017/10/07/BitSet/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -813,6 +815,163 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/09/30/初窥Set源码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/30/初窥Set源码/" itemprop="url">
+                  初窥Set源码
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-30T12:10:25+08:00">
+                2017-09-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Source-Code/" itemprop="url" rel="index">
+                    <span itemprop="name">Source_Code</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/09/30/初窥Set源码/" class="leancloud_visitors" data-flag-title="初窥Set源码">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><h3 id="HashSet（HashMap的HashMap版本）"><a href="#HashSet（HashMap的HashMap版本）" class="headerlink" title="HashSet（HashMap的HashMap版本）"></a>HashSet（HashMap的HashMap<e,object>版本）</e,object></h3><h3 id="LinkedHashSet（LinkedHashMap的LinkedHashMap版本）"><a href="#LinkedHashSet（LinkedHashMap的LinkedHashMap版本）" class="headerlink" title="LinkedHashSet（LinkedHashMap的LinkedHashMap版本）"></a>LinkedHashSet（LinkedHashMap的LinkedHashMap<e,object>版本）</e,object></h3><h3 id="TreeSet（TreeMap的TreeMap版本）"><a href="#TreeSet（TreeMap的TreeMap版本）" class="headerlink" title="TreeSet（TreeMap的TreeMap版本）"></a>TreeSet（TreeMap的TreeMap<e,object>版本）</e,object></h3>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/30/初窥Set源码/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/09/30/初窥Map源码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -969,163 +1128,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/09/30/初窥Set源码/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/30/初窥Set源码/" itemprop="url">
-                  初窥Set源码
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-30T12:10:25+08:00">
-                2017-09-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Source-Code/" itemprop="url" rel="index">
-                    <span itemprop="name">Source_Code</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/09/30/初窥Set源码/" class="leancloud_visitors" data-flag-title="初窥Set源码">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><h3 id="HashSet（HashMap的HashMap版本）"><a href="#HashSet（HashMap的HashMap版本）" class="headerlink" title="HashSet（HashMap的HashMap版本）"></a>HashSet（HashMap的HashMap<e,object>版本）</e,object></h3><h3 id="LinkedHashSet（LinkedHashMap的LinkedHashMap版本）"><a href="#LinkedHashSet（LinkedHashMap的LinkedHashMap版本）" class="headerlink" title="LinkedHashSet（LinkedHashMap的LinkedHashMap版本）"></a>LinkedHashSet（LinkedHashMap的LinkedHashMap<e,object>版本）</e,object></h3><h3 id="TreeSet（TreeMap的TreeMap版本）"><a href="#TreeSet（TreeMap的TreeMap版本）" class="headerlink" title="TreeSet（TreeMap的TreeMap版本）"></a>TreeSet（TreeMap的TreeMap<e,object>版本）</e,object></h3>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/30/初窥Set源码/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1197,7 +1199,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">108</span>
+                <span class="site-state-item-count">107</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

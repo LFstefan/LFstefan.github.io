@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2017/05/10/海量数据处理/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="海量数据处理问题 topK问题 重复问题 排序问题 相关算法">
-<meta property="og:updated_time" content="2018-04-14T09:45:45.475Z">
+<meta property="og:updated_time" content="2019-05-25T06:02:32.276Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="海量数据处理">
 <meta name="twitter:description" content="海量数据处理问题 topK问题 重复问题 排序问题 相关算法">
@@ -442,11 +442,16 @@
 <li>单机+单核+足够大内存<ul>
 <li>10亿词（每个词占8B）中查找出现频率最高的10个<ul>
 <li>首先考虑全部放入内存，需要至少10^9*8=8GB</li>
-<li>然后排序，顺序遍历找出结果或者用HashMap统计频率在求出结果</li>
+<li>用HashMap（Map：key是单词，value是次数）统计频率在求出结果</li>
 </ul>
 </li>
 </ul>
 </li>
+</ul>
+<blockquote>
+<p>词频统计<br>构造单词树，前缀单词树（相比较map极大的节省空间）</p>
+</blockquote>
+<ul>
 <li>单机+多核（意味着可以多线程）+足够大内存<ul>
 <li>在内存中用hash将数据分为n个partition，交给n个线程处理，最后有一个线程负责将结果合并</li>
 <li>上述有一个瓶颈问题，即（数据倾斜）线程处理速度不一致，所以快的线程必须等慢的线程，速度取决最慢的线程</li>
@@ -457,10 +462,21 @@
 <li>Hash（x）%M将源文件数据切割成M个小文件，然后用（单机+单核+足够大内存）方法处理，最后合并</li>
 </ul>
 </li>
-<li>多机+受限内存<ul>
-<li>数据分发到各个机器，每台机器用（单机+单核+受限内存）方法进行处理<h2 id="重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）"><a href="#重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）" class="headerlink" title="重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）"></a>重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）</h2></li>
+<li><p>多机+受限内存</p>
+<ul>
+<li>数据分发到各个机器，每台机器用（单机+单核+受限内存）方法进行处理</li>
 </ul>
 </li>
+<li><h3 id="查找乱序数组中第K个最大值，或者前K个最大值（这种问题是不统计频率，只是查找第K个最大值）"><a href="#查找乱序数组中第K个最大值，或者前K个最大值（这种问题是不统计频率，只是查找第K个最大值）" class="headerlink" title="查找乱序数组中第K个最大值，或者前K个最大值（这种问题是不统计频率，只是查找第K个最大值）"></a>查找乱序数组中第K个最大值，或者前K个最大值（这种问题是不统计频率，只是查找第K个最大值）</h3><ul>
+<li>方法一：全部排序</li>
+<li>方法二：维护一个K长度的数组a[]，先读取源数据中的前K个放入数组，对该数组进行升序排序，再依次读取源数据第K个以后的数据，和数组中最小的元素（a[0]）比较，如果小于a[0]直接pass，大于的话，就丢弃最小的元素a[0]，利用二分法找到其位置，然后该位置前的数组元素整体向前移位，直到源数据读取结束。这比全部排序后统计频率效率会有很大的提高，但是当K的值较大的时候，长度为K的数据整体移位，也是非常耗时的。</li>
+<li>方法三：找出数组中最大的元素，与第一个元素交换，再找出第二大元素，与第二个元素交换，直到找到第 $k$ 大元素便停止。</li>
+<li>方法四：堆排序（最优）</li>
+</ul>
+</li>
+</ul>
+<h2 id="重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）"><a href="#重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）" class="headerlink" title="重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）"></a>重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）</h2><ul>
+<li>HashMap去重法</li>
 <li>位图法<ul>
 <li>8位能表示的十进制数最大为99999999，假设每个数字对应位图中的一位，大概需要内存99MB/8=7.375MB<h2 id="排序问题（9亿个不重复的9位整数数排序）"><a href="#排序问题（9亿个不重复的9位整数数排序）" class="headerlink" title="排序问题（9亿个不重复的9位整数数排序）"></a>排序问题（9亿个不重复的9位整数数排序）</h2></li>
 </ul>
@@ -676,7 +692,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">108</span>
+                <span class="site-state-item-count">107</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -729,7 +745,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#海量数据处理问题"><span class="nav-number">1.</span> <span class="nav-text">海量数据处理问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#topK问题（10亿词中查找出现频率最高的10个）"><span class="nav-number">1.1.</span> <span class="nav-text">topK问题（10亿词中查找出现频率最高的10个）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）"><span class="nav-number">1.2.</span> <span class="nav-text">重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序问题（9亿个不重复的9位整数数排序）"><span class="nav-number">1.3.</span> <span class="nav-text">排序问题（9亿个不重复的9位整数数排序）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关算法"><span class="nav-number">1.4.</span> <span class="nav-text">相关算法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#海量数据处理问题"><span class="nav-number">1.</span> <span class="nav-text">海量数据处理问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#topK问题（10亿词中查找出现频率最高的10个）"><span class="nav-number">1.1.</span> <span class="nav-text">topK问题（10亿词中查找出现频率最高的10个）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查找乱序数组中第K个最大值，或者前K个最大值（这种问题是不统计频率，只是查找第K个最大值）"><span class="nav-number">1.1.1.</span> <span class="nav-text">查找乱序数组中第K个最大值，或者前K个最大值（这种问题是不统计频率，只是查找第K个最大值）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）"><span class="nav-number">1.2.</span> <span class="nav-text">重复问题（电话号码去重求个数，即不同的电话号码有多少个，假设电话号码为8位）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序问题（9亿个不重复的9位整数数排序）"><span class="nav-number">1.3.</span> <span class="nav-text">排序问题（9亿个不重复的9位整数数排序）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关算法"><span class="nav-number">1.4.</span> <span class="nav-text">相关算法</span></a></li></ol></li></ol></div>
             
 
           </div>
