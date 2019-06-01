@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/04/29/Json与序列化/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Json与序列化  序列化：序列化是将对象状态转换为可保持或传输的格式的过程。与序列化相对的是反序列化，它将流转换为对象。这两个过程结合起来，可以轻松地存储和传输数据。 JSON(JavaScript Object Notation, JS 对象简谱) 是一种轻量级的数据交换格式。它基于 ECMAScript (欧洲计算机协会制定的js规范)的一个子集，采用完全独立于编程语言的文本格式来存储和表示">
-<meta property="og:updated_time" content="2018-12-04T05:54:01.830Z">
+<meta property="og:updated_time" content="2019-05-27T11:48:07.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Json与序列化">
 <meta name="twitter:description" content="Json与序列化  序列化：序列化是将对象状态转换为可保持或传输的格式的过程。与序列化相对的是反序列化，它将流转换为对象。这两个过程结合起来，可以轻松地存储和传输数据。 JSON(JavaScript Object Notation, JS 对象简谱) 是一种轻量级的数据交换格式。它基于 ECMAScript (欧洲计算机协会制定的js规范)的一个子集，采用完全独立于编程语言的文本格式来存储和表示">
@@ -448,13 +448,80 @@
 <blockquote>
 <p>json的实现有很多，这里使用的fastjson，较其速度相对来说是所有实现中最快的，使用json代码较为简洁干练，并且其生成的字符串体积较小，易于传输。</p>
 </blockquote>
-<h2 id="序列化-反序列化"><a href="#序列化-反序列化" class="headerlink" title="序列化/反序列化"></a>序列化/反序列化</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*序列化对象到临时性存储介质，如字符串临时变量*/</span></div><div class="line">ByteArrayOutputStream byteOut = <span class="keyword">new</span> ByteArrayOutputStream();  </div><div class="line">ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(byteOut);</div><div class="line"></div><div class="line"><span class="comment">/*序列化对象到永久性存储介质，如本地文件</span></div><div class="line">ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("D:/序列化.txt"));*/</div><div class="line"></div><div class="line">objectOutputStream.writeObject(person);</div><div class="line"></div><div class="line">System.out.println(<span class="string">"序列化后对象的值为："</span>+byteOut.toString());</div><div class="line"><span class="comment">//System.out.println("序列化后对象的值为："+byteOut.toString("ISO-8859-1"));</span></div><div class="line">		</div><div class="line"><span class="comment">/*从文件反序列化对象</span></div><div class="line">ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("D:/序列化.txt"));*/</div><div class="line"></div><div class="line"><span class="comment">/*从字符串反序列化对象*/</span></div><div class="line">ByteArrayInputStream byteIn = <span class="keyword">new</span> ByteArrayInputStream(byteOut.toString().getBytes());  </div><div class="line">ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(byteIn);</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">	Person readPerson = (Person)objectInputStream.readObject();</div><div class="line">	System.out.println(readPerson.getName());</div><div class="line">&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">	<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">	e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="序列化-反序列化"><a href="#序列化-反序列化" class="headerlink" title="序列化/反序列化"></a>序列化/反序列化</h2><blockquote>
+<ul>
+<li>当程序运行时，有关对象的信息就存储在了内存当中，但是当程序终止时，对象将不再继续存在。我们需要一种储存对象信息的方法，使我们的程序关闭之后他还继续存在，当我们再次打开程序时，可以轻易的还原当时的状态。这就是对象序列化的目的。</li>
+<li>所谓序列化，就是定义一种格式来与内存中对象信息构造一种一一对应的关系，从而可以把内存中对象信息以某种格式来保存到任意地方；而序列化/反序列化就是对这种格式的解析</li>
+<li>java的对象序列化将那些实现了Serializable接口的对象转换成一个字节序列，并且能够在以后将这个字节序列完全恢复为原来的对象，甚至可以通过网络传播。 这意味着序列化机制自动弥补了不同OS之间的差异.</li>
+<li>如此，java实现了“轻量级持久性”，为啥是轻量级，因为在java中我们还不能直接通过一个类似public这样的关键字直接使一个对象序列化，并让系统自动维护其他细节问题。因此我们只能在程序中显示地序列化与反序列化</li>
+<li>对象序列化不仅保存了对象的“全景图”，而且能够追踪对象内所包含的所有引用，并保存这些对象；接着又能对对象内包含的每个这样的引用进行追踪；以此类推。这种情况有时被称为“对象网”。</li>
+</ul>
+</blockquote>
+<h3 id="如何使用序列化"><a href="#如何使用序列化" class="headerlink" title="如何使用序列化"></a>如何使用序列化</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*序列化对象到临时性存储介质，如字符串临时变量*/</span></div><div class="line">ByteArrayOutputStream byteOut = <span class="keyword">new</span> ByteArrayOutputStream();  </div><div class="line">ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(byteOut);</div><div class="line"></div><div class="line"><span class="comment">/*序列化对象到永久性存储介质，如本地文件</span></div><div class="line">ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("D:/序列化.txt"));*/</div><div class="line"></div><div class="line">objectOutputStream.writeObject(person);</div><div class="line"></div><div class="line">System.out.println(<span class="string">"序列化后对象的值为："</span>+byteOut.toString());</div><div class="line"><span class="comment">//System.out.println("序列化后对象的值为："+byteOut.toString("ISO-8859-1"));</span></div><div class="line">		</div><div class="line"><span class="comment">/*从文件反序列化对象</span></div><div class="line">ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("D:/序列化.txt"));*/</div><div class="line"></div><div class="line"><span class="comment">/*从字符串反序列化对象*/</span></div><div class="line">ByteArrayInputStream byteIn = <span class="keyword">new</span> ByteArrayInputStream(byteOut.toString().getBytes());  </div><div class="line">ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(byteIn);</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">	Person readPerson = (Person)objectInputStream.readObject();</div><div class="line">	System.out.println(readPerson.getName());</div><div class="line">&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">	<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">	e.printStackTrace();</div><div class="line">&#125;</div><div class="line"><span class="comment">/** 使用序列化实现加密解密 ，实现Serializable接口的类中添加writeObject()和readObject()可以实现数据的修改和加密解密操作</span></div><div class="line">* 因为底层调用的时候会先行检查实现Serializable接口的类中是否含有这两个方法，有则调用，没有直接调用默认方法</div><div class="line">*/</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">	...</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(ObjectOutputStream out)</span> </span>&#123;</div><div class="line">	    <span class="keyword">try</span> &#123;</div><div class="line">	        PutField putFields = out.putFields();</div><div class="line">	        password = <span class="string">"encryption"</span>;<span class="comment">//模拟加密</span></div><div class="line">	        putFields.put(<span class="string">"password"</span>, password);</div><div class="line">	        out.writeFields();</div><div class="line">	    &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">	        e.printStackTrace();</div><div class="line">	    &#125;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(ObjectInputStream in)</span> </span>&#123;</div><div class="line">	    <span class="keyword">try</span> &#123;</div><div class="line">	        GetField readFields = in.readFields();</div><div class="line">	        Object object = readFields.get(<span class="string">"password"</span>, <span class="string">""</span>);</div><div class="line">	        password = <span class="string">"pass"</span>;<span class="comment">//模拟解密,需要获得本地的密钥</span></div><div class="line">	    &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">	        e.printStackTrace();</div><div class="line">	    &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">	        e.printStackTrace();</div><div class="line">	    &#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
 <ul>
 <li>serialize后字符串包含了子串的长度，这可能是速度方面的优化</li>
 <li>至于两者的速度各有千秋，因不同的场景，不同的条件而定</li>
 </ul>
 </blockquote>
+<h2 id="java序列化底层实现原理"><a href="#java序列化底层实现原理" class="headerlink" title="java序列化底层实现原理"></a>java序列化底层实现原理</h2><ul>
+<li>java.io.ObjectOutputStream：表示对象输出流；<ul>
+<li>它的writeObject(Object obj)方法可以对参数指定的obj对象进行序列化，把得到的<strong>字节序列</strong>写到一个目标输出流中；</li>
+</ul>
+</li>
+<li>java.io.ObjectInputStream：表示对象输入流；<ul>
+<li>它的readObject()方法源输入流中读取字节序列，再把它们反序列化成为一个对象，并将其返回；</li>
+</ul>
+</li>
+<li>被序列化对象必须实现序列化接口Serializable才能被序列化；Serializable接口这是一个标识，告诉程序所有实现了”我”的对象都需要进行序列化</li>
+<li>static和transient字段不能被序列化。</li>
+<li>当一个父类实现序列化，子类自动实现序列化，不需要显式实现Serializable接口</li>
+<li>序列化运行时使用一个称为 serialVersionUID 的版本号与每个可序列化类相关联，该序列号在反序列化过程中用于验证序列化对象的发送者和接收者是否为该对象加载了与序列化兼容的类。为它赋予明确的值。显式地定义serialVersionUID有两种用途：<ul>
+<li>在某些场合，希望类的不同版本对序列化兼容，因此需要确保类的不同版本具有相同的serialVersionUID；</li>
+<li>在某些场合，不希望类的不同版本对序列化兼容，因此需要确保类的不同版本具有不同的serialVersionUID。</li>
+</ul>
+</li>
+<li>java的远程方法调用（RMI），序列化使存活于其他计算机上的对象使用起来就像存活于本机上一样。当远程对象发送消息时，需要通过对象序列化来传输参数和返回值。</li>
+<li>Java 序列化机制为了节省磁盘空间，具有特定的存储规则，当写入文件的为同一对象时，并不会再将对象的内容进行存储，而只是再次存储一份引用</li>
+</ul>
+<h3 id="序列化写入过程"><a href="#序列化写入过程" class="headerlink" title="序列化写入过程"></a>序列化写入过程</h3><ul>
+<li>写入过程会调用底层的字节数据容器<ul>
+<li>bout = new BlockDataOutputStream(outputStream);（bout表示底层的字节数据容器）</li>
+<li>用特定的字节序列的值来表示不同的对象，字段或者等等其他，也就是建立一个字节序列和需要被序列化的内容的一一对应关系；</li>
+<li>序列化/反序列化实质就是对字节序列的解析</li>
+</ul>
+</li>
+<li>第一步先写入magic number魔法数字</li>
+<li>第二步写入对test类的描述</li>
+<li>第三步写入对test父类的描述</li>
+<li>第四步写入test父类中定义的字段的数据</li>
+<li>第五步写入test类中定义的字段的数据</li>
+<li>第六步写入test内部类的描述</li>
+<li>第七步写入test内部类中定义的字段的数据</li>
+</ul>
+<h3 id="序列化的控制（部分-指定序列化）"><a href="#序列化的控制（部分-指定序列化）" class="headerlink" title="序列化的控制（部分/指定序列化）"></a>序列化的控制（部分/指定序列化）</h3><ul>
+<li>通过实现Externalizable接口——代替实现Serializable接口——来对序列化过程进行控制。</li>
+<li>可以实现指定字段的序列化（Serializable不能）</li>
+</ul>
+<ol>
+<li>Externalizable接口继承了Serializable接口，增加了两个方法，writeExternal()和readExternal()，这两个方法会在序列化和反序列化还原的过程中被自动调用。</li>
+<li>Externalizable对象，在还原的时候所有普通的默认构造器都会被调用（包括在字段定义时的初始化）(只有这样才能使Externalizable对象产生正确的行为)，然后调用readExternal().</li>
+<li>如果我们从一个Externalizable对象继承，通常需要调用基类版本的writeExternal()和readExternal()来为基类组件提供恰当的存储和恢复功能。</li>
+<li>为了正常运行，我们不仅需要在writeExternal()方法中将来自对象的重要信息写入，还必须在readExternal（）中恢复数据</li>
+</ol>
+<h3 id="防止对象的敏感部分被序列化，两种方式："><a href="#防止对象的敏感部分被序列化，两种方式：" class="headerlink" title="防止对象的敏感部分被序列化，两种方式："></a>防止对象的敏感部分被序列化，两种方式：</h3><ol>
+<li>将类实现Externalizable，在writeExternal()内部只对所需部分进行显示的序列化</li>
+<li>实现Serializable，用transient(瞬时)关键字（只能和Serializable一起使用）逐个字段的关闭序列化，他的意思：不用麻烦你保存或恢复数据——我自己会处理。</li>
+</ol>
+<h3 id="重复对象循环引用"><a href="#重复对象循环引用" class="headerlink" title="重复对象循环引用"></a>重复对象循环引用</h3><ul>
+<li>Java 序列化机制为了节省磁盘空间，具有特定的存储规则，当写入文件的为同一对象时，并不会再将对象的内容进行存储，而只是再次存储一份引用</li>
+</ul>
+<h3 id="数据加密解密"><a href="#数据加密解密" class="headerlink" title="数据加密解密"></a>数据加密解密</h3><ul>
+<li>向实现Serializable接口的类中添加writeObject()和readObject()可以实现数据的修改和加密解密操作</li>
+</ul>
+<h3 id="序列化-反序列化版本问题"><a href="#序列化-反序列化版本问题" class="headerlink" title="序列化/反序列化版本问题"></a>序列化/反序列化版本问题</h3><ul>
+<li>序列化运行时使用一个称为 serialVersionUID 的版本号与每个可序列化类相关联，该序列号在反序列化过程中用于验证序列化对象的发送者和接收者是否为该对象加载了与序列化兼容的类。</li>
+</ul>
 
       
     </div>
@@ -520,8 +587,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/22/JVM/" rel="next" title="JVM">
-                <i class="fa fa-chevron-left"></i> JVM
+              <a href="/2018/04/29/序列化框架/" rel="next" title="序列化框架">
+                <i class="fa fa-chevron-left"></i> 序列化框架
               </a>
             
           </div>
@@ -606,7 +673,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">110</span>
+                <span class="site-state-item-count">113</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -681,7 +748,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Json与序列化"><span class="nav-number">1.</span> <span class="nav-text">Json与序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Json"><span class="nav-number">1.1.</span> <span class="nav-text">Json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化-反序列化"><span class="nav-number">1.2.</span> <span class="nav-text">序列化/反序列化</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Json与序列化"><span class="nav-number">1.</span> <span class="nav-text">Json与序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Json"><span class="nav-number">1.1.</span> <span class="nav-text">Json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化-反序列化"><span class="nav-number">1.2.</span> <span class="nav-text">序列化/反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何使用序列化"><span class="nav-number">1.2.1.</span> <span class="nav-text">如何使用序列化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java序列化底层实现原理"><span class="nav-number">1.3.</span> <span class="nav-text">java序列化底层实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化写入过程"><span class="nav-number">1.3.1.</span> <span class="nav-text">序列化写入过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化的控制（部分-指定序列化）"><span class="nav-number">1.3.2.</span> <span class="nav-text">序列化的控制（部分/指定序列化）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防止对象的敏感部分被序列化，两种方式："><span class="nav-number">1.3.3.</span> <span class="nav-text">防止对象的敏感部分被序列化，两种方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重复对象循环引用"><span class="nav-number">1.3.4.</span> <span class="nav-text">重复对象循环引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据加密解密"><span class="nav-number">1.3.5.</span> <span class="nav-text">数据加密解密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化-反序列化版本问题"><span class="nav-number">1.3.6.</span> <span class="nav-text">序列化/反序列化版本问题</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

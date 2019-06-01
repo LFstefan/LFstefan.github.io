@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/10/07/Shell Learning/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Shell Learning  linux常用命令 输入输出重定向 管道符 | 编写shell脚本 定时任务 周期任务 /dev/zero和/dev/null">
-<meta property="og:updated_time" content="2019-02-13T09:06:53.790Z">
+<meta property="og:updated_time" content="2019-05-29T02:10:45.710Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell Learning">
 <meta name="twitter:description" content="Shell Learning  linux常用命令 输入输出重定向 管道符 | 编写shell脚本 定时任务 周期任务 /dev/zero和/dev/null">
@@ -449,7 +449,7 @@
 <li>date：日期命令，常用与将其与备份文件命名相结合，使其文件名清晰明了</li>
 <li>reboot、poweroff：重启、关机</li>
 <li>wget 参数（-P指定目录） 下载地址：下载网络文件</li>
-<li>ps：查看进程状态</li>
+<li>ps命令 用于报告当前系统的进程状态。可以搭配kill指令随时中断、删除不必要的程序</li>
 <li>top：查看系统负载情况（cup，内存。。。）</li>
 <li>pidof service：查看service的pid值</li>
 <li>kill 2456：杀死指定服务进程</li>
@@ -481,10 +481,12 @@
 <li>tar -xzvf etc.tar.gz -C /root/liufei 解压文件etc.tar.gz到文件夹/root/liufei</li>
 <li>grep：文本内容搜索（-b将可执行文件当做文本文件搜索，-c仅显示找到的行数，-i忽略大小写，-n显示行号，-v反向匹配找到没有关键字的行，-A10匹配的后十行，-B10前十行）</li>
 <li>find：文件搜索<strong><em>**</em></strong></li>
-<li>netstat -ano，端口占用查看，列出所有端口的情况</li>
-<li>netstat -ano|findstr “49157” 精确查询端口情况，查看被占用端口对应的PID</li>
-<li>tasklist|findstr “102760” 根据pid查询占用服务</li>
-<li>taskkill /f /t /im Tencentdl.exe：结束占用进程</li>
+<li>netstat -anop，端口占用查看，列出所有端口的情况</li>
+<li>netstat -anop|findstr “49157” 精确查询端口情况，查看被占用端口对应的PID（windows下）</li>
+<li>netstat -anop|grep 21666 精确查询端口情况，查看被占用端口详情（linux下）</li>
+<li>kill pid 根据pid杀掉进程（linux下）</li>
+<li>tasklist|findstr “102760” 根据pid查询占用服务（windows下）</li>
+<li>taskkill /f /t /im Tencentdl.exe：结束占用进程（windows下）</li>
 <li>w：该命令显示的信息很丰富，第一行从左至右显示的信息一次为：时间、系统运行时间、登录用户数、平均负载，这些数据里最应该关注当为load average后的3个数值。第一个数值表示1分钟内系统的平均负载值，第二个数值表示为5分钟内系统的平均负载值，第三个表示15分钟内系统的平均负载值。这里着重看第一个值，它表示单位时间段内使用CPU的活动进程数，值越大就说明服务器压力越大，一般情况下只要这个值不超过服务器的CPU数量就没有关系。如果服务器CPU数量为8，那么值小于8就说明当前服务器没有压力，否则就要关注一下。</li>
 <li>cat /proc/cpuinfo：查看服务器有几个CPU</li>
 <li>vmstat：查看当前系统具体是哪里有压力，显示的结果共分为六部分：procs、memory、swap、io、system、cpu。（vmstat 1每隔一秒输出一次；vmstat 1 5每隔一秒输出一次，共五次）</li>
@@ -707,7 +709,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">110</span>
+                <span class="site-state-item-count">113</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
