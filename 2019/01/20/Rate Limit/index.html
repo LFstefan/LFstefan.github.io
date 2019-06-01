@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="Rate Limit">
+<meta name="description" content="限流算法  基于计数器的限流算法 基于滑动窗口的限流算法 漏桶算法 令牌桶算范">
 <meta name="keywords" content="Java,Algorithm,Distributed">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rate Limit">
 <meta property="og:url" content="https://lfstefan.github.io/2019/01/20/Rate Limit/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="Rate Limit">
-<meta property="og:updated_time" content="2019-06-01T06:19:38.249Z">
+<meta property="og:description" content="限流算法  基于计数器的限流算法 基于滑动窗口的限流算法 漏桶算法 令牌桶算范">
+<meta property="og:updated_time" content="2019-06-01T07:39:09.886Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rate Limit">
-<meta name="twitter:description" content="Rate Limit">
+<meta name="twitter:description" content="限流算法  基于计数器的限流算法 基于滑动窗口的限流算法 漏桶算法 令牌桶算范">
 
 
 
@@ -431,9 +431,43 @@
       
 
       
-        <h1 id="Rate-Limit"><a href="#Rate-Limit" class="headerlink" title="Rate Limit"></a>Rate Limit</h1><blockquote>
+        <h1 id="限流算法"><a href="#限流算法" class="headerlink" title="限流算法"></a>限流算法</h1><blockquote>
+<ul>
+<li>基于计数器的限流算法</li>
+<li>基于滑动窗口的限流算法</li>
+<li>漏桶算法</li>
+<li>令牌桶算范</li>
+</ul>
 </blockquote>
 <a id="more"></a>
+<h2 id="基于计数器的限流算法"><a href="#基于计数器的限流算法" class="headerlink" title="基于计数器的限流算法"></a>基于计数器的限流算法</h2><ul>
+<li>定义每秒或者每分钟可以通过的请求数量，用一个变量来记录；超过该请求数量的直接丢弃，然后每秒/分钟重置该变量</li>
+<li>这种算法是最简单的，就是定义了单位时间内允许的流量。</li>
+</ul>
+<h3 id="危险的边界值"><a href="#危险的边界值" class="headerlink" title="危险的边界值"></a>危险的边界值</h3><ul>
+<li>这种算法实现起来很简单，但是对于边界值的处理很危险</li>
+<li>假设定义一分钟内允许通过的流量为1000，一个用户在59.98秒的时候发了1000个请求（该一分钟内除了此用户没有其他用户流量），这1000个请求按照计数器算法合理通过给到服务器，然后此用户又在60.01秒（也就是上一分钟刚刚结束，下一分钟刚刚开始的时候）再次发送了1000个请求，根据计数器算法依然合理通过给到服务器，这个时候相当于服务器在1秒内接受到了2000个请求，如果2000这个值大于服务器的承受能力，则会造成服务器的故障甚至宕机。</li>
+</ul>
+<h2 id="基于滑动窗口的限流算法"><a href="#基于滑动窗口的限流算法" class="headerlink" title="基于滑动窗口的限流算法"></a>基于滑动窗口的限流算法</h2><ul>
+<li>由于计数器算法会存在危险的边界值问题，所以出现了加强版算法基于滑动窗口的限流算法</li>
+<li>基于滑动窗口的限流算法将定义的一个时间单位会分成若干个小的窗口，单位时间内的流量限制不变，只不过变成各个小窗口的和；这样时间移动过程中，每次滑动一个小窗口；</li>
+</ul>
+<h3 id="安全的边界值"><a href="#安全的边界值" class="headerlink" title="安全的边界值"></a>安全的边界值</h3><ul>
+<li>假设定义一分钟内允许通过的流量为1000，窗口个数为10个（编号1到10），一个用户在59.98秒的时候，也就是第10个窗口发了1000个请求（该一分钟内除了此用户没有其他用户流量且其他窗口也没有流量），这1000个请求按照算法合理通过给到服务器，然后此用户又在60.01秒（也就是上一分钟刚刚结束，下一分钟刚刚开始的时候；这个时候1号窗口移动到了10号窗口的后面，其他窗口不变；）再次发送了1000个请求，根据算法这个时间限制内请求已经达到上限（10个窗口之和），所以请求会被拒绝丢弃掉。这个时候相当于服务器在1秒内接受到了1000个请求，避免了请求瞬间翻倍的情况。</li>
+</ul>
+<h2 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h2><ul>
+<li>采用一个固定容量的桶来存放请求（实际中使用消息队列），存放速率不做任何限制，但是当桶满了之后就不能再存放请求，这个时候请求被丢弃；一边没有限制的存放请求，一边我们定义一个固定的速率去拿取请求；</li>
+<li>该算法对于服务器来说比较友好，因为始终以一种固定的速率给服务器发送请求，服务器不会面对突发流量（因为都被挡在桶中）</li>
+<li>不存在边界值问题，因为发往服务器的请求均以一定的速率返送，而该速率的制定一定是服务器承受范围之内的。</li>
+</ul>
+<h2 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h2><ul>
+<li>令牌桶算法与漏桶算法思路相反，限制往桶中存放请求的速率，而不限制从桶中拿取请求的速率；</li>
+<li>同样采用一个固定容量的桶来存放请求，以一定的速率往桶中存放请求；实际该速率值可能较大，正常流量较少时，往桶中存放的请求也就相对较少，这时发往服务器的请求也就相对较少（拿取时可以直接将桶中请求全部拿走发给服务器，因为没有限制）；当有突发流量时，桶中请求也会瞬间猛增，这时发往服务器的请求也会骤增，相当于面对突发流量）</li>
+</ul>
+<h3 id="安全的边界值-1"><a href="#安全的边界值-1" class="headerlink" title="安全的边界值"></a>安全的边界值</h3><ul>
+<li>虽然从桶中拿取的速率不做限制，但是桶中得有请求才行，所以从桶中拿取的速率其实是受限于桶中请求的存放速率，如果桶中一秒中可以积累100个请求，则从桶中拿取的速率就是100个请求/s，但是实际桶中请求的数量需要一定时间的积累，所以当上一秒拿取速率特别大时（存放积累好久的请求），下一秒往往不会很大（积累的请求都被上一秒拿走了），也就不会存在边界值翻倍的情况。</li>
+</ul>
+
       
     </div>
 
@@ -657,7 +691,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rate-Limit"><span class="nav-number">1.</span> <span class="nav-text">Rate Limit</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#限流算法"><span class="nav-number">1.</span> <span class="nav-text">限流算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于计数器的限流算法"><span class="nav-number">1.1.</span> <span class="nav-text">基于计数器的限流算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#危险的边界值"><span class="nav-number">1.1.1.</span> <span class="nav-text">危险的边界值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于滑动窗口的限流算法"><span class="nav-number">1.2.</span> <span class="nav-text">基于滑动窗口的限流算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全的边界值"><span class="nav-number">1.2.1.</span> <span class="nav-text">安全的边界值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#漏桶算法"><span class="nav-number">1.3.</span> <span class="nav-text">漏桶算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#令牌桶算法"><span class="nav-number">1.4.</span> <span class="nav-text">令牌桶算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全的边界值-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">安全的边界值</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
