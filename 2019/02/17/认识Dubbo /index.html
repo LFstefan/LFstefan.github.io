@@ -1,0 +1,1511 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Dubbo," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Dubbo 核心点 dubbo本地缓存注册中心服务列表 配置加载流程 dubbo的一次完整服务调用过程 Dubbo外部化配置 服务失效踢出 配置案例 Dubbo的局限性">
+<meta name="keywords" content="Dubbo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="认识Dubbo">
+<meta property="og:url" content="https://lfstefan.github.io/2019/02/17/认识Dubbo /index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="Dubbo 核心点 dubbo本地缓存注册中心服务列表 配置加载流程 dubbo的一次完整服务调用过程 Dubbo外部化配置 服务失效踢出 配置案例 Dubbo的局限性">
+<meta property="og:updated_time" content="2019-06-09T06:28:52.159Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="认识Dubbo">
+<meta name="twitter:description" content="Dubbo 核心点 dubbo本地缓存注册中心服务列表 配置加载流程 dubbo的一次完整服务调用过程 Dubbo外部化配置 服务失效踢出 配置案例 Dubbo的局限性">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2019/02/17/认识Dubbo /"/>
+
+
+
+
+
+  <title>认识Dubbo | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2019/02/17/认识Dubbo /">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                认识Dubbo
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-17T12:17:20+08:00">
+                2019-02-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dubbo/" itemprop="url" rel="index">
+                    <span itemprop="name">Dubbo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/17/认识Dubbo /" class="leancloud_visitors" data-flag-title="认识Dubbo">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Dubbo"><a href="#Dubbo" class="headerlink" title="Dubbo"></a>Dubbo</h1><ul>
+<li>核心点</li>
+<li>dubbo本地缓存注册中心服务列表</li>
+<li>配置加载流程</li>
+<li>dubbo的一次完整服务调用过程</li>
+<li>Dubbo外部化配置</li>
+<li>服务失效踢出</li>
+<li>配置案例</li>
+<li>Dubbo的局限性</li>
+</ul>
+<a id="more"></a>
+<h3 id="核心点"><a href="#核心点" class="headerlink" title="核心点"></a>核心点</h3><ul>
+<li>协议<ul>
+<li>Dubbo协议    Stable    采用NIO复用单一长连接，并使用线程池并发处理请求，减少握手和加大并发效率，性能较好（推荐使用）    在大文件传输时，单一连接会成为瓶颈    可用于生产环境    Alibaba</li>
+<li>Rmi协议    Stable    可与原生RMI互操作，基于TCP协议    偶尔会连接失败，需重建Stub    可用于生产环境    Alibaba</li>
+<li>Hessian协议    Stable    可与原生Hessian互操作，基于HTTP协议    需hessian.jar支持，http短连接的开销大    可用于生产环境    </li>
+</ul>
+</li>
+<li>NIO异步文件传输流<ul>
+<li>Netty Transporter    Stable    JBoss的NIO框架，性能较好（推荐使用）    一次请求派发两种事件，需屏蔽无用事件    可用于生产环境    Alibaba</li>
+<li>Mina Transporter    Stable    老牌NIO框架，稳定    待发送消息队列派发不及时，大压力下，会出现FullGC    可用于生产环境    Alibaba</li>
+<li>Grizzly Transporter    Tested    Sun的NIO框架，应用于GlassFish服务器中    线程池不可扩展，Filter不能拦截下一Filter    试用    </li>
+</ul>
+</li>
+<li>序列化<ul>
+<li>Hessian Serialization    Stable    性能较好，多语言支持（推荐使用）    Hessian的各版本兼容性不好，可能和应用使用的Hessian冲突，Dubbo内嵌了hessian3.2.1的源码    可用于生产环境    Alibaba</li>
+<li>Dubbo Serialization    Tested    通过不传送POJO的类元信息，在大量POJO传输时，性能较好    当参数对象增加字段时，需外部文件声明    试用    </li>
+<li>Json Serialization    Tested    纯文本，可跨语言解析，缺省采用FastJson解析    性能较差    试用    </li>
+<li>Java Serialization    Stable    Java原生支持    性能较差    可用于生产环境    </li>
+</ul>
+</li>
+<li>动态代理工厂<ul>
+<li>Javassist ProxyFactory    Stable    通过字节码生成代替反射，性能比较好（推荐使用）    依赖于javassist.jar包，占用JVM的Perm内存，Perm可能要设大一些：java -XX:PermSize=128m    可用于生产环境    Alibaba</li>
+<li>Jdk ProxyFactory    Stable    JDK原生支持    性能较差    可用于生产环境    </li>
+</ul>
+</li>
+<li>服务调用策略（容错策略）<ul>
+<li>Failover Cluster    Stable    失败自动切换，当出现失败，重试其它服务器，通常用于读操作（推荐使用）    重试会带来更长延迟    可用于生产环境    Alibaba</li>
+<li>Failfast Cluster    Stable    快速失败，只发起一次调用，失败立即报错,通常用于非幂等性的写操作    如果有机器正在重启，可能会出现调用失败    可用于生产环境    Alibaba</li>
+<li>Failsafe Cluster    Stable    失败安全，出现异常时，直接忽略，通常用于写入审计日志等操作    调用信息丢失    可用于生产环境    Monitor</li>
+<li>Failback Cluster    Tested    失败自动恢复，后台记录失败请求，定时重发，通常用于消息通知操作    不可靠，重启丢失    可用于生产环境    Registry</li>
+<li>Forking Cluster    Tested    并行调用多个服务器，只要一个成功即返回，通常用于实时性要求较高的读操作    需要浪费更多服务资源    可用于生产环境    </li>
+<li>Broadcast Cluster    Tested    广播调用所有提供者，逐个调用，任意一台报错则报错，通常用于更新提供方本地状态    速度慢，任意一台报错则报错    可用于生产环境    </li>
+</ul>
+</li>
+<li>负载均衡策略<ul>
+<li>Random LoadBalance    Stable    随机，按权重设置随机概率（推荐使用）    在一个截面上碰撞的概率高，重试时，可能出现瞬间压力不均    可用于生产环境    Alibaba</li>
+<li>RoundRobin LoadBalance    Stable    轮询，按公约后的权重设置轮询比率    存在慢的机器累积请求问题，极端情况可能产生雪崩    可用于生产环境    </li>
+<li>LeastActive LoadBalance    Stable    最少活跃调用数，相同活跃数的随机，活跃数指调用前后计数差，使慢的机器收到更少请求    不支持权重，在容量规划时，不能通过权重把压力导向一台机器压测容量    可用于生产环境    </li>
+<li>ConsistentHash LoadBalance    Stable    一致性Hash，相同参数的请求总是发到同一提供者，当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动    压力分摊不均    可用于生产环境    </li>
+</ul>
+</li>
+<li>路由规则<ul>
+<li>条件路由规则    Stable    基于条件表达式的路由规则，功能简单易用    有些复杂多分支条件情况，规则很难描述    可用于生产环境    Alibaba</li>
+<li>脚本路由规则    Tested    基于脚本引擎的路由规则，功能强大    没有运行沙箱，脚本能力过于强大，可能成为后门    试用    </li>
+<li>服务路由包含一条路由规则，路由规则决定了服务消费者的调用目标，即规定了服务消费者可调用哪些服务提供者。Dubbo 目前提供了三种服务路由实现，分别为条件路由 ConditionRouter、脚本路由 ScriptRouter 和标签路由 TagRouter。</li>
+</ul>
+</li>
+<li>内置容器<ul>
+<li>Spring Container    Stable    自动加载META-INF/spring目录下的所有Spring配置        可用于生产环境    Alibaba</li>
+<li>Jetty Container    Stable    启动一个内嵌Jetty，用于汇报状态    大量访问页面时，会影响服务器的线程和内存    可用于生产环境    Alibaba</li>
+<li>Log4j Container    Stable    自动配置log4j的配置，在多进程启动时，自动给日志文件按进程分目录    用户不能控制log4j的配置，不灵活    可用于生产环境    Alibaba</li>
+</ul>
+</li>
+</ul>
+<h3 id="dubbo本地缓存注册中心服务列表"><a href="#dubbo本地缓存注册中心服务列表" class="headerlink" title="dubbo本地缓存注册中心服务列表"></a>dubbo本地缓存注册中心服务列表</h3><ul>
+<li>Dubbo通过注册中心发现服务，发现的服务Dubbo同时也会保存到本地缓存一份，缓存的好处有很多，比如不需要每次使用的时候都通过注册中心获取，注册中心不可用了，不影响消费端的调用，因为本地缓存了一份服务提供者列表。- - Dubbo本地缓存默认采用的文件，会根据注册中心自动在当前用户目录下生成一个缓存文件，类似/home/newad/.dubbo/dubbo-registry-<em>.</em>.<em>.</em>.cache，星号表示注册中心的IP地址</li>
+<li>如果有变更，注册中心将<strong>基于长连接</strong>推送变更数据给消费者。</li>
+<li>注册中心，服务提供者，服务消费者三者之间均为长连接，监控中心除外，注册中心通过长连接感知服务提供者的存在，服务提供者宕机，注册中心将立即推送事件通知消费者   </li>
+</ul>
+<p>配置Dubbo缓存文件</p>
+<dubbo:registryfile=”${user.home} output="" dubbo.cache”="">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public AbstractRegistry(URL url) &#123;</div><div class="line">    setUrl(url);</div><div class="line">    //此处用于配置是否将提供者缓存到本地，如果不配置，则默认为false</div><div class="line">    syncSaveFile = url.getParameter(Constants.REGISTRY_FILESAVE_SYNC_KEY, false);</div><div class="line">    String filename = url.getParameter(Constants.FILE_KEY, System.getProperty(&quot;user.home&quot;) + &quot;/.dubbo/dubbo-registry-&quot; + url.getParameter(Constants.APPLICATION_KEY) + &quot;-&quot; + url.getAddress() + &quot;.cache&quot;);</div><div class="line">    File file = null;</div><div class="line">    if (ConfigUtils.isNotEmpty(filename)) &#123;</div><div class="line">        file = new File(filename);</div><div class="line">        if (!file.exists() &amp;&amp; file.getParentFile() != null &amp;&amp; !file.getParentFile().exists()) &#123;</div><div class="line">            if (!file.getParentFile().mkdirs()) &#123;</div><div class="line">                throw new IllegalArgumentException(&quot;Invalid registry store file &quot; + file + &quot;, cause: Failed to create directory &quot; + file.getParentFile() + &quot;!&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    this.file = file;</div><div class="line">    loadProperties();</div><div class="line">    notify(url.getBackupUrls());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="配置加载流程"><a href="#配置加载流程" class="headerlink" title="配置加载流程"></a>配置加载流程</h3><ul>
+<li>应用启动阶段，Dubbo框架如何将所需要的配置采集起来（包括应用配置、注册中心配置、服务配置等），以完成服务的暴露和引用流程。</li>
+<li>根据驱动方式的不同（比如Spring或裸API编程）配置形式上肯定会有所差异，具体请参考XML配置、Annotation配置、API配置三篇文档。除了外围驱动方式上的差异，Dubbo的配置读取总体上遵循了以下几个原则：<ul>
+<li>Dubbo支持了<strong>多层级的配置</strong>，并按预定优先级自动实现配置间的覆盖，最终所有配置汇总到数据总线URL后驱动后续的服务暴露、引用等流程。</li>
+<li>ApplicationConfig、ServiceConfig、ReferenceConfig可以被理解成配置来源的一种，是直接面向用户编程的配置采集方式。</li>
+<li>配置格式以Properties为主，在配置内容上遵循约定的path-based的命名规范<br>配置来源（从上往下，优先级越来越低，即从上往下覆盖配置）</li>
+<li>JVM System Properties，-D参数</li>
+<li>Externalized Configuration，外部化配置</li>
+<li>ServiceConfig、ReferenceConfig等编程接口采集的配置</li>
+<li>本地配置文件dubbo.properties</li>
+</ul>
+</li>
+</ul>
+<h3 id="dubbo的一次完整服务调用过程"><a href="#dubbo的一次完整服务调用过程" class="headerlink" title="dubbo的一次完整服务调用过程"></a>dubbo的一次完整服务调用过程</h3><h4 id="总体概括为：接口-代理-服务降级-客户端-编解码-序列化-网络传输-服务端-过滤链-线程池-实现类"><a href="#总体概括为：接口-代理-服务降级-客户端-编解码-序列化-网络传输-服务端-过滤链-线程池-实现类" class="headerlink" title="总体概括为：接口-代理-服务降级-客户端-编解码-序列化-网络传输-服务端-过滤链-线程池-实现类"></a>总体概括为：接口-代理-服务降级-客户端-编解码-序列化-网络传输-服务端-过滤链-线程池-实现类</h4><ul>
+<li>调用方式以同步为例</li>
+</ul>
+<ol>
+<li>调用服务接口API</li>
+<li>Dubbo 默认使用 Javassist 框架为服务接口生成动态代理类执行Invoker方法</li>
+<li>InvokerInvocationHandler 中的 invoker 成员变量类型为 MockClusterInvoker，MockClusterInvoker 内部封装了服务降级逻辑。<ul>
+<li>可以直接进行服务降级处理，也可以等执行完了对应的cluster在进行服务降级处理</li>
+<li>服务降级是在客户端进行的</li>
+</ul>
+</li>
+<li>根据Dubbo协议（协议其实就是不同的数据包格式）编解码，不同位代表不同的含义进行解析（其中header一共占用了96位）<ul>
+<li>魔数是否与规定的魔数相等，提前拦截掉非常规数据包</li>
+<li>事件类型，心跳事件用于判定服务的可用性</li>
+</ul>
+</li>
+<li>消息体body进行序列化</li>
+<li>netty进行nio网络传输</li>
+<li>服务端解码，反序列化</li>
+<li>线程派发模型<ul>
+<li>Dubbo 将底层通信框架中接收请求的线程称为 IO 线程。如果一些事件处理逻辑可以很快执行完，比如只在内存打一个标记，此时直接在 IO 线程上执行该段逻辑即可。但如果事件的处理逻辑比较耗时，比如该段逻辑会发起数据库查询或者 HTTP 请求。此时我们就不应该让事件处理逻辑在 IO 线程上执行，而是应该派发到线程池中去执行。原因也很简单，IO 线程主要用于接收请求，如果 IO 线程被占满，将导致它不能接收新的请求。</li>
+<li>Dubbo 支持 5 种不同的线程派发策略<ul>
+<li>all    所有消息都派发到线程池，包括请求，响应，连接事件，断开事件等</li>
+<li>direct    所有消息都不派发到线程池，全部在 IO 线程上直接执行</li>
+<li>message    只有请求和响应消息派发到线程池，其它消息均在 IO 线程上执行</li>
+<li>execution    只有请求消息派发到线程池，不含响应。其它消息均在 IO 线程上执行</li>
+<li>connection    在 IO 线程上，将连接断开事件放入队列，有序逐个执行，其它消息派发到线程池</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>调用实现类并返回结果</li>
+</ol>
+<h3 id="Dubbo外部化配置"><a href="#Dubbo外部化配置" class="headerlink" title="Dubbo外部化配置"></a>Dubbo外部化配置</h3><ul>
+<li><p>外部化配置dubbo.properties</p>
+<ul>
+<li>作用域：外部化配置有全局和应用两个级别，全局配置是所有应用共享的，应用级配置是由每个应用自己维护且只对自身可见的。</li>
+<li>/dubbo/config节点下一个全局配置节点，一个应用配置节点，各自保存自己的.properties文件</li>
+</ul>
+</li>
+<li><p><strong>自己加载外部化配置</strong></p>
+<ul>
+<li>所谓Dubbo对配置中心的支持，本质上就是把.properties从远程拉取到本地，然后和本地的配置做一次融合。理论上只要Dubbo框架能拿到需要的配置就可以正常的启动，它并不关心这些配置是自己加载到的还是应用直接塞给它的，所以Dubbo还提供了以下API，让用户将自己组织好的配置塞给Dubbo框架（配置加载的过程是用户要完成的），这样Dubbo框架就不再直接和Apollo或Zookeeper做读取配置交互。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// 应用自行加载配置</div><div class="line">Map&lt;String, String&gt; dubboConfigurations = new HashMap&lt;&gt;();</div><div class="line">dubboConfigurations.put(&quot;dubbo.registry.address&quot;, &quot;zookeeper://127.0.0.1:2181&quot;);</div><div class="line">dubboConfigurations.put(&quot;dubbo.registry.simplified&quot;, &quot;true&quot;);</div><div class="line"></div><div class="line">//将组织好的配置塞给Dubbo框架</div><div class="line">ConfigCenterConfig configCenter = new ConfigCenterConfig();</div><div class="line">configCenter.setExternalConfig(dubboConfigurations);</div></pre></td></tr></table></figure>
+<p>服务治理</p>
+<ul>
+<li>/dubbo/config/dubbo节点下<br>configurators，覆盖规则<br>tag-router，标签路由<br>condition-router，条件路由</li>
+</ul>
+<h3 id="怎么判断zookeeper中的机器是否可用（服务失效踢出基于-Zookeeper-的临时节点原理）"><a href="#怎么判断zookeeper中的机器是否可用（服务失效踢出基于-Zookeeper-的临时节点原理）" class="headerlink" title="怎么判断zookeeper中的机器是否可用（服务失效踢出基于 Zookeeper 的临时节点原理）"></a>怎么判断zookeeper中的机器是否可用（<strong>服务失效踢出基于 Zookeeper 的临时节点原理</strong>）</h3><ul>
+<li>在分布式系统中,我们常常需要知道某个机器是否可用,传统的开发中,可以通过Ping某个主机来实现,Ping得通说明对方是可用的,相反是不可用的,因为zookeeper是一个树形结构.ZK 中我们让所有的机器都注册一个临时节点,我们判断一个机器是否可用,我们只需要判断这个节点在ZK中是否存在就可以了,不需要直接去连接需要检查的机器,降低系统的复杂度</li>
+<li>临时节点的生命周期和客户端会话绑定,也就是说,如果客户端会话失效,那么这个节点就会自动被清除掉</li>
+</ul>
+<h3 id="本地暴露于远程暴露的区别"><a href="#本地暴露于远程暴露的区别" class="headerlink" title="本地暴露于远程暴露的区别:"></a>本地暴露于远程暴露的区别:</h3><ul>
+<li>本地暴露是暴露在本机JVM中,调用本地服务不需要网络通信.</li>
+<li>远程暴露是将ip,端口等信息暴露给远程客户端,调用远程服务时需要网络通信.</li>
+</ul>
+<h3 id="dubbo通信协议dubbo协议为什么要消费者比提供者个数多："><a href="#dubbo通信协议dubbo协议为什么要消费者比提供者个数多：" class="headerlink" title="dubbo通信协议dubbo协议为什么要消费者比提供者个数多："></a>dubbo通信协议dubbo协议为什么要消费者比提供者个数多：</h3><p>因dubbo协议采用单一长连接，假设网络为千兆网卡(1024Mbit=128MByte)，根据测试经验数据每条连接最多只能压满7MByte(不同的环境可能不一样，供参考)，理论上1个服务提供者需要20个服务消费者才能压满网卡。</p>
+<h3 id="dubbo通信协议dubbo协议为什么采用异步单一长连接："><a href="#dubbo通信协议dubbo协议为什么采用异步单一长连接：" class="headerlink" title="dubbo通信协议dubbo协议为什么采用异步单一长连接："></a>dubbo通信协议dubbo协议为什么采用异步单一长连接：</h3><p>因为服务的现状大都是服务提供者少，通常只有几台机器，而服务的消费者多，可能整个网站都在访问该服务，比如Morgan的提供者只有6台提供者，却有上百台消费者，每天有1.5亿次调用，如果采用常规的hessian服务，服务提供者很容易就被压跨，通过单一连接，保证单一消费者不会压死提供者，长连接，减少连接握手验证等，并使用异步IO，复用线程池，防止C10K问题。</p>
+<h3 id="dubbo使用范围"><a href="#dubbo使用范围" class="headerlink" title="dubbo使用范围"></a>dubbo使用范围</h3><p>Dubbo 缺省协议采用单一长连接和 NIO 异步通讯，适合于小数据量大并发的服务调用，以及服务消费者机器数远大于服务提供者机器数的情况。<br>传入传出参数数据包较小（建议小于100K），消费者比提供者个数多，单一消费者无法压满提供者，尽量不要用 dubbo 协议传输大文件或超大字符串。<br>传入传出参数数据包较小（建议小于100K），消费者比提供者个数多，单一消费者无法压满提供者，尽量不要用dubbo协议传输大文件或超大字符串。</p>
+<h3 id="配置案例"><a href="#配置案例" class="headerlink" title="配置案例"></a>配置案例</h3><ul>
+<li>启动时检查：check=”true”<ul>
+<li><dubbo:consumer check="false">：关闭所有服务的启动时检查 (没有提供者时报错)</dubbo:consumer></li>
+<li><dubbo:registry check="false">：关闭注册中心启动时检查 (注册订阅失败时报错)</dubbo:registry></li>
+<li><dubbo:reference interface="com.foo.BarService" check="false">：关闭某个服务的启动时检查 (没有提供者时报错)</dubbo:reference></li>
+</ul>
+</li>
+<li>集群容错：缺省为 failover 重试<dubbo:service cluster="failsafe"><ul>
+<li>Failover Cluster：失败自动切换，当出现失败，重试其它服务器 。通常用于读操作<ul>
+<li><dubbo:service retries="2">：设置重试次数</dubbo:service></li>
+</ul>
+</li>
+<li>Failfast Cluster：快速失败，只发起一次调用，失败立即报错。通常用于非幂等性的写操作，比如新增记录。</li>
+<li>Failsafe Cluster：失败安全，出现异常时，直接忽略。通常用于写入审计日志等操作。</li>
+<li>Failback Cluster：失败自动恢复，后台记录失败请求，定时重发。通常用于消息通知操作。</li>
+<li>Forking Cluster：并行调用多个服务器，只要一个成功即返回。通常用于实时性要求较高的读操作，但需要浪费更多服务资源。可通过 forks=”2” 来设置最大并行数。<ul>
+<li>基于 NIO 的非阻塞实现并行调用，客户端不需要启动多线程即可完成并行调用多个远程服务，相对多线程开销较小</li>
+</ul>
+</li>
+<li>Broadcast Cluster：广播调用所有提供者，逐个调用，任意一台报错则报错 [2]。通常用于通知所有提供者更新缓存或日志等本地资源信息。</li>
+</ul>
+</dubbo:service></li>
+<li>负载均衡：缺省为 random 随机调用，<dubbo:service interface="..." loadbalance="roundrobin"><ul>
+<li>Random LoadBalance：随机</li>
+<li>RoundRobin LoadBalance：轮询<ul>
+<li>存在慢的提供者累积请求的问题</li>
+</ul>
+</li>
+<li>LeastActive LoadBalance：最少活跃次数</li>
+<li>ConsistentHash LoadBalance：一致性hash（相同参数的请求总是发到同一提供者。）<ul>
+<li>缺省只对第一个参数 Hash，如果要修改，请配置 <dubbo:parameter key="hash.arguments" value="0,1"></dubbo:parameter></li>
+<li>缺省用 160 份虚拟节点，如果要修改，请配置 <dubbo:parameter key="hash.nodes" value="320"></dubbo:parameter></li>
+</ul>
+</li>
+</ul>
+</dubbo:service></li>
+<li>线程派发策略<ul>
+<li><dubbo:protocol name="dubbo" dispatcher="all" threadpool="fixed" threads="100"></dubbo:protocol></li>
+</ul>
+</li>
+<li>直连提供者<ul>
+<li><dubbo:reference id="xxxService" interface="com.alibaba.xxx.XxxService" url="dubbo://localhost:20890"></dubbo:reference></li>
+</ul>
+</li>
+<li>只订阅不注册服务<ul>
+<li><dubbo:registry address="10.20.153.10:9090" register="false"></dubbo:registry></li>
+</ul>
+</li>
+<li>只注册不订阅服务<ul>
+<li><dubbo:registry id="hzRegistry" address="10.20.153.10:9090"></dubbo:registry></li>
+<li><dubbo:registry id="qdRegistry" address="10.20.141.150:9090" subscribe="false"></dubbo:registry></li>
+</ul>
+</li>
+<li><p>多协议</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;dubbo:registry id=&quot;registry&quot; address=&quot;10.20.141.150:9090&quot; username=&quot;admin&quot; password=&quot;hello1234&quot; /&gt;</div><div class="line">&lt;!-- 多协议配置 --&gt;</div><div class="line">&lt;dubbo:protocol name=&quot;dubbo&quot; port=&quot;20880&quot; /&gt;</div><div class="line">&lt;dubbo:protocol name=&quot;rmi&quot; port=&quot;1099&quot; /&gt;</div><div class="line">&lt;!-- 使用dubbo协议暴露服务 --&gt;</div><div class="line">&lt;dubbo:service interface=&quot;com.alibaba.hello.api.HelloService&quot; version=&quot;1.0.0&quot; ref=&quot;helloService&quot; protocol=&quot;dubbo&quot; /&gt;</div><div class="line">&lt;!-- 使用rmi协议暴露服务 --&gt;</div><div class="line">&lt;dubbo:service interface=&quot;com.alibaba.hello.api.DemoService&quot; version=&quot;1.0.0&quot; ref=&quot;demoService&quot; protocol=&quot;rmi&quot; /&gt; </div><div class="line">//或者使用    &lt;dubbo:... protocol=&quot;dubbo,hessian&quot; /&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>多注册中心（类似多协议）</p>
+</li>
+<li>服务分组：一个接口多个实现<ul>
+<li><dubbo:service group="feedback" interface="com.xxx.IndexService"></dubbo:service></li>
+<li><dubbo:service group="member" interface="com.xxx.IndexService"></dubbo:service></li>
+</ul>
+</li>
+<li>多版本<ul>
+<li>在低压力时间段，先升级一半提供者为新版本</li>
+<li>再将所有消费者升级为新版本</li>
+<li>然后将剩下的一半提供者升级为新版本</li>
+<li><dubbo:service interface="com.foo.BarService" version="1.0.0"></dubbo:service></li>
+</ul>
+</li>
+<li>分组聚合：合并结果返回，聚合菜单项<ul>
+<li><dubbo:reference interface="com.xxx.MenuService" group="*" merger="true"></dubbo:reference></li>
+<li><dubbo:reference interface="com.xxx.MenuService" group="aaa,bbb" merger="true"></dubbo:reference></li>
+<li>指定某些方法合并，某些不合并</li>
+</ul>
+</li>
+<li>结果缓存：声明式缓存，<dubbo:reference interface="com.foo.BarService" cache="lru"><ul>
+<li>lru 基于最近最少使用原则删除多余缓存，保持最热的数据被缓存。</li>
+<li>threadlocal 当前线程缓存，比如一个页面渲染，用到很多 portal，每个 portal 都要去查用户信息，通过线程缓存，可以减少这种多余访问。</li>
+<li>jcache 与 JSR107 集成，可以桥接各种缓存实现。</li>
+</ul>
+</dubbo:reference></li>
+<li>服务降级（使用本地伪装来实现服务降级）<ul>
+<li>mock=force:return+null 表示消费方对该服务的方法调用都直接返回 null 值，不发起远程调用。用来屏蔽不重要服务不可用时对调用方的影响。</li>
+<li>mock=fail:return+null 表示消费方对该服务的方法调用在失败后，再返回 null 值，不抛异常。用来容忍不重要服务不稳定时对调用方的影响。</li>
+<li>不同的版本支持不同的用法，具体参照官网文档使用</li>
+</ul>
+</li>
+</ul>
+<h3 id="Dubbo-和-Spring-Cloud-有什么区别？"><a href="#Dubbo-和-Spring-Cloud-有什么区别？" class="headerlink" title="Dubbo 和 Spring Cloud 有什么区别？"></a>Dubbo 和 Spring Cloud 有什么区别？</h3><h3 id="多版本兼容"><a href="#多版本兼容" class="headerlink" title="多版本兼容"></a>多版本兼容</h3><h3 id="dubbo和配置中心通讯方式"><a href="#dubbo和配置中心通讯方式" class="headerlink" title="dubbo和配置中心通讯方式"></a>dubbo和配置中心通讯方式</h3><h3 id="Dubbo-服务暴露的过程"><a href="#Dubbo-服务暴露的过程" class="headerlink" title="Dubbo 服务暴露的过程"></a>Dubbo 服务暴露的过程</h3><h3 id="画一画服务注册与发现的流程图"><a href="#画一画服务注册与发现的流程图" class="headerlink" title="画一画服务注册与发现的流程图"></a>画一画服务注册与发现的流程图</h3><h3 id="SPI-Service-Provide-Interface-是给扩展者用的"><a href="#SPI-Service-Provide-Interface-是给扩展者用的" class="headerlink" title="SPI (Service Provide Interface) 是给扩展者用的"></a>SPI (Service Provide Interface) 是给扩展者用的</h3><h3 id="C10K问题"><a href="#C10K问题" class="headerlink" title="C10K问题"></a>C10K问题</h3></dubbo:registryfile=”${user.home}>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dubbo/" rel="tag"># Dubbo</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/10/HTTP/" rel="next" title="HTTP">
+                <i class="fa fa-chevron-left"></i> HTTP
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/24/动态代理/" rel="prev" title="动态代理">
+                动态代理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">120</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">45</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Dubbo"><span class="nav-number">1.</span> <span class="nav-text">Dubbo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#核心点"><span class="nav-number">1.0.1.</span> <span class="nav-text">核心点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dubbo本地缓存注册中心服务列表"><span class="nav-number">1.0.2.</span> <span class="nav-text">dubbo本地缓存注册中心服务列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置加载流程"><span class="nav-number">1.0.3.</span> <span class="nav-text">配置加载流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dubbo的一次完整服务调用过程"><span class="nav-number">1.0.4.</span> <span class="nav-text">dubbo的一次完整服务调用过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#总体概括为：接口-代理-服务降级-客户端-编解码-序列化-网络传输-服务端-过滤链-线程池-实现类"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">总体概括为：接口-代理-服务降级-客户端-编解码-序列化-网络传输-服务端-过滤链-线程池-实现类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dubbo外部化配置"><span class="nav-number">1.0.5.</span> <span class="nav-text">Dubbo外部化配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么判断zookeeper中的机器是否可用（服务失效踢出基于-Zookeeper-的临时节点原理）"><span class="nav-number">1.0.6.</span> <span class="nav-text">怎么判断zookeeper中的机器是否可用（服务失效踢出基于 Zookeeper 的临时节点原理）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地暴露于远程暴露的区别"><span class="nav-number">1.0.7.</span> <span class="nav-text">本地暴露于远程暴露的区别:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dubbo通信协议dubbo协议为什么要消费者比提供者个数多："><span class="nav-number">1.0.8.</span> <span class="nav-text">dubbo通信协议dubbo协议为什么要消费者比提供者个数多：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dubbo通信协议dubbo协议为什么采用异步单一长连接："><span class="nav-number">1.0.9.</span> <span class="nav-text">dubbo通信协议dubbo协议为什么采用异步单一长连接：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dubbo使用范围"><span class="nav-number">1.0.10.</span> <span class="nav-text">dubbo使用范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置案例"><span class="nav-number">1.0.11.</span> <span class="nav-text">配置案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dubbo-和-Spring-Cloud-有什么区别？"><span class="nav-number">1.0.12.</span> <span class="nav-text">Dubbo 和 Spring Cloud 有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多版本兼容"><span class="nav-number">1.0.13.</span> <span class="nav-text">多版本兼容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dubbo和配置中心通讯方式"><span class="nav-number">1.0.14.</span> <span class="nav-text">dubbo和配置中心通讯方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dubbo-服务暴露的过程"><span class="nav-number">1.0.15.</span> <span class="nav-text">Dubbo 服务暴露的过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#画一画服务注册与发现的流程图"><span class="nav-number">1.0.16.</span> <span class="nav-text">画一画服务注册与发现的流程图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI-Service-Provide-Interface-是给扩展者用的"><span class="nav-number">1.0.17.</span> <span class="nav-text">SPI (Service Provide Interface) 是给扩展者用的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C10K问题"><span class="nav-number">1.0.18.</span> <span class="nav-text">C10K问题</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
