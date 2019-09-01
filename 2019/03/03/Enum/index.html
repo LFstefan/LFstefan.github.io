@@ -1,0 +1,1329 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,Enum," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Enum枚举 枚举基本特性 枚举实现责任链模式 多路分发">
+<meta name="keywords" content="Java,Enum">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Enum">
+<meta property="og:url" content="https://lfstefan.github.io/2019/03/03/Enum/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="Enum枚举 枚举基本特性 枚举实现责任链模式 多路分发">
+<meta property="og:updated_time" content="2019-06-23T03:22:14.099Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Enum">
+<meta name="twitter:description" content="Enum枚举 枚举基本特性 枚举实现责任链模式 多路分发">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2019/03/03/Enum/"/>
+
+
+
+
+
+  <title>Enum | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2019/03/03/Enum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Enum
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-03T20:49:53+08:00">
+                2019-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/03/03/Enum/" class="leancloud_visitors" data-flag-title="Enum">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Enum枚举"><a href="#Enum枚举" class="headerlink" title="Enum枚举"></a>Enum枚举</h1><ul>
+<li>枚举基本特性</li>
+<li>枚举实现责任链模式</li>
+<li>多路分发</li>
+</ul>
+<a id="more"></a>
+<h2 id="枚举基本特性"><a href="#枚举基本特性" class="headerlink" title="枚举基本特性"></a>枚举基本特性</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">enum LogEnum&#123;</div><div class="line">	DEBUG,</div><div class="line">	ERROR,</div><div class="line">	INFO</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>所有的枚举类都继承自Enum类，由于java只支持单继承，所以你的枚举类不能再继承任何其他类，但是可以实现任意数量的接口</li>
+<li>valueOf方法：LOGGING.valueOf(“DEBUG”)根据字符村获取枚举的值（作用有点不太明确）</li>
+<li>values方法：Arrays.asList(LOGGING.values()).forEach(System.out::println);方法values返回所有枚举元素，顺序严格按照定义顺序返回<ul>
+<li>values()方法：Enum类中并没有，是由编译器添加的静态方法</li>
+<li>LogRecord.class.getEnumConstants();类class同样提供了一个方法getEnumConstants可以返回枚举类的所有元素</li>
+</ul>
+</li>
+<li>使用静态导入impot static LogEnum.*;之后可以在类中直接使用枚举类的元素DEBUG等，无需在使用前缀LogEnum.DEBUG</li>
+<li>枚举类中定义方法：枚举类只是多了一些限制，其他方面和普通类没什么区别<ul>
+<li>方法只能定义在枚举元素之后，并且以分号 ； 隔离枚举元素和方法定义</li>
+</ul>
+</li>
+<li>获取枚举元素默认返回的是元素的toString()方法返回的值；我们可以通过重写toString()方法来实现自定义返回元素值</li>
+<li>ordinal方法：LOGGING.ERROR.ordinal()：方法ordinal返回枚举元素的顺序号（从0开始，严格按照定义顺序排序）</li>
+<li>switch语句中的枚举</li>
+<li>枚举元素的随机选取</li>
+<li>使用接口组织枚举，实现枚举的子类化和元素扩展分组分类</li>
+<li>枚举嵌套</li>
+<li>每个枚举类常量元素可以定义多个方法来赋予每个元素不同的行为；前提是需要定义一个或者多个抽象方法，然后交给各个枚举元素实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line">public enum LOGGING &#123;</div><div class="line">    DEBUG,//不加描述的枚举元素定义</div><div class="line">    ERROR,</div><div class="line">    INFO;</div><div class="line">	//重写toString()方法来实现自定义返回元素值</div><div class="line">    @Override</div><div class="line">    public String toString() &#123;</div><div class="line">        String id = name();</div><div class="line">        char[] idChar = id.toCharArray();</div><div class="line">        idChar[0] +=32;</div><div class="line">        return String.valueOf(idChar);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//增强版枚举类</div><div class="line">public enum LOGGING &#123;</div><div class="line">    DEBUG(&quot;debug&quot;),//加描述的枚举元素定义，前提是有变量description，get方法，构造方法（带参数变量description）</div><div class="line">    ERROR(&quot;error&quot;),</div><div class="line">    INFO(&quot;info&quot;);</div><div class="line"></div><div class="line">    /** 添加枚举元素的解释描述，并添加get方法获取元素的描述 */</div><div class="line">    String description;</div><div class="line">    LOGGING(String decription)&#123;</div><div class="line">        this.description = decription;</div><div class="line">    &#125;</div><div class="line">    private String getDescription()&#123;</div><div class="line">        return description;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public String toString() &#123;</div><div class="line">        String id = name();</div><div class="line">        char[] idChar = id.toCharArray();</div><div class="line">        idChar[0] +=32;</div><div class="line">        return String.valueOf(idChar);</div><div class="line">    &#125;</div><div class="line">    public static void main(String[] args)&#123;</div><div class="line">        Arrays.asList(LOGGING.values()).forEach((e)-&gt;System.out.println(e + &quot;---&quot; + e.getDescription()));</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//实现不调用枚举任何方法（特质values方法）而实现随机选取枚举元素</div><div class="line">public class Enums &#123;</div><div class="line">    private static Random random = new Random(47);</div><div class="line">    public static &lt;T extends Enum&lt;T&gt;&gt; T random(Class&lt;T&gt; ec)&#123;</div><div class="line">        return random(ec.getEnumConstants());</div><div class="line">    &#125;</div><div class="line">    public static &lt;T&gt; T random(T[] arrays)&#123;</div><div class="line">        return arrays[random.nextInt(arrays.length)];</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//使用接口组织枚举，实现枚举的子类化和元素扩展分组分类</div><div class="line">public interface Food &#123;</div><div class="line">    enum Vegetables implements Food&#123;</div><div class="line">        菠菜,油麦菜,白菜</div><div class="line">    &#125;</div><div class="line">    enum Fruit implements Food&#123;</div><div class="line">        APPLE,PAREL,ORIGANE</div><div class="line">    &#125;</div><div class="line">    enum Meat implements Food&#123;</div><div class="line">        BEEF,PORK,MUTTON</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//枚举元素实现抽象方法定义属于自己的行为</div><div class="line">public enum LOGGING &#123;</div><div class="line">    DEBUG(&quot;debug&quot;)&#123;</div><div class="line">        @Override</div><div class="line">        String getInfo() &#123;</div><div class="line">            return DateFormat.getInstance().format(new Date());</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    ERROR(&quot;error&quot;)&#123;</div><div class="line">        @Override</div><div class="line">        String getInfo() &#123;</div><div class="line">            return System.getenv(&quot;CLASSPATH&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    INFO(&quot;info&quot;)&#123;</div><div class="line">        @Override</div><div class="line">        String getInfo() &#123;</div><div class="line">            return System.getProperty(&quot;java.version&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    //定义一个抽象方法供枚举元素实现各自的行为</div><div class="line">    abstract String getInfo();</div><div class="line">    /** 添加枚举元素的解释描述，并添加get方法获取元素的描述 */</div><div class="line">    String description;</div><div class="line">    LOGGING(String decription)&#123;</div><div class="line">        this.description = decription;</div><div class="line">    &#125;</div><div class="line">    private String getDescription()&#123;</div><div class="line">        return description;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public String toString() &#123;</div><div class="line">        String id = name();</div><div class="line">        char[] idChar = id.toCharArray();</div><div class="line">        idChar[0] +=32;</div><div class="line">        return String.valueOf(idChar);</div><div class="line">    &#125;</div><div class="line">    public static void main(String[] args)&#123;</div><div class="line">        Arrays.asList(LOGGING.values()).forEach((e)-&gt;System.out.println(e + &quot;---&quot; + e.getDescription() + &quot;----&quot; + e.getInfo()));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="EnumSet"><a href="#EnumSet" class="headerlink" title="EnumSet"></a>EnumSet</h3><ul>
+<li>内部使用long数组，实现位操作，性能极高</li>
+</ul>
+<h2 id="枚举实现责任链模式"><a href="#枚举实现责任链模式" class="headerlink" title="枚举实现责任链模式"></a>枚举实现责任链模式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">public enum LOGGING &#123;</div><div class="line">    LEVEL1(&quot;一级处理&quot;)&#123;</div><div class="line">        @Override</div><div class="line">        boolean handle(Object o) &#123;</div><div class="line">            System.out.println(&quot;一级处理完成！&quot;);</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    LEVEL2(&quot;二级处理&quot;)&#123;</div><div class="line">        @Override</div><div class="line">        boolean handle(Object o) &#123;</div><div class="line">            System.out.println(&quot;二级处理完成！&quot;);</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    LEVEL3(&quot;三级处理&quot;)&#123;</div><div class="line">        @Override</div><div class="line">        boolean handle(Object o) &#123;</div><div class="line">            System.out.println(&quot;三级处理完成！&quot;);</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    //定义一个抽象方法供枚举元素实现各自的行为</div><div class="line">    abstract boolean handle(Object o);</div><div class="line">    /** 添加枚举元素的解释描述，并添加get方法获取元素的描述 */</div><div class="line">    String description;</div><div class="line">    LOGGING(String decription)&#123;</div><div class="line">        this.description = decription;</div><div class="line">    &#125;</div><div class="line">    private String getDescription()&#123;</div><div class="line">        return description;</div><div class="line">    &#125;</div><div class="line">    public static void main(String[] args)&#123;</div><div class="line">        Arrays.asList(LOGGING.values()).forEach((e)-&gt;System.out.println(e + &quot;---&quot; + e.getDescription() + &quot;----&quot; + e.handle(new Object())));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="使用枚举创建状态机"><a href="#使用枚举创建状态机" class="headerlink" title="使用枚举创建状态机"></a>使用枚举创建状态机</h3><h2 id="多路分发"><a href="#多路分发" class="headerlink" title="多路分发"></a>多路分发</h2><blockquote>
+<p>分派的类型</p>
+<ul>
+<li>一个方法所属的对象叫做方法的接收者，方法的接收者与方法的参量统称做方法的宗量。</li>
+<li>根据分派可以基于多少种宗量，可以将面向对象的语言划分为单分派语言和多分派语言。单元分派语言根据一个宗量的类型（真实类型）进行对方法的选择,多分派语言根据多于一个的宗量的类型对方法进行选择。<br>C++和Java以及Smaltalk都是单分派语言；多分派语言的例子包括CLOS和Cecil。按照这样的区分，C++和Java就是动态的单分派语言，因为这两种语言的动态分派仅仅会考虑到方法的接收者的类型，同时又是静态的多分派语言，因为这两种语言对重载方法的分派会考虑到方法的接收者的类型和方法所有参量的类型。</li>
+<li>在一个支持动态单分派的语言里面，有两个条件决定了一个请求会调用哪一个操作：一是请求的名字，二是接收者的真实类型。单分派限制了方法的选择过程，使得只有一个宗量可以被考虑到，这个宗量通常就是方法的接收者。在JAVA语言里面，如果一个操作是作用于某个类型不明的对象上面的。那么这个对象的真实类型测试仅会发生一次。这个就是动态的单分派的特征。</li>
+<li>一言以蔽之，JAVA语言支持静态的多分派和动态的单分派。</li>
+</ul>
+</blockquote>
+<h3 id="双重分派"><a href="#双重分派" class="headerlink" title="双重分派"></a>双重分派</h3><ul>
+<li>一个方法根据两个宗量的类型来决定执行不同的代码，这就是“双分派”或者“多重分派”。Java不支持动态的多分派。但可以通过使用设计模式，在Java语言里面实现动态的双重分派（ps：就是“伪双重分派”是由两次的单分派组成）。</li>
+</ul>
+<h3 id="多路分发的不同实现方式"><a href="#多路分发的不同实现方式" class="headerlink" title="多路分发的不同实现方式"></a>多路分发的不同实现方式</h3><ul>
+<li>在方法里使用instanceof判断真实类型，根据实际类型对应执行不同的行为操作</li>
+<li>使用访问者模式<ul>
+<li>实际就是A接口方法a(B)中参数为另一个接口B，而在接口A的实现类中a方法又调用了B接口中定义的方法；这样在发生a方法调用时，a的调用可能是A的任意一个实现类，并且a方法中的参数B也可能是任意一个实现类</li>
+<li>实际上就是a.method(b)模型，a和b都是接口的未知具体实现类；a和b可以是同一接口的实现类，也可以是不同接口的实现类</li>
+</ul>
+</li>
+<li>使用枚举</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div></pre></td><td class="code"><pre><div class="line">//使用访问者模式实现</div><div class="line">public interface Acceptor &#123;</div><div class="line">    String accept(Visitor v);</div><div class="line">    String getName();</div><div class="line">&#125;</div><div class="line">public class AcceptorOne implements Acceptor&#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public String accept(Visitor v) &#123;</div><div class="line">        System.out.println(&quot;来者是谁：&quot; + v.getName());</div><div class="line">        return v.handle(this);</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public String getName() &#123;</div><div class="line">        return &quot;AcceptorOne&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">public class AcceptorTwo implements Acceptor&#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public String accept(Visitor v) &#123;</div><div class="line">        System.out.println(&quot;来者是谁：&quot; + v.getName());</div><div class="line">        return v.handle(this);</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public String getName() &#123;</div><div class="line">        return &quot;AcceptorTwo&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">public interface Visitor &#123;</div><div class="line">    String handle(Acceptor accept);</div><div class="line">    String getName();</div><div class="line">&#125;</div><div class="line">public class VisitorOne implements Visitor &#123;</div><div class="line">    @Override</div><div class="line">    public String handle(Acceptor accept) &#123;</div><div class="line">        return &quot;我是访问者，我访问的是：&quot; + accept.getName();</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public String getName() &#123;</div><div class="line">        return &quot;VisitorOne&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">public class VisitorTwo implements Visitor &#123;</div><div class="line">    @Override</div><div class="line">    public String handle(Acceptor accept) &#123;</div><div class="line">        return &quot;我是访问者，我访问的是：&quot; + accept.getName();</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public String getName() &#123;</div><div class="line">        return &quot;VisitorTwo&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">public class VisitorPatternTest &#123;</div><div class="line">    public static void main(String[] args)&#123;</div><div class="line">        Acceptor acceptorOne = new AcceptorOne();</div><div class="line">        Acceptor acceptorTwo = new AcceptorTwo();</div><div class="line">        Visitor visitorOne = new VisitorOne();</div><div class="line">        Visitor visitorTwo = new VisitorTwo();</div><div class="line">        System.out.println(acceptorOne.accept(visitorOne));</div><div class="line">        System.out.println(acceptorOne.accept(visitorTwo));</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//使用枚举的描述特性实现</div><div class="line">public enum OutCome &#123;</div><div class="line">    DRAW,</div><div class="line">    WIN,</div><div class="line">    LOSE</div><div class="line">&#125;</div><div class="line">public interface Competitor&lt;T&gt; &#123;</div><div class="line">    OutCome compete(T competitor);</div><div class="line">&#125;</div><div class="line">public class RoShamBoTest &#123;</div><div class="line">    public static &lt;T extends Competitor&lt;T&gt;&gt; void match(T a,T b)&#123;</div><div class="line">        System.out.println(a + &quot; vs &quot; + b + &quot;: &quot; + a.compete(b));</div><div class="line">    &#125;</div><div class="line">	//T 继承自枚举类Enum和接口Competitor</div><div class="line">    public static &lt;T extends Enum&lt;T&gt; &amp; Competitor&lt;T&gt;&gt; void play(Class&lt;T&gt; clazz,int size)&#123;</div><div class="line">        for (int i = 0;i &lt; size;i++)&#123;</div><div class="line">            match(Enums.random(clazz),Enums.random(clazz));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//枚举类元素的描述跟在元素后的括号内（样例：ENUM(描述...)），描述可以有多个，并且需要定义相应的私有属性变量，同时描述顺序和私有变量顺序保持一致；最后使用私有属性变量构造有参构造方法</div><div class="line">public enum RoShamBo implements Competitor&lt;RoShamBo&gt; &#123;</div><div class="line">    PAPER(DRAW,LOSE,WIN),</div><div class="line">    SCISSORS(WIN,DRAW,LOSE),</div><div class="line">    ROCK(LOSE,WIN,DRAW);</div><div class="line">    private OutCome vPAPER,vSCISSORS,vROCK;</div><div class="line">    RoShamBo(OutCome paper,OutCome scissors,OutCome rock)&#123;</div><div class="line">        this.vPAPER = paper;</div><div class="line">        this.vSCISSORS = scissors;</div><div class="line">        this.vROCK = rock;</div><div class="line">    &#125;</div><div class="line">    public OutCome compete(RoShamBo it)&#123;</div><div class="line">        switch (it)&#123;</div><div class="line">            case ROCK: return vROCK;</div><div class="line">            case PAPER: return vPAPER;</div><div class="line">            case SCISSORS: return vSCISSORS;</div><div class="line">            default:</div><div class="line">        &#125;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line">    public static void main(String[] args)&#123;</div><div class="line">        RoShamBoTest.play(RoShamBo.class,20);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//使用枚举的元素常量方法实现</div><div class="line">public enum RoShamBo2 implements Competitor&lt;RoShamBo2&gt; &#123;</div><div class="line">    PAPER&#123;</div><div class="line">        @Override</div><div class="line">        public OutCome compete(RoShamBo2 competitor) &#123;</div><div class="line">            switch (competitor)&#123;</div><div class="line">                case SCISSORS: return LOSE;</div><div class="line">                case PAPER: return DRAW;</div><div class="line">                case ROCK: return WIN;</div><div class="line">            &#125;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    SCISSORS&#123;</div><div class="line">        @Override</div><div class="line">        public OutCome compete(RoShamBo2 competitor) &#123;</div><div class="line">            switch (competitor)&#123;</div><div class="line">                case ROCK: return LOSE;</div><div class="line">                case PAPER: return WIN;</div><div class="line">                case SCISSORS: return DRAW;</div><div class="line">            &#125;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    ROCK&#123;</div><div class="line">        @Override</div><div class="line">        public OutCome compete(RoShamBo2 competitor) &#123;</div><div class="line">            switch (competitor)&#123;</div><div class="line">                case SCISSORS: return WIN;</div><div class="line">                case PAPER: return LOSE;</div><div class="line">                case ROCK: return DRAW;</div><div class="line">            &#125;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    public abstract OutCome compete(RoShamBo2 competitor);</div><div class="line">    public static void main(String[] args)&#123;</div><div class="line">        RoShamBoTest.play(RoShamBo2.class,20);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//使用枚举EnumMap实现，实际上是建立了一个a和b以及a操作b后的结果三者之间的关系</div><div class="line">public enum RoShamBo3 implements Competitor&lt;RoShamBo3&gt; &#123;</div><div class="line">    PAPER,SCISSORS,ROCK;</div><div class="line">    static EnumMap&lt;RoShamBo3,EnumMap&lt;RoShamBo3,OutCome&gt;&gt; map = new EnumMap&lt;RoShamBo3,EnumMap&lt;RoShamBo3,OutCome&gt;&gt;(RoShamBo3.class);</div><div class="line">	...//利用嵌套集合构建复杂多者行为之间的关系</div><div class="line">    @Override</div><div class="line">    public OutCome compete(RoShamBo3 competitor) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Enum/" rel="tag"># Enum</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/24/动态代理/" rel="next" title="动态代理">
+                <i class="fa fa-chevron-left"></i> 动态代理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/10/LintCode BinarySearch/" rel="prev" title="LintCode BinarySearch">
+                LintCode BinarySearch <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">129</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">118</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Enum枚举"><span class="nav-number">1.</span> <span class="nav-text">Enum枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举基本特性"><span class="nav-number">1.1.</span> <span class="nav-text">枚举基本特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#EnumSet"><span class="nav-number">1.1.1.</span> <span class="nav-text">EnumSet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举实现责任链模式"><span class="nav-number">1.2.</span> <span class="nav-text">枚举实现责任链模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用枚举创建状态机"><span class="nav-number">1.2.1.</span> <span class="nav-text">使用枚举创建状态机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多路分发"><span class="nav-number">1.3.</span> <span class="nav-text">多路分发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#双重分派"><span class="nav-number">1.3.1.</span> <span class="nav-text">双重分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多路分发的不同实现方式"><span class="nav-number">1.3.2.</span> <span class="nav-text">多路分发的不同实现方式</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

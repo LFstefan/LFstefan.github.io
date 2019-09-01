@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FacadePattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/19/Proxypattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/FacadePattern/" itemprop="url">
-                  Facade Pattern
+                <a class="post-title-link" href="/2017/08/19/Proxypattern/" itemprop="url">
+                  Proxy Pattern
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
-                2017-08-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:17:20+08:00">
+                2017-08-19
               </time>
             
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2017/08/05/FacadePattern/" class="leancloud_visitors" data-flag-title="Facade Pattern">
+             <span id="/2017/08/19/Proxypattern/" class="leancloud_visitors" data-flag-title="Proxy Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,15 +435,16 @@
 
       
         
-          <h1 id="Facade-Pattern（门面模式）"><a href="#Facade-Pattern（门面模式）" class="headerlink" title="Facade Pattern（门面模式）"></a>Facade Pattern（门面模式）</h1><h2 id="Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。"><a href="#Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。" class="headerlink" title="Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)"></a>Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)</h2><ul>
-<li>子系统（Subsystem）:若干类的集合，均不包含外观类的实例引用</li>
-<li>外观（Facade）：一个含有子系统中全部或者部分类的实例引用的类</li>
-<li>应用场景：跟踪系统使用情况（经过同一个接口），更换系统（只需更改外观接口的代码）</li>
+          <h1 id="Proxy-pattern（代理模式）"><a href="#Proxy-pattern（代理模式）" class="headerlink" title="Proxy pattern（代理模式）"></a>Proxy pattern（代理模式）</h1><h2 id="Provide-a-surrogate-代理-or-placeholder-for-another-object-to-control-access-to-it-（为其他对象提供一种代理以控制对这个对象的访问。）"><a href="#Provide-a-surrogate-代理-or-placeholder-for-another-object-to-control-access-to-it-（为其他对象提供一种代理以控制对这个对象的访问。）" class="headerlink" title="Provide a surrogate (代理) or placeholder for another object to control access to it.（为其他对象提供一种代理以控制对这个对象的访问。）"></a>Provide a surrogate (代理) or placeholder for another object to control access to it.（为其他对象提供一种代理以控制对这个对象的访问。）</h2><ul>
+<li>抽象主题（Subject）：一个接口</li>
+<li>实际主题（RealSubject）：实现了抽象主题接口的类</li>
+<li>代理(Proxy)：实现了抽象主题接口的类，含有抽象主题声明的变量，来存放实际主题的实例的引用</li>
+<li>应用场景：代理的实例用来控制对他所包含的实际主题的实例的访问，即控制他所代理对象的访问权限<br>（java远程代理RMI同理）</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/FacadePattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/19/Proxypattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -489,7 +490,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FlyweightPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/19/StatePattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -511,8 +512,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/FlyweightPattern/" itemprop="url">
-                  Flyweight Pattern
+                <a class="post-title-link" href="/2017/08/19/StatePattern/" itemprop="url">
+                  State Pattern
                 </a>
               
             
@@ -528,8 +529,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
-                2017-08-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:17:20+08:00">
+                2017-08-19
               </time>
             
 
@@ -568,7 +569,7 @@
 
           
           
-             <span id="/2017/08/05/FlyweightPattern/" class="leancloud_visitors" data-flag-title="Flyweight Pattern">
+             <span id="/2017/08/19/StatePattern/" class="leancloud_visitors" data-flag-title="State Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -597,16 +598,16 @@
 
       
         
-          <h1 id="Flyweight-Pattern（享元模式）"><a href="#Flyweight-Pattern（享元模式）" class="headerlink" title="Flyweight Pattern（享元模式）"></a>Flyweight Pattern（享元模式）</h1><h2 id="Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）"><a href="#Use-sharing-to-support-large-numbers-of-fine-grained-objects-efficiently-（使用共享对象可有效地支持大量的细粒度对象。）" class="headerlink" title="Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）"></a>Use sharing to support large numbers of fine-grained objects efficiently.（使用共享对象可有效地支持大量的细粒度对象。）</h2><ul>
-<li>享元接口（Flyweight）：一个接口，定义了享元对外公开内部数据的方法以及接受外部数据的方法</li>
-<li>具体享元（ConcreteFlyweight）：享元接口的实现类的实例</li>
-<li>享元工厂(FlyweightFactory)：一个类，负责创建和管理享元实例，其他对象对享元的请求必须通过工厂才能获得一个享元对象的实例引用</li>
-<li>应用场景：利用一个叫做享元的对象来为其他对象提供共享的状态，且保证其他对象不能更改享元中的数据</li>
+          <h1 id="State-Pattern（状态模式）"><a href="#State-Pattern（状态模式）" class="headerlink" title="State Pattern（状态模式）"></a>State Pattern（状态模式）</h1><h2 id="Allow-an-object-to-alter-its-behavior-when-its-internal-state-changes-The-object-will-appear-to-change-its-class-（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。）"><a href="#Allow-an-object-to-alter-its-behavior-when-its-internal-state-changes-The-object-will-appear-to-change-its-class-（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。）" class="headerlink" title="Allow an object to alter its behavior when its internal state changes.The object will appear to change its class.（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。）"></a>Allow an object to alter its behavior when its internal state changes.The object will appear to change its class.（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。）</h2><ul>
+<li>抽象状态（State）：一个接口或者抽象类</li>
+<li>环境（Context）：依赖于策略接口的类（组合关系）</li>
+<li>具体状态（ConcreteState）：状态接口（抽象类）的实现类（扩展类）</li>
+<li>应用场景：一个对象的状态依赖于它的行为，状态随着行为的改变为改变</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/FlyweightPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/19/StatePattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -652,7 +653,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/InterpreterPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/19/SingletonPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -674,8 +675,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/InterpreterPattern/" itemprop="url">
-                  Interpreter Pattern
+                <a class="post-title-link" href="/2017/08/19/SingletonPattern/" itemprop="url">
+                  Singleton Pattern
                 </a>
               
             
@@ -691,8 +692,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
-                2017-08-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:17:20+08:00">
+                2017-08-19
               </time>
             
 
@@ -731,7 +732,7 @@
 
           
           
-             <span id="/2017/08/05/InterpreterPattern/" class="leancloud_visitors" data-flag-title="Interpreter Pattern">
+             <span id="/2017/08/19/SingletonPattern/" class="leancloud_visitors" data-flag-title="Singleton Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -760,10 +761,14 @@
 
       
         
-          <h1 id="Interpreter-Pattern（解释器模式）"><a href="#Interpreter-Pattern（解释器模式）" class="headerlink" title="Interpreter Pattern（解释器模式）"></a>Interpreter Pattern（解释器模式）</h1><h2 id="Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"><a href="#Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）" class="headerlink" title="Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"></a>Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）</h2>
+          <h1 id="Singleton-Pattern"><a href="#Singleton-Pattern" class="headerlink" title="Singleton Pattern"></a>Singleton Pattern</h1><h2 id="Ensure-a-class-has-only-one-instance-and-provide-a-global-point-of-access-to-it-（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）"><a href="#Ensure-a-class-has-only-one-instance-and-provide-a-global-point-of-access-to-it-（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）" class="headerlink" title="Ensure a class has only one instance, and provide a global point of access to it.（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）"></a>Ensure a class has only one instance, and provide a global point of access to it.（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）</h2><ol>
+<li>某些类创建比较频繁，对于一些大型的对象，这是一笔很大的系统开销。</li>
+<li>省去了new操作符，降低了系统内存的使用频率，减轻GC压力。</li>
+<li>有些类如交易所的核心交易引擎，控制着交易流程，如果该类可以创建多个的话，系统完全乱了。（比如一个军队出现了多个司令员同时指挥，肯定会乱成一团），所以只有使用单例模式，才能保证核心交易服务器独立控制整个流程。</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/InterpreterPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/19/SingletonPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -809,7 +814,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/BuilderPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/19/StrategyPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -831,8 +836,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/29/BuilderPattern/" itemprop="url">
-                  Builder Pattern
+                <a class="post-title-link" href="/2017/08/19/StrategyPattern/" itemprop="url">
+                  Strategy Pattern
                 </a>
               
             
@@ -848,8 +853,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T12:11:25+08:00">
-                2017-07-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:17:20+08:00">
+                2017-08-19
               </time>
             
 
@@ -888,7 +893,7 @@
 
           
           
-             <span id="/2017/07/29/BuilderPattern/" class="leancloud_visitors" data-flag-title="Builder Pattern">
+             <span id="/2017/08/19/StrategyPattern/" class="leancloud_visitors" data-flag-title="Strategy Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -917,17 +922,16 @@
 
       
         
-          <h1 id="Builder-Pattern（建造者模式）"><a href="#Builder-Pattern（建造者模式）" class="headerlink" title="Builder Pattern（建造者模式）"></a>Builder Pattern（建造者模式）</h1><h2 id="Separate-the-construction-of-a-complex-object-form-its-representation-so-that-the-same-construction-process-can-create-different-representations-（将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。）"><a href="#Separate-the-construction-of-a-complex-object-form-its-representation-so-that-the-same-construction-process-can-create-different-representations-（将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。）" class="headerlink" title="Separate the construction of a complex object form its representation so that the same construction process can create different representations.（将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。）"></a>Separate the construction of a complex object form its representation so that the same construction process can create different representations.（将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。）</h2><ul>
-<li>产品（Product）：具体生成器要构造的复杂对象</li>
-<li>抽象生成器（Builder）：一个接口，有为创建一个产品对象的各个组件定义的若干方法，还有返回产品对象的方法</li>
-<li>具体生成器（ConcreteBuilder）：Builder的实现类</li>
-<li>指挥者（Director）：一个类，拥有Builder接口声明的变量，负责向用户提供具体生成器</li>
-<li>应用场景：将一个复杂对象的构建与表示分离，使得同样的构建可以创建不同的表示</li>
+          <h1 id="Strategy-Pattern（策略模式）"><a href="#Strategy-Pattern（策略模式）" class="headerlink" title="Strategy Pattern（策略模式）"></a>Strategy Pattern（策略模式）</h1><h2 id="Define-a-family-of-algorithms-encapsulate-each-one-and-make-them-interchangeable-（定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。）"><a href="#Define-a-family-of-algorithms-encapsulate-each-one-and-make-them-interchangeable-（定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。）" class="headerlink" title="Define a family of algorithms, encapsulate each one, and make them interchangeable.（定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。）"></a>Define a family of algorithms, encapsulate each one, and make them interchangeable.（定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。）</h2><ul>
+<li>策略（Strategy）：一个接口</li>
+<li>上下文（Context）：依赖于策略接口的类（组合关系）</li>
+<li>具体策略（ConcreteStrategy）：策略接口的实现类</li>
+<li>应用场景：一个类定义了多种行为构成了多个条件分支（封装算法的细节）</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/29/BuilderPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/19/StrategyPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -973,7 +977,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/CommandPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/PrototypePattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -995,8 +999,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/29/CommandPattern/" itemprop="url">
-                  Command Pattern
+                <a class="post-title-link" href="/2017/08/12/PrototypePattern/" itemprop="url">
+                  Prototype Pattern
                 </a>
               
             
@@ -1012,8 +1016,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T12:11:25+08:00">
-                2017-07-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
+                2017-08-12
               </time>
             
 
@@ -1052,7 +1056,7 @@
 
           
           
-             <span id="/2017/07/29/CommandPattern/" class="leancloud_visitors" data-flag-title="Command Pattern">
+             <span id="/2017/08/12/PrototypePattern/" class="leancloud_visitors" data-flag-title="Prototype Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1081,17 +1085,15 @@
 
       
         
-          <h1 id="Command-Pattern（命令模式）"><a href="#Command-Pattern（命令模式）" class="headerlink" title="Command Pattern（命令模式）"></a>Command Pattern（命令模式）</h1><h2 id="Encapsulate-a-request-as-an-object-thereby-letting-you-parameterize-clients-with-different-requests-queue-or-log-requests-and-support-undoable-operations-（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。）"><a href="#Encapsulate-a-request-as-an-object-thereby-letting-you-parameterize-clients-with-different-requests-queue-or-log-requests-and-support-undoable-operations-（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。）" class="headerlink" title="Encapsulate a request as an object,thereby letting you parameterize clients with different requests,queue or log requests, and support undoable operations.（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。）"></a>Encapsulate a request as an object,thereby letting you parameterize clients with different requests,queue or log requests, and support undoable operations.（将一个请求封装成一个对象，从而让你使用不同的请求把客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。）</h2><ul>
-<li>命令（Command）：一个接口，封装请求的若干方法</li>
-<li>请求者（Invoker）：包含Command接口变量的类的实例（组合关系）</li>
-<li>接收者（Receiver）：一个类的实例，执行与请求有关的操作</li>
-<li>具体命令（ConcreteCommand）：Command接口的实现类</li>
-<li>应用场景：请求者与接收者不直接交互，消除彼此的耦合（将命令拆分），命令的撤销（栈的应用）：”\b” 退格键</li>
+          <h1 id="Prototype-Pattern（原型模式）"><a href="#Prototype-Pattern（原型模式）" class="headerlink" title="Prototype Pattern（原型模式）"></a>Prototype Pattern（原型模式）</h1><h2 id="Specify-the-kinds-of-objects-to-create-using-a-prototypical-instance-and-create-new-objects-by-copying-this-prototype-（用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。）"><a href="#Specify-the-kinds-of-objects-to-create-using-a-prototypical-instance-and-create-new-objects-by-copying-this-prototype-（用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。）" class="headerlink" title="Specify the kinds of objects to create using a prototypical instance,and create new objects by copying this prototype.（用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。）"></a>Specify the kinds of objects to create using a prototypical instance,and create new objects by copying this prototype.（用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。）</h2><ul>
+<li>抽象原型（Prototype）：一个接口，定义对象复制自身的方法</li>
+<li>具体原型（ConcretePrototype）：抽象原型的实现类</li>
+<li>应用场景：通过复制原型创建新的对象(序列化/反序列化，Class.clone()克隆，深度克隆)</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/29/CommandPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/12/PrototypePattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1132,7 +1134,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1177,7 +1179,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">120</span>
+                <span class="site-state-item-count">129</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1188,7 +1190,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">45</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1199,7 +1201,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-count">118</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1258,7 +1260,7 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>

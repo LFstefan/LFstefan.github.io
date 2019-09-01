@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/计数排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/15/Java架构学习心得/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/计数排序/" itemprop="url">
-                  计数排序
+                <a class="post-title-link" href="/2017/07/15/Java架构学习心得/" itemprop="url">
+                  Java架构学习心得(一)
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-15T14:57:58+08:00">
+                2017-07-15
               </time>
             
 
@@ -389,8 +389,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Architecture/" itemprop="url" rel="index">
+                    <span itemprop="name">Architecture</span>
                   </a>
                 </span>
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2017/05/27/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
+             <span id="/2017/07/15/Java架构学习心得/" class="leancloud_visitors" data-flag-title="Java架构学习心得(一)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,10 +435,11 @@
 
       
         
-          <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"><a href="#一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！" class="headerlink" title="一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"></a>一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！</h2>
+          <h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><blockquote>
+<h3 id="软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c-s模式（客户端-服务器模式），在到现在的b-s模式（浏览器-服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）"><a href="#软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c-s模式（客户端-服务器模式），在到现在的b-s模式（浏览器-服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）" class="headerlink" title="软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，框架应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）"></a>软件开发从最初的pc单机的人机交互模式到后来局域网的出现开启了软件开发的c/s模式（客户端/服务器模式），在到现在的b/s模式（浏览器/服务器），其实都面临的着相同的问题——代码的冗余，相似代码的大量重复导致整体代码量的庞大，所以为了减少代码的冗余，避免上述情况的产生，<strong>框架</strong>应用而生！而框架的原理其实主要就只有两部分，流程的抽象和数据类型的抽象，下面我们一一道来！（此文章适合于学过jsp及j2EE的童鞋）</h3></blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/计数排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/15/Java架构学习心得/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -484,7 +485,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/归并排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/08/浅尝MyBatis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -506,8 +507,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/归并排序/" itemprop="url">
-                  归并排序
+                <a class="post-title-link" href="/2017/07/08/浅尝MyBatis/" itemprop="url">
+                  浅尝MyBatis
                 </a>
               
             
@@ -523,8 +524,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T12:31:25+08:00">
+                2017-07-08
               </time>
             
 
@@ -546,8 +547,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/MyBatis/" itemprop="url" rel="index">
+                    <span itemprop="name">MyBatis</span>
                   </a>
                 </span>
 
@@ -563,7 +564,7 @@
 
           
           
-             <span id="/2017/05/27/归并排序/" class="leancloud_visitors" data-flag-title="归并排序">
+             <span id="/2017/07/08/浅尝MyBatis/" class="leancloud_visitors" data-flag-title="浅尝MyBatis">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -592,10 +593,15 @@
 
       
         
-          <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><h2 id="归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O-n-，时间复杂度为O-nlogn-。"><a href="#归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O-n-，时间复杂度为O-nlogn-。" class="headerlink" title="归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。"></a>归并排序使用了递归分治的思想，其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。</h2>
+          <h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h2 id="什么是JDBC？"><a href="#什么是JDBC？" class="headerlink" title="什么是JDBC？"></a>什么是JDBC？</h2><blockquote>
+<ul>
+<li>JDBC（Java DataBase Connectivity,java数据库连接）是一种用于执行SQL语句的Java API，可以为多种关系数据库提供统一访问，它由一组用Java语言编写的类和接口组成。JDBC提供了一种基准，据此可以构建更高级的工具和接口，使数据库开发人员能够编写数据库应用程序。</li>
+<li>有了JDBC，向各种关系数据发送SQL语句就是一件很容易的事。换言之，有了JDBC API，就不必为访问Sybase数据库专门写一个程序，为访问Oracle数据库又专门写一个程序，或为访问Informix数据库又编写另一个程序等等，程序员只需用JDBC API写一个程序就够了，它可向相应数据库发送SQL调用。同时，将Java语言和JDBC结合起来使程序员不必为不同的平台编写不同的应用程序，只须写一遍程序就可以让它在任何平台上运行，这也是Java语言“编写一次，处处运行”的优势。</li>
+</ul>
+</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/归并排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/08/浅尝MyBatis/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -641,7 +647,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/桶排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/08/重温JavaEE-SSH框架/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -663,8 +669,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/桶排序/" itemprop="url">
-                  桶排序
+                <a class="post-title-link" href="/2017/07/08/重温JavaEE-SSH框架/" itemprop="url">
+                  重温JavaEE_SSH框架
                 </a>
               
             
@@ -680,8 +686,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T12:13:25+08:00">
+                2017-07-08
               </time>
             
 
@@ -703,8 +709,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Architecture/" itemprop="url" rel="index">
+                    <span itemprop="name">Architecture</span>
                   </a>
                 </span>
 
@@ -720,7 +726,7 @@
 
           
           
-             <span id="/2017/05/27/桶排序/" class="leancloud_visitors" data-flag-title="桶排序">
+             <span id="/2017/07/08/重温JavaEE-SSH框架/" class="leancloud_visitors" data-flag-title="重温JavaEE_SSH框架">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -749,10 +755,19 @@
 
       
         
-          <h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><h2 id="桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"><a href="#桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。" class="headerlink" title="桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"></a>桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。</h2>
+          <h3 id="知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞"><a href="#知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞" class="headerlink" title="知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞"></a>知识只有当需要书写下来或者讲解出来的时候才显得如此匮乏——菜鸟飞</h3><blockquote>
+<ul>
+<li>struts2</li>
+<li>hibernate</li>
+<li>spring</li>
+<li>ssh整合及项目实例</li>
+</ul>
+</blockquote>
+<h1 id="Struts2"><a href="#Struts2" class="headerlink" title="Struts2"></a><a href="http://struts.apache.org/download.cgi" target="_blank" rel="external">Struts2</a></h1><blockquote>
+<h3 id="Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器-Controller-来建立模型与视图的数据交互。——百度百科"><a href="#Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器-Controller-来建立模型与视图的数据交互。——百度百科" class="headerlink" title="Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器(Controller)来建立模型与视图的数据交互。——百度百科"></a>Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器(Controller)来建立模型与视图的数据交互。——<a href="http://baike.baidu.com/link?url=ShHZ1EuJDaLZ_jYWb5JsokO0FymifdBhOSwZE_EE7HshozZKHtpYk2V-HVmNP7uhjru1w-h2bloxs37lWCAwDYL7TdogHByUiYkQf0_RN3-gl55RgS3XshLfdF6qO35QT-BA_SWAr73UE0D7Jxeji_" target="_blank" rel="external">百度百科</a></h3></blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/桶排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/08/重温JavaEE-SSH框架/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -798,7 +813,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/堆排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/01/红黑树/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -820,8 +835,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/堆排序/" itemprop="url">
-                  堆排序
+                <a class="post-title-link" href="/2017/07/01/红黑树/" itemprop="url">
+                  红黑树
                 </a>
               
             
@@ -837,8 +852,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-01T12:42:25+08:00">
+                2017-07-01
               </time>
             
 
@@ -860,8 +875,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Data-Structure/" itemprop="url" rel="index">
+                    <span itemprop="name">Data_Structure</span>
                   </a>
                 </span>
 
@@ -877,7 +892,7 @@
 
           
           
-             <span id="/2017/05/27/堆排序/" class="leancloud_visitors" data-flag-title="堆排序">
+             <span id="/2017/07/01/红黑树/" class="leancloud_visitors" data-flag-title="红黑树">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -906,12 +921,10 @@
 
       
         
-          <h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><blockquote>
-<p>堆是具有下列性质的完全二叉树:每个节点的值都大于或等于其左右孩子节点的值,称为大顶堆；或者每个节点的值都小于或等于其左右孩子节点的值,称为小顶堆。</p>
-<h2 id="堆排序就是利用堆进行排序的方法-基本思想是-将待排序的序列构造成一个大顶堆-此时-整个序列的最大值就是堆顶的根结点-将它移走-其实就是将其与堆数组的末尾元素交换-此时末尾元素就是最大值-然后将剩余的n-1个序列重新构造成一个堆-这样就会得到n个元素的次大值-如此反复执行-便能得到一个有序序列了。-时间复杂度为-O-nlogn-！"><a href="#堆排序就是利用堆进行排序的方法-基本思想是-将待排序的序列构造成一个大顶堆-此时-整个序列的最大值就是堆顶的根结点-将它移走-其实就是将其与堆数组的末尾元素交换-此时末尾元素就是最大值-然后将剩余的n-1个序列重新构造成一个堆-这样就会得到n个元素的次大值-如此反复执行-便能得到一个有序序列了。-时间复杂度为-O-nlogn-！" class="headerlink" title="堆排序就是利用堆进行排序的方法.基本思想是:将待排序的序列构造成一个大顶堆.此时,整个序列的最大值就是堆顶的根结点.将它移走(其实就是将其与堆数组的末尾元素交换, 此时末尾元素就是最大值),然后将剩余的n-1个序列重新构造成一个堆,这样就会得到n个元素的次大值.如此反复执行,便能得到一个有序序列了。 时间复杂度为 O(nlogn)！"></a>堆排序就是利用堆进行排序的方法.基本思想是:将待排序的序列构造成一个大顶堆.此时,整个序列的最大值就是堆顶的根结点.将它移走(其实就是将其与堆数组的末尾元素交换, 此时末尾元素就是最大值),然后将剩余的n-1个序列重新构造成一个堆,这样就会得到n个元素的次大值.如此反复执行,便能得到一个有序序列了。 时间复杂度为 O(nlogn)！</h2></blockquote>
+          <h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><h2 id="红黑树，一种自平衡二叉查找树，又称之为”对称二叉B树”，虽然复杂，但它的操作有着良好的最坏情况运行时间，并且在实践中是高效的：它可以在logn时间内做查找，插入和删除。"><a href="#红黑树，一种自平衡二叉查找树，又称之为”对称二叉B树”，虽然复杂，但它的操作有着良好的最坏情况运行时间，并且在实践中是高效的：它可以在logn时间内做查找，插入和删除。" class="headerlink" title="红黑树，一种自平衡二叉查找树，又称之为”对称二叉B树”，虽然复杂，但它的操作有着良好的最坏情况运行时间，并且在实践中是高效的：它可以在logn时间内做查找，插入和删除。"></a>红黑树，一种自平衡二叉查找树，又称之为”对称二叉B树”，虽然复杂，但它的操作有着良好的最坏情况运行时间，并且在实践中是高效的：它可以在logn时间内做查找，插入和删除。</h2>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/堆排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/01/红黑树/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -957,7 +970,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/数组打印/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/06/24/2-3树/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -979,8 +992,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/数组打印/" itemprop="url">
-                  数组打印
+                <a class="post-title-link" href="/2017/06/24/2-3树/" itemprop="url">
+                  2-3树
                 </a>
               
             
@@ -996,8 +1009,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-24T12:56:25+08:00">
+                2017-06-24
               </time>
             
 
@@ -1019,8 +1032,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Arrays/" itemprop="url" rel="index">
-                    <span itemprop="name">Arrays</span>
+                  <a href="/categories/Data-Structure/" itemprop="url" rel="index">
+                    <span itemprop="name">Data_Structure</span>
                   </a>
                 </span>
 
@@ -1036,7 +1049,7 @@
 
           
           
-             <span id="/2017/05/27/数组打印/" class="leancloud_visitors" data-flag-title="数组打印">
+             <span id="/2017/06/24/2-3树/" class="leancloud_visitors" data-flag-title="2-3树">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1065,13 +1078,16 @@
 
       
         
-          <h2 id="数组打印"><a href="#数组打印" class="headerlink" title="数组打印"></a>数组打印</h2><ol>
-<li>一维数组<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> [] num = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</div><div class="line">System.out.println(num.toString());</div><div class="line"><span class="comment">//输出：[I@15db9742...</span></div><div class="line">System.out.println(Arrays.toString(num));</div><div class="line"><span class="comment">//输出：[1, 2, 3, 4, 5]</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
+          <h1 id="2-3查找树"><a href="#2-3查找树" class="headerlink" title="2-3查找树"></a>2-3查找树</h1><blockquote>
+<p>2–3树是一种树型数据结构，内部节点（存在子节点的节点）要么有2个孩子和1个数据元素，要么有3个孩子和2个数据元素，叶子节点没有孩子，并且有1个或2个数据元素。2–3树是平衡树，意味着右边，左边，中间的子树的元素数量都是相同或接近的。</p>
+</blockquote>
+<ul>
+<li>如果一个内部节点拥有一个数据元素、两个子节点，则此节点为2节点。</li>
+<li>如果一个内部节点拥有两个数据元素、三个子节点，则此节点为3节点。</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/数组打印/#more" rel="contents">
+            <a class="btn" href="/2017/06/24/2-3树/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1112,7 +1128,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/20/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/22/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/20/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/22/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1157,7 +1173,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">120</span>
+                <span class="site-state-item-count">129</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1168,7 +1184,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">45</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1179,7 +1195,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-count">118</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1238,7 +1254,7 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>

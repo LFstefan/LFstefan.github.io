@@ -92,7 +92,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Java,Redis,Catch," />
 
 
 
@@ -110,15 +110,17 @@
 
 
 
-<meta name="description" content="一只奋进的小菜鸟">
-<meta property="og:type" content="website">
-<meta property="og:title" content="染心">
-<meta property="og:url" content="https://lfstefan.github.io/tags/Bit/index.html">
+<meta name="description" content="线程A等线程B执行完了之后再执行 thread.join()方法：调用线程等待执行此方法的的线程  为什么会存在并发 竞态条件 check-then-act（例如：if判定条件） read-modify-write（例如：i++自增由三个动作完成：读取，修改，写入） 数据资源竞争 各个线程的访问顺序不同可能会造成不同的结果 cpu和主内存之间的高度缓存：缓存一致协议  缓存一致协议 现代CPU都是">
+<meta name="keywords" content="Java,Redis,Catch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RedisTheory">
+<meta property="og:url" content="https://lfstefan.github.io/2018/04/08/并发实战/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="一只奋进的小菜鸟">
+<meta property="og:description" content="线程A等线程B执行完了之后再执行 thread.join()方法：调用线程等待执行此方法的的线程  为什么会存在并发 竞态条件 check-then-act（例如：if判定条件） read-modify-write（例如：i++自增由三个动作完成：读取，修改，写入） 数据资源竞争 各个线程的访问顺序不同可能会造成不同的结果 cpu和主内存之间的高度缓存：缓存一致协议  缓存一致协议 现代CPU都是">
+<meta property="og:updated_time" content="2019-07-02T00:41:35.175Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="染心">
-<meta name="twitter:description" content="一只奋进的小菜鸟">
+<meta name="twitter:title" content="RedisTheory">
+<meta name="twitter:description" content="线程A等线程B执行完了之后再执行 thread.join()方法：调用线程等待执行此方法的的线程  为什么会存在并发 竞态条件 check-then-act（例如：if判定条件） read-modify-write（例如：i++自增由三个动作完成：读取，修改，写入） 数据资源竞争 各个线程的访问顺序不同可能会造成不同的结果 cpu和主内存之间的高度缓存：缓存一致协议  缓存一致协议 现代CPU都是">
 
 
 
@@ -146,13 +148,13 @@
 
 
 
-  <link rel="canonical" href="https://lfstefan.github.io/tags/Bit/"/>
+  <link rel="canonical" href="https://lfstefan.github.io/2018/04/08/并发实战/"/>
 
 
 
 
 
-  <title>标签: Bit | 染心</title>
+  <title>RedisTheory | 染心</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -177,7 +179,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
     <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -315,46 +317,330 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        Bit
-        <small>标签</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/04/08/并发实战/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                RedisTheory
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T12:21:25+08:00">
+                2018-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/08/并发实战/" class="leancloud_visitors" data-flag-title="RedisTheory">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <h2 id="线程A等线程B执行完了之后再执行"><a href="#线程A等线程B执行完了之后再执行" class="headerlink" title="线程A等线程B执行完了之后再执行"></a>线程A等线程B执行完了之后再执行</h2><ul>
+<li>thread.join()方法：<strong>调用线程</strong>等待执行此方法的的线程</li>
+</ul>
+<h2 id="为什么会存在并发"><a href="#为什么会存在并发" class="headerlink" title="为什么会存在并发"></a>为什么会存在并发</h2><ol>
+<li>竞态条件<br> check-then-act（例如：if判定条件）<br> read-modify-write（例如：i++自增由三个动作完成：读取，修改，写入）</li>
+<li>数据资源竞争<br> 各个线程的访问顺序不同可能会造成不同的结果</li>
+<li>cpu和主内存之间的高度缓存：缓存一致协议</li>
+</ol>
+<h3 id="缓存一致协议"><a href="#缓存一致协议" class="headerlink" title="缓存一致协议"></a>缓存一致协议</h3><ul>
+<li>现代CPU都是多核心+多级缓存架构，如果我们想要保证工作在不同核心上的线程读取到的数据都是一致的，最简单的做法是保证所有读写操作直接在内存上发生；如果真的这么做，会导致L1/L2/L3三级缓存全部失效，而且所有读写操作全部都会落在内存总线上，效率极其低下。</li>
+</ul>
+<h2 id="并发的解决方案"><a href="#并发的解决方案" class="headerlink" title="并发的解决方案"></a>并发的解决方案</h2><ul>
+<li><p>同步=互斥（互斥锁）：保证多个线程无法同时访问同一临界区资源，只能串行访问</p>
+<ul>
+<li>同步通过监听器来实现，每一个Java对象和一个监听器来关联，线程的加多锁和解锁操作对象是监听器，而不是对象本身</li>
+<li>锁其实就是一个标识</li>
+</ul>
+</li>
+<li><p>synchronized（强同步：同时满足互斥性和可见性）</p>
+<ul>
+<li>同步方法：public int…，锁住的是持有该方法的整个对象</li>
+<li>同步块：synchronized（被锁对象实例）{…}</li>
+</ul>
+</li>
+</ul>
+<h2 id="何为死锁"><a href="#何为死锁" class="headerlink" title="何为死锁"></a>何为死锁</h2><ul>
+<li>死锁：两个线程互相等待对方持有的资源，A持有c，等待d；B持有d，等待c</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">//写一段死锁代码</div><div class="line">public class DeadLockTest&#123;</div><div class="line">	private static final Object lock1 = new Object();</div><div class="line">	private static final Object lock2 = new Object();</div><div class="line">	public void instanceMethods1()&#123;</div><div class="line">		synchronized(lock1)&#123;</div><div class="line">			synchronized(lock2)&#123;</div><div class="line">				System.out.println(&quot;锁住lock1之后开始等待lock2&quot;);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	public void instanceMethods2()&#123;</div><div class="line">		synchronized(lock2)&#123;</div><div class="line">			synchronized(lock1)&#123;</div><div class="line">				System.out.println(&quot;锁住lock2之后开始等待lock1&quot;);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	public static void main(String[] args)&#123;</div><div class="line">		DeadLockTest dl = new DeadLockTest();</div><div class="line">		Thread thread1 = new Thread(()-&gt;&#123;</div><div class="line">			while()&#123;</div><div class="line">				dl.instanceMethods1();</div><div class="line">			&#125;</div><div class="line">			try&#123;Thread.sleep(50);&#125;catch(Exception e)&#123;&#125;</div><div class="line">		&#125;);</div><div class="line">		Thread thread2 = new Thread(()-&gt;&#123;</div><div class="line">			while()&#123;</div><div class="line">				dl.instanceMethods1();</div><div class="line">			&#125;</div><div class="line">			try&#123;Thread.sleep(50);&#125;catch(Exception e)&#123;&#125;</div><div class="line">		&#125;);</div><div class="line">		thread1.start();</div><div class="line">		thread2.start();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）"><a href="#如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）" class="headerlink" title="如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）"></a>如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）</h3><ul>
+<li>避免同步块调用其他的同步快</li>
+<li>活锁：线程持续重试一个总是失败的操作</li>
+<li>饿死：总有线程可以抢占他的资源，导致该线程一致无法执行</li>
+</ul>
+<p>volatile：一种较弱的同步，只满足可见性<br>    确保每条线程只会从主内存中读取该变量的值，而不会从cpu自身的高度缓存中去读，从而保证了可见性<br>    final关键字本身就具有安全访问，无需同步的特性（不可变类不会涉及到多线程的问题）<br>    final和volatile不能同时存在<br>volatile实现原理</p>
+<pre><code>- 通过内存屏障插入指令之间的策略来解决数据的可见性问题
+- 每个volatile变量写之前---&gt;插入storestore屏障
+- 每个volatile变量写之后---&gt;插入storeload屏障
+- 每个volatile变量读之后---&gt;插入loadload屏障和loadstore屏障
+</code></pre><p>Object的等待通知线程方法<br>    wait（）：会放弃锁<br>    notify（）：随机唤醒一条等待该Object对象锁的线程<br>    notifyall（）：唤醒所有等待该Object对象锁的线程</p>
+<p>生产者消费者<br>    手写demo（用synchronized），改进空间</p>
+<p>线程组（不建议使用）<br>    模型就像一颗树</p>
+<p>定时任务框架<br>    Java.util.timer和timertask(待完成md一篇博客)<br>    timertask实现runnable接口，重写run方法描述任务<br>    同时支持守护线程和非守护线程执行任务</p>
+<p>并发工具类<br>Extutor<br>    从任务执行中解耦任务的提交操作<br>    只关注runnable接口<br>    无法提供线程所处的执行状态<br>    不能友好的关闭<br>    不能执行组任务<br>ExecutorService才是一个线程池<br>    解决了executor的受限问题<br>异步计算结果future<br>Executors用来生成并返回ExecutorService</p>
+<p>CountDownLatch计数器门阀<br>CyclicBarrier同步屏障，释放之后可重用，被称为可循环使用的屏障<br>    barrier.wait()<br>    barrier = new CyclicBarrier(N,Runnable(){})</p>
+<p>交换器Exchanger<br>    线程之间彼此交换对象的同步点，在同步点上将对象传入交换器，并接受其他线程该对象的值作为返回值<br>    类似于生产者消费者模型</p>
+<p>信号量</p>
+<p><strong>Phaser更加弹性的同步屏障</strong></p>
+<p>ReentrantLock可重入锁<br>    拥有一个持有量，执行lock方法持有量加一，执行unlock方法持有量减一，持有量为0，释放锁</p>
+<p>ReadWriteLock读写锁<br>ReentrantLockReadWriteLock可重入读写锁</p>
+<p><strong>stampedLock</strong>（Java8）</p>
+<p>通过的Collections的synchronizedList方法可以将传入的不安全的集合类变成一个线程安全的集合类<br>Collections.synchronizedList(new LinkedList&lt;&gt;());<br>Collections.synchronizedMap(new HashMap&lt;&gt;());<br>Collections.synchronizedSet(new HashSet&lt;&gt;());</p>
+<p>阻塞队列实现生产者和消费者</p>
+<p>原子类atomic可以用于实现计数器和序列生成器</p>
+<p>CAS(compare and swap)—微处理器的cas指令<br>    读取内存位置，比较读取到的值和期望的值，一致配置，将新值更新到内存位置上，否则啥也不会发生</p>
+<p>CompletionService</p>
+<p>JVM内存模型</p>
+<ul>
+<li><p>并发中，线程如何通信，以及如何同步数据</p>
+<ul>
+<li>命令式编程中，通信方式有两种<ul>
+<li>共享内存：读写内存中公共状态</li>
+<li>消息传递：发送消息</li>
+</ul>
+</li>
+<li>同步其实指的是线程操作发生的相对顺序</li>
+</ul>
+</li>
+<li><p>java采用的是共享内存</p>
+<ul>
+<li>所有的静态定义，实例，数组均存放在堆内存中，所有线程共享</li>
+<li>局部变量，方法参数，异常处理器参数；均存放在每个线程栈中，各个线程不共享，不会存在内存可见性的问题</li>
+</ul>
+</li>
+<li><p>jvm决定了java线程之间的隔离性</p>
+<ul>
+<li>就是说线程A对共享变量的更改何时对线程B可见</li>
+</ul>
+</li>
+<li><p>相对于主内存而言，线程的本地内存就是指<strong>CPU的高速缓存和寄存器</strong>等每个CPU独有的存储介质</p>
+</li>
+<li><p>CPU写缓冲区的好处</p>
+<ul>
+<li>保证指令流水线持续执行</li>
+<li>避免cpu等待内存的写入，提高CPU执行性能</li>
+<li>可以批处理刷新缓冲区，将数据批量写入主内存</li>
+<li>每个cpu拥有各自的写缓冲区，互不可见</li>
+</ul>
+</li>
+<li><p>指令重排</p>
+<ul>
+<li>编译器的指令重排：不会影响单线程程序语义</li>
+<li>指令级别的并行重排，指令并行执行</li>
+<li>内存系统的重排序</li>
+</ul>
+</li>
+<li><p>内存屏障：用来冲刷高速缓冲区，禁止指令重排，保证内存可见性的</p>
+<ul>
+<li>loadload</li>
+<li>storeload</li>
+<li>loadstore</li>
+<li>storestore</li>
+<li>load指的是加载读取数据，store指的是写数据</li>
+<li>用在指令与指令执行之间 </li>
+</ul>
+</li>
+<li><p>数据依赖性：指令重排会对结果造成影响</p>
+<ul>
+<li>编译器和处理器的指令重排都对单个CPU中有数据依赖性的操作不会发生指令重排，但是多核CPU中情况就不适用了</li>
+</ul>
+</li>
+<li><p>线程中断<br>Thread currentThread = Thread.currentThread();<br>currentThread.interrupt();//中断当前线程<br>Thread.interrupted();//判定当前线程的中断状态，同时会清除中断标识位<br>currentThread.isInterrupted();//判定调用线程的中断状态，不会清除中断标识位</p>
+</li>
+</ul>
 
-      <h1 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/10/07/位数组/" itemprop="url">
-              
-                <span itemprop="name">位数组</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-07T12:40:25+08:00"
-              content="2017-10-07" >
-          10-07
-        </time>
-      </div>
 
-    </header>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+            <a href="/tags/Catch/" rel="tag"># Catch</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/08/RedisTheory/" rel="next" title="RedisTheory">
+                <i class="fa fa-chevron-left"></i> RedisTheory
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/15/Compile JDK/" rel="prev" title="Compile JDK">
+                Compile JDK <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -362,6 +648,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
 
         </div>
         
@@ -381,8 +673,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -397,7 +698,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">110</span>
+                <span class="site-state-item-count">129</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -408,7 +709,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -419,7 +720,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">108</span>
+                <span class="site-state-item-count">118</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -463,6 +764,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程A等线程B执行完了之后再执行"><span class="nav-number">1.</span> <span class="nav-text">线程A等线程B执行完了之后再执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么会存在并发"><span class="nav-number">2.</span> <span class="nav-text">为什么会存在并发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存一致协议"><span class="nav-number">2.1.</span> <span class="nav-text">缓存一致协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发的解决方案"><span class="nav-number">3.</span> <span class="nav-text">并发的解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#何为死锁"><span class="nav-number">4.</span> <span class="nav-text">何为死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）"><span class="nav-number">4.1.</span> <span class="nav-text">如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -478,7 +795,7 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -580,6 +897,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
 
   
 
@@ -611,6 +932,10 @@
   
     
 
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
     
   
 

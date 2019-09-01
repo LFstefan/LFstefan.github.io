@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/04/08/RedisTheory/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Redis底层技术实现与原理 本篇以《Rdeis设计与实现》为阅读基础，总结提炼其中一些知识点   底层数据结构 内存回收机制 对象共享 单机数据库 RDB持久化 AOF持久化 事件 复制 redis集群  &amp;lt;- more -&amp;gt; 基本底层实现SDS动态字符串（redis内部自定义字符串）12345Struct sdshdr&amp;#123; Int len;字符串长度，不包括结束符‘/0’">
-<meta property="og:updated_time" content="2018-11-27T01:17:12.241Z">
+<meta property="og:updated_time" content="2019-06-23T08:21:42.116Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RedisTheory">
 <meta name="twitter:description" content="Redis底层技术实现与原理 本篇以《Rdeis设计与实现》为阅读基础，总结提炼其中一些知识点   底层数据结构 内存回收机制 对象共享 单机数据库 RDB持久化 AOF持久化 事件 复制 redis集群  &amp;lt;- more -&amp;gt; 基本底层实现SDS动态字符串（redis内部自定义字符串）12345Struct sdshdr&amp;#123; Int len;字符串长度，不包括结束符‘/0’">
@@ -568,39 +568,71 @@
 </ol>
 </li>
 </ul>
-<h2 id="RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）"><a href="#RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）" class="headerlink" title="RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）"></a>RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）</h2><blockquote>
+<h2 id="RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）"><a href="#RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）" class="headerlink" title="RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）"></a>RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）</h2><ul>
+<li>数据存储格式：键值对形式</li>
+<li>数据序列化格式：（压缩存储）二进制形式</li>
+</ul>
+<blockquote>
 <ul>
 <li>手动或定期 </li>
 <li>.rdb 文件 压缩的二进制文件 </li>
 </ul>
 </blockquote>
-<ul>
-<li>Rdb文件的创建与载入 <ol>
-<li>Save命令会阻塞redis服务器进程，直到rdb文件创建完成，期间服务器不能处理任何请求 </li>
-<li>Bgsave命令会派生出一个子进程执行创建rdb文件，父进程继续执行请求处理 </li>
-<li>Bgsave命令阶段，save，bgsave，bgrewriteaof这三种命令不能执行，其他请求可以执行 </li>
-<li>默认条件为（当满足条件就执行bgsave命令） <ol>
-<li>Save 900 1 服务器在900秒之内至少对数据库修改1次 </li>
-<li>Save 300 10服务器在300秒之内至少对数据库修改10次 </li>
-<li>Save 60 10000服务器在60秒之内至少对数据库修改10000次 </li>
-</ol>
-</li>
-<li>Dirty计数器：记录上一次成功执行save/bgsave命令之后服务器对数据库的修改次数 </li>
-<li>Lastsave：时间戳，记录上一次成功执行/bgsave命令的时间 </li>
-<li>serverCron函数每隔100毫秒就执行一次，其中一项就是检查save/bgsave条件是否满足 </li>
-</ol>
-</li>
+<h3 id="配置参数"><a href="#配置参数" class="headerlink" title="配置参数"></a>配置参数</h3><ul>
+<li>RDB方式配置参数<ul>
+<li>stop-write-on-bgsave-error no</li>
+<li>rdbcompression yes</li>
+<li>dbfilename dump.rdb</li>
 </ul>
-<h2 id="AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）"><a href="#AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）" class="headerlink" title="AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）"></a>AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）</h2><blockquote>
+</li>
+<li>AOP方式配置参数<ul>
+<li>appendonly on</li>
+<li>appendfsync everysec</li>
+<li>no-appendfsync-on-rewrite no</li>
+<li>auto-aop-rewrite-percnetage 100</li>
+<li>auto-aop-rewrite-min-size 64mb</li>
+</ul>
+</li>
+<li>dir ./共享持久化文件存放位置</li>
+</ul>
+<h3 id="Rdb文件的创建与载入"><a href="#Rdb文件的创建与载入" class="headerlink" title="Rdb文件的创建与载入"></a>Rdb文件的创建与载入</h3><pre><code>1. Save命令会阻塞redis服务器进程，直到rdb文件创建完成，期间服务器不能处理任何请求；该命令生成快照持久化版本的时间较短
+2. Bgsave命令会派生出一个子进程执行创建rdb文件，父进程继续执行请求处理；不阻塞但是生成快照的时间比save命令长
+3. Bgsave命令阶段，save，bgsave，bgrewriteaof这三种命令不能执行，其他请求可以执行 
+4. 默认条件为（当满足条件就执行bgsave命令） 
+    1. Save 900 1 服务器在900秒之内至少对数据库修改1次 
+    2. Save 300 10服务器在300秒之内至少对数据库修改10次 
+    3. Save 60 10000服务器在60秒之内至少对数据库修改10000次 
+5. Dirty计数器：记录上一次成功执行save/bgsave命令之后服务器对数据库的修改次数 
+6. Lastsave：时间戳，记录上一次成功执行/bgsave命令的时间 
+7. serverCron函数每隔100毫秒就执行一次，其中一项就是检查save/bgsave条件是否满足 
+</code></pre><h3 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h3><ul>
+<li>快照持久化RDB方式在redis宕机的时候，用户将会丢失最近一次快照之后所有的改动数据，因此该方式适用于即使丢失一部分数据也没有关系的应用程序。</li>
+<li>设置过于频繁的快照生成会浪费资源，过于稀少又会造成数据的大量的丢失。</li>
+<li>考虑好生产中如果宕机，最大可以承受丢失多长时间以内产生的数据，以此为标准设置redis快照持久化方式的配置参数</li>
+</ul>
+<h3 id="日志聚合计算"><a href="#日志聚合计算" class="headerlink" title="日志聚合计算"></a>日志聚合计算</h3><ul>
+<li>如何保证redis宕机后恢复后从处理中断处继续执行，那就需要在记录数据的同时记录数据处理进度，这样在宕机恢复后可以按照宕机前的中断处继续进行处理。</li>
+</ul>
+<h3 id="内存容量大小的影响"><a href="#内存容量大小的影响" class="headerlink" title="内存容量大小的影响"></a>内存容量大小的影响</h3><ul>
+<li>如果redis服务器内存存储数据的容量不是太多，只有几个G时，快照方式bgsave命令可以很快的创建子线程兵完成快照版本的持久化；但是当数据容量较大时，服务器内存资源所剩不多，快照所需创建子线程的时间也会增加，从而会造成redis停顿时间变长，停顿时间内不能处理任何请求命令。</li>
+</ul>
+<h2 id="AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）"><a href="#AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）" class="headerlink" title="AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）"></a>AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）</h2><ul>
+<li>数据存储格式：写命令语句形式</li>
+<li>数据序列化格式：</li>
+</ul>
+<blockquote>
 <p>三步走：命令追加-&gt;文件写入-&gt;文件同步 </p>
 </blockquote>
 <ul>
-<li>每次执行完相应的命令会将命令以一定格式追加到aot_buf缓冲区的末尾 </li>
+<li>每次执行完相应的命令会将命令以一定格式追加到<strong>aot_buf缓冲区</strong>的末尾 </li>
 <li>Redis服务器进程就是一个事件循环，每结束一个循环都会调用相应的函数考虑是否将aot_buf缓冲区的内容写入AOF文件，上次同步时间距离现在超过一秒就再次执行同步 </li>
 <li>Aof文件重写，随着时间的推移，aof文件的大小会迅速增加，其中会包括很多的冗余命令，所以需要重写来减小文件大小 </li>
 <li>原理：从数据库读取当前的键值，然后用命令来记录键值对，替换之前冗余的命令 </li>
 <li>子进程执行该过程，不会影响服务器的请求处理 </li>
 <li>Aof执行期间，服务器依旧会将执行过的写命令追加到aof缓冲区，同时还会将执行过的写命令追加到aof重写缓冲区 </li>
+</ul>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<li>aof方式的持久化设置为一秒时，redis性能和不适用任何持久化时的性能几乎一样，这样保证了redis的持久化不会影响到自身性能。</li>
 </ul>
 <h2 id="事件：redis服务器就是一个事件驱动程序"><a href="#事件：redis服务器就是一个事件驱动程序" class="headerlink" title="事件：redis服务器就是一个事件驱动程序"></a>事件：redis服务器就是一个事件驱动程序</h2><ul>
 <li>文件事件：redis通过套接字与客户端进行链接，文件事件就是服务器对套接字操作的抽象，服务器和客户端的通信会产生相应的文件事件，而服务器通过监听并处理这些事件来完成网络通信操作（读事件，写事件两类） </li>
@@ -610,10 +642,13 @@
 <li>所有时间事件存放在一个无序链表（不按照when属性排列）中，每当时间事件执行时都必须遍历整个链表来找到已到达时间事件（新事件的插入总是插入到表头） </li>
 <li>两事件均同步，有序，原子执行，不会出现中断，抢占现象，需要时会主动让出执行权。 </li>
 </ul>
-<h2 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h2><blockquote>
+<h2 id="复制（主从数据同步）"><a href="#复制（主从数据同步）" class="headerlink" title="复制（主从数据同步）"></a>复制（主从数据同步）</h2><blockquote>
 <p>（slaveof命令）从服务器&gt; slaveof 主服务器 </p>
 </blockquote>
 <ul>
+<li>从redis连接主redis的时候，主会执行bgsave命令进行持久化</li>
+<li>slaveof host part：开始复制同步主机host的数据</li>
+<li>slaveof no one：停止复制同步</li>
 <li>旧版复制=同步+命令传播 </li>
 <li><p>同步： </p>
 <ol>
@@ -621,7 +656,14 @@
 <li>主收到sync命令后执行bgsave命令，后台生成一个rdb文件，并使用缓冲区记录从现在开始的所有写命令 </li>
 <li>主将rdb文件发给从服务器，从服务器接受并载入rdb文件，根据此文件将自己的数据库状态更新至主服务器状态 </li>
 <li>主将缓冲区内容发给从，从执行缓冲区命令更新自己 </li>
+<li>缓冲区命令也同步完成后，master每接受一个写命令就同时发给slave执行同步数据</li>
 </ol>
+</li>
+<li><p>数据同步影响因素：网络带宽，master内存容量（内存剩余量太小的话，没法提供足够的内存创建子线程和写缓冲区）</p>
+</li>
+<li>注意；slave第一次连接master的时候，自身数据会被全部清除，然后同步master的数据</li>
+<li>不支持主主复制 </li>
+<li><p>将复制功能分担出去保证master的性能，不至于被大量复制拖垮，采用树形结构，master位于树的根部，一级一级将复制功能分散出去</p>
 </li>
 <li><p>命令传播：当同步执行完成之后，主服务器只需要一直保持将自己的写命令发给从服务器，从服务器接受并更新即可保持主从一直 </p>
 </li>
@@ -635,6 +677,12 @@
 <li>槽指派：redis集群通过分片方式来保存数据库中的键值对，整个数据库被分为16384个槽位，数据库中每一个键都属于槽的其中一个，每个节点可以处理0个或者16384个，当所有槽位均有节点在处理时，集群属于上线状态，否则属于下线状态 </li>
 <li>命令cluster addslots <slot> [slot…]将一个或者多个槽位指派给节点负责 </slot></li>
 <li>16384/8个字节，包含16384个二进制位来保存节点负责的槽位信息，为1，表示该节点负责处理该槽位，否则不负责处理 </li>
+</ul>
+<h2 id="Redis各个命令到底能跑多快"><a href="#Redis各个命令到底能跑多快" class="headerlink" title="Redis各个命令到底能跑多快"></a>Redis各个命令到底能跑多快</h2><ul>
+<li>使用redis附带的性能测试工具redis-benchmark</li>
+<li>redis-benchmark -c 1 -q（参数c表示客户端个数（默认使用50个客户端测试），样例表示采用一个客户端来进行测试；参数q表示简化输出结果）</li>
+<li>该命令不处理的返回结果，所以节省了大量的结果解析等耗费的时间，因此测试结果会比实际性能高；</li>
+<li>redis实际性能约为该命令测试结果的50%~60%</li>
 </ul>
 <p>重新分片<br>发布订阅<br>Dict&lt;被订阅频道，List&lt;订阅者链表&gt;&gt;<br>事物<br>multi命令开始，中间执行命令，exec命令结束提交事务<br>watch命令是一个乐观锁，在exec命令之前监视任意数量的数据库键是否至少有一个被修改过，是则拒绝事务<br>Lua脚本<br>排序<br>sort命令排序。。。 </p>
 
@@ -714,8 +762,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/15/初识REST/" rel="prev" title="初识REST">
-                初识REST <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/08/并发实战/" rel="prev" title="RedisTheory">
+                RedisTheory <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -790,7 +838,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">120</span>
+                <span class="site-state-item-count">129</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -801,7 +849,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">45</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -812,7 +860,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-count">118</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -865,7 +913,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis底层技术实现与原理"><span class="nav-number">1.</span> <span class="nav-text">Redis底层技术实现与原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本底层实现"><span class="nav-number">1.1.</span> <span class="nav-text">基本底层实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SDS动态字符串（redis内部自定义字符串）"><span class="nav-number">1.1.1.</span> <span class="nav-text">SDS动态字符串（redis内部自定义字符串）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双向链表"><span class="nav-number">1.1.2.</span> <span class="nav-text">双向链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希表"><span class="nav-number">1.1.3.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典"><span class="nav-number">1.1.4.</span> <span class="nav-text">字典</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"><span class="nav-number">1.1.5.</span> <span class="nav-text">跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整数集合"><span class="nav-number">1.1.6.</span> <span class="nav-text">整数集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩列表"><span class="nav-number">1.1.7.</span> <span class="nav-text">压缩列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象-redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象"><span class="nav-number">1.1.8.</span> <span class="nav-text">对象-(redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串对象"><span class="nav-number">1.1.9.</span> <span class="nav-text">字符串对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表对象"><span class="nav-number">1.1.10.</span> <span class="nav-text">列表对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希对象"><span class="nav-number">1.1.11.</span> <span class="nav-text">哈希对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合对象"><span class="nav-number">1.1.12.</span> <span class="nav-text">集合对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序集合对象"><span class="nav-number">1.1.13.</span> <span class="nav-text">有序集合对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bit-arrays位数组"><span class="nav-number">1.1.14.</span> <span class="nav-text">Bit arrays位数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HyperLogLogs"><span class="nav-number">1.1.15.</span> <span class="nav-text">HyperLogLogs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存回收机制"><span class="nav-number">1.2.</span> <span class="nav-text">内存回收机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象共享"><span class="nav-number">1.3.</span> <span class="nav-text">对象共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单机数据库"><span class="nav-number">1.4.</span> <span class="nav-text">单机数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）"><span class="nav-number">1.5.</span> <span class="nav-text">RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）"><span class="nav-number">1.6.</span> <span class="nav-text">AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件：redis服务器就是一个事件驱动程序"><span class="nav-number">1.7.</span> <span class="nav-text">事件：redis服务器就是一个事件驱动程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制"><span class="nav-number">1.8.</span> <span class="nav-text">复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis集群"><span class="nav-number">1.9.</span> <span class="nav-text">redis集群</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis底层技术实现与原理"><span class="nav-number">1.</span> <span class="nav-text">Redis底层技术实现与原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本底层实现"><span class="nav-number">1.1.</span> <span class="nav-text">基本底层实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SDS动态字符串（redis内部自定义字符串）"><span class="nav-number">1.1.1.</span> <span class="nav-text">SDS动态字符串（redis内部自定义字符串）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双向链表"><span class="nav-number">1.1.2.</span> <span class="nav-text">双向链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希表"><span class="nav-number">1.1.3.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典"><span class="nav-number">1.1.4.</span> <span class="nav-text">字典</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"><span class="nav-number">1.1.5.</span> <span class="nav-text">跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整数集合"><span class="nav-number">1.1.6.</span> <span class="nav-text">整数集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩列表"><span class="nav-number">1.1.7.</span> <span class="nav-text">压缩列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象-redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象"><span class="nav-number">1.1.8.</span> <span class="nav-text">对象-(redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串对象"><span class="nav-number">1.1.9.</span> <span class="nav-text">字符串对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表对象"><span class="nav-number">1.1.10.</span> <span class="nav-text">列表对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希对象"><span class="nav-number">1.1.11.</span> <span class="nav-text">哈希对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合对象"><span class="nav-number">1.1.12.</span> <span class="nav-text">集合对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序集合对象"><span class="nav-number">1.1.13.</span> <span class="nav-text">有序集合对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bit-arrays位数组"><span class="nav-number">1.1.14.</span> <span class="nav-text">Bit arrays位数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HyperLogLogs"><span class="nav-number">1.1.15.</span> <span class="nav-text">HyperLogLogs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存回收机制"><span class="nav-number">1.2.</span> <span class="nav-text">内存回收机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象共享"><span class="nav-number">1.3.</span> <span class="nav-text">对象共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单机数据库"><span class="nav-number">1.4.</span> <span class="nav-text">单机数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）"><span class="nav-number">1.5.</span> <span class="nav-text">RDB持久化（通过保存数据库中的键值对来记录数据库的不同状态）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置参数"><span class="nav-number">1.5.1.</span> <span class="nav-text">配置参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rdb文件的创建与载入"><span class="nav-number">1.5.2.</span> <span class="nav-text">Rdb文件的创建与载入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限制"><span class="nav-number">1.5.3.</span> <span class="nav-text">限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志聚合计算"><span class="nav-number">1.5.4.</span> <span class="nav-text">日志聚合计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存容量大小的影响"><span class="nav-number">1.5.5.</span> <span class="nav-text">内存容量大小的影响</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）"><span class="nav-number">1.6.</span> <span class="nav-text">AOF持久化（通过保存服务器执行的写命令来记录数据库的状态）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优势"><span class="nav-number">1.6.1.</span> <span class="nav-text">优势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件：redis服务器就是一个事件驱动程序"><span class="nav-number">1.7.</span> <span class="nav-text">事件：redis服务器就是一个事件驱动程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制（主从数据同步）"><span class="nav-number">1.8.</span> <span class="nav-text">复制（主从数据同步）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis集群"><span class="nav-number">1.9.</span> <span class="nav-text">redis集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis各个命令到底能跑多快"><span class="nav-number">1.10.</span> <span class="nav-text">Redis各个命令到底能跑多快</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -887,7 +935,7 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (中国标准时间) - 
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
