@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="MySql命令集  安装/更新/启动/登陆/授权 从建库到删库 复杂查询">
+<meta name="description" content="MySql命令集  安装/更新/启动/登陆/授权 从建库到删库 复杂查询 windows free install">
 <meta name="keywords" content="MySql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySql命令集">
 <meta property="og:url" content="https://lfstefan.github.io/2018/03/18/MySql命令集/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="MySql命令集  安装/更新/启动/登陆/授权 从建库到删库 复杂查询">
-<meta property="og:updated_time" content="2018-12-04T06:01:59.581Z">
+<meta property="og:description" content="MySql命令集  安装/更新/启动/登陆/授权 从建库到删库 复杂查询 windows free install">
+<meta property="og:updated_time" content="2019-09-01T09:55:47.776Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql命令集">
-<meta name="twitter:description" content="MySql命令集  安装/更新/启动/登陆/授权 从建库到删库 复杂查询">
+<meta name="twitter:description" content="MySql命令集  安装/更新/启动/登陆/授权 从建库到删库 复杂查询 windows free install">
 
 
 
@@ -436,6 +436,7 @@
 <li>安装/更新/启动/登陆/授权</li>
 <li>从建库到删库</li>
 <li>复杂查询</li>
+<li>windows free install</li>
 </ul>
 </blockquote>
 <a id="more"></a>
@@ -534,6 +535,19 @@
 </li>
 <li>在线视图查询：select * from (SELECT b,c FROM a) T where t.a &gt; 1;</li>
 </ul>
+<h2 id="windows-free-install"><a href="#windows-free-install" class="headerlink" title="windows free install"></a>windows free install</h2><ul>
+<li>mysql在windows下绿色免安装版</li>
+</ul>
+<ol>
+<li>官网下载免安装绿色版本，官网zip包（非msi安装版）</li>
+<li>解压，配置环境变量</li>
+<li><strong>管理员身份</strong>进入cmd，在mysql解压后的bin目录下</li>
+<li>执行命令：mysqld –initialize-insecure –user=mysql ，生成data数据文件</li>
+<li>执行mysqld -install命令安装</li>
+<li>net start mysql启动服务</li>
+<li>Mysql -uroot -p连接数据库服务</li>
+<li>卸载：mysqld –remove mysql</li>
+</ol>
 
       
     </div>
@@ -683,7 +697,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">129</span>
+                <span class="site-state-item-count">131</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -705,7 +719,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">118</span>
+                <span class="site-state-item-count">119</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -758,7 +772,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql命令集"><span class="nav-number">1.</span> <span class="nav-text">MySql命令集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-更新-启动-登陆-授权"><span class="nav-number">1.1.</span> <span class="nav-text">安装/更新/启动/登陆/授权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从建库到删库"><span class="nav-number">1.2.</span> <span class="nav-text">从建库到删库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂查询"><span class="nav-number">1.3.</span> <span class="nav-text">复杂查询</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql命令集"><span class="nav-number">1.</span> <span class="nav-text">MySql命令集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-更新-启动-登陆-授权"><span class="nav-number">1.1.</span> <span class="nav-text">安装/更新/启动/登陆/授权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从建库到删库"><span class="nav-number">1.2.</span> <span class="nav-text">从建库到删库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂查询"><span class="nav-number">1.3.</span> <span class="nav-text">复杂查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-free-install"><span class="nav-number">1.4.</span> <span class="nav-text">windows free install</span></a></li></ol></li></ol></div>
             
 
           </div>
