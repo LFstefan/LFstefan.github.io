@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2019/03/31/Transaction/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Transaction 数据库事务 Spring事务 Redis事务 分布式事务">
-<meta property="og:updated_time" content="2019-06-23T08:19:28.338Z">
+<meta property="og:updated_time" content="2019-10-09T13:06:19.061Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Transaction">
 <meta name="twitter:description" content="Transaction 数据库事务 Spring事务 Redis事务 分布式事务">
@@ -618,6 +618,7 @@ public class MysqlTest01 {
 <p>MVCC方案<br>多版本并发控制，update with condition，更新带条件，这也是在系统设计的时候，合理的选择乐观锁，通过version或者其他条件，来做乐观锁，这样保证更新及时在并发的情况下，也不会有太大的问题。例如update tablexxx set name=#name#,version=version+1 where version=#version# ,或者是 update tablexxx set quality=quality-#subQuality# where quality-#subQuality# &gt;= 0 。</p>
 <p>异步回调机制的引入<br>A应用调用B，在同步调用的返回结果中，B返回成功给到A，一般情况下，这时候就结束了，其实在99.99%的情况是没问题的，但是有时候为了确保100%，记住最起码在系统设计中100%，这时候B系统再回调A一下，告诉A，你调用我的逻辑，确实成功了。其实这个逻辑，非常类似TCP协议中的三次握手。上图中的B流程。</p>
 <p>类似double check机制的确认机制<br>还是上图中异步回调的过程，A在同步调用B，B返回成功了。这次调用结束了，但是A为了确保，在过一段时间，这个时间可以是几秒，也可以是每天定时处理，再调用B一次，查询一下之前的那次调用是否成功。例如A调用B更新订单状态，这时候成功了，延迟几秒后，A查询B，确认一下状态是否是自己刚刚期望的。上图中的D流程。</p>
+<p>分布式事务<br>private UserInfo doSubmitUser(UmParticipantUser umParticipantUser,<br>UmSafeBind safeBind, UmLocalUser localUser,<br>UmUserLoginLog userLoginLog, UmUserLoginStatus userLoginStatus,UmUiaInfo umUiaInfo,<br>UmLocalUserHist uluh) {<br>// 提交服务<br>if (BranchTransactionHandler.dtpSwicth()) {<br>String bxid = null;// 分支事务ID<br>if (BranchTransactionHandler.dtpSwicth()) {<br>bxid = BranchTransactionHandler.beginBranchTransaction();<br>}<br>BranchTransactionHandler.submitLog(bxid, ServiceType.SPRING_BEAN,<br>OUM12000105.class, “doSubmit”, new Class[] {<br>UmParticipantUser.class, UmLocalUser.class,<br>UmUserLoginLog.class,<br>UmUserLoginStatus.class, UmSafeBind.class,UmUiaInfo.class,UmLocalUserHist.class},<br>new Object[] { umParticipantUser, localUser,<br>userLoginLog, userLoginStatus, safeBind,umUiaInfo,uluh});<br>} else {<br>doSubmit(umParticipantUser, localUser, userLoginLog,<br>userLoginStatus, safeBind,umUiaInfo,uluh);<br>}</p>
 
       
     </div>
@@ -767,7 +768,7 @@ public class MysqlTest01 {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">131</span>
+                <span class="site-state-item-count">159</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -778,7 +779,7 @@ public class MysqlTest01 {
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -789,7 +790,7 @@ public class MysqlTest01 {
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">119</span>
+                <span class="site-state-item-count">137</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -865,7 +866,7 @@ public class MysqlTest01 {
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="MySql DataType  Numeric Type Date and Time Type String Type">
+<meta name="description" content="MySql DataType  Numeric Type Date and Time Type String Type Json Type（Mysql 8.0新增特性）">
 <meta name="keywords" content="MySql,DataType">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySql DataType">
 <meta property="og:url" content="https://lfstefan.github.io/2018/03/04/MySql Data Type/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="MySql DataType  Numeric Type Date and Time Type String Type">
-<meta property="og:updated_time" content="2019-05-06T08:16:51.865Z">
+<meta property="og:description" content="MySql DataType  Numeric Type Date and Time Type String Type Json Type（Mysql 8.0新增特性）">
+<meta property="og:updated_time" content="2019-12-01T12:47:39.932Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql DataType">
-<meta name="twitter:description" content="MySql DataType  Numeric Type Date and Time Type String Type">
+<meta name="twitter:description" content="MySql DataType  Numeric Type Date and Time Type String Type Json Type（Mysql 8.0新增特性）">
 
 
 
@@ -436,6 +436,7 @@
 <li>Numeric Type</li>
 <li>Date and Time Type</li>
 <li>String Type</li>
+<li>Json Type（Mysql 8.0新增特性）</li>
 </ul>
 </blockquote>
 <a id="more"></a>
@@ -625,6 +626,14 @@
 </tr>
 </tbody>
 </table>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ul>
+<li>REAL类型：MySQL treats REAL as a synonym for DOUBLE, unless the REAL_AS_FLOAT SQL mode is enabled.</li>
+</ul>
+<ul>
+<li><h2 id="Json-Type"><a href="#Json-Type" class="headerlink" title="Json Type"></a>Json Type</h2>• 存储格式为二进制,占用空间大小和longblob,longtext一致;<br>• 每一列的json值磁盘存储大小限制受系统变量 max_allowed_packet限制,内存读取不受限<br>• 使用JSON_STORAGE_SIZE()函数可以获取实际存储占用的空间大小<br>• 不能有非空默认值<br>• 8优化了更新方式,不再是以前的删除旧值写入新值,优化为可以部分更新<br>  ○  JSON_SET(), JSON_REPLACE(), or JSON_REMOVE()<br>  ○ 部分更新只能将旧值更新为新值,不能添加新的元素<br>  ○ 部分更新的值不能超过旧值的大小</li>
+<li>使用函数 JSON_STORAGE_FREE()可以查看</li>
+<li>待完善</li>
+</ul>
 
       
     </div>
@@ -776,7 +785,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">131</span>
+                <span class="site-state-item-count">159</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -787,7 +796,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -798,7 +807,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">119</span>
+                <span class="site-state-item-count">137</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -851,7 +860,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql-DataType"><span class="nav-number">1.</span> <span class="nav-text">MySql DataType</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Numeric-Type"><span class="nav-number">1.1.</span> <span class="nav-text">Numeric Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Date-and-Time-Type"><span class="nav-number">1.2.</span> <span class="nav-text">Date and Time Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-Type"><span class="nav-number">1.3.</span> <span class="nav-text">String Type</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql-DataType"><span class="nav-number">1.</span> <span class="nav-text">MySql DataType</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Numeric-Type"><span class="nav-number">1.1.</span> <span class="nav-text">Numeric Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Date-and-Time-Type"><span class="nav-number">1.2.</span> <span class="nav-text">Date and Time Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-Type"><span class="nav-number">1.3.</span> <span class="nav-text">String Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.4.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Json-Type"><span class="nav-number">1.5.</span> <span class="nav-text">Json Type</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -874,7 +883,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

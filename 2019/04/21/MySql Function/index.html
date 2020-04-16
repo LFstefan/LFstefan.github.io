@@ -110,17 +110,17 @@
 
 
 
-<meta name="description" content="MySql Function LAST_INSERT_ID GROUP_CONCAT CONCAT_WS">
+<meta name="description" content="MySql Function LAST_INSERT_ID GROUP_CONCAT CONCAT_WS FIND_IN_SET batch update">
 <meta name="keywords" content="MySql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySql Function">
 <meta property="og:url" content="https://lfstefan.github.io/2019/04/21/MySql Function/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="MySql Function LAST_INSERT_ID GROUP_CONCAT CONCAT_WS">
-<meta property="og:updated_time" content="2019-09-02T00:14:32.202Z">
+<meta property="og:description" content="MySql Function LAST_INSERT_ID GROUP_CONCAT CONCAT_WS FIND_IN_SET batch update">
+<meta property="og:updated_time" content="2019-12-01T12:43:44.324Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql Function">
-<meta name="twitter:description" content="MySql Function LAST_INSERT_ID GROUP_CONCAT CONCAT_WS">
+<meta name="twitter:description" content="MySql Function LAST_INSERT_ID GROUP_CONCAT CONCAT_WS FIND_IN_SET batch update">
 
 
 
@@ -435,6 +435,8 @@
 <li>LAST_INSERT_ID</li>
 <li>GROUP_CONCAT</li>
 <li>CONCAT_WS</li>
+<li>FIND_IN_SET</li>
+<li>batch update</li>
 </ul>
 <a id="more"></a>
 <ul>
@@ -454,8 +456,30 @@
 <li>eg：select CONCAT_WS(“—“,ppr.full_price,ppr.purchase_price) from b2c_purchase_price_rule as ppr;</li>
 </ul>
 </li>
+<li>FIND_IN_SET<ul>
+<li>Returns a value in the range of 1 to N if the string str is in the string list strlist consisting of N substrings. A string list is a string composed of substrings separated by , characters. <strong>If the first argument is a constant string and the second is a column of type SET, the FIND_IN_SET() function is optimized to use bit arithmetic.</strong> Returns 0 if str is not in strlist or if strlist is the empty string. Returns NULL if either argument is NULL. This function does not work properly if the first argument contains a comma (,) character.</li>
+<li>mysql&gt; SELECT FIND_IN_SET(‘b’,’a,b,c,d’);<ul>
+<li>-&gt; 2</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>FIELD<ul>
+<li>Returns the index (position) of str in the str1, str2, str3, … list. Returns 0 if str is not found.If all arguments to FIELD() are strings, all arguments are compared as strings. If all arguments are numbers, they are compared as numbers. Otherwise, the arguments are compared as double.If str is NULL, the return value is 0 because NULL fails equality comparison with any value. FIELD() is the complement of ELT().</li>
+<li>mysql&gt; SELECT FIELD(‘Bb’, ‘Aa’, ‘Bb’, ‘Cc’, ‘Dd’, ‘Ff’);<ul>
+<li>-&gt; 2</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h3 id="利用jooq中现有函数构造CONCAT-WS函数"><a href="#利用jooq中现有函数构造CONCAT-WS函数" class="headerlink" title="利用jooq中现有函数构造CONCAT_WS函数"></a>利用jooq中现有函数构造CONCAT_WS函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * mysql CONCAT_WS(separator,str1,str2...)函数</div><div class="line"> *</div><div class="line"> * @paramseparator分隔符</div><div class="line"> * @paramfields分割字段</div><div class="line"> * @return组合后的String类型字段</div><div class="line"> */</div><div class="line">public static Field&lt;String&gt; concatWs(String separator, Field&lt;?&gt;... fields) &#123;</div><div class="line">    if (fields.length == 0) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line">    Field&lt;String&gt; head = cast(fields[0], String.class);</div><div class="line">    head = Arrays.stream(fields).skip(1).reduce(head, (field1, field2) -&gt; concatHandler(field1, field2, separator)).cast(String.class);</div><div class="line">    return head;</div><div class="line">&#125;</div><div class="line">private static Field&lt;String&gt; concatHandler(Field&lt;?&gt; head, Field&lt;?&gt; next, String separator) &#123;</div><div class="line">    return concat(concat(cast(head, String.class), separator), cast(next, String.class));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Mysql批量更新实现方式"><a href="#Mysql批量更新实现方式" class="headerlink" title="Mysql批量更新实现方式"></a>Mysql批量更新实现方式</h2><ul>
+<li>update table_name set columns = values where id in (1,2,3,4,5,6…….)</li>
+<li>INSERT into <code>table</code> (id, fruit) VALUES (1, ‘apple’), (2, ‘orange’), (3, ‘peach’) ON DUPLICATE KEY UPDATE fruit = VALUES(fruit);</li>
+<li>UPDATE table SET column2 = (CASE column1 WHEN 1 THEN ‘val1’ WHEN 2 THEN ‘val2’ WHEN 3 THEN ‘val3’ END) WHERE column1 IN(1, 2 ,3);（<strong>相当于某一列基于另一列而条件更新</strong>）</li>
+</ul>
+
       
     </div>
 
@@ -604,7 +628,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">131</span>
+                <span class="site-state-item-count">159</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -615,7 +639,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -626,7 +650,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">119</span>
+                <span class="site-state-item-count">137</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -679,7 +703,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql-Function"><span class="nav-number">1.</span> <span class="nav-text">MySql Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用jooq中现有函数构造CONCAT-WS函数"><span class="nav-number">1.0.1.</span> <span class="nav-text">利用jooq中现有函数构造CONCAT_WS函数</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql-Function"><span class="nav-number">1.</span> <span class="nav-text">MySql Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用jooq中现有函数构造CONCAT-WS函数"><span class="nav-number">1.0.1.</span> <span class="nav-text">利用jooq中现有函数构造CONCAT_WS函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mysql批量更新实现方式"><span class="nav-number">1.1.</span> <span class="nav-text">Mysql批量更新实现方式</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -702,7 +726,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

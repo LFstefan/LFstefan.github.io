@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/10/28/JAVA_内省/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Introspector 内省(Introspector) 是Java 语言对 JavaBean 类属性、事件的一种缺省处理方法。JavaBean是一种特殊的类，主要用于传递数据信息，这种类中的方法主要用于访问私有的字段，且方法名符合某种命名规则。如果在两个模块之间传递信息，可以将信息封装进JavaBean中，这种对象称为“值对象”(Value Object)，或“VO”。方法比较少。这些信息储存">
-<meta property="og:updated_time" content="2019-05-17T09:29:41.959Z">
+<meta property="og:updated_time" content="2019-12-01T12:34:21.109Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introspector">
 <meta name="twitter:description" content="Introspector 内省(Introspector) 是Java 语言对 JavaBean 类属性、事件的一种缺省处理方法。JavaBean是一种特殊的类，主要用于传递数据信息，这种类中的方法主要用于访问私有的字段，且方法名符合某种命名规则。如果在两个模块之间传递信息，可以将信息封装进JavaBean中，这种对象称为“值对象”(Value Object)，或“VO”。方法比较少。这些信息储存">
@@ -439,7 +439,18 @@
 <li>反射就是运行时获取一个类的所有信息，可以获取到.class的任何定义的信息（包括成员 变量，成员方法，构造器等）<br>可以操纵类的字段、方法、构造器等部分。</li>
 <li>内省基于反射实现，主要用于操作JavaBean，通过内省 可以获取bean的getter/setter</li>
 </ul>
-<p>生活中 反射就像我们照镜子，照镜子时候 你的所有信息会毫无出错毫无保留的反射到镜子中，而java中反射就像是运行时用一把镜子去照.class字节码 将这个类的所有信息照出来，‘照’出的结果是客观的，是正确的；<br>内省就像我们反省自己，通常我们是针对犯错而进行反省，根据所犯错误反省总结出结论，这个结论是主观的，不一定正确的，有时候你觉得你自己做错了，但可能事实上自己无可厚非。java中内省，是针对javaBean进行的，目的是为了找出bean的getter和setter以便操作这个bean。只要看到有getter或者setter 就认为这个类有那么一个字段，比如看到getName() 内省就会认为这个类中有name字段，但事实上并不一定会有name；</p>
+<ul>
+<li>生活中 反射就像我们照镜子，照镜子时候 你的所有信息会毫无出错毫无保留的反射到镜子中，而java中反射就像是运行时用一把镜子去照.class字节码 将这个类的所有信息照出来，‘照’出的结果是客观的，是正确的；</li>
+<li>内省就像我们反省自己，通常我们是针对犯错而进行反省，根据所犯错误反省总结出结论，这个结论是主观的，不一定正确的，有时候你觉得你自己做错了，但可能事实上自己无可厚非。java中内省，是针对javaBean进行的，目的是为了找出bean的getter和setter以便操作这个bean。只要看到有getter或者setter 就认为这个类有那么一个字段，比如看到getName() 内省就会认为这个类中有name字段，但事实上并不一定会有name；</li>
+</ul>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>第一种方式最后会得到包括父类在内的属性信息（即是说第二种有过滤作用）</li>
+<li>方式一：BeanInfo beanInfo = Introspector.getBeanInfo(Person.class)</li>
+<li>方式二：BeanInfo beanInfo = Introspector.getBeanInfo(Person.class,Object.class); </li>
+</ul>
+</blockquote>
 <h3 id="应用：将map转换成object-bean对象"><a href="#应用：将map转换成object-bean对象" class="headerlink" title="应用：将map转换成object bean对象"></a>应用：将map转换成object bean对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">public &lt;T&gt; T mapToBean(Map map, Class&lt;T&gt; tClass) &#123;</div><div class="line">        if (map == null) &#123;</div><div class="line">            return null;</div><div class="line">        &#125; else &#123;</div><div class="line">            Object object = null;</div><div class="line"></div><div class="line">            try &#123;</div><div class="line">                object = tClass.newInstance();</div><div class="line">                BeanInfo beanInfo = Introspector.getBeanInfo(tClass);</div><div class="line">                PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();</div><div class="line">                PropertyDescriptor[] arr$ = propertyDescriptors;</div><div class="line">                int len$ = propertyDescriptors.length;</div><div class="line"></div><div class="line">                for(int i$ = 0; i$ &lt; len$; ++i$) &#123;</div><div class="line">                    PropertyDescriptor propertyDescriptor = arr$[i$];</div><div class="line">                    if (propertyDescriptor.getReadMethod() != null &amp;&amp; propertyDescriptor.getWriteMethod() != null) &#123;</div><div class="line">                        String propertyTypeName = propertyDescriptor.g</div><div class="line">                        Object value = map.get(JsonUtils.convertUpperCase(propertyTypeName));</div><div class="line">                        if (value != null) &#123;</div><div class="line">                            if (propertyDescriptor.getPropertyType() != Long.class &amp;&amp; propertyDescriptor.getPropertyType() != Long.TYPE) &#123;</div><div class="line">                                if (propertyDescriptor.getPropertyType() != Double.TYPE &amp;&amp; propertyDescriptor.getPropertyType() != Double.class) &#123;</div><div class="line">                                    if (propertyDescriptor.getPropertyType() != Integer.TYPE &amp;&amp; propertyDescriptor.getPropertyType() != Integer.class) &#123;</div><div class="line">                                        propertyDescriptor.getWriteMethod().invoke(object, value);</div><div class="line">                                    &#125; else &#123;</div><div class="line">                                        propertyDescriptor.getWriteMethod().invoke(object, BatchUtils.parseInt(value));</div><div class="line">                                    &#125;</div><div class="line">                                &#125; else &#123;</div><div class="line">                                    propertyDescriptor.getWriteMethod().invoke(object, BatchUtils.parseDouble(value));</div><div class="line">                                &#125;</div><div class="line">                            &#125; else &#123;</div><div class="line">                                propertyDescriptor.getWriteMethod().invoke(object, BatchUtils.parseLong(value));</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125; catch (Exception var12) &#123;</div><div class="line">                ;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            return object;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
       
     </div>
@@ -591,7 +602,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">131</span>
+                <span class="site-state-item-count">159</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -602,7 +613,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -613,7 +624,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">119</span>
+                <span class="site-state-item-count">137</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -689,7 +700,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

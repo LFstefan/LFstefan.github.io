@@ -110,22 +110,22 @@
 
 
 
-<meta name="description" content="步入java虚拟机的世界 内存管理 运行时数据区域 内存分配与回收   虚拟机对象 垃圾回收 垃圾回收算法 垃圾收集器   GC日志 class文件 类加载机制   建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！">
+<meta name="description" content="步入java虚拟机的世界 内存管理 运行时数据区域 内存分配与回收   虚拟机对象 垃圾回收 垃圾回收算法 垃圾收集器   GC日志 class文件 类加载机制 自定义类加载器     建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！">
 <meta name="keywords" content="JAVA,JVM,Heap,Stack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM">
 <meta property="og:url" content="https://lfstefan.github.io/2018/04/22/JVM/index.html">
 <meta property="og:site_name" content="染心">
-<meta property="og:description" content="步入java虚拟机的世界 内存管理 运行时数据区域 内存分配与回收   虚拟机对象 垃圾回收 垃圾回收算法 垃圾收集器   GC日志 class文件 类加载机制   建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！">
+<meta property="og:description" content="步入java虚拟机的世界 内存管理 运行时数据区域 内存分配与回收   虚拟机对象 垃圾回收 垃圾回收算法 垃圾收集器   GC日志 class文件 类加载机制 自定义类加载器     建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/%E5%AF%B9%E8%B1%A1%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D1.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/%E5%AF%B9%E8%B1%A1%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D2.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/GC%E6%97%A5%E5%BF%97.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%9B%BE.png">
-<meta property="og:updated_time" content="2019-05-07T07:19:03.614Z">
+<meta property="og:updated_time" content="2020-02-02T07:34:37.217Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM">
-<meta name="twitter:description" content="步入java虚拟机的世界 内存管理 运行时数据区域 内存分配与回收   虚拟机对象 垃圾回收 垃圾回收算法 垃圾收集器   GC日志 class文件 类加载机制   建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！">
+<meta name="twitter:description" content="步入java虚拟机的世界 内存管理 运行时数据区域 内存分配与回收   虚拟机对象 垃圾回收 垃圾回收算法 垃圾收集器   GC日志 class文件 类加载机制 自定义类加载器     建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！">
 <meta name="twitter:image" content="http://op7sipvie.bkt.clouddn.com/%E5%AF%B9%E8%B1%A1%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D1.png">
 
 
@@ -451,7 +451,10 @@
 </li>
 <li>GC日志</li>
 <li>class文件</li>
-<li>类加载机制</li>
+<li>类加载机制<ul>
+<li>自定义类加载器</li>
+</ul>
+</li>
 </ul>
 <blockquote>
 <p>建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！</p>
@@ -684,16 +687,25 @@
 </clinit></li>
 </ul>
 <h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><ul>
-<li>”通过一个类的全限定名来获取描述此类的二进制字节流“这个动作在虚拟机外部实现，</li>
-<li>同一份class文件，不同的类加载器加载后形成的类不一样</li>
-<li>启动类加载器：BoostropClassLoader，c++实现，虚拟机自身一部分</li>
-<li>其他所有类加载器：java实现，虚拟机外部<ul>
-<li>扩展类加载器</li>
-<li>应用程序加载器</li>
-<li>自定义加载器</li>
+<li>通过一个类的全限定名来获取描述此类的二进制字节流“这个动作在虚拟机外部实现，</li>
+<li>同一份class文件，不同的类加载器加载后形成的类不一样<ul>
+<li>jvm判定两个class是否相同：class的全限定名是否相同；是否同一个classloader加载</li>
 </ul>
 </li>
-<li>双亲委派模型：类加载器收到类加载请求后，将请求委派给父加载器，所有的请求最终被传送到启动类加载器上，只有父加载器自己无法完成加载后，子加载器才会自己加载，</li>
+<li>启动类加载器：BoostropClassLoader，c++实现，虚拟机自身一部分（负责加载<strong>JDK中的核心类库</strong>，如：rt.jar、resources.jar、charsets.jar等）</li>
+<li>其他所有类加载器：java实现，虚拟机外部<ul>
+<li>扩展类加载器（负责加载Java的扩展类库，默认加载JAVA_HOME/jre/lib/ext/目下的所有jar）</li>
+<li>应用程序加载器（负责加载应用程序classpath目录下的所有jar和class文件）</li>
+<li>自定义加载器（例如：加载网络中的class文件）<ul>
+<li>String rootUrl = “<a href="http://localhost:8080/httpweb/classes" target="_blank" rel="external">http://localhost:8080/httpweb/classes</a>“;</li>
+<li>NetworkClassLoader ncl1 = new NetworkClassLoader(rootUrl);</li>
+<li>Class&lt;?&gt; clazz1 = ncl1.loadClass(className);</li>
+<li>Object obj1 = clazz1.newInstance();</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>双亲委派模型：类加载器收到类加载请求后，将请求委派给父加载器，所有的请求最终被传送到启动类加载器上，只有父加载器自己无法完成加载后，子加载器才会自己加载，这样可以有效防止类的重复加载</li>
 </ul>
 <h2 id="Jvm参数"><a href="#Jvm参数" class="headerlink" title="Jvm参数"></a>Jvm参数</h2><h3 id="生产实例-UCC"><a href="#生产实例-UCC" class="headerlink" title="生产实例-UCC"></a>生产实例-UCC</h3><p>-server ：选择服务器应用程序运行时优化。 目录服务器将需要更长的时间来启动和“预热”，但将进行更积极的优化以产生更高的吞吐量。<br>-d64 ：仅适用于64位的机器，默认是32位机器<br>-Xmx8g ：jvm最大堆内存空间大小<br>-Xms8g ：jvm最小堆内存空间大小<br>-Xmn1g ：年轻代占内存大小<br>-XX:PermSize=512m 设置永久代大小，避免内存泄露异常java.lang.OutOfMemoryError: PermGen space<br>-Xss2m ：分配给单个线程的空间<br>-XX:+DisableExplicitGC ：防止外部应用程序强制进行昂贵的垃圾收集。 如果使用jstatd或其他基于RMI的应用程序来监视Oracle Unified Directory，则应考虑使用此选项以避免意外暂停。<br>-XX:+UseConcMarkSweepGC ：选择CMS垃圾收集器。 此垃圾收集器设置为低暂停时间。 这将导致Java应用程序具有较低的平均吞吐量，但CPU密集型垃圾收集要短得多。 在具有响应时间限制的环境中，此选项是必需的。<br>-XX:+CMSParallelRemarkEnabled<br>-XX:+UseCMSCompactAtFullCollection<br>-XX:LargePageSizeInBytes=128m<br>-XX:+UseFastAccessorMethods<br>-XX:+UseCMSInitiatingOccupancyOnly<br>-XX:CMSInitiatingOccupancyFraction=70 ：选择GC开始的级别。 默认值为68％。<br>-XX:+PrintGCDetails ：打印GC细节<br>-XX:+PrintGCTimeStamps ：打印垃圾收集时间戳以帮助调试。<br>-Xloggc:./logs/gc.log<br>-XX:-HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=./logs”</p>
 <h3 id="生产实例-CMC"><a href="#生产实例-CMC" class="headerlink" title="生产实例-CMC"></a>生产实例-CMC</h3><p>-server<br>-Xmx8g<br>-Xms8g<br>-Xmn256m<br>-Xss256k<br>-XX:+PrintGCDetails<br>-XX:+PrintGCTimeStamps<br>-Xloggc:./logs/gc.log<br>-XX:-HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=./logs”</p>
@@ -722,6 +734,45 @@
 <li><p>Advanced Garbage Collection Options (prefixed with -XX)<br>These options control how garbage collection (GC) is performed by the Java HotSpot VM.</p>
 </li>
 </ol>
+<h2 id="自定义类加载器ClassLoader"><a href="#自定义类加载器ClassLoader" class="headerlink" title="自定义类加载器ClassLoader"></a>自定义类加载器ClassLoader</h2><ul>
+<li>继承java.lang.ClassLoader</li>
+<li>重写父类的findClass方法<ul>
+<li>从源获取class文件内容（例如：从网络URL加载class文件（使用inputStream获取class文件的byte[]））<ul>
+<li>非自定义类加载器获取class文件通过java本地接口（native）实现</li>
+</ul>
+</li>
+<li>将获取到的class文件内容转换成jvm内的class对象实例<ul>
+<li>自定义/非自定义类加载器都是通过java本地接口完成转换</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注意：因为JDK已经在loadClass方法中帮我们实现了ClassLoader搜索类的算法，当在loadClass方法中搜索不到类时，loadClass方法就会调用findClass方法来搜索类，所以我们只需重写该方法即可。如没有特殊的要求，一般不建议重写loadClass搜索类的算法。</p>
+</blockquote>
+<p><a href="https://gist.github.com/LFstefan/6b1d82511b0bf435c14a01907809827d" title="https://gist.github.com/LFstefan/6b1d82511b0bf435c14a01907809827d" target="_blank" rel="external">https://gist.github.com/LFstefan/6b1d82511b0bf435c14a01907809827d</a></p>
+<h2 id="JDK目录结构解析（JDK1-8目录结构）"><a href="#JDK目录结构解析（JDK1-8目录结构）" class="headerlink" title="JDK目录结构解析（JDK1.8目录结构）"></a>JDK目录结构解析（JDK1.8目录结构）</h2><ul>
+<li>bin目录：Java工具的可执行文件，包括: java、Java编译器javac、反编译.class文件javap、密钥管理工具keytool、Java文档工具javadoc等。</li>
+<li>db目录：Java实现的数据库。</li>
+<li>include目录：.h头文件，C语言开发时用到的头文件。比如jni.h是开发jni程序时必须引用的头文件。</li>
+<li>lib目录： Java类库，我们经常看到的dt.jar和tools.jar就在这个目录下。<ul>
+<li>dt.jar包含了Swing包，是运行环境的类库。</li>
+<li>tools.jar是工具类库，bin目录下的可执行程序，好多都会用到这个类库。</li>
+</ul>
+</li>
+<li>src.zip文件：<strong>Java类库源码</strong>，包括了rt.jar库中的关键部分；除了Java类库，还包含了启动器（launcher）的源码（C语言实现）。</li>
+<li>jre目录：Java运行环境。后面会展开了讲它的目录结构。<ul>
+<li>jre目录结构</li>
+<li>bin目录：包含了java运行所需要的可执行文件，比如java[.exe]</li>
+<li>lib目录：包含了运行时依赖的java类库和动态链接库（.so或.dll或.dylib）<ul>
+<li>amd64目录下包含了程序运行所需的动态链接库，在amd64/server目录下，可以找到JVM库：libjvm.so。</li>
+<li>rt.jar文件是java运行时类库，是我们用到最多的基础类库，包括java.lang，java.io，java.net，java.util等。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
@@ -801,8 +852,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/29/序列化框架/" rel="prev" title="序列化框架">
-                序列化框架 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/29/Json与序列化/" rel="prev" title="Json与序列化">
+                Json与序列化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -877,7 +928,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">131</span>
+                <span class="site-state-item-count">159</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -888,7 +939,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -899,7 +950,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">119</span>
+                <span class="site-state-item-count">137</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -952,7 +1003,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#步入java虚拟机的世界"><span class="nav-number">1.</span> <span class="nav-text">步入java虚拟机的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">1.1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.1.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收"><span class="nav-number">1.1.2.</span> <span class="nav-text">内存分配与回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以复制算法为例，minorGC一次的全过程如下"><span class="nav-number">1.1.3.</span> <span class="nav-text">以复制算法为例，minorGC一次的全过程如下</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机对象"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收"><span class="nav-number">1.3.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判定对象可以进行回收"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何判定对象可以进行回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">1.3.2.</span> <span class="nav-text">垃圾回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器：内存回收的具体实现"><span class="nav-number">1.3.3.</span> <span class="nav-text">垃圾收集器：内存回收的具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC日志阅读"><span class="nav-number">1.4.</span> <span class="nav-text">GC日志阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识class文件"><span class="nav-number">1.5.</span> <span class="nav-text">认识class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class文件校验"><span class="nav-number">1.5.1.</span> <span class="nav-text">Class文件校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">1.6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载过程"><span class="nav-number">1.6.1.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">1.6.2.</span> <span class="nav-text">类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jvm参数"><span class="nav-number">1.7.</span> <span class="nav-text">Jvm参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-UCC"><span class="nav-number">1.7.1.</span> <span class="nav-text">生产实例-UCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-CMC"><span class="nav-number">1.7.2.</span> <span class="nav-text">生产实例-CMC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.8.</span> <span class="nav-text">扩展</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#步入java虚拟机的世界"><span class="nav-number">1.</span> <span class="nav-text">步入java虚拟机的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">1.1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.1.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收"><span class="nav-number">1.1.2.</span> <span class="nav-text">内存分配与回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以复制算法为例，minorGC一次的全过程如下"><span class="nav-number">1.1.3.</span> <span class="nav-text">以复制算法为例，minorGC一次的全过程如下</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机对象"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收"><span class="nav-number">1.3.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判定对象可以进行回收"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何判定对象可以进行回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">1.3.2.</span> <span class="nav-text">垃圾回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器：内存回收的具体实现"><span class="nav-number">1.3.3.</span> <span class="nav-text">垃圾收集器：内存回收的具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC日志阅读"><span class="nav-number">1.4.</span> <span class="nav-text">GC日志阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识class文件"><span class="nav-number">1.5.</span> <span class="nav-text">认识class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class文件校验"><span class="nav-number">1.5.1.</span> <span class="nav-text">Class文件校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">1.6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载过程"><span class="nav-number">1.6.1.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">1.6.2.</span> <span class="nav-text">类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jvm参数"><span class="nav-number">1.7.</span> <span class="nav-text">Jvm参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-UCC"><span class="nav-number">1.7.1.</span> <span class="nav-text">生产实例-UCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-CMC"><span class="nav-number">1.7.2.</span> <span class="nav-text">生产实例-CMC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.8.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义类加载器ClassLoader"><span class="nav-number">1.9.</span> <span class="nav-text">自定义类加载器ClassLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK目录结构解析（JDK1-8目录结构）"><span class="nav-number">1.10.</span> <span class="nav-text">JDK目录结构解析（JDK1.8目录结构）</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -975,7 +1026,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

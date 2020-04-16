@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/11/25/Idempotency/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2019/10/09/Logback原理分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2018/11/25/Idempotency/" itemprop="url">
-                  Idempotency
+                <a class="post-title-link" href="/2019/10/09/Logback原理分析/" itemprop="url">
+                  未命名
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-25T12:17:20+08:00">
-                2018-11-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-09T20:49:31+08:00">
+                2019-10-09
               </time>
             
 
@@ -377,28 +377,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Distributed/" itemprop="url" rel="index">
-                    <span itemprop="name">Distributed</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -406,7 +384,7 @@
 
           
           
-             <span id="/2018/11/25/Idempotency/" class="leancloud_visitors" data-flag-title="Idempotency">
+             <span id="/2019/10/09/Logback原理分析/" class="leancloud_visitors" data-flag-title="">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,15 +413,831 @@
 
       
         
-          <h1 id="Idempotency"><a href="#Idempotency" class="headerlink" title="Idempotency"></a>Idempotency</h1><blockquote>
+          
+            <p>资源加载getResource，getSystemResources<br>Class的getResource()方法是从当前.class文件路径查找资源<br>ClassLoader则是从jar包根目录查找.<br>注意：针对WEB的javaEE项目和javaSE项目，路径也是有所不同的。<br>private static final Logger log = LoggerFactory .getLogger(EA12000119.class);做了哪些事情</p>
+<pre><code>1. 获取getLogger
+2. 获取getILoggerFactory
+3. 若未进行初始化，开始初始化操作init（binder绑定操作）
+4. 获取url资源STATIC_LOGGER_BINDER_PATH = &quot;org/slf4j/impl/StaticLoggerBinder.class&quot;
+5. 检测是否存在多个可绑定url资源
+6. StaticLoggerBinder.getSingleton()执行绑定操作
+7. context初始化autoconfig自动配置
+8. 查找logback.xml（或者其他后缀的grooy）配置文件进行加载，如果找不到logback.xml就使用ServiceLoader（ServiceLoader.load（接口）可以加载到该接口的所有实现类）
+9. doConfigure解析配置文件完后内容设置
+10. 初始化操作至此完成
+11. getContextSelector选择器返回getLoggerFactory，返回一个上下文context其实就是
+12. 验证入参类名和当前类名是否一致
+    1. 返回调用调用方法的类的名称。getCallingClass
+    2. 通过“Thread.currentThread().getStackTrace()”，来获得当前调用堆栈。
+        1. String clazz = Thread.currentThread() .getStackTrace()[2].getClassName();
+        2. String method = Thread.currentThread() .getStackTrace()[2].getMethodName();
+    3. java.lang.SecurityManager.getClassContext() 方法返回当前执行堆栈类的数组。该数组是在执行堆栈的方法数的长度。索引0处的元素是类当前正在执行的方法，在索引1的的元素是类方法的调用者
+    4. java安全领域问题SecurityManager待了解
+    5. 空实现类 NOPLogger---NOP
+</code></pre><p>logger.info(“”);经历了什么</p>
+<pre><code>1. slf4j的logger接口，logback的实现
+2. filterAndLog_1
+</code></pre><p>URL url<br>Runtime.getRuntime().availableProcessors()获取cpu个数</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2019/10/09/Spring AOP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/10/09/Spring AOP/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-09T20:46:40+08:00">
+                2019-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/09/Spring AOP/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>@AspectJ注解语法</p>
 <ul>
-<li>何为幂等性</li>
-<li>幂等实现方式</li>
+<li>切点函数</li>
 </ul>
+<p>@Aspect        //定义切面<br>public class Example{<br>    @Before(“execution(* greetTo(..))”)        //定义切点，增强<br>    public void fun(){横切逻辑}<br>}<br>@AfterReturning<br>@Around<br>@AfterTrowing<br>@After<br>@DeclareParents<br>xml配置</p>
+<aop:aspectj-autoproxy>
+
+<p>切点复合运算（与，非，或）<br>@After(“within(com.smart.<em>)”+”&amp;&amp; excution(</em> greetTo(..))”)-匹配com.smart包中方法名为greetTo（）的切点</p>
+<p>通过命名切点，实现切点重用@Pointcut</p>
+<p>AOP主要应用场景有：</p>
+<ol>
+<li>Authentication 权限</li>
+<li>Caching 缓存</li>
+<li>Context passing 内容传递</li>
+<li>Error handling 错误处理</li>
+<li>Lazy loading 懒加载</li>
+<li>Debugging  调试</li>
+<li>logging, tracing, profiling and monitoring 记录跟踪 优化 校准</li>
+<li>Performance optimization 性能优化</li>
+<li>Persistence  持久化</li>
+<li>Resource pooling 资源池</li>
+<li>Synchronization 同步</li>
+<li>Transactions 事务</li>
+</ol>
+</aop:aspectj-autoproxy>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2019/09/03/RabbitMQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/09/03/RabbitMQ/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-03T07:33:52+08:00">
+                2019-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/09/03/RabbitMQ/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>mq衡量指标</p>
+<ol>
+<li>服务性能</li>
+<li>数据存储（内存，关系型数据库，）</li>
+<li>集群架构<ol>
+<li>主备模式（通过zk协调主备的切换）</li>
+<li>分布式模式（network），多个主备模式关联起来</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>kafka<ul>
+<li>pull模式消费消息</li>
+<li>高性能（借助pagecash），高吞吐量（用于日志的收集）</li>
+<li>集群模式（多节点复制，zk集群协调节点）</li>
+<li>消息的处理（重复，丢失，错误）不严格</li>
+</ul>
+</li>
+</ul>
+<p>RocketMQ的name service（zk替代品）</p>
+<p>rabbitmq</p>
+<ul>
+<li>镜像队列模型</li>
+<li>消息确认模式</li>
+</ul>
+<p>AMQP协议</p>
+<ul>
+<li>高级消息队列模型规范，上层协议</li>
+<li>同样的规范还有jms等，基于不同的规范可以书写出不同的消息队列框架</li>
+<li>rabbitmq基于AMQP协议，activeMQ基于jms，等等</li>
+<li>AMQP协议模型<ul>
+<li>生产者（往路由扔消息）</li>
+<li>消费者（从队列中消费消息）</li>
+<li>exchange交换机（路由与队列相互绑定）</li>
+<li>message queue 消息队列</li>
+</ul>
+</li>
+<li><p>核心概念</p>
+<ul>
+<li>server：又叫做broker，服务端</li>
+<li>connection：网络连接，应用端和服务端的连接</li>
+<li>channel：网络信道，消息读写的通道，客户端可以建立多个通道，每一个通道表示一个会话任务；类似于数据库的session，建立连接后建立session；channel也是，建立连接后先建立channel</li>
+<li>message：消息；不同的协议定义的消息结构不一样，rabbitmq的消息结构又properties属性和body消息体组成；properties定义消息属性，body就是消息内容</li>
+<li>virtual host：虚拟主机；主要用于逻辑隔离。最上层的消息路由；一个虚拟主机中可以含有若干个exchange和queue，但是同一个虚拟主机中不能含有相同名称的exchange和queue</li>
+<li>exchange交换机：接受消息，根据路由键转发消息到绑定的队列中</li>
+<li>binding绑定：exchange和queue之间的虚拟连接，绑定中可以含有routing key</li>
+<li>routing key：路由规则</li>
+<li>queue：消息队列  </li>
+</ul>
+</li>
+<li><p>exchange交换机</p>
+<ul>
+<li>name：交换机名称</li>
+<li>type：交换机类型，direct，topic，fanout,headers<ul>
+<li>direct：直连，生产端的routingkey和消费端的routiungkey完全匹配绑定，否则抛弃消息</li>
+<li>topic：模糊匹配，#一个或者多个，*就一个，</li>
+<li>fanout：广播，不做任何路由匹配，最快</li>
+<li>headers：</li>
+</ul>
+</li>
+<li>durability：持久化</li>
+<li>aotu delete：当最后一个绑定在exchange上的队列删除后，自动删除exchange</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>binding 绑定关系<ul>
+<li>exchange交换机和queue队列绑定</li>
+<li>exchange交换机和交换机也可以绑定，相当于调用链变长</li>
+</ul>
+</li>
+</ul>
+<p>过期时间：过期不被消费自动移除</p>
+<p>消息的header部分可以自定义属性</p>
+<p>erlang语言有着和原生socket一样的延迟，所以性能好</p>
+<p>通信端口号5672<br>控制台端口号15672<br>集群端口号25672</p>
+<p>配置文件（.app文件）</p>
+<ul>
+<li>配置控制台登陆用户名密码</li>
+</ul>
+<p>ps losf netstat<br>rpm和二进制的区别<br>rpm -ivh … </p>
+<h2 id="消息百分之百投递成功"><a href="#消息百分之百投递成功" class="headerlink" title="消息百分之百投递成功"></a>消息百分之百投递成功</h2><ul>
+<li>生产端口的可靠性投递<ul>
+<li>保证消息成功发出</li>
+<li>mq节点成功接受</li>
+<li>发送端收到mq的确认应答</li>
+<li>补偿机制</li>
+</ul>
+</li>
+</ul>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li>消息落库，对消息状态标记（两次落库，多一次消息落库操作）<ul>
+<li>发送前将消息落库（业务数据落库，例如订单已提交；消息数据落库，消息已发出状态为0）</li>
+<li>发送消息给MQ</li>
+<li>MQ给发送端发送确认消息ack，并将库中消息状态更新由0改为1(MQ已收到)</li>
+<li>分布式定时任务（保证同一时刻只有一个应用服务器操纵库）轮询检查库中消息的状态，将状态为0的消息重复发送，直到达到重试上限，标记消息状态为2（消息发送失败）</li>
+</ul>
+</li>
+<li><strong>消息延迟投递，二次确认，回调检查（减少库的交互操作，提高并发）</strong><ul>
+<li>（大厂不加事务，严重影响性能）</li>
+<li>发送消息前业务数据落库，不操作消息数据，直接发送消息出去给queue1（五分钟后（指定延迟时间）会有一个消息检查机制发送消息给queue2询问之前发送的消息是否处理成功）</li>
+<li>broker中queue1收到消息</li>
+<li>消费者从queue1消费消息成功，并回发一个给MQ一个确认ack消息到queue3</li>
+<li>三方回调应用callback会在broker的queue3消费ack确认消息并将其结果落库，与此同时，三方回调应用还会消费queue2的询问消息，到库中查询ack确认记录是否存在，否，发起RPC调用通知应用服务器，你发送的这条消息没有被正常处理，建议重新发送</li>
+</ul>
+</li>
+</ul>
+<h2 id="消息的幂等性"><a href="#消息的幂等性" class="headerlink" title="消息的幂等性"></a>消息的幂等性</h2><h3 id="消息重复投递，如何保证消息重复消费"><a href="#消息重复投递，如何保证消息重复消费" class="headerlink" title="消息重复投递，如何保证消息重复消费"></a>消息重复投递，如何保证消息重复消费</h3><h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li>唯一id+指纹码；利用数据库主键去重<ul>
+<li>指纹码：业务规则，区别统一id的不同的操作</li>
+<li>先查后操作</li>
+<li>利用id路由分库分表实现多库的幂等</li>
+</ul>
+</li>
+<li>利用redis原子性实现<ul>
+<li>如果需要落库，怎么保证库和缓存的一致性</li>
+<li>不落库，怎么设置缓存的同步策略</li>
+</ul>
+</li>
+</ul>
+<h2 id="confirm消息确认机制"><a href="#confirm消息确认机制" class="headerlink" title="confirm消息确认机制"></a>confirm消息确认机制</h2><ul>
+<li>服务端发送消息给broker后，broker收到消息后会回复一个确认ack，服务端异步监听接受这个确认ack<ul>
+<li>channel上开启确认模式：channel.confirmSelect()</li>
+<li>channel上添加监听：addConfirmListener；具体结果具体处理，重发还是丢弃</li>
+</ul>
+</li>
+</ul>
+<h2 id="return返回消息机制"><a href="#return返回消息机制" class="headerlink" title="return返回消息机制"></a>return返回消息机制</h2><ul>
+<li>return listener</li>
+<li>用于处理一些不可路由的消息；当前exchange不存在或者路由routingkey不可达</li>
+<li>mandatory属性：为true，监听器会接受处理路由不可达的消息，然后进行后续处理；为false，则broker自动删除该消息</li>
+</ul>
+<h2 id="自定义消费者"><a href="#自定义消费者" class="headerlink" title="自定义消费者"></a>自定义消费者</h2><ul>
+<li>消费者其实就是监听队列中是否含有消息，监听其实就是轮询</li>
+<li>rabbitmq提供了一个defaultConsumer来继承可以实现自定义消费者，避免了手动写while循环去</li>
+</ul>
+<h2 id="消费端的消息限流"><a href="#消费端的消息限流" class="headerlink" title="消费端的消息限流"></a>消费端的消息限流</h2><ul>
+<li>消费端关闭自动签收autoACK，避免将消息队列中堆积的消息一次性全部涌进消费端服务器</li>
+<li>消费端设置一次接受多少条消息，处理完后发送ack给消息队列，然后在发送一部分，依次类推</li>
+</ul>
+<h2 id="消费端ack和重回队列"><a href="#消费端ack和重回队列" class="headerlink" title="消费端ack和重回队列"></a>消费端ack和重回队列</h2><ul>
+<li>确定消费端收到来自消息队列的消息，可以自动ack，可以手动ack，也可以nack（表示没有接收到消息）</li>
+<li>处理失败的消息可以发回重新发送，重新消费</li>
+<li>重回队列将处理失败的消息重新放回队列的尾部排队重新发送消费处理</li>
+<li>消息处理失败后可以选择重回队列重新处理，也可以直接丢弃</li>
+</ul>
+<h2 id="消息的TTL有效期"><a href="#消息的TTL有效期" class="headerlink" title="消息的TTL有效期"></a>消息的TTL有效期</h2><ul>
+<li>消息发送时指定的ttl</li>
+<li>消息队列中的消息有效期，从进入队列后起的一定有效时间内没有被消费即被丢弃</li>
+</ul>
+<h2 id="死信队列"><a href="#死信队列" class="headerlink" title="死信队列"></a>死信队列</h2><ul>
+<li>dead-letter-exchange</li>
+<li>当消息在队列（队列会设置监听检测是否含有死信消息）中变成死信消息后便会被发送到指定的死信exchange中，然后通过死信exchange绑定的队列进行统一发送处理</li>
+<li>死信消息（即不会被消费端消费的消息）<ul>
+<li>消息被拒绝</li>
+<li>消息ttl过期</li>
+<li>队列达到最大长度</li>
+</ul>
+</li>
+</ul>
+<h2 id="rabbitmq整合spring-AMQP"><a href="#rabbitmq整合spring-AMQP" class="headerlink" title="rabbitmq整合spring AMQP"></a>rabbitmq整合spring AMQP</h2><ul>
+<li>rabbitAdmin<ul>
+<li>@configuration标注配置文件 </li>
+<li>@configScan配置扫描路径</li>
+<li>注入rabbitmq的connectionFactory设置连接信息以连接配置，<strong>利用springboot的catchingConnectionFactory注入</strong></li>
+<li>利用注入的连接工厂connectionFactory来注入rabbitAdmin并设置属性autoStartUp为true</li>
+<li>rabbitAdmin底层实现：使用rabbitTemplate的execute方法实现一系列基础的rabbitmq操作</li>
+<li>在service类中，使用@autowired引入rabbitAdmin后便可以开始使用</li>
+<li>bindingBuilder工具类， 绑定交换机和队列的同时进行声明交换机和队列</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>spring把rabbitmq中所有内容都封装成了对象，例如，交换机DirectionExchange类…Queue类等；原生客户端我们是直接写字符串类定义，spring封装成了对象，并添加了额外属性。</p>
+</blockquote>
+<ul>
+<li><p>springAMQP声明交换机，队列，绑定</p>
+<ul>
+<li>原生api中我们使用channel来声明交换机，队列，绑定</li>
+<li>spring中直接在配置类中使用@Bean注入类对象即可</li>
+</ul>
+</li>
+<li><p>rabbitmq Tamplate</p>
+<ul>
+<li>消息模板，提供了丰富的发送消息的方法</li>
+<li>@Bean注入RabbitTemplate</li>
+<li>spring封装的属性消息类：MessageProperties，消息类Message</li>
+<li><strong>MessagePostProcessor类</strong>：消息发送前的统一处理（前置，后置都有），重写postProcessorMessage()方法</li>
+</ul>
+</li>
+<li><p>simpleMessagelistenerContainer</p>
+<ul>
+<li>简单消息监听容器，可以动态设置属性，运行中动态配置</li>
+<li>@Bean注入，注入后设置监听容器属性，例如消费者数量等…</li>
+</ul>
+</li>
+<li><p>MessagelistenerAdapter</p>
+<ul>
+<li>消息监听适配器，适配器设计模式</li>
+<li>消息监听类ChannelAwareMessageListener，消息监听容器设置监听类的时候，可以直接把消息监听类ChannelAwareMessageListener设置进去，也可以利用设计模式将消息监听适配器设置进去</li>
+<li>MessagelistenerAdapter实例化的时候传入一个参数，这个参数就是自定义的消息设置类</li>
+<li>自定义的消息设置类可以实现消息发送的方法名，消息类型转换MessageConvert等</li>
+<li>可以设置队列和方法进行绑定，指定特定方法接受处理指定队列中的消息</li>
+</ul>
+</li>
+<li><p>MessageConvert</p>
+<ul>
+<li>消息转换器接口，默认消息方法接受参数byte[]</li>
+<li>简单消息监听容器simpleMessagelistenerContainer设置消息监听适配器MessagelistenerAdapter，消息监听适配器MessagelistenerAdapter设置消息转换器MessageConvert；</li>
+<li>Jackson2JsonMessageConvert:转json转换器，json格式对应java中map对象</li>
+<li>messageproperties消息属性中设置消息类型conextType(“application/json”)</li>
+<li>DefaultMessageConvert:转Java对象转换器，必须使用下面的固定格式</li>
+<li>messageproperties.setHandler(“<strong>TypeId</strong>“,”Java对象类的全路径”)</li>
+<li>转多个Java对象转换器：用了一个map来标记标签和Java对象类的全路径之间的对应关系，然后就可以使用标签来替代Java对象类的全路径实现消息转换</li>
+<li>ContentTypeDelegatingMessageConver全局消息转换器，可以设置多个消息转换器，根据不同的contentType自动转换成对应的消息格式（图片，pdf，文本…）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>File.copy()</p>
+</blockquote>
+<h2 id="rabbitmq整合springboot"><a href="#rabbitmq整合springboot" class="headerlink" title="rabbitmq整合springboot"></a>rabbitmq整合springboot</h2><pre><code>- RabbitTemplate.confirmCallback：消息发送确认
+- RabbitTemplate.returnCallbeak：消息不可达返回
+- CorrelationData：消息id规则自定义（必须保证全局唯一）
+- 配置手工确认模式
+- 消费端监听：@RabbitListener（原生的时候我们使用while循环来实现消费端监听，整合spring后我们可以自定义消费端监听类），组合注解；配合注解@RabbitHandler使用，用在消费端接受消息方法上
+- AMQPHeader常量类
+- @PayLoad注解，@Headers：spring提供的注解来标记消息体和消息header；用在消费端接受消息方法上
+</code></pre><h2 id="rabbitmq整合springcloud"><a href="#rabbitmq整合springcloud" class="headerlink" title="rabbitmq整合springcloud"></a>rabbitmq整合springcloud</h2><ul>
+<li>spring cloud stream：可以对接kafka，rabbitmq；但是定位方向与kafka类似，为提供高性能的消息服务，所以提供的消息不能保证百分之百的可靠性投递  </li>
+<li>@output注解，定义消息输出通道</li>
+<li>@input注解，定义消息接受通道</li>
+<li>@streamlistener(参数为@input)：监听消息接受通道，处理消息</li>
+<li>配置文件中配置好交换机，队列，绑定关系</li>
+<li>可以实现异构，生产端用rabbitmq，消费端用kafka</li>
+</ul>
+<h2 id="rabbitmq集群架构"><a href="#rabbitmq集群架构" class="headerlink" title="rabbitmq集群架构"></a>rabbitmq集群架构</h2><ul>
+<li>主备模式，简称warren（兔子窝）模式<ul>
+<li>haproxy：tcp级别的代理，负责协调主备的切换</li>
+</ul>
+</li>
+<li>远程模式：可以实现双活的一种模式，简称shovel模式<ul>
+<li>远程复制，如果本区域的mq集群压力过大，则会将消息转发到其他地域压力不大的mq集群上，然后在进行消息的消费</li>
+<li>将消息的进行不同数据中心的复制，实现跨地域的两个mq集群互联</li>
+</ul>
+</li>
+<li>镜像模式（mirror模式）<ul>
+<li>保证百分之百数据不丢失</li>
+<li>主要就是实现数据同步（一般三个节点就可以实现100%数据不丢失）</li>
+<li>haproxy实现负载均衡</li>
+</ul>
+</li>
+<li>多活模式<ul>
+<li>异地复制的主流模式</li>
+<li>依赖于<strong>federation插件</strong>实现数据同步复制</li>
+<li>双中心，多中心；两套或者多套mq集群</li>
+</ul>
+</li>
+</ul>
+<h2 id="搭建一个高可用mq服务集群"><a href="#搭建一个高可用mq服务集群" class="headerlink" title="搭建一个高可用mq服务集群"></a>搭建一个高可用mq服务集群</h2><ul>
+<li>利用rabbitmq，haproxy，keepalived等</li>
+</ul>
+<h2 id="Haproxy"><a href="#Haproxy" class="headerlink" title="Haproxy"></a>Haproxy</h2><ul>
+<li>高可用，负载均衡，基于tcp和http的代理软件</li>
+<li>单进程，时间驱动模型…</li>
+<li>单独去学习</li>
+</ul>
+<h2 id="keepAlived"><a href="#keepAlived" class="headerlink" title="keepAlived"></a>keepAlived</h2><ul>
+<li>通过VRRP协议实现高可用功能的软件</li>
+<li>解决静态路由单点故障的问题，能够保证当个别节点宕机时，整个网络可以不间断的运行</li>
+<li>具备有管理LVS的功能，同时具有对LVS下面节点进行健康检查的功能</li>
+<li>故障切换</li>
+</ul>
+<h2 id="集群配置文件"><a href="#集群配置文件" class="headerlink" title="集群配置文件"></a>集群配置文件</h2><ul>
+<li>监听端口：tcp_listerners</li>
+<li>磁盘低水位线：disk_free_limit</li>
+<li>内存低水位线：vm_memory_high_watermark</li>
+<li>…</li>
+</ul>
+<h2 id="集群恢复和故障转移"><a href="#集群恢复和故障转移" class="headerlink" title="集群恢复和故障转移"></a>集群恢复和故障转移</h2><h2 id="延迟插件"><a href="#延迟插件" class="headerlink" title="延迟插件"></a>延迟插件</h2><ul>
+<li>rabbitmq延迟队列插件，延迟发送，定时任务</li>
+<li>rabbitmq有很多插件可以使用</li>
+</ul>
+<h2 id="互联网大厂set架构"><a href="#互联网大厂set架构" class="headerlink" title="互联网大厂set架构"></a>互联网大厂set架构</h2><ul>
+<li>set：单元化架构，即不同的业务线使用不同的架构集群，集群拆分</li>
+<li>IDC</li>
+<li>同城双活（多活）架构<ul>
+<li>多中心，多个架构集群互为主备，主从，实现流量的切换等</li>
+<li>但是多中心会涉及到跨机房写，有延迟问题</li>
+</ul>
+</li>
+<li>两地三中心架构<ul>
+<li>基于灾备思想</li>
+<li>在同城双活基础上，异地构建一套灾备数据中心，每个中心都具有完整的数据</li>
+<li>同城AB数据同步，异地中心冷备</li>
+</ul>
+</li>
+<li>set架构<ul>
+<li>业务扩展，容灾是主要考虑目标</li>
+<li>一条完整的业务线作为一个集群，例如下单整个完整的业务线部署到同一个机房的一个集群上，在把非核心（出错不影响主业务线的进行）抽象出来单独部署到一个非核心集群上</li>
+<li>实现不同的业务线出错后不会影响整个服务，不同业务线之间互不影响，同一业务线上非核心步骤不会影响主流程的进行</li>
+<li>中心集群（非核心），单元化集群</li>
+</ul>
+</li>
+<li>set化架构策略<ul>
+<li>中间件（rpc，kv，mq）</li>
+<li>rpc：对于set服务，调用封闭在set内，对于非set服务，沿用现有路由逻辑</li>
+<li>kv：支持分set的数据产生和查询</li>
+<li>mq：支持分set的消息生产和消费</li>
+</ul>
+</li>
+<li>set落地原则<ul>
+<li>对业务透明</li>
+<li>切分：业务维度划分，地域划分</li>
+<li>部署原则：最好一个中心，一个机房内，也可以跨地域机房</li>
+</ul>
+</li>
+<li>rabbitmq set架构实现<ul>
+<li>federation插件实现集群之间的数据同步</li>
+<li>federation可以通过broker之间数据同步，而不用通过cluster</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>set架构核心思想</p>
+<ul>
+<li>每个单元化集群只负责单元内的流量，实现流量拆分</li>
+<li>每个单元化集群只存储单元内的交易数据，后续在做数据同步</li>
+</ul>
+</blockquote>
+<h2 id="如何识别地域？"><a href="#如何识别地域？" class="headerlink" title="如何识别地域？"></a>如何识别地域？</h2><h2 id="rabbitmq实现思路与架构设计方案"><a href="#rabbitmq实现思路与架构设计方案" class="headerlink" title="rabbitmq实现思路与架构设计方案"></a>rabbitmq实现思路与架构设计方案</h2><ul>
+<li>基础组件封装<ul>
+<li>消息高性能的序列化转化，异步化发送消息</li>
+<li>生产端消费端实例连接池</li>
+<li>可靠性消息投递，保证消息百分之百不丢失</li>
+<li>消费端幂等操作，避免重复消费</li>
+<li>迅速消息，延迟消息，事务消息，顺序消息</li>
+<li>消息补偿，重试，异常定位</li>
+<li>集群负载均衡，消息路由策略</li>
+</ul>
+</li>
+<li>迅速消息发送（高性能，不可靠）</li>
+</ul>
+<p>在提到JMS时，我们通常会说到一些术语，解释如下：</p>
+<pre><code>1. 消息中间件（JMS Provider) ： 指提供了对JMS协议的第三方组件，比如ActiveMQ就是一个消息中间件，另外比较知名的还有KFA, Rabbit MQ等。
+2. 消息模式：分为点对点（Point to Point，即P2P）和发布/订阅（Pub/Sub)，对应的数据结构分别是队列（Queue)和主题（Topic)
+3. 消息（Message): 通信内容的载体，其结构主要分为消息头，属性和消息体，并且根据存储结构的不同分为好几种，后面会详细提到。
+4. 消息生产者：产生消息的一方，在P2P模式下，指消息发送者(Sender)，在P/S模式下指消息发布者(Publisher)
+5. 消息消费者：接收消息的一方，对应于两种模式分别是消息接收者（Receiver）和消息订阅者(Subscriber)                 
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2019/08/11/QRCode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/08/11/QRCode/" itemprop="url">
+                  QRCode
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-11T12:21:25+08:00">
+                2019-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/QRCode/" itemprop="url" rel="index">
+                    <span itemprop="name">QRCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/08/11/QRCode/" class="leancloud_visitors" data-flag-title="QRCode">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="二维码"><a href="#二维码" class="headerlink" title="二维码"></a>二维码</h1><blockquote>
+<p>説白了就是把信息存儲在圖片二維碼當中，儅二維碼被掃描時，根據統一規約去解析的到相應的信息</p>
+</blockquote>
+<ul>
+<li>條形碼：一維圖形，可支持數據範圍較小，最大20位<ul>
+<li>使用lua来生成条形码</li>
+</ul>
+</li>
+<li>二維碼：二維圖形，可支持數據範圍大，最大7089位；可全方位掃描識別（二維碼中有三個位置標識來幫助全方位掃描識別）；容錯性，數據部分包含大量的冗餘數據來包幫助實現容錯識別</li>
+</ul>
+<blockquote>
+<p>詳細信息到官方網頁查看詳情：<a href="https://www.qrcode.com/en/index.html" title="https://www.qrcode.com/en/index.html" target="_blank" rel="external">https://www.qrcode.com/en/index.html</a></p>
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/11/25/Idempotency/#more" rel="contents">
+            <a class="btn" href="/2019/08/11/QRCode/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -489,7 +1283,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/11/18/初识分库分表/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2019/04/28/Javadoc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -511,8 +1305,8 @@
             
               
                 
-                <a class="post-title-link" href="/2018/11/18/初识分库分表/" itemprop="url">
-                  初识分库分表
+                <a class="post-title-link" href="/2019/04/28/Javadoc/" itemprop="url">
+                  Javadoc
                 </a>
               
             
@@ -528,173 +1322,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-18T12:17:20+08:00">
-                2018-11-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySql/" itemprop="url" rel="index">
-                    <span itemprop="name">MySql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/11/18/初识分库分表/" class="leancloud_visitors" data-flag-title="初识分库分表">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h1><blockquote>
-<ul>
-<li>分库分表</li>
-<li>解决方案</li>
-<li>部署上线</li>
-<li>数据库拆分方案案例</li>
-<li>引发问题</li>
-</ul>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/18/初识分库分表/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/11/04/泛型无处不在/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/11/04/泛型无处不在/" itemprop="url">
-                  泛型无处不在
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-04T12:17:20+08:00">
-                2018-11-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-28T12:21:25+08:00">
+                2019-04-28
               </time>
             
 
@@ -733,7 +1362,7 @@
 
           
           
-             <span id="/2018/11/04/泛型无处不在/" class="leancloud_visitors" data-flag-title="泛型无处不在">
+             <span id="/2019/04/28/Javadoc/" class="leancloud_visitors" data-flag-title="Javadoc">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -762,337 +1391,31 @@
 
       
         
-          <h1 id="Generic"><a href="#Generic" class="headerlink" title="Generic"></a>Generic</h1><blockquote>
-<ul>
-<li>泛型的使用</li>
-<li>泛型的实现</li>
-<li>泛型的改进</li>
-</ul>
-</blockquote>
+          <h1 id="Javadoc"><a href="#Javadoc" class="headerlink" title="Javadoc"></a>Javadoc</h1><table>
+<thead>
+<tr>
+<th>注释</th>
+<th style="text-align:left">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@author</td>
+<td style="text-align:left">@author  name-text；标识作者</td>
+</tr>
+<tr>
+<td>{@code}</td>
+<td style="text-align:left">{@code  text}；将文本标记为code代码，避免被解析为html标签或者javadoc标签</td>
+</tr>
+<tr>
+<td>{@docRoot}</td>
+<td style="text-align:left">标识生成doc文档的根目录</td>
+</tr>
+</tbody>
+</table>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/11/04/泛型无处不在/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/10/28/JAVA_内省/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/10/28/JAVA_内省/" itemprop="url">
-                  Introspector
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-28T20:49:53+08:00">
-                2018-10-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/28/JAVA_内省/" class="leancloud_visitors" data-flag-title="Introspector">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Introspector"><a href="#Introspector" class="headerlink" title="Introspector"></a>Introspector</h2><blockquote>
-<p>内省(Introspector) 是Java 语言对 JavaBean 类属性、事件的一种缺省处理方法。<br>JavaBean是一种特殊的类，主要用于传递数据信息，这种类中的方法主要用于访问私有的字段，且方法名符合某种命名规则。如果在两个模块之间传递信息，可以将信息封装进JavaBean中，这种对象称为“值对象”(Value Object)，或“VO”。方法比较少。这些信息储存在类的私有变量中，通过set()、get()获得。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/28/JAVA_内省/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/10/21/JDBC_Batch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/10/21/JDBC_Batch/" itemprop="url">
-                  JDBC BATCH
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T20:49:53+08:00">
-                2018-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JDBC/" itemprop="url" rel="index">
-                    <span itemprop="name">JDBC</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/21/JDBC_Batch/" class="leancloud_visitors" data-flag-title="JDBC BATCH">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="JDBC-BATCH"><a href="#JDBC-BATCH" class="headerlink" title="JDBC BATCH"></a>JDBC BATCH</h1><blockquote>
-<ul>
-<li>JDBC基础知识复盘</li>
-<li>JDBC BATCH 批处理执行sql</li>
-</ul>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/21/JDBC_Batch/#more" rel="contents">
+            <a class="btn" href="/2019/04/28/Javadoc/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1133,7 +1456,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1178,7 +1501,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">131</span>
+                <span class="site-state-item-count">159</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1189,7 +1512,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1200,7 +1523,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">119</span>
+                <span class="site-state-item-count">137</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1260,7 +1583,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

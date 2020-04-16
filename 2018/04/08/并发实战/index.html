@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/04/08/并发实战/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="线程A等线程B执行完了之后再执行 thread.join()方法：调用线程等待执行此方法的的线程  为什么会存在并发 竞态条件 check-then-act（例如：if判定条件） read-modify-write（例如：i++自增由三个动作完成：读取，修改，写入） 数据资源竞争 各个线程的访问顺序不同可能会造成不同的结果 cpu和主内存之间的高度缓存：缓存一致协议  缓存一致协议 现代CPU都是">
-<meta property="og:updated_time" content="2019-07-02T00:41:35.175Z">
+<meta property="og:updated_time" content="2019-10-09T13:57:00.579Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RedisTheory">
 <meta name="twitter:description" content="线程A等线程B执行完了之后再执行 thread.join()方法：调用线程等待执行此方法的的线程  为什么会存在并发 竞态条件 check-then-act（例如：if判定条件） read-modify-write（例如：i++自增由三个动作完成：读取，修改，写入） 数据资源竞争 各个线程的访问顺序不同可能会造成不同的结果 cpu和主内存之间的高度缓存：缓存一致协议  缓存一致协议 现代CPU都是">
@@ -545,6 +545,30 @@
 <li><p>线程中断<br>Thread currentThread = Thread.currentThread();<br>currentThread.interrupt();//中断当前线程<br>Thread.interrupted();//判定当前线程的中断状态，同时会清除中断标识位<br>currentThread.isInterrupted();//判定调用线程的中断状态，不会清除中断标识位</p>
 </li>
 </ul>
+<h2 id="并发编程的艺术"><a href="#并发编程的艺术" class="headerlink" title="并发编程的艺术"></a>并发编程的艺术</h2><p>等待/通知模型—进阶（超时机制，保护措施）<br>    Wait()，notify()，notifyAll(),<br>线程池技术<br>    在并发和线程上下文切换之间找到一个平衡点最大效率的处理任务job</p>
+<h3 id="手写数据路连接池"><a href="#手写数据路连接池" class="headerlink" title="手写数据路连接池"></a>手写数据路连接池</h3><p>packagewangdian.liufei;</p>
+<p>importjava.lang.reflect.InvocationHandler;<br>importjava.lang.reflect.Method;<br>importjava.lang.reflect.Proxy;<br>importjava.sql.Connection;<br>importjava.util.concurrent.TimeUnit;</p>
+<p>/<em>*
+</em>@Author:二公子<br><em>@Date:2019/7/20
+</em>@Description:<br>*/<br>publicclassConnectionDriver{<br>staticclassConnectionHandlerimplementsInvocationHandler{<br>@Override<br>publicObjectinvoke(Objectproxy,Methodmethod,Object[]args)throwsThrowable{<br>if(“commit”.equals(method.getName())){<br>TimeUnit.MILLISECONDS.sleep(100);<br>}<br>returnnull;<br>}<br>}<br>publicstaticfinalConnectioncreateConnection(){<br>return(Connection)Proxy.newProxyInstance(ConnectionDriver.class.getClassLoader()<br>,newClass[]{Connection.class},newConnectionHandler());<br>}<br>}</p>
+<p>packagewangdian.liufei;</p>
+<p>importjava.sql.Connection;<br>importjava.util.concurrent.CountDownLatch;<br>importjava.util.concurrent.atomic.AtomicInteger;</p>
+<p>/<em>*
+</em>@Author:二公子<br><em>@Date:2019/7/20
+</em>@Description:<br>*/<br>publicclassConnectionPoolTest{<br>staticConnectionPoolpool=newConnectionPool(10);<br>staticCountDownLatchstart=newCountDownLatch(1);<br>staticCountDownLatchend;</p>
+<p>publicstaticvoidmain(String[]args)throwsException{<br>intthreadCount=20;<br>end=newCountDownLatch(threadCount);<br>intcount=20;<br>AtomicIntegergot=newAtomicInteger();<br>AtomicIntegernoGot=newAtomicInteger();<br>for(inti=0;i&lt;threadCount;i++){<br>Threadthread=newThread(newConnectionRunner(count,got,noGot),”ConnectionRunnerThread”);<br>thread.start();<br>}<br>start.countDown();<br>end.await();<br>System.out.println(“totalinvoke:”+threadCount*count);<br>System.out.println(“gotconnection:”+got);<br>System.out.println(“notgotconnection:”+noGot);<br>}<br>staticclassConnectionRunnerimplementsRunnable{<br>intcount;<br>AtomicIntegergot;<br>AtomicIntegernoGot;</p>
+<p>publicConnectionRunner(intcount,AtomicIntegergot,AtomicIntegernoGot){<br>this.count=count;<br>this.got=got;<br>this.noGot=noGot;<br>}<br>publicvoidrun(){<br>try{<br>start.await();<br>}catch(Exceptione){}<br>while(count&gt;0){<br>try{<br>Connectionconnection=pool.fetchConnection(1000L);<br>if(connection!=null){<br>try{<br>connection.createStatement();<br>connection.commit();<br>}catch(Exceptione){}<br>finally{<br>pool.releaseConnection(connection);<br>got.incrementAndGet();<br>}<br>}else{<br>noGot.incrementAndGet();<br>}<br>}catch(Exceptione){}<br>finally{<br>count–;<br>}<br>}<br>end.countDown();<br>}<br>}<br>}</p>
+<p>packagewangdian.liufei;</p>
+<p>importjava.sql.Connection;<br>importjava.util.LinkedList;</p>
+<p>/<em>*
+</em>@Author:二公子<br><em>@Date:2019/7/20
+</em>@Description:<br>*/<br>publicclassConnectionPool{<br>privateLinkedList<connection>pool=newLinkedList&lt;&gt;();<br>publicConnectionPool(intinitialSize){<br>if(initialSize&gt;0){<br>for(inti=0;i&lt;initialSize;i++){<br>pool.addLast(ConnectionDriver.createConnection());<br>}<br>}<br>}<br>publicvoidreleaseConnection(Connectionconnection){<br>if(connection!=null){<br>synchronized(pool){<br>pool.addLast(connection);<br>pool.notifyAll();<br>}<br>}<br>}</connection></p>
+<p>/<em>*
+</em>获取连接<br><em>@parammills超时时间，超时直接返回null，mills小于等于0时表示阻塞等待获取连接
+</em>@return<br><em>@throwsInterruptedException
+</em>/<br>publicConnectionfetchConnection(Longmills)throwsInterruptedException{<br>synchronized(pool){<br>if(mills&lt;=0){<br>while(pool.isEmpty()){<br>pool.wait();<br>}<br>returnpool.removeFirst();<br>}else{<br>longfuture=System.currentTimeMillis()+mills;<br>longremaining=mills;<br>while(pool.isEmpty()&amp;&amp;remaining&gt;0){<br>pool.wait();<br>remaining=future-System.currentTimeMillis();<br>}<br>Connectionresult=null;<br>if(!pool.isEmpty()){<br>result=pool.removeFirst();<br>}<br>returnresult;<br>}<br>}<br>}<br>}</p>
+<h3 id="手写线程池"><a href="#手写线程池" class="headerlink" title="手写线程池"></a>手写线程池</h3><p>客户端和服务器端的交互<br>    http请求—实质都是socket—TCP请求<br>客户端线程池—发送请求和接受请求分离<br>    发送请求线程，发送请求完成后便直接返回处理其他事情<br>    专门的接受请求线程负责接受请求响应<br>服务器端—同样接受请求和处理请求分离<br>    接受请求线程接受请求后封装成统一格式发给处理线程便返回继续处理其他请求<br>    处理请求线程负责接受统一格式的封装请求做处理，然后交给相应线程返回信息</p>
+<p>所有的过程全部采用异步的方式进行，实现性能的提升<br>    但是需要注意的是，如何标记请求和相应之间的对应关系</p>
 
       
     </div>
@@ -612,8 +636,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/01/Java描绘数据统计图/" rel="next" title="Java描绘数据统计图">
-                <i class="fa fa-chevron-left"></i> Java描绘数据统计图
+              <a href="/2018/04/08/RedisTheory/" rel="next" title="RedisTheory">
+                <i class="fa fa-chevron-left"></i> RedisTheory
               </a>
             
           </div>
@@ -622,8 +646,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/08/RedisTheory/" rel="prev" title="RedisTheory">
-                RedisTheory <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/15/初识REST/" rel="prev" title="初识REST">
+                初识REST <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -698,7 +722,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">131</span>
+                <span class="site-state-item-count">159</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -709,7 +733,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -720,7 +744,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">119</span>
+                <span class="site-state-item-count">137</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -773,7 +797,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程A等线程B执行完了之后再执行"><span class="nav-number">1.</span> <span class="nav-text">线程A等线程B执行完了之后再执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么会存在并发"><span class="nav-number">2.</span> <span class="nav-text">为什么会存在并发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存一致协议"><span class="nav-number">2.1.</span> <span class="nav-text">缓存一致协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发的解决方案"><span class="nav-number">3.</span> <span class="nav-text">并发的解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#何为死锁"><span class="nav-number">4.</span> <span class="nav-text">何为死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）"><span class="nav-number">4.1.</span> <span class="nav-text">如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程A等线程B执行完了之后再执行"><span class="nav-number">1.</span> <span class="nav-text">线程A等线程B执行完了之后再执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么会存在并发"><span class="nav-number">2.</span> <span class="nav-text">为什么会存在并发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存一致协议"><span class="nav-number">2.1.</span> <span class="nav-text">缓存一致协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发的解决方案"><span class="nav-number">3.</span> <span class="nav-text">并发的解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#何为死锁"><span class="nav-number">4.</span> <span class="nav-text">何为死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）"><span class="nav-number">4.1.</span> <span class="nav-text">如何避免死锁的发生（因为Java和jvm都没有提供避免死锁的方式，所以只有程序来避免）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发编程的艺术"><span class="nav-number">5.</span> <span class="nav-text">并发编程的艺术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#手写数据路连接池"><span class="nav-number">5.1.</span> <span class="nav-text">手写数据路连接池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手写线程池"><span class="nav-number">5.2.</span> <span class="nav-text">手写线程池</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -796,7 +820,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

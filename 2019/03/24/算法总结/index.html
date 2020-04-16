@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2019/03/24/算法总结/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="算法总结">
-<meta property="og:updated_time" content="2019-06-23T05:25:12.049Z">
+<meta property="og:updated_time" content="2019-10-09T13:08:07.009Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="算法总结">
 <meta name="twitter:description" content="算法总结">
@@ -643,6 +643,7 @@
 </ul>
 </li>
 </ul>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>Clone()代替new<br>避免对boolan的不必要等于判定<br>三目操作符（？：）替代if、else<br>实例方法会消耗过多的系统资源，所以常用的工具类可以采用，静态方法代替实例<br>用final锁定无需重载的方法<br>避免使用instanceof<br>局部变量代替全局变量<br>位运算<br>位运算总是需要将全部计算完毕再给出结果，所以在进行布尔判定时不建议使用位运算，而且布尔运算会进行优化<br>提取复杂表达式优化，减少重复计算<br>Java7允许switch语句支持string<br>变长参数的方法调用（如何去除警告信息）<br>集合内部避免返回null，可以减少调用该集合时的判空操作，而是返回大小为0的数组或集合<br>    例如 return Collections.emptyList()/emptyMap()<br>    注意上述方法 返回对象为不可变对象，当实际情况需要改变返回对象时则不可用<br>判断元素是否在数组中：Arrays.asList(T [] array).contains(T obj);<br>    ArrayList.toArray(T [] array)<br>Lamda表达式<br>Java7异常捕获catch字句（一个可捕获多个异常）<br>数组代替switch语句，数组的随机访问更快<br>数组复制本地方法system.arraycopy();<br>Finally里面释放关闭资源占用<br>Java7中新增了改进快速排序的类（两个枢纽分三份）java.util.DualPivotQuicksort.class<br>NIO(new input/output)<br>Redis数据库</p>
 
       
     </div>
@@ -794,7 +795,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">131</span>
+                <span class="site-state-item-count">159</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -805,7 +806,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -816,7 +817,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">119</span>
+                <span class="site-state-item-count">137</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -869,7 +870,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#算法总结"><span class="nav-number">1.</span> <span class="nav-text">算法总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小灰的漫画算法"><span class="nav-number">1.0.1.</span> <span class="nav-text">小灰的漫画算法</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#算法总结"><span class="nav-number">1.</span> <span class="nav-text">算法总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小灰的漫画算法"><span class="nav-number">1.0.1.</span> <span class="nav-text">小灰的漫画算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">1.1.</span> <span class="nav-text">优化</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -892,7 +893,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
