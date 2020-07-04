@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2019/01/06/Limits on MySql/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Limits on MySql 以下所有内容基于存储引擎为InnoDB">
-<meta property="og:updated_time" content="2019-05-30T00:46:20.518Z">
+<meta property="og:updated_time" content="2020-07-04T02:48:16.391Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Limits on MySql">
 <meta name="twitter:description" content="Limits on MySql 以下所有内容基于存储引擎为InnoDB">
@@ -481,7 +481,19 @@
 <li>16KB            64TB</li>
 </ul>
 </li>
-<li></li>
+<li>参数max_allowed_packet：Mysql 对语句的长度有限制</li>
+<li>bulk_insert_buffer_size：insert语句缓存大小</li>
+<li><p>Net_buffer_length</p>
+</li>
+<li><p>general_log和general_log_file：sql操作日志开关和目录</p>
+</li>
+<li><p>useServerPrepStmts：默认使用PreparedStatement是不能执行预编译的，这需要在url中给出useServerPrepStmts=true参数（MySQL Server 4.1之前的版本是不支持预编译的，而Connector/J在5.0.5以后的版本，默认是没有开启预编译功能的）。这样才能保证mysql驱动会先把SQL语句发送给服务器进行预编译，然后在执行executeQuery()时只是把参数发送给服务器。</p>
+</li>
+<li><p>cachePrepStmts：当使用不同的PreparedStatement对象来执行相同的SQL语句时，还是会出现编译两次的现象，这是因为驱动没有缓存编译后的函数key，导致二次编译。如果希望缓存编译后函数的key，那么就要设置cachePrepStmts参数为true。例如：jdbc:mysql://localhost:3306/test?useServerPrepStmts=true&amp;cachePrepStmts=true</p>
+</li>
+<li><p>rewriteBatchedStatements：MySQL的批处理也需要通过参数来打开</p>
+</li>
+<li>innodb_open_files=4000 #设置同时最大打开表个数 </li>
 </ul>
 
       
@@ -634,7 +646,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-count">136</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -645,7 +657,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -656,7 +668,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">137</span>
+                <span class="site-state-item-count">134</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

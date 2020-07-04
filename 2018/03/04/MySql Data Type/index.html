@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/03/04/MySql Data Type/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="MySql DataType  Numeric Type Date and Time Type String Type Json Type（Mysql 8.0新增特性）">
-<meta property="og:updated_time" content="2019-12-01T12:47:39.932Z">
+<meta property="og:updated_time" content="2020-07-04T03:44:58.204Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql DataType">
 <meta name="twitter:description" content="MySql DataType  Numeric Type Date and Time Type String Type Json Type（Mysql 8.0新增特性）">
@@ -629,10 +629,30 @@
 <h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ul>
 <li>REAL类型：MySQL treats REAL as a synonym for DOUBLE, unless the REAL_AS_FLOAT SQL mode is enabled.</li>
 </ul>
+<h2 id="Json-Type"><a href="#Json-Type" class="headerlink" title="Json Type"></a>Json Type</h2><p>• 存储格式为二进制,占用空间大小和longblob,longtext一致;<br>• 每一列的json值磁盘存储大小限制受系统变量 max_allowed_packet限制,内存读取不受限<br>• 使用JSON_STORAGE_SIZE()函数可以获取实际存储占用的空间大小<br>• 不能有非空默认值<br>• 8优化了更新方式,不再是以前的删除旧值写入新值,优化为可以部分更新<br>    ○  JSON_SET(), JSON_REPLACE(), or JSON_REMOVE()<br>    ○ 部分更新只能将旧值更新为新值,不能添加新的元素<br>    ○ 部分更新的值不能超过旧值的大小</p>
 <ul>
-<li><h2 id="Json-Type"><a href="#Json-Type" class="headerlink" title="Json Type"></a>Json Type</h2>• 存储格式为二进制,占用空间大小和longblob,longtext一致;<br>• 每一列的json值磁盘存储大小限制受系统变量 max_allowed_packet限制,内存读取不受限<br>• 使用JSON_STORAGE_SIZE()函数可以获取实际存储占用的空间大小<br>• 不能有非空默认值<br>• 8优化了更新方式,不再是以前的删除旧值写入新值,优化为可以部分更新<br>  ○  JSON_SET(), JSON_REPLACE(), or JSON_REMOVE()<br>  ○ 部分更新只能将旧值更新为新值,不能添加新的元素<br>  ○ 部分更新的值不能超过旧值的大小</li>
 <li>使用函数 JSON_STORAGE_FREE()可以查看</li>
 <li>待完善</li>
+</ul>
+<h3 id="使用样例"><a href="#使用样例" class="headerlink" title="使用样例"></a>使用样例</h3><ul>
+<li>JSON_TYPE：查看json类型，数组，对象</li>
+<li>JSON_ARRAY：构造json数组值，JSON_ARRAY（0，“”，now（））</li>
+<li>JSON_OBJECT：构造json对象值，JSON_OBJECT（k1，v1，k2, v2….）</li>
+</ul>
+<h4 id="元素合并"><a href="#元素合并" class="headerlink" title="元素合并"></a>元素合并</h4><ul>
+<li>JSON_MERGE_PRESERVE(‘[“a”, 1]’, ‘{“key”: “value”}’) 将多个对象/数组合并到一个对象/数组元素中， JSON_MERGE_PRESERVE（array，object，array…）</li>
+<li>JSON_MERGE_PATCH：同样是合并，但是会进行去重操作</li>
+</ul>
+<h4 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h4><ul>
+<li>INSERT INTO facts VALUES &gt; (JSON_OBJECT(“mascot”, “Our mascot is a dolphin named \”Sakila\”.”));</li>
+</ul>
+<h4 id="查询操作"><a href="#查询操作" class="headerlink" title="查询操作"></a>查询操作</h4><ul>
+<li>SELECT col-&gt;”$.mascot” FROM qtest;查询json中某个属性key的value值（结果携带引号）</li>
+<li>SELECT sentence-&gt;&gt;”$.mascot” FROM facts;查询json中某个属性key的value值（结果补携带引号）</li>
+<li>JSON_EXTRACT(‘{“id”: 14, “name”: “Aztalan”}’, ‘$.name’);取出指定key的value值</li>
+<li>SELECT JSON_EXTRACT(‘{“a”: 1, “b”: 2, “c”: [3, 4, 5]}’, ‘$.*’);把所有的value值取出并放到一个数组中</li>
+<li>JSON_EXTRACT(‘{“a”: 1, “b”: 2, “c”: [3, 4, 5]}’, ‘$.c[*]’);把key为c的所有value值全部取出来</li>
+<li>SELECT JSON_EXTRACT(‘{“a”: {“b”: 1}, “c”: {“b”: 2}}’, ‘$**.b’);跨key取相同属性的value值到数组中</li>
 </ul>
 
       
@@ -709,8 +729,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/11/Maven_SettingsReference/" rel="prev" title="Maven_SettingsReference">
-                Maven_SettingsReference <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/04/经纬度距离计算/" rel="prev" title="经纬度算法">
+                经纬度算法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -785,7 +805,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-count">136</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -796,7 +816,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -807,7 +827,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">137</span>
+                <span class="site-state-item-count">134</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -860,7 +880,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql-DataType"><span class="nav-number">1.</span> <span class="nav-text">MySql DataType</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Numeric-Type"><span class="nav-number">1.1.</span> <span class="nav-text">Numeric Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Date-and-Time-Type"><span class="nav-number">1.2.</span> <span class="nav-text">Date and Time Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-Type"><span class="nav-number">1.3.</span> <span class="nav-text">String Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.4.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Json-Type"><span class="nav-number">1.5.</span> <span class="nav-text">Json Type</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql-DataType"><span class="nav-number">1.</span> <span class="nav-text">MySql DataType</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Numeric-Type"><span class="nav-number">1.1.</span> <span class="nav-text">Numeric Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Date-and-Time-Type"><span class="nav-number">1.2.</span> <span class="nav-text">Date and Time Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-Type"><span class="nav-number">1.3.</span> <span class="nav-text">String Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.4.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Json-Type"><span class="nav-number">1.5.</span> <span class="nav-text">Json Type</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用样例"><span class="nav-number">1.5.1.</span> <span class="nav-text">使用样例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#元素合并"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">元素合并</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入操作"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">插入操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询操作"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">查询操作</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>

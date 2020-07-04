@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/04/01/Java描绘数据统计图/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/26/VisitorPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2018/04/01/Java描绘数据统计图/" itemprop="url">
-                  Java描绘数据统计图
+                <a class="post-title-link" href="/2017/08/26/VisitorPattern/" itemprop="url">
+                  Visitor Pattern
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-01T12:13:25+08:00">
-                2018-04-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-26T12:22:25+08:00">
+                2017-08-26
               </time>
             
 
@@ -389,8 +389,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ECharts/" itemprop="url" rel="index">
-                    <span itemprop="name">ECharts</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2018/04/01/Java描绘数据统计图/" class="leancloud_visitors" data-flag-title="Java描绘数据统计图">
+             <span id="/2017/08/26/VisitorPattern/" class="leancloud_visitors" data-flag-title="Visitor Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,11 +435,17 @@
 
       
         
-          <h3 id="Java描绘数据统计图"><a href="#Java描绘数据统计图" class="headerlink" title="Java描绘数据统计图"></a>Java描绘数据统计图</h3><h4 id="ECharts"><a href="#ECharts" class="headerlink" title="ECharts"></a><a href="http://echarts.baidu.com/" title="echarts" target="_blank" rel="external">ECharts</a></h4><blockquote>
-<h4 id="最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！"><a href="#最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！" class="headerlink" title="最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！"></a>最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！</h4></blockquote>
+          <h1 id="Visitor-Pattern（访问者模式）"><a href="#Visitor-Pattern（访问者模式）" class="headerlink" title="Visitor Pattern（访问者模式）"></a>Visitor Pattern（访问者模式）</h1><h2 id="Represent-an-operation-to-be-performed-on-the-elements-of-an-object-structure-Visitor-lets-you-define-a-new-operation-without-changing-the-classes-of-the-elements-on-which-it-operates-（封装一些作用于某种数据结构中的各种元素，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。）"><a href="#Represent-an-operation-to-be-performed-on-the-elements-of-an-object-structure-Visitor-lets-you-define-a-new-operation-without-changing-the-classes-of-the-elements-on-which-it-operates-（封装一些作用于某种数据结构中的各种元素，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。）" class="headerlink" title="Represent an operation to be performed on the elements of an object structure.Visitor lets you define a new operation without changing the classes of the elements on which it operates.（封装一些作用于某种数据结构中的各种元素，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。）"></a>Represent an operation to be performed on the elements of an object structure.Visitor lets you define a new operation without changing the classes of the elements on which it operates.（封装一些作用于某种数据结构中的各种元素，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。）</h2><ul>
+<li>抽象元素（Element）：一个抽象类，定义了接受访问者的accept方法</li>
+<li>具体元素（ConcreteElement）：Element的子类</li>
+<li>抽象访问者(Visitor)：一个接口，定义了操作具体元素的方法</li>
+<li>具体访问者(ConcreteVisitor)：抽象访问者接口的实现类</li>
+<li>应用场景：<strong>双重分派</strong>（数据的存储和操作解耦）,不同的访问者访问同一元素，进行的操作不同，结果也不同，但访问这一动作共同的，只是传入的对象不同，导致操作/结果不同</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/01/Java描绘数据统计图/#more" rel="contents">
+            <a class="btn" href="/2017/08/26/VisitorPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -485,7 +491,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/03/25/Oracle命令集/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/26/TemplateMethodPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -507,8 +513,8 @@
             
               
                 
-                <a class="post-title-link" href="/2018/03/25/Oracle命令集/" itemprop="url">
-                  Oracle命令集
+                <a class="post-title-link" href="/2017/08/26/TemplateMethodPattern/" itemprop="url">
+                  Template Method Pattern
                 </a>
               
             
@@ -524,8 +530,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T12:17:20+08:00">
-                2018-03-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-26T12:22:25+08:00">
+                2017-08-26
               </time>
             
 
@@ -547,8 +553,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Oracle/" itemprop="url" rel="index">
-                    <span itemprop="name">Oracle</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -564,7 +570,7 @@
 
           
           
-             <span id="/2018/03/25/Oracle命令集/" class="leancloud_visitors" data-flag-title="Oracle命令集">
+             <span id="/2017/08/26/TemplateMethodPattern/" class="leancloud_visitors" data-flag-title="Template Method Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -593,16 +599,15 @@
 
       
         
-          <h1 id="Oracle命令集"><a href="#Oracle命令集" class="headerlink" title="Oracle命令集"></a>Oracle命令集</h1><blockquote>
-<ul>
-<li>基本命令</li>
-<li>INSERT ALL /FIRST,MERGE INTO</li>
-<li>maven使用oracle依赖指南</li>
+          <h1 id="Template-Method-Pattern（模板方法模式）"><a href="#Template-Method-Pattern（模板方法模式）" class="headerlink" title="Template Method Pattern（模板方法模式）"></a>Template Method Pattern（模板方法模式）</h1><h2 id="Define-the-skeleton-of-an-algorithm-in-an-operation-deferring-some-steps-to-subclasses-Template-Method-lets-subclass-redefine-certain-steps-of-an-algorithm-without-changing-the-algorithm’s-structure-（定义一个操作中的算法框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可以重定义该算法的某些特定步骤。）"><a href="#Define-the-skeleton-of-an-algorithm-in-an-operation-deferring-some-steps-to-subclasses-Template-Method-lets-subclass-redefine-certain-steps-of-an-algorithm-without-changing-the-algorithm’s-structure-（定义一个操作中的算法框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可以重定义该算法的某些特定步骤。）" class="headerlink" title="Define the skeleton of an algorithm in an operation,deferring some steps to subclasses.Template Method lets subclass redefine certain steps of an algorithm without changing the algorithm’s structure. （定义一个操作中的算法框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可以重定义该算法的某些特定步骤。）"></a>Define the skeleton of an algorithm in an operation,deferring some steps to subclasses.Template Method lets subclass redefine certain steps of an algorithm without changing the algorithm’s structure. （定义一个操作中的算法框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可以重定义该算法的某些特定步骤。）</h2><ul>
+<li>抽象模板（AbstractTemplate）：一个抽象类,定义若干方法表示一个算法的步骤，有抽象方法也有非抽象方法，抽象方法表示原子操作，非抽象方法表示原子步骤</li>
+<li>具体模板（ConcreteTemplate）：抽象模板的子类，实现抽象模板的原子操作</li>
+<li>应用场景：非抽象方法负责定义步骤流程，钩子方法，子类可以按照抽象模板的规定步骤进行（用final修饰来强制继承不能改动），也可重写非抽象方法来自己定义步骤流程，或者还可以在确定什么样的条件下去执行算法的哪些步骤（boolean返回类型的钩子方法的用途）</li>
+<li>javac -encoding UTF-8 Application.java</li>
 </ul>
-</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/25/Oracle命令集/#more" rel="contents">
+            <a class="btn" href="/2017/08/26/TemplateMethodPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -648,7 +653,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/03/18/MySql命令集/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/19/StrategyPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -670,8 +675,8 @@
             
               
                 
-                <a class="post-title-link" href="/2018/03/18/MySql命令集/" itemprop="url">
-                  MySql命令集
+                <a class="post-title-link" href="/2017/08/19/StrategyPattern/" itemprop="url">
+                  Strategy Pattern
                 </a>
               
             
@@ -687,8 +692,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-18T12:17:20+08:00">
-                2018-03-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:17:20+08:00">
+                2017-08-19
               </time>
             
 
@@ -710,8 +715,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySql/" itemprop="url" rel="index">
-                    <span itemprop="name">MySql</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -727,7 +732,7 @@
 
           
           
-             <span id="/2018/03/18/MySql命令集/" class="leancloud_visitors" data-flag-title="MySql命令集">
+             <span id="/2017/08/19/StrategyPattern/" class="leancloud_visitors" data-flag-title="Strategy Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -756,17 +761,16 @@
 
       
         
-          <h1 id="MySql命令集"><a href="#MySql命令集" class="headerlink" title="MySql命令集"></a>MySql命令集</h1><blockquote>
-<ul>
-<li>安装/更新/启动/登陆/授权</li>
-<li>从建库到删库</li>
-<li>复杂查询</li>
-<li>windows free install</li>
+          <h1 id="Strategy-Pattern（策略模式）"><a href="#Strategy-Pattern（策略模式）" class="headerlink" title="Strategy Pattern（策略模式）"></a>Strategy Pattern（策略模式）</h1><h2 id="Define-a-family-of-algorithms-encapsulate-each-one-and-make-them-interchangeable-（定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。）"><a href="#Define-a-family-of-algorithms-encapsulate-each-one-and-make-them-interchangeable-（定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。）" class="headerlink" title="Define a family of algorithms, encapsulate each one, and make them interchangeable.（定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。）"></a>Define a family of algorithms, encapsulate each one, and make them interchangeable.（定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。）</h2><ul>
+<li>策略（Strategy）：一个接口</li>
+<li>上下文（Context）：依赖于策略接口的类（组合关系）</li>
+<li>具体策略（ConcreteStrategy）：策略接口的实现类</li>
+<li>应用场景：一个类定义了多种行为构成了多个条件分支（封装算法的细节）</li>
+<li>javac -encoding UTF-8 Application.java</li>
 </ul>
-</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/18/MySql命令集/#more" rel="contents">
+            <a class="btn" href="/2017/08/19/StrategyPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -812,7 +816,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/03/11/Maven_SettingsReference/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/19/StatePattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -834,8 +838,8 @@
             
               
                 
-                <a class="post-title-link" href="/2018/03/11/Maven_SettingsReference/" itemprop="url">
-                  Maven_SettingsReference
+                <a class="post-title-link" href="/2017/08/19/StatePattern/" itemprop="url">
+                  State Pattern
                 </a>
               
             
@@ -851,8 +855,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T12:17:20+08:00">
-                2018-03-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:17:20+08:00">
+                2017-08-19
               </time>
             
 
@@ -874,8 +878,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Maven/" itemprop="url" rel="index">
-                    <span itemprop="name">Maven</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -891,7 +895,7 @@
 
           
           
-             <span id="/2018/03/11/Maven_SettingsReference/" class="leancloud_visitors" data-flag-title="Maven_SettingsReference">
+             <span id="/2017/08/19/StatePattern/" class="leancloud_visitors" data-flag-title="State Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -920,15 +924,16 @@
 
       
         
-          <h1 id="Settings-Reference"><a href="#Settings-Reference" class="headerlink" title="Settings Reference"></a>Settings Reference</h1><p>maven配置文件settings.xml可能存在于两个位置</p>
-<ul>
-<li>The Maven install: ${maven.home}/conf/settings.xml—全局设置</li>
-<li>A user’s install: ${user.home}/.m2/settings.xml—用户设置</li>
-<li>当两者共存时，配置信息合并，用户设置优先</li>
+          <h1 id="State-Pattern（状态模式）"><a href="#State-Pattern（状态模式）" class="headerlink" title="State Pattern（状态模式）"></a>State Pattern（状态模式）</h1><h2 id="Allow-an-object-to-alter-its-behavior-when-its-internal-state-changes-The-object-will-appear-to-change-its-class-（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。）"><a href="#Allow-an-object-to-alter-its-behavior-when-its-internal-state-changes-The-object-will-appear-to-change-its-class-（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。）" class="headerlink" title="Allow an object to alter its behavior when its internal state changes.The object will appear to change its class.（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。）"></a>Allow an object to alter its behavior when its internal state changes.The object will appear to change its class.（当一个对象在状态改变时允许其改变行为，这个对象看起来像改变了其类。）</h2><ul>
+<li>抽象状态（State）：一个接口或者抽象类</li>
+<li>环境（Context）：依赖于策略接口的类（组合关系）</li>
+<li>具体状态（ConcreteState）：状态接口（抽象类）的实现类（扩展类）</li>
+<li>应用场景：一个对象的状态依赖于它的行为，状态随着行为的改变为改变</li>
+<li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/11/Maven_SettingsReference/#more" rel="contents">
+            <a class="btn" href="/2017/08/19/StatePattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -974,7 +979,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/03/04/MySql Data Type/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/19/SingletonPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -996,8 +1001,8 @@
             
               
                 
-                <a class="post-title-link" href="/2018/03/04/MySql Data Type/" itemprop="url">
-                  MySql DataType
+                <a class="post-title-link" href="/2017/08/19/SingletonPattern/" itemprop="url">
+                  Singleton Pattern
                 </a>
               
             
@@ -1013,8 +1018,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-04T12:17:20+08:00">
-                2018-03-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:17:20+08:00">
+                2017-08-19
               </time>
             
 
@@ -1036,8 +1041,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySql/" itemprop="url" rel="index">
-                    <span itemprop="name">MySql</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -1053,7 +1058,7 @@
 
           
           
-             <span id="/2018/03/04/MySql Data Type/" class="leancloud_visitors" data-flag-title="MySql DataType">
+             <span id="/2017/08/19/SingletonPattern/" class="leancloud_visitors" data-flag-title="Singleton Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1082,17 +1087,14 @@
 
       
         
-          <h1 id="MySql-DataType"><a href="#MySql-DataType" class="headerlink" title="MySql DataType"></a>MySql DataType</h1><blockquote>
-<ul>
-<li>Numeric Type</li>
-<li>Date and Time Type</li>
-<li>String Type</li>
-<li>Json Type（Mysql 8.0新增特性）</li>
-</ul>
-</blockquote>
+          <h1 id="Singleton-Pattern"><a href="#Singleton-Pattern" class="headerlink" title="Singleton Pattern"></a>Singleton Pattern</h1><h2 id="Ensure-a-class-has-only-one-instance-and-provide-a-global-point-of-access-to-it-（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）"><a href="#Ensure-a-class-has-only-one-instance-and-provide-a-global-point-of-access-to-it-（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）" class="headerlink" title="Ensure a class has only one instance, and provide a global point of access to it.（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）"></a>Ensure a class has only one instance, and provide a global point of access to it.（确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。）</h2><ol>
+<li>某些类创建比较频繁，对于一些大型的对象，这是一笔很大的系统开销。</li>
+<li>省去了new操作符，降低了系统内存的使用频率，减轻GC压力。</li>
+<li>有些类如交易所的核心交易引擎，控制着交易流程，如果该类可以创建多个的话，系统完全乱了。（比如一个军队出现了多个司令员同时指挥，肯定会乱成一团），所以只有使用单例模式，才能保证核心交易服务器独立控制整个流程。</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/04/MySql Data Type/#more" rel="contents">
+            <a class="btn" href="/2017/08/19/SingletonPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1133,7 +1135,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1178,7 +1180,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-count">136</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1189,7 +1191,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1200,7 +1202,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">137</span>
+                <span class="site-state-item-count">134</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

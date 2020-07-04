@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2019/03/31/Transaction/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Transaction 数据库事务 Spring事务 Redis事务 分布式事务">
-<meta property="og:updated_time" content="2019-10-09T13:06:19.061Z">
+<meta property="og:updated_time" content="2020-07-04T06:51:23.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Transaction">
 <meta name="twitter:description" content="Transaction 数据库事务 Spring事务 Redis事务 分布式事务">
@@ -499,6 +499,76 @@
 <li>解决多线程，多并发场景的方案便是锁，数据加锁，资源加锁，使得同一时刻只能有一个写请求操作数据，资源，也就是让所有的写请求串行化，回归到最简单的模式</li>
 <li>单线程，串行化处理请求速度慢，因此出现了多线程，并行化，可以同一时刻处理多个请求，但任何进步都会伴随的一些副作用，数据的不一致性便是，因此只好寻得两者的一个平衡点，那便是所有的读请求可以并行（不会出现数据不一致性的问题），但是写或者读写仍需要通过加锁的方式来回归到串行化</li>
 </ol>
+<blockquote>
+<p>MVCC方案<br>多版本并发控制，update with condition，更新带条件，这也是在系统设计的时候，合理的选择乐观锁，通过version或者其他条件，来做乐观锁，这样保证更新及时在并发的情况下，也不会有太大的问题。例如update tablexxx set name=#name#,version=version+1 where version=#version# ,或者是 update tablexxx set quality=quality-#subQuality# where quality-#subQuality# &gt;= 0 。</p>
+</blockquote>
+<h4 id="MVCC是如何工作的："><a href="#MVCC是如何工作的：" class="headerlink" title="MVCC是如何工作的："></a>MVCC是如何工作的：</h4><ul>
+<li>InnoDB的MVCC是通过在每行记录后面保存两个隐藏的列来实现。这两个列一个保存了行的创建时间，一个保存行的过期时间（删除时间）。当然存储的并不是真实的时间而是系统版本号（system version number）。每开始一个新的事务，系统版本号都会自动新增。事务开始时刻的系统版本号会作为事务的版本号，用来查询到每行记录的版本号进行比较。</li>
+<li>版本号<ul>
+<li>系统版本号：是一个递增的数字，每开始一个新的事务，系统版本号就会自动递增。</li>
+<li>事务版本号：事务开始时的系统版本号。</li>
+</ul>
+</li>
+<li>隐藏的列<ul>
+<li>MVCC 在每行记录后面都保存着两个隐藏的列，用来存储两个版本号：<br>• 创建版本号：创建一行数据时，将当前系统版本号作为创建版本号赋值。<br>• 删除版本号：删除一行数据时，将当前系统版本号作为删除版本号赋值。如果该快照的删除版本号大于当前事务版本号表示该快照有效，否则表示该快照已经被删除了。</li>
+</ul>
+</li>
+<li>REPEATABLE READ（可重复读）隔离级别下MVCC如何工作：<ul>
+<li>当开始新一个事务时，该事务的版本号肯定会大于当前所有数据行快照的创建版本号，理解这一点很关键。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>SELECT<ul>
+<li>InnoDB会根据以下条件检查每一行记录：<br>a. InnoDB只查找版本早于当前事务版本的数据行，这样可以确保事务读取的行要么是在开始事务之前已经存在要么是事务自身插入或者修改过的，在事务开始之后才插入的行，事务不会看到。<br>b. 行的删除版本号要么未定义，要么大于当前事务版本号，这样可以确保事务读取到的行在事务开始之前未被删除，在事务开始之前就已经过期的数据行，该事务也不会看到。</li>
+<li>只有符合上述两个条件的才会被查询出来</li>
+</ul>
+</li>
+<li>INSERT<ul>
+<li>将当前系统版本号作为数据行快照的创建版本号。</li>
+</ul>
+</li>
+<li>DELETE<ul>
+<li>将当前系统版本号作为数据行快照的删除版本号。</li>
+</ul>
+</li>
+<li>UPDATE<ul>
+<li>将当前系统版本号作为更新前的数据行快照的删除版本号，并将当前系统版本号作为更新后的数据行快照的创建版本号。可以理解为先执行 DELETE 后执行 INSERT。<br>保存这两个版本号，使大多数操作都不用加锁。使数据操作简单，性能很好，并且能保证只会读取到复合要求的行。不足之处是每行记录都需要额外的存储空间，需要做更多的行检查工作和一些额外的维护工作。</li>
+</ul>
+</li>
+</ol>
+<h5 id="MVCC只在COMMITTED-READ（读提交）和REPEATABLE-READ（可重复读）两种隔离级别下工作。"><a href="#MVCC只在COMMITTED-READ（读提交）和REPEATABLE-READ（可重复读）两种隔离级别下工作。" class="headerlink" title="MVCC只在COMMITTED READ（读提交）和REPEATABLE READ（可重复读）两种隔离级别下工作。"></a>MVCC只在COMMITTED READ（读提交）和REPEATABLE READ（可重复读）两种隔离级别下工作。</h5><blockquote>
+<p>可以认为MVCC是行级锁一个变种，但是他很多情况下避免了加锁操作，开销更低。虽然不同数据库的实现机制有所不同，但大都实现了非阻塞的读操作（读不用加锁，且能避免出现不可重复读和幻读），写操作也只锁定必要的行（写必须加锁，否则不同事务并发写会导致数据不一致）。<br>快照读与当前读</p>
+</blockquote>
+<ul>
+<li>在RR级别中，通过MVCC机制，虽然让数据变得可重复读，但我们读到的数据可能是历史数据，不是数据库最新的数据。这种读取历史数据的方式，我们叫它快照读 (snapshot read)，而读取数据库最新版本数据的方式，叫当前读 (current read)。</li>
+</ul>
+<ol>
+<li>快照读</li>
+</ol>
+<ul>
+<li>当执行select操作是innodb默认会执行快照读，会记录下这次select后的结果，之后select 的时候就会返回这次快照的数据，即使其他事务提交了不会影响当前select的数据，这就实现了可重复读了。快照的生成当在第一次执行select的时候，也就是说假设当A开启了事务，然后没有执行任何操作，这时候B insert了一条数据然后commit,这时候A执行 select，那么返回的数据中就会有B添加的那条数据。之后无论再有其他事务commit都没有关系，因为快照已经生成了，后面的select都是根据快照来的。</li>
+<li>使用 MVCC 读取的是快照中的数据，这样可以减少加锁所带来的开销。</li>
+<li>select * from table …;</li>
+</ul>
+<ol>
+<li>当前读</li>
+</ol>
+<ul>
+<li>对于会对数据修改的操作(update、insert、delete)都是采用当前读的模式。在执行这几个操作时会读取最新的记录，即使是别的事务提交的数据也可以查询到。假设要update一条记录，但是在另一个事务中已经delete掉这条数据并且commit了，如果update就会产生冲突，所以在update的时候需要知道最新的数据。</li>
+<li>读取的是最新的数据，需要加锁。以下第一个语句需要加 S 锁，其它都需要加 X 锁。</li>
+<li>select * from table where ? lock in share mode; </li>
+<li>select * from table where ? for update; </li>
+<li>insert; </li>
+<li>update; </li>
+<li>delete;</li>
+</ul>
+<h4 id="如何解决幻读"><a href="#如何解决幻读" class="headerlink" title="如何解决幻读"></a>如何解决幻读</h4><ul>
+<li>很明显可重复读的隔离级别没有办法彻底的解决幻读的问题，如果需要解决幻读的话也有两个办法：<br>  • 使用串行化读的隔离级别<br>  • MVCC+next-key locks：next-key locks由record locks(索引加锁) 和 gap locks(间隙锁，每次锁住的不光是需要使用的数据，还会锁住这些数据附近的数据)</li>
+</ul>
+<blockquote>
+<p>SELECT <em> FROM t1 WHERE c1 = (SELECT c1 FROM t2) FOR UPDATE;锁不生效<br>SELECT </em> FROM t1 WHERE c1 = (SELECT c1 FROM t2 FOR UPDATE) FOR UPDATE;锁生效</p>
+</blockquote>
 <h3 id="日志系统-两阶段提交"><a href="#日志系统-两阶段提交" class="headerlink" title="日志系统-两阶段提交"></a>日志系统-两阶段提交</h3><blockquote>
 <p>WAL技术：Write-Ahead Logging，先写日志，在写磁盘；也就是mysql会先写redo log，然后更新内存，最后适当的时候（redo log写满的时候或者空闲的时候）在写磁盘；这种能力称之为crash-safe。</p>
 </blockquote>
@@ -615,10 +685,42 @@ public class MysqlTest01 {
 <li>基于消息队列的最终一致性方案</li>
 <li>本地事务</li>
 </ul>
-<p>MVCC方案<br>多版本并发控制，update with condition，更新带条件，这也是在系统设计的时候，合理的选择乐观锁，通过version或者其他条件，来做乐观锁，这样保证更新及时在并发的情况下，也不会有太大的问题。例如update tablexxx set name=#name#,version=version+1 where version=#version# ,或者是 update tablexxx set quality=quality-#subQuality# where quality-#subQuality# &gt;= 0 。</p>
-<p>异步回调机制的引入<br>A应用调用B，在同步调用的返回结果中，B返回成功给到A，一般情况下，这时候就结束了，其实在99.99%的情况是没问题的，但是有时候为了确保100%，记住最起码在系统设计中100%，这时候B系统再回调A一下，告诉A，你调用我的逻辑，确实成功了。其实这个逻辑，非常类似TCP协议中的三次握手。上图中的B流程。</p>
-<p>类似double check机制的确认机制<br>还是上图中异步回调的过程，A在同步调用B，B返回成功了。这次调用结束了，但是A为了确保，在过一段时间，这个时间可以是几秒，也可以是每天定时处理，再调用B一次，查询一下之前的那次调用是否成功。例如A调用B更新订单状态，这时候成功了，延迟几秒后，A查询B，确认一下状态是否是自己刚刚期望的。上图中的D流程。</p>
-<p>分布式事务<br>private UserInfo doSubmitUser(UmParticipantUser umParticipantUser,<br>UmSafeBind safeBind, UmLocalUser localUser,<br>UmUserLoginLog userLoginLog, UmUserLoginStatus userLoginStatus,UmUiaInfo umUiaInfo,<br>UmLocalUserHist uluh) {<br>// 提交服务<br>if (BranchTransactionHandler.dtpSwicth()) {<br>String bxid = null;// 分支事务ID<br>if (BranchTransactionHandler.dtpSwicth()) {<br>bxid = BranchTransactionHandler.beginBranchTransaction();<br>}<br>BranchTransactionHandler.submitLog(bxid, ServiceType.SPRING_BEAN,<br>OUM12000105.class, “doSubmit”, new Class[] {<br>UmParticipantUser.class, UmLocalUser.class,<br>UmUserLoginLog.class,<br>UmUserLoginStatus.class, UmSafeBind.class,UmUiaInfo.class,UmLocalUserHist.class},<br>new Object[] { umParticipantUser, localUser,<br>userLoginLog, userLoginStatus, safeBind,umUiaInfo,uluh});<br>} else {<br>doSubmit(umParticipantUser, localUser, userLoginLog,<br>userLoginStatus, safeBind,umUiaInfo,uluh);<br>}</p>
+<h3 id="异步回调机制的引入"><a href="#异步回调机制的引入" class="headerlink" title="异步回调机制的引入"></a>异步回调机制的引入</h3><blockquote>
+<p>A应用调用B，在同步调用的返回结果中，B返回成功给到A，一般情况下，这时候就结束了，其实在99.99%的情况是没问题的，但是有时候为了确保100%，记住最起码在系统设计中100%，这时候B系统再回调A一下，告诉A，你调用我的逻辑，确实成功了。其实这个逻辑，非常类似TCP协议中的三次握手。上图中的B流程。</p>
+<ul>
+<li>类似double check机制的确认机制<br>还是上图中异步回调的过程，A在同步调用B，B返回成功了。这次调用结束了，但是A为了确保，在过一段时间，这个时间可以是几秒，也可以是每天定时处理，再调用B一次，查询一下之前的那次调用是否成功。例如A调用B更新订单状态，这时候成功了，延迟几秒后，A查询B，确认一下状态是否是自己刚刚期望的。上图中的D流程。</li>
+</ul>
+</blockquote>
+<h2 id="XA分布式事务实现原理-待完善"><a href="#XA分布式事务实现原理-待完善" class="headerlink" title="XA分布式事务实现原理(待完善)"></a>XA分布式事务实现原理(待完善)</h2><ul>
+<li><p>Java原生sql事务接口</p>
+<ol>
+<li>最开始连接方式是驱动加载连接<br> a. Java.sql.connection/Driver/等在java.sql 包下</li>
+<li>后来有了连接池，使用datasource获取connection（同时有了分布式事务的支持）<br> a. Javax.sql.Datasource/XADatasource 等在javax.sql 包下</li>
+</ol>
+</li>
+<li><p>Mysql驱动包提供了对应的接口实现<br>  MysqlXADataSource，MysqlXAConnection，MysqlXid</p>
+</li>
+<li><p>Spring提供的事务封装</p>
+<ol>
+<li>对原生sql事务的封装，不管是本地事务还是分布式事务（单独讨论）</li>
+</ol>
+</li>
+<li><p>Javax.jta事务包—提供了事务操作的基本接口</p>
+<ol>
+<li>Spring.tx事务包实现类</li>
+<li>transtations-jta.事务包实现类（Atomikos.icatch.jta事务包实现类）</li>
+</ol>
+</li>
+</ul>
+<h3 id="JTA规范"><a href="#JTA规范" class="headerlink" title="JTA规范"></a>JTA规范</h3><ol>
+<li>Mysql服务端提供的XA命令<br> a. XA {START|BEGIN} xid [JOIN|RESUME] —————对应MysqlXAConnection 中的 start 方法<br> b. XA END xid [SUSPEND [FOR MIGRATE]] —————对应MysqlXAConnection 中的 end方法<br> c. XA PREPARE xid                    —————对应MysqlXAConnection 中的 perpare方法<br> d. XA COMMIT xid [ONE PHASE]         —————对应MysqlXAConnection 中的 commit方法<br> e. XA ROLLBACK xid                  —————对应MysqlXAConnection 中的 rollback方法<br> f. XA RECOVER [CONVERT XID]         —————对应MysqlXAConnection 中的 recover方法</li>
+<li>Mysql客户端驱动包中的XA实现类<br> a. MysqlXADataSource，MysqlXAConnection，MysqlXid<br> b. 基于java包中的标准接口XADatasource ，XAConnection，Javax.transaction.api包—-定义了java事务管理和部分分布式事务的标准接口Xid，由具体实现方实现细节<br> c. </li>
+<li><p>Atmoikos如何基于客户端实现类构建多数据源的分布式事务<br> a. UserTransactionImp 来开启事务关闭事务<br> b. UserTransactionImp utx = new UserTransactionImp();<br> c. AtomikosDataSourceBean dataSource = new AtomikosDataSourceBean();<br> d. 看不同具体实现，找不到怎么控制多数据原两阶段的代码</p>
+</li>
+<li><p>将事务绑定到当前线程是为了什么？<br> a. // 检查当前线程是否有分布式事务<br> b. if(tx != null){<br> c.  在分布式事务内，通过 tx 对象判断当前数据连接是否已经被包含在事务中，如果不是那么将此连接加入到事务中</p>
+</li>
+<li>Xid 包含三个元素：formatID、gtrid（全局事务标识符）和 bqual（分支修饰词标识符）<br> a. gtrid 和 bqual 分别包含 64 个字节二进制码来分别标识全局事务和分支事务， 唯一的要求是 gtrid 和 bqual 必须是全局唯一的。</li>
+</ol>
 
       
     </div>
@@ -768,7 +870,7 @@ public class MysqlTest01 {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-count">136</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -779,7 +881,7 @@ public class MysqlTest01 {
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -790,7 +892,7 @@ public class MysqlTest01 {
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">137</span>
+                <span class="site-state-item-count">134</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -843,7 +945,7 @@ public class MysqlTest01 {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Transaction"><span class="nav-number">1.</span> <span class="nav-text">Transaction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">1.1.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库事务"><span class="nav-number">1.2.</span> <span class="nav-text">数据库事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ACID"><span class="nav-number">1.2.1.</span> <span class="nav-text">ACID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离性或独立性-Isolation"><span class="nav-number">1.2.2.</span> <span class="nav-text">隔离性或独立性( Isolation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离性的实现"><span class="nav-number">1.2.3.</span> <span class="nav-text">隔离性的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVCC"><span class="nav-number">1.2.4.</span> <span class="nav-text">MVCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志系统-两阶段提交"><span class="nav-number">1.2.5.</span> <span class="nav-text">日志系统-两阶段提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务传播机制"><span class="nav-number">1.2.6.</span> <span class="nav-text">事务传播机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring事务"><span class="nav-number">1.3.</span> <span class="nav-text">Spring事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何使用"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Propagation（事务传播机制）"><span class="nav-number">1.3.2.</span> <span class="nav-text">Propagation（事务传播机制）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现原理"><span class="nav-number">1.3.3.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限制局限"><span class="nav-number">1.3.4.</span> <span class="nav-text">限制局限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis事务"><span class="nav-number">1.4.</span> <span class="nav-text">Redis事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#事务执行流程"><span class="nav-number">1.4.1.</span> <span class="nav-text">事务执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加锁策略"><span class="nav-number">1.4.2.</span> <span class="nav-text">加锁策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流水线"><span class="nav-number">1.4.3.</span> <span class="nav-text">流水线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式事务"><span class="nav-number">1.5.</span> <span class="nav-text">分布式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本地事务"><span class="nav-number">1.5.1.</span> <span class="nav-text">本地事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式事务解决方案"><span class="nav-number">1.5.2.</span> <span class="nav-text">分布式事务解决方案</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Transaction"><span class="nav-number">1.</span> <span class="nav-text">Transaction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">1.1.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库事务"><span class="nav-number">1.2.</span> <span class="nav-text">数据库事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ACID"><span class="nav-number">1.2.1.</span> <span class="nav-text">ACID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离性或独立性-Isolation"><span class="nav-number">1.2.2.</span> <span class="nav-text">隔离性或独立性( Isolation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离性的实现"><span class="nav-number">1.2.3.</span> <span class="nav-text">隔离性的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVCC"><span class="nav-number">1.2.4.</span> <span class="nav-text">MVCC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MVCC是如何工作的："><span class="nav-number">1.2.4.1.</span> <span class="nav-text">MVCC是如何工作的：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#MVCC只在COMMITTED-READ（读提交）和REPEATABLE-READ（可重复读）两种隔离级别下工作。"><span class="nav-number">1.2.4.1.1.</span> <span class="nav-text">MVCC只在COMMITTED READ（读提交）和REPEATABLE READ（可重复读）两种隔离级别下工作。</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决幻读"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">如何解决幻读</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志系统-两阶段提交"><span class="nav-number">1.2.5.</span> <span class="nav-text">日志系统-两阶段提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务传播机制"><span class="nav-number">1.2.6.</span> <span class="nav-text">事务传播机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring事务"><span class="nav-number">1.3.</span> <span class="nav-text">Spring事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何使用"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Propagation（事务传播机制）"><span class="nav-number">1.3.2.</span> <span class="nav-text">Propagation（事务传播机制）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现原理"><span class="nav-number">1.3.3.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限制局限"><span class="nav-number">1.3.4.</span> <span class="nav-text">限制局限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis事务"><span class="nav-number">1.4.</span> <span class="nav-text">Redis事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#事务执行流程"><span class="nav-number">1.4.1.</span> <span class="nav-text">事务执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加锁策略"><span class="nav-number">1.4.2.</span> <span class="nav-text">加锁策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流水线"><span class="nav-number">1.4.3.</span> <span class="nav-text">流水线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式事务"><span class="nav-number">1.5.</span> <span class="nav-text">分布式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本地事务"><span class="nav-number">1.5.1.</span> <span class="nav-text">本地事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式事务解决方案"><span class="nav-number">1.5.2.</span> <span class="nav-text">分布式事务解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步回调机制的引入"><span class="nav-number">1.5.3.</span> <span class="nav-text">异步回调机制的引入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XA分布式事务实现原理-待完善"><span class="nav-number">1.6.</span> <span class="nav-text">XA分布式事务实现原理(待完善)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JTA规范"><span class="nav-number">1.6.1.</span> <span class="nav-text">JTA规范</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

@@ -122,7 +122,7 @@
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/GC%E6%97%A5%E5%BF%97.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%9B%BE.png">
-<meta property="og:updated_time" content="2020-02-02T07:34:37.217Z">
+<meta property="og:updated_time" content="2020-07-04T03:06:24.930Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM">
 <meta name="twitter:description" content="步入java虚拟机的世界 内存管理 运行时数据区域 内存分配与回收   虚拟机对象 垃圾回收 垃圾回收算法 垃圾收集器   GC日志 class文件 类加载机制 自定义类加载器     建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！">
@@ -773,6 +773,23 @@
 </ul>
 </li>
 </ul>
+<h2 id="如何打破双亲委派模型实现自定义class加载顺序"><a href="#如何打破双亲委派模型实现自定义class加载顺序" class="headerlink" title="如何打破双亲委派模型实现自定义class加载顺序"></a>如何打破双亲委派模型实现自定义class加载顺序</h2><ul>
+<li>springboot是如何打破双亲委派模型的</li>
+</ul>
+<h2 id="javap可视化class文件解读"><a href="#javap可视化class文件解读" class="headerlink" title="javap可视化class文件解读"></a>javap可视化class文件解读</h2><ul>
+<li>javap -v xxx.class &gt; output.txt：该命令可以将指定的class文件以可读的格式输出到文本文件中</li>
+<li>StackMapTable：在Java 6版本之后JVM在class文件中引入了栈图(StackMapTable)。作用为了提高JVM在类型检查的验证过程的效率。栈图结构位于Code属性（指Classfile的Code属性）的属性表（ attributes table）结构中。在字节码的Code属性中最多包含一个StackMapTable属性。 在Java 7版本之后把栈图作为字节码文件中的强制部分。 本来程序员是不需要关心JVM中的JIT编译器的细节，也不用知道编译原理或者数据流、控制流的细节。但栈图强制了，如果要生成bytecode，必须准确知道每个字节码指令对应的局部变量和操作数栈的类型。这是因为Java7在编译的时期做了一些验证期间要做的事情，那就是类型检查，也就是栈图包含的内容。但是Java的验证在类加载的时候只会运行一次，而占据了大部分时间的操作是IO的消耗，而不是验证过程。即使现在有了栈图，验证过程依然会执行，栈图的存在只是节省了一部分的验证时间。并且JVM的设计者还必须兼容没有栈图的验证的实现，因为Java7以前版本是没有强制栈图这个概念的，然而Java8依然延续了栈图的字节码结构。</li>
+</ul>
+<h2 id="Hotspot中java对象的内存布局"><a href="#Hotspot中java对象的内存布局" class="headerlink" title="Hotspot中java对象的内存布局"></a>Hotspot中java对象的内存布局</h2><ul>
+<li>每个java对象在内存中都由对象头和对象体组成。</li>
+<li>对象头是存放对象的元信息，包括该对象所属类对象Class的引用以及hashcode和monitor的一些信息。</li>
+<li>对象体主要存放的是java对象自身的实例域以及从父类继承过来的实例域，并且内部布局满足由下规则：</li>
+<li>规则1：任何对象都是8个字节为粒度进行对齐的。</li>
+<li>规则2：实例域按照如下优先级进行排列：长整型和双精度类型；整型和浮点型；字符和短整型；字节类型和布尔类型，最后是引用类型。这些实例域都按照各自的单位对齐。</li>
+<li>规则3：不同类继承关系中的实例域不能混合排列。首先按照规则2处理父类中的实例域，接着才是子类的实例域。</li>
+<li>规则4：当父类中最后一个成员和子类第一个成员的间隔如果不够4个字节的话，就必须扩展到4个字节的基本单位。</li>
+<li>规则5：如果子类第一个实例域是一个双精度或者长整型，并且父类并没有用完8个字节，JVM会破坏规则2，按照整形（int），短整型（short），字节型（byte），引用类型（reference）的顺序，向未填满的空间填充。</li>
+</ul>
 
       
     </div>
@@ -842,8 +859,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/15/Compile JDK/" rel="next" title="Compile JDK">
-                <i class="fa fa-chevron-left"></i> Compile JDK
+              <a href="/2018/04/15/初识REST/" rel="next" title="初识REST">
+                <i class="fa fa-chevron-left"></i> 初识REST
               </a>
             
           </div>
@@ -928,7 +945,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-count">136</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -939,7 +956,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -950,7 +967,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">137</span>
+                <span class="site-state-item-count">134</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1003,7 +1020,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#步入java虚拟机的世界"><span class="nav-number">1.</span> <span class="nav-text">步入java虚拟机的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">1.1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.1.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收"><span class="nav-number">1.1.2.</span> <span class="nav-text">内存分配与回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以复制算法为例，minorGC一次的全过程如下"><span class="nav-number">1.1.3.</span> <span class="nav-text">以复制算法为例，minorGC一次的全过程如下</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机对象"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收"><span class="nav-number">1.3.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判定对象可以进行回收"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何判定对象可以进行回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">1.3.2.</span> <span class="nav-text">垃圾回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器：内存回收的具体实现"><span class="nav-number">1.3.3.</span> <span class="nav-text">垃圾收集器：内存回收的具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC日志阅读"><span class="nav-number">1.4.</span> <span class="nav-text">GC日志阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识class文件"><span class="nav-number">1.5.</span> <span class="nav-text">认识class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class文件校验"><span class="nav-number">1.5.1.</span> <span class="nav-text">Class文件校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">1.6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载过程"><span class="nav-number">1.6.1.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">1.6.2.</span> <span class="nav-text">类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jvm参数"><span class="nav-number">1.7.</span> <span class="nav-text">Jvm参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-UCC"><span class="nav-number">1.7.1.</span> <span class="nav-text">生产实例-UCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-CMC"><span class="nav-number">1.7.2.</span> <span class="nav-text">生产实例-CMC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.8.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义类加载器ClassLoader"><span class="nav-number">1.9.</span> <span class="nav-text">自定义类加载器ClassLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK目录结构解析（JDK1-8目录结构）"><span class="nav-number">1.10.</span> <span class="nav-text">JDK目录结构解析（JDK1.8目录结构）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#步入java虚拟机的世界"><span class="nav-number">1.</span> <span class="nav-text">步入java虚拟机的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">1.1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.1.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收"><span class="nav-number">1.1.2.</span> <span class="nav-text">内存分配与回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以复制算法为例，minorGC一次的全过程如下"><span class="nav-number">1.1.3.</span> <span class="nav-text">以复制算法为例，minorGC一次的全过程如下</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机对象"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收"><span class="nav-number">1.3.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判定对象可以进行回收"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何判定对象可以进行回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">1.3.2.</span> <span class="nav-text">垃圾回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器：内存回收的具体实现"><span class="nav-number">1.3.3.</span> <span class="nav-text">垃圾收集器：内存回收的具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC日志阅读"><span class="nav-number">1.4.</span> <span class="nav-text">GC日志阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识class文件"><span class="nav-number">1.5.</span> <span class="nav-text">认识class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class文件校验"><span class="nav-number">1.5.1.</span> <span class="nav-text">Class文件校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">1.6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载过程"><span class="nav-number">1.6.1.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">1.6.2.</span> <span class="nav-text">类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jvm参数"><span class="nav-number">1.7.</span> <span class="nav-text">Jvm参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-UCC"><span class="nav-number">1.7.1.</span> <span class="nav-text">生产实例-UCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-CMC"><span class="nav-number">1.7.2.</span> <span class="nav-text">生产实例-CMC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.8.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义类加载器ClassLoader"><span class="nav-number">1.9.</span> <span class="nav-text">自定义类加载器ClassLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK目录结构解析（JDK1-8目录结构）"><span class="nav-number">1.10.</span> <span class="nav-text">JDK目录结构解析（JDK1.8目录结构）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何打破双亲委派模型实现自定义class加载顺序"><span class="nav-number">1.11.</span> <span class="nav-text">如何打破双亲委派模型实现自定义class加载顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#javap可视化class文件解读"><span class="nav-number">1.12.</span> <span class="nav-text">javap可视化class文件解读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hotspot中java对象的内存布局"><span class="nav-number">1.13.</span> <span class="nav-text">Hotspot中java对象的内存布局</span></a></li></ol></li></ol></div>
             
 
           </div>

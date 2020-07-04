@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/07/08/Zookeeper/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Zookeeper What is Zookeeper ? Why use Zookeeper ? Theory Leader Election  Deploy  How to use ? Command Line API Curator">
-<meta property="og:updated_time" content="2018-12-04T05:51:55.121Z">
+<meta property="og:updated_time" content="2020-07-04T02:43:30.687Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zookeeper">
 <meta name="twitter:description" content="Zookeeper What is Zookeeper ? Why use Zookeeper ? Theory Leader Election  Deploy  How to use ? Command Line API Curator">
@@ -704,6 +704,57 @@
 <ul>
 <li><h3 id="Curator客户端使用指南"><a href="#Curator客户端使用指南" class="headerlink" title="Curator客户端使用指南"></a>Curator客户端使用指南</h3></li>
 </ul>
+<h3 id="扩展与思考"><a href="#扩展与思考" class="headerlink" title="扩展与思考"></a>扩展与思考</h3><ul>
+<li>注册中心的需求分析和关键设计考量</li>
+</ul>
+<ol>
+<li>注册中心是CP还是AP<ol>
+<li>zk基于CP（数据一致性，分区容忍性），nacos基于AP（可用性，分区容忍性）</li>
+<li>zk集群3机房5节点容灾部署，当某一机房出现网络分区时，该机房的zk节点就成了不可写状态，因为联系不上leader，也就是说该机房的应用服务没办法重新部署，扩容或者缩容；但是如果使用nacos，该机房的注册中心依然可以支持该机房服务的正常重新部署，上下线，虽然注册中心数据出现了不一致，但是并不影响服务的正常使用。</li>
+<li>zk的写是不可扩展的（由于要保持整个集群数据的一致性，所有的写操作都是由leader节点来操控，而且会涉及到分布式事务的问题，严重影响效率性能），不能通过增加节点来解决水平扩展性问题。</li>
+<li>zk的数据持久化和事务日志。<ol>
+<li>在服务发现场景中，其最核心的数据-实时的健康的服务的地址列表真的需要数据持久化么？其实不是，因为客户端会缓存一份数据，并且客户端对注册中心一定是一个弱依赖关系，必须仅在服务发布，机器上下线，服务扩缩容等必要时才依赖注册中心。</li>
+<li>一个完整的生产可用的注册中心，除了服务的实时地址列表以及实时的健康状态之外，还会存储一些服务的元数据信息，例如服务的版本，分组，所在的数据中心，权重，鉴权策略信息，service label等元信息，这些数据需要持久化存储，并且注册中心应该提供对这些元信息的检索的能力。</li>
+</ol>
+</li>
+<li>服务的健康检测<ol>
+<li>将服务的健康监测绑定在了 ZooKeeper 对于 Session 的健康监测上，或者说绑定在TCP长链接活性探测上了。</li>
+<li>注册中心应该提供更丰富的健康监测方案，服务的健康与否的逻辑应该开放给服务提供方自己定义，而不是一刀切搞成了 TCP 活性检测！</li>
+</ol>
+</li>
+<li>容灾<ol>
+<li>客户端中应该有针对注册中心服务完全不可用时做容灾的手段，例如设计客户端缓存数据机制（我们称之为 client snapshot）就是行之有效的手段</li>
+</ol>
+</li>
+<li>ZooKeeper，大数据/分布式协调绝佳伴侣，而交易则/服务发现则不太合适</li>
+</ol>
+</li>
+</ol>
+<h3 id="Zab协议"><a href="#Zab协议" class="headerlink" title="Zab协议"></a>Zab协议</h3><blockquote>
+<p>Zab协议: 全称是 Zookeeper Atomic Broadcast （Zookeeper原子广播）</p>
+<ul>
+<li>保证数据一致性的核心算法</li>
+<li>基于该协议，zk实现了一种主备模型（即Leader和Follower模型）的系统架构来保证集群中各个副本之间数据的一致性</li>
+<li>使用一个单一的主进程（Leader）来接收并处理客户端的事务请求（也就是写请求），并采用了Zab的原子广播协议，将服务器数据的状态变更以 事务proposal （事务提议）的形式广播到所有的副本（Follower）进程上去。</li>
+<li>保证一个全局的变更序列被顺序引用。Zookeeper是一个树形结构，很多操作都要先检查才能确定是否可以执行，比如P1的事务t1可能是创建节点”/a”，t2可能是创建节点”/a/bb”，只有先创建了父节点”/a”，才能创建子节点”/a/b”。为了保证这一点，Zab要保证同一个Leader发起的事务要按顺序被apply</li>
+</ul>
+</blockquote>
+<h3 id="Paxos算法"><a href="#Paxos算法" class="headerlink" title="Paxos算法"></a>Paxos算法</h3><blockquote>
+<p>Paxos算法: 用来解决分布式系统中，如何就某个值达成一致的算法</p>
+<ul>
+<li>Proposer：议案发起者。</li>
+<li>Acceptor：决策者，可以批准议案。</li>
+<li>Learner：最终决策的学习者。</li>
+<li>P0. 当集群中，超过半数的Acceptor接受了一个议案，那我们就可以说这个议案被选定了（Chosen）。P0已经是一个完备的一致性算法，保证了P0也就解决了一致性问题。但是P0的实用性不佳，一个议案想被半数以上的Acceptor接受是一件极其困难的事情！</li>
+<li>算法推算过程太复杂，自行百度</li>
+</ul>
+</blockquote>
+<h3 id="负载均衡算法"><a href="#负载均衡算法" class="headerlink" title="负载均衡算法"></a>负载均衡算法</h3><blockquote>
+<p>zk客户端curator实现连接zk集群服务器的负载均衡算法：拿到集群服务器列表放到List中，然后使用random.nextInt(集群服务器数量)来随机连接一个</p>
+</blockquote>
+<h3 id="分区容忍性"><a href="#分区容忍性" class="headerlink" title="分区容忍性"></a>分区容忍性</h3><blockquote>
+<p>什么是分区容忍性：一个分布式系统里面，节点组成的网络本来应该是连通的。然而可能因为一些故障，使得有些节点之间不连通了，整个网络就分成了几块区域。数据就散布在了这些不连通的区域中。这就叫分区。当你一个数据项只在一个节点中保存，那么分区出现后，和这个节点不连通的部分就访问不到这个数据了。这时分区就是无法容忍的。提高分区容忍性的办法就是一个数据项复制到多个节点上，那么出现分区之后，这一数据项就可能分布到各个区里。容忍性就提高了。然而，要把数据复制到多个节点，就会带来一致性的问题，就是多个节点上面的数据可能是不一致的。要保证一致，每次写操作就都要等待全部节点写成功，而这等待又会带来可用性的问题。总的来说就是，数据存在的节点越多，分区容忍性越高，但要复制更新的数据就越多，一致性就越难保证。为了保证一致性，更新所有节点数据所需要的时间就越长，可用性就会降低。</p>
+</blockquote>
 
       
     </div>
@@ -861,7 +912,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-count">136</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -872,7 +923,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -883,7 +934,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">137</span>
+                <span class="site-state-item-count">134</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -936,7 +987,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Zookeeper"><span class="nav-number">1.</span> <span class="nav-text">Zookeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-Zookeeper"><span class="nav-number">1.1.</span> <span class="nav-text">What is Zookeeper ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-use-Zookeeper"><span class="nav-number">1.2.</span> <span class="nav-text">Why use Zookeeper ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Theory"><span class="nav-number">1.3.</span> <span class="nav-text">Theory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leader-Election"><span class="nav-number">1.4.</span> <span class="nav-text">Leader Election</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy"><span class="nav-number">1.5.</span> <span class="nav-text">Deploy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use"><span class="nav-number">1.6.</span> <span class="nav-text">How to use ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行指令"><span class="nav-number">1.7.</span> <span class="nav-text">命令行指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API使用指南"><span class="nav-number">1.8.</span> <span class="nav-text">API使用指南</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Curator客户端使用指南"><span class="nav-number">1.9.</span> <span class="nav-text">Curator客户端使用指南</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Zookeeper"><span class="nav-number">1.</span> <span class="nav-text">Zookeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-Zookeeper"><span class="nav-number">1.1.</span> <span class="nav-text">What is Zookeeper ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-use-Zookeeper"><span class="nav-number">1.2.</span> <span class="nav-text">Why use Zookeeper ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Theory"><span class="nav-number">1.3.</span> <span class="nav-text">Theory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leader-Election"><span class="nav-number">1.4.</span> <span class="nav-text">Leader Election</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy"><span class="nav-number">1.5.</span> <span class="nav-text">Deploy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use"><span class="nav-number">1.6.</span> <span class="nav-text">How to use ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行指令"><span class="nav-number">1.7.</span> <span class="nav-text">命令行指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API使用指南"><span class="nav-number">1.8.</span> <span class="nav-text">API使用指南</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Curator客户端使用指南"><span class="nav-number">1.9.</span> <span class="nav-text">Curator客户端使用指南</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展与思考"><span class="nav-number">1.10.</span> <span class="nav-text">扩展与思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zab协议"><span class="nav-number">1.11.</span> <span class="nav-text">Zab协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Paxos算法"><span class="nav-number">1.12.</span> <span class="nav-text">Paxos算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡算法"><span class="nav-number">1.13.</span> <span class="nav-text">负载均衡算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分区容忍性"><span class="nav-number">1.14.</span> <span class="nav-text">分区容忍性</span></a></li></ol></li></ol></div>
             
 
           </div>
