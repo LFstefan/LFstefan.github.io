@@ -1,0 +1,1343 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Distributed,MySql,ShardingSphere," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Shardingsphere Parser Sql Preface Shardingsphere antlr4工具 .g4语法文件 抽象语法树 java映射 实战源码">
+<meta name="keywords" content="Distributed,MySql,ShardingSphere">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shardingsphere Parser Sql">
+<meta property="og:url" content="https://lfstefan.github.io/2020/08/28/ShardingSphere Parser Sql/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="Shardingsphere Parser Sql Preface Shardingsphere antlr4工具 .g4语法文件 抽象语法树 java映射 实战源码">
+<meta property="og:updated_time" content="2020-08-28T06:57:15.469Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Shardingsphere Parser Sql">
+<meta name="twitter:description" content="Shardingsphere Parser Sql Preface Shardingsphere antlr4工具 .g4语法文件 抽象语法树 java映射 实战源码">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2020/08/28/ShardingSphere Parser Sql/"/>
+
+
+
+
+
+  <title>Shardingsphere Parser Sql | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2020/08/28/ShardingSphere Parser Sql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Shardingsphere Parser Sql
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-28T12:17:20+08:00">
+                2020-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ShardingSphere/" itemprop="url" rel="index">
+                    <span itemprop="name">ShardingSphere</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/08/28/ShardingSphere Parser Sql/" class="leancloud_visitors" data-flag-title="Shardingsphere Parser Sql">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Shardingsphere-Parser-Sql"><a href="#Shardingsphere-Parser-Sql" class="headerlink" title="Shardingsphere Parser Sql"></a>Shardingsphere Parser Sql</h1><ul>
+<li>Preface</li>
+<li>Shardingsphere<ul>
+<li>antlr4工具</li>
+<li>.g4语法文件</li>
+<li>抽象语法树</li>
+<li>java映射</li>
+<li>实战源码</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><blockquote>
+<p>ShardingSphere基础知识请阅读官方文档：<a href="url">https://shardingsphere.apache.org</a></p>
+</blockquote>
+<ul>
+<li>本文主要讨论Shardingsphere（基于4.1.1版本）知识点<ul>
+<li>解析sql生成语法树</li>
+<li>映射到java类文件</li>
+<li>寻找分片键，定位sql路由</li>
+<li>最后修改源码提供Shardingsphere目前并不支持的update case when语句</li>
+</ul>
+</li>
+</ul>
+<h2 id="Shardingsphere"><a href="#Shardingsphere" class="headerlink" title="Shardingsphere"></a>Shardingsphere</h2><h3 id="antlr4"><a href="#antlr4" class="headerlink" title="antlr4"></a>antlr4</h3><blockquote>
+<p>ANTLR（另一种语言识别工具）是功能强大的解析器生成器，用于读取，处理，执行或翻译结构化文本或二进制文件。 它被广泛用于构建语言，工具和框架。 ANTLR从语法中生成一个解析器，该解析器可以构建解析树，还生成一个侦听器界面（或访问者），该侦听器界面使响应感兴趣的短语的识别变得容易。<a href="url">https://github.com/antlr/antlr4</a></p>
+</blockquote>
+<ul>
+<li>antlr4使用流程如下<ol>
+<li>定义.g4语法文件，编写解析语法规则</li>
+<li>使用antlr4提供了脚本将自己编写的语法文件生成具体的java解析类</li>
+<li>根据antlr提供的api（其实就是上一步生成的解析类）进行词法，语法解析生成语法树</li>
+<li>可以自定义java映射结构，将整个语法树或者部分语法树映射到自己想要的结构中去使用</li>
+</ol>
+</li>
+</ul>
+<h4 id="下面对照shardingsphere实际文件进行解读"><a href="#下面对照shardingsphere实际文件进行解读" class="headerlink" title="下面对照shardingsphere实际文件进行解读"></a>下面对照shardingsphere实际文件进行解读</h4><h5 id="g4语法文件"><a href="#g4语法文件" class="headerlink" title=".g4语法文件"></a>.g4语法文件</h5><ul>
+<li>首先sql解析包是shardingsphere-sql-parser/shardingsphere-sql-parser-dialect/shardingsphere-sql-parser-mysql（以mysql为例，其他同理）</li>
+<li>位置：src/main/antlr4/import/mysql/</li>
+<li>文件：MysqlStatement.g4（主文件，其他为辅助文件，明细文件）</li>
+<li>语法文件内容：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line"> * 这是MySQLStatement.g4主文件内容（部分），整体总结了mysql几乎的所有语法，每一种具体的语法规则明细在其他文件，例如：insert/update等语句在DMLStatement.g4文件中（主文件已经引用了该文件 import ）</div><div class="line">[具体的语法文件编写规则不在讨论范围内，官方文档自行阅读]</div><div class="line"> */</div><div class="line"></div><div class="line">grammar MySQLStatement;//MySQLStatement和语法文件名保持一致</div><div class="line"></div><div class="line">import Symbol, Comments, DMLStatement, DDLStatement, TCLStatement, DCLStatement, DALStatement, RLStatement;</div><div class="line"></div><div class="line">execute</div><div class="line">    : (select</div><div class="line">    | insert</div><div class="line">    | update</div><div class="line">    | delete</div><div class="line">    | replace</div><div class="line">    | createTable</div><div class="line">    | alterTable</div><div class="line">    | repairTable</div><div class="line">    | renameTableSpecification</div><div class="line">	...</div><div class="line">    | rollback</div><div class="line">    | savepoint</div><div class="line">    | grant</div><div class="line">    | revoke</div><div class="line">	...</div><div class="line">    | showOther</div><div class="line">    | setVariable</div><div class="line">    | call</div><div class="line">    | changeMasterTo</div><div class="line">    | startSlave</div><div class="line">    | stopSlave</div><div class="line">    ) SEMI_?</div><div class="line">    ;</div><div class="line"></div><div class="line">/*</div><div class="line"> * dml语句解析语法定义文件，例如下面详细编写了如何解析insert语句的语法规则</div><div class="line"> */</div><div class="line"></div><div class="line">grammar DMLStatement;</div><div class="line"></div><div class="line">import Symbol, Keyword, MySQLKeyword, Literals, BaseRule;</div><div class="line"></div><div class="line">insert</div><div class="line">    : INSERT insertSpecification_ INTO? tableName partitionNames_? (insertValuesClause | setAssignmentsClause | insertSelectClause) onDuplicateKeyClause?</div><div class="line">    ;</div><div class="line"></div><div class="line">insertSpecification_</div><div class="line">    : (LOW_PRIORITY | DELAYED | HIGH_PRIORITY)? IGNORE?</div><div class="line">    ;</div><div class="line"></div><div class="line">insertValuesClause</div><div class="line">    : columnNames? (VALUES | VALUE) assignmentValues (COMMA_ assignmentValues)*</div><div class="line">    ;</div><div class="line"></div><div class="line">insertSelectClause</div><div class="line">    : columnNames? select</div><div class="line">    ;</div><div class="line"></div><div class="line">onDuplicateKeyClause</div><div class="line">    : ON DUPLICATE KEY UPDATE assignment (COMMA_ assignment)*</div><div class="line">    ;</div><div class="line"></div><div class="line">replace</div><div class="line">    : REPLACE replaceSpecification_? INTO? tableName partitionNames_? (insertValuesClause | setAssignmentsClause | insertSelectClause)</div><div class="line">    ;</div><div class="line"></div><div class="line">replaceSpecification_</div><div class="line">    : LOW_PRIORITY | DELAYED</div><div class="line">    ;</div><div class="line">...</div></pre></td></tr></table></figure>
+<h5 id="java解析类"><a href="#java解析类" class="headerlink" title="java解析类"></a>java解析类</h5><ul>
+<li>idea有antlr4的插件，可以打开MySQLStatement.g4主文件，右键自动生成解析类；或者使用antlr4提供的脚本也可以，自行选择。<ul>
+<li>每个辅助文件都可以单独生成自己的解析类，但是shardingsphere最终需要的是主文件解析类，也就是MySQLStatement.g4</li>
+</ul>
+</li>
+<li>生成文件包括<ul>
+<li>MySQLStatement.interp</li>
+<li>MySQLStatement.tokens</li>
+<li>MySQLStatementBaseListener.java</li>
+<li>MySQLStatementBaseVisitor.java（MySQLStatementVisitor.java实现类）</li>
+<li>MySQLStatementLexer.java（负责词法解析）</li>
+<li>MySQLStatementLexer.interp</li>
+<li>MySQLStatementLexer.tokens</li>
+<li>MySQLStatementListener.java（shardingsphere没有使用，暂不讨论）</li>
+<li>MySQLStatementParser.java（负责语法解析，生成语法树）</li>
+<li>MySQLStatementVisitor.java（接口，将语法树映射为java自定义结构）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>⚠️注意：shardingsphere源码中没有自动生成这些文件，源码测试需要自行生成并放到指定目录下（org/apache/shardingsphere/sql/parser/autogen/）</p>
+</blockquote>
+<h5 id="antlr4-api使用样例"><a href="#antlr4-api使用样例" class="headerlink" title="antlr4 api使用样例"></a>antlr4 api使用样例</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line">// 测试demo</div><div class="line">public class MysqlStatementTest &#123;</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        CharStream sql = CharStreams.fromString(&quot;sql string&quot;);</div><div class="line">        MySQLStatementLexer lexer = new MySQLStatementLexer(sql);</div><div class="line">        CommonTokenStream tokenStream = new CommonTokenStream(lexer);</div><div class="line">        MySQLStatementParser parser = new MySQLStatementParser(tokenStream);</div><div class="line">		// 解析生层语法树</div><div class="line">        ParseTree parseTree = parser.execute();</div><div class="line">		// 自定义MySQLStatementVisitor的实现类，编写自己的映射关系</div><div class="line">        MySQLVisitor visitor = new MySQLVisitor();</div><div class="line">		// 将语法树映射为自定义的结构</div><div class="line">        T t = visitor.visit(parseTree);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line"> * shardingsphere源码</div><div class="line"> * sql 解析引擎类 ，负责生产语法树，映射为java目标结构</div><div class="line"> */</div><div class="line"></div><div class="line">@RequiredArgsConstructor</div><div class="line">public final class SQLParserEngine &#123;</div><div class="line">    </div><div class="line">    private final String databaseTypeName;</div><div class="line">    </div><div class="line">    private final SQLParseResultCache cache = new SQLParseResultCache();</div><div class="line">    </div><div class="line">	...</div><div class="line">    </div><div class="line">    private SQLStatement parse0(final String sql, final boolean useCache) &#123;</div><div class="line">		// 缓存语法树的java映射</div><div class="line">        if (useCache) &#123;</div><div class="line">            Optional&lt;SQLStatement&gt; cachedSQLStatement = cache.getSQLStatement(sql);</div><div class="line">            if (cachedSQLStatement.isPresent()) &#123;</div><div class="line">                return cachedSQLStatement.get();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">		// 由于shardingsphere支持不同类型的数据库，所以这里根据数据库类型获取对应的parser生成语法树</div><div class="line">        ParseTree parseTree = new SQLParserExecutor(databaseTypeName, sql).execute().getRootNode();</div><div class="line">		// 同理，根据数据库类型获取对应的visitor构造java映射，这里对应的映射为SQLStatement（是个基类，返回结果多为它的子类）</div><div class="line">        SQLStatement result = (SQLStatement) ParseTreeVisitorFactory.newInstance(databaseTypeName,VisitorRule.valueOf(parseTree.getClass())).visit(parseTree);</div><div class="line">        if (useCache) &#123;</div><div class="line">            cache.put(sql, result);</div><div class="line">        &#125;</div><div class="line">        return result;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line"> * shardingsphere源码</div><div class="line"> * 语法树映射java结构的具体实现，MySQLStatementBaseVisitor来自自动生成的解析文件，包含了默认的映射规则，我们需要继承该类重写映射规则，将语法树映射为我们自定义的目标结构</div><div class="line"> * ASTNode是语法树中每个节点对应的java对象节点（基类）</div><div class="line"> * 映射的过程就是遍历语法树将语法树的每一个节点转换为java目标对象节点</div><div class="line"> */</div><div class="line"></div><div class="line">@Getter(AccessLevel.PROTECTED)</div><div class="line">public abstract class MySQLVisitor extends MySQLStatementBaseVisitor&lt;ASTNode&gt; &#123;</div><div class="line">	// 该字段的作用是记录当前预编译sql语句的参数（预编译sql中的？）位置/下标；同时同步到对应的节点中，好让每个参数节点知道自己具体对应参数列表中那个值（index），最终的目标是得到分区键的值对应预编译参数列表中那个值（index值）</div><div class="line">    private int currentParameterIndex;</div><div class="line"></div><div class="line">	/*</div><div class="line">	 * 下面是一个具体映射样例</div><div class="line">	 * 方法是基类的重载，方法ParameterMarkerContext（相当于语法树的一个叶子节点类型，不同的方法用于处理不同类型的叶子节点）参数来自MySQLStatementParser（自动生成的解析类）的内部类ParameterMarkerContext；方法内容就是将语法树叶子节点类型转化为我们自定义的结构类型ParameterMarkerValue（来自基类ASTNode）；该节点刚好还是个预编译参数节点，所以同时还更新了currentParameterIndex字段值</div><div class="line">	 */</div><div class="line">    @Override</div><div class="line">    public final ASTNode visitParameterMarker(final ParameterMarkerContext ctx) &#123;</div><div class="line">        return new ParameterMarkerValue(currentParameterIndex++);</div><div class="line">    &#125;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="自定义映射结构完善源码"><a href="#自定义映射结构完善源码" class="headerlink" title="自定义映射结构完善源码"></a>自定义映射结构完善源码</h5><blockquote>
+<p>shardingsphere当前版本（4.1.1）不支持update case when语句，查看源码语法文件可以发现，语法文件是编写了改语句的解析规则，也就是支持该语句的；然后查看MySQLVisitor映射文件可以发现是具体映射实现没有详细实现，而是直接映射为了字符串</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">// 源码实现，只是简单映射为了字符串类型</div><div class="line">@Override</div><div class="line">public final ASTNode visitCaseExpression(final CaseExpressionContext ctx) &#123;</div><div class="line">    return new OtherLiteralValue(ctx.getText());</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 自定义改造</div><div class="line">// 首先要知道case when 语法在语法树中的具体节点类型是什么，可以使用idea插件根据实际sql直接观察，然后再MySQLStatementVisitor.java接口中找到对应的映射方法，在MySQLVisitor类中重载</div><div class="line"></div><div class="line">@Override</div><div class="line">public final ASTNode visitCaseExpression(final CaseExpressionContext ctx) &#123;</div><div class="line">    Collection&lt;CaseWhenExpressionSegment&gt; caseWhen = new ArrayList&lt;&gt;(ctx.caseWhen_().size());</div><div class="line">    ctx.caseWhen_().forEach(e -&gt; caseWhen.add((CaseWhenExpressionSegment) visitCaseWhen_(e)));</div><div class="line">    return new CaseFlowExpressionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (SQLSegment) visitSimpleExpr(ctx.simpleExpr()), caseWhen);</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public final ASTNode visitCaseWhen_(final CaseWhen_Context ctx) &#123;</div><div class="line">    Collection&lt;ExpressionSegment&gt; statementList = new ArrayList&lt;&gt;(ctx.expr().size());</div><div class="line">    ctx.expr().stream().skip(1).forEach(e -&gt; statementList.add((ExpressionSegment) visitExpr(e)));</div><div class="line">    return new CaseWhenExpressionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (SQLSegment) visitExpr(ctx.expr(0)), statementList);</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public final ASTNode visitCaseElse_(final CaseElse_Context ctx) &#123;</div><div class="line">    return new CaseElseExpressionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (ExpressionSegment) visitExpr(ctx.expr()));</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 辅助自定义映射类型；所处包：shardingsphere-sql-parser/shardingsphere-sql-parser-statement；所处文件夹：org/apache/shardingsphere/sql/parser/sql/segment/dml/expr/</div><div class="line">// 可以自定义文件夹，也可以直接在现有文件夹下直接新建映射文件</div><div class="line"></div><div class="line">public interface CaseExpressionSegment extends ExpressionSegment &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@RequiredArgsConstructor</div><div class="line">@Getter</div><div class="line">@ToString</div><div class="line">public class CaseFlowExpressionSegment implements CaseExpressionSegment &#123;</div><div class="line">    private final int startIndex;</div><div class="line">    private final int stopIndex;</div><div class="line">    private final SQLSegment caseValue;</div><div class="line">    private final Collection&lt;CaseWhenExpressionSegment&gt; caseWhen;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@RequiredArgsConstructor</div><div class="line">@Getter</div><div class="line">@ToString</div><div class="line">public class CaseWhenExpressionSegment implements CaseExpressionSegment &#123;</div><div class="line">    private final int startIndex;</div><div class="line">    private final int stopIndex;</div><div class="line">    private final SQLSegment searchCondition;</div><div class="line">    private final Collection&lt;ExpressionSegment&gt; statementList;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@RequiredArgsConstructor</div><div class="line">@Getter</div><div class="line">@ToString</div><div class="line">public class CaseElseExpressionSegment implements CaseExpressionSegment &#123;</div><div class="line">    private final int startIndex;</div><div class="line">    private final int stopIndex;</div><div class="line">    private final ExpressionSegment statementList;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Distributed/" rel="tag"># Distributed</a>
+          
+            <a href="/tags/MySql/" rel="tag"># MySql</a>
+          
+            <a href="/tags/ShardingSphere/" rel="tag"># ShardingSphere</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/12/Encoder/" rel="next" title="Encoder">
+                <i class="fa fa-chevron-left"></i> Encoder
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">138</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">139</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Shardingsphere-Parser-Sql"><span class="nav-number">1.</span> <span class="nav-text">Shardingsphere Parser Sql</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Preface"><span class="nav-number">1.1.</span> <span class="nav-text">Preface</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shardingsphere"><span class="nav-number">1.2.</span> <span class="nav-text">Shardingsphere</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#antlr4"><span class="nav-number">1.2.1.</span> <span class="nav-text">antlr4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下面对照shardingsphere实际文件进行解读"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">下面对照shardingsphere实际文件进行解读</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#g4语法文件"><span class="nav-number">1.2.1.1.1.</span> <span class="nav-text">.g4语法文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#java解析类"><span class="nav-number">1.2.1.1.2.</span> <span class="nav-text">java解析类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#antlr4-api使用样例"><span class="nav-number">1.2.1.1.3.</span> <span class="nav-text">antlr4 api使用样例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义映射结构完善源码"><span class="nav-number">1.2.1.1.4.</span> <span class="nav-text">自定义映射结构完善源码</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
