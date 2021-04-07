@@ -327,7 +327,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/数组打印/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/BuilderPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -349,8 +349,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/数组打印/" itemprop="url">
-                  数组打印
+                <a class="post-title-link" href="/2017/07/29/BuilderPattern/" itemprop="url">
+                  Builder Pattern
                 </a>
               
             
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T12:11:25+08:00">
+                2017-07-29
               </time>
             
 
@@ -389,8 +389,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Arrays/" itemprop="url" rel="index">
-                    <span itemprop="name">Arrays</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -406,7 +406,7 @@
 
           
           
-             <span id="/2017/05/27/数组打印/" class="leancloud_visitors" data-flag-title="数组打印">
+             <span id="/2017/07/29/BuilderPattern/" class="leancloud_visitors" data-flag-title="Builder Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,13 +435,17 @@
 
       
         
-          <h2 id="数组打印"><a href="#数组打印" class="headerlink" title="数组打印"></a>数组打印</h2><ol>
-<li>一维数组<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> [] num = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</div><div class="line">System.out.println(num.toString());</div><div class="line"><span class="comment">//输出：[I@15db9742...</span></div><div class="line">System.out.println(Arrays.toString(num));</div><div class="line"><span class="comment">//输出：[1, 2, 3, 4, 5]</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
+          <h1 id="Builder-Pattern（建造者模式）"><a href="#Builder-Pattern（建造者模式）" class="headerlink" title="Builder Pattern（建造者模式）"></a>Builder Pattern（建造者模式）</h1><h2 id="Separate-the-construction-of-a-complex-object-form-its-representation-so-that-the-same-construction-process-can-create-different-representations-（将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。）"><a href="#Separate-the-construction-of-a-complex-object-form-its-representation-so-that-the-same-construction-process-can-create-different-representations-（将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。）" class="headerlink" title="Separate the construction of a complex object form its representation so that the same construction process can create different representations.（将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。）"></a>Separate the construction of a complex object form its representation so that the same construction process can create different representations.（将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。）</h2><ul>
+<li>产品（Product）：具体生成器要构造的复杂对象</li>
+<li>抽象生成器（Builder）：一个接口，有为创建一个产品对象的各个组件定义的若干方法，还有返回产品对象的方法</li>
+<li>具体生成器（ConcreteBuilder）：Builder的实现类</li>
+<li>指挥者（Director）：一个类，拥有Builder接口声明的变量，负责向用户提供具体生成器</li>
+<li>应用场景：将一个复杂对象的构建与表示分离，使得同样的构建可以创建不同的表示</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/数组打印/#more" rel="contents">
+            <a class="btn" href="/2017/07/29/BuilderPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -487,7 +491,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/桶排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/ChainOfResponsibilityPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -509,8 +513,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/桶排序/" itemprop="url">
-                  桶排序
+                <a class="post-title-link" href="/2017/07/29/ChainOfResponsibilityPattern/" itemprop="url">
+                  Chain Of Responsibility Pattern
                 </a>
               
             
@@ -526,8 +530,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T12:11:25+08:00">
+                2017-07-29
               </time>
             
 
@@ -549,8 +553,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -566,7 +570,7 @@
 
           
           
-             <span id="/2017/05/27/桶排序/" class="leancloud_visitors" data-flag-title="桶排序">
+             <span id="/2017/07/29/ChainOfResponsibilityPattern/" class="leancloud_visitors" data-flag-title="Chain Of Responsibility Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -595,10 +599,15 @@
 
       
         
-          <h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><h2 id="桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"><a href="#桶排序-Bucket-sort-或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数-，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。" class="headerlink" title="桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。"></a>桶排序 (Bucket sort)或所谓的箱排序的原理是将数组分到有限数量的桶子里（即基于某种映射函数 ，将待排序列的关键字k映射到第i个桶中），然后对每个桶子再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序），最后将各个桶中的数据有序的合并起来。</h2>
+          <h1 id="Chain-Of-Responsibility-Pattern（责任链模式）"><a href="#Chain-Of-Responsibility-Pattern（责任链模式）" class="headerlink" title="Chain Of Responsibility Pattern（责任链模式）"></a>Chain Of Responsibility Pattern（责任链模式）</h1><h2 id="Avoid-coupling-the-sender-of-a-request-to-its-receiver-by-giving-more-than-one-object-a-chance-to-handle-the-request-Chain-the-receiving-objects-and-pass-the-request-along-the-chain-until-an-object-handles-it-（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系-。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）"><a href="#Avoid-coupling-the-sender-of-a-request-to-its-receiver-by-giving-more-than-one-object-a-chance-to-handle-the-request-Chain-the-receiving-objects-and-pass-the-request-along-the-chain-until-an-object-handles-it-（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系-。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）" class="headerlink" title="Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request.Chain the receiving objects and pass the request along the chain until an object handles it.（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系 。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）"></a>Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request.Chain the receiving objects and pass the request along the chain until an object handles it.（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系 。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）</h2><ul>
+<li>处理者（Handler）：一个接口,负责规定具体处理者处理用户的请求的方法和具体处理者设置后继对象的方法</li>
+<li>具体处理者（ConcreteHandler）：Handler接口的实现类，调用处理者接口规定的方法处理用户的请求，若能处理则进行处理，不能则传给下一节点</li>
+<li>应用场景：形成一个处理链，挨个节点判断是否能够进行处理，阶乘的计算（从结果的数据量按需判断那个节点可以容纳结果）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/桶排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/29/ChainOfResponsibilityPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -644,7 +653,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/27/计数排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/CompositePattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -666,8 +675,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/27/计数排序/" itemprop="url">
-                  计数排序
+                <a class="post-title-link" href="/2017/07/29/CompositePattern/" itemprop="url">
+                  Command Pattern
                 </a>
               
             
@@ -683,8 +692,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T12:48:25+08:00">
-                2017-05-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T12:11:25+08:00">
+                2017-07-29
               </time>
             
 
@@ -706,8 +715,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -723,7 +732,7 @@
 
           
           
-             <span id="/2017/05/27/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
+             <span id="/2017/07/29/CompositePattern/" class="leancloud_visitors" data-flag-title="Command Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -752,10 +761,16 @@
 
       
         
-          <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"><a href="#一个O-n-时间复杂度的排序算法，我们知道基于比较的排序的下限是O-nlogn-。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！" class="headerlink" title="一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！"></a>一个O(n)时间复杂度的排序算法，我们知道基于比较的排序的下限是O(nlogn)。而计数排序只需线性时间复杂度的排序，只不过有前提条件，就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间。其基本思想是，用待排序的数作为计数数组的下标，统计每个数字的个数。然后依次输出即可得到有序序列。如果被排序序列是无重的，即意味着无需统计个数，那么我们可以使用位数组来实现该算法！</h2>
+          <h1 id="Composite-Pattern（组合模式）"><a href="#Composite-Pattern（组合模式）" class="headerlink" title="Composite Pattern（组合模式）"></a>Composite Pattern（组合模式）</h1><h2 id="Compose-objects-into-tree-structure-to-represent-part-whole-hierarchies-Composite-lets-clients-treat-individual-objects-and-compositions-of-objects-uniformly-（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）"><a href="#Compose-objects-into-tree-structure-to-represent-part-whole-hierarchies-Composite-lets-clients-treat-individual-objects-and-compositions-of-objects-uniformly-（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）" class="headerlink" title="Compose objects into tree structure to represent part-whole hierarchies.Composite lets clients treat individual objects and compositions of objects uniformly.（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）"></a>Compose objects into tree structure to represent part-whole hierarchies.Composite lets clients treat individual objects and compositions of objects uniformly.（将对象组合成树形结构以表示“部分-整体”的层次结构，使得用户对单个对象和组合对象的使用具有一致性。）</h2><ul>
+<li>抽象组件（Component）:一个接口或者抽象类，定义了个体对象和组合对象需要实现的关于原子操作的方法</li>
+<li>Composite节点（Composite Node）:实现了Component接口的类，其中可包含其他Composite节点（组合对象）</li>
+<li>Leaf节点（Leaf Node）：实现了Component接口的类，不可包含其他Composite节点或者Leaf节点（个体对象）</li>
+<li>应用场景：个体对象和组合对象实现于同一接口，形成树形结构（部分-整体层次结构）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/27/计数排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/29/CompositePattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -801,7 +816,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/22/LintCode-最大数/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/AbstractFactoryPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -823,8 +838,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/22/LintCode-最大数/" itemprop="url">
-                  LintCode_最大数
+                <a class="post-title-link" href="/2017/07/22/AbstractFactoryPattern/" itemprop="url">
+                  Abstract Factory Pattern
                 </a>
               
             
@@ -840,8 +855,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-22T20:49:53+08:00">
-                2017-05-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T12:21:25+08:00">
+                2017-07-22
               </time>
             
 
@@ -863,8 +878,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -880,7 +895,7 @@
 
           
           
-             <span id="/2017/05/22/LintCode-最大数/" class="leancloud_visitors" data-flag-title="LintCode_最大数">
+             <span id="/2017/07/22/AbstractFactoryPattern/" class="leancloud_visitors" data-flag-title="Abstract Factory Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -909,11 +924,17 @@
 
       
         
-          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
-<h3 id="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"><a href="#给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。" class="headerlink" title="给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。"></a>给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数。</h3><h4 id="注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。"><a href="#注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。" class="headerlink" title="(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)"></a>(注意事项：最后的结果可能很大，所以我们返回一个字符串来代替这个整数。)</h4><h5 id="样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。"><a href="#样例：给出-1-20-23-4-8-，返回组合最大的整数应为8423201。" class="headerlink" title="样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。"></a>样例：给出 [1, 20, 23, 4, 8]，返回组合最大的整数应为8423201。</h5></blockquote>
+          <h1 id="Abstract-Factory-Pattern（抽象工厂模式）"><a href="#Abstract-Factory-Pattern（抽象工厂模式）" class="headerlink" title="Abstract Factory Pattern（抽象工厂模式）"></a>Abstract Factory Pattern（抽象工厂模式）</h1><h2 id="Provide-an-interface-for-creating-families-of-related-or-dependent-objects-without-specifying-their-concrete-classes-（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）"><a href="#Provide-an-interface-for-creating-families-of-related-or-dependent-objects-without-specifying-their-concrete-classes-（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）" class="headerlink" title="Provide an interface for creating families of related or dependent objects without specifying their concrete classes.（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）"></a>Provide an interface for creating families of related or dependent objects without specifying their concrete classes.（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）</h2><ul>
+<li>抽象产品（Product）：一个接口或者抽象类，定义、产品必须实现的方法</li>
+<li>具体产品（ConcreteProduct）：抽象产品的子类或者实现类</li>
+<li>抽象工厂（AbstractFactory）：一个接口或者抽象类，定义若干个抽象方法</li>
+<li>具体工厂（ConcreteFactory）：抽象工厂的实现类或者子类，重写抽象方法，使其返回具体产品的实例</li>
+<li>应用场景：提供一个创建一系列或相互依赖对象的接口，而无需知道他们具体的类，反射机制+抽象工厂（反射可以灵活地进行实例化）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/22/LintCode-最大数/#more" rel="contents">
+            <a class="btn" href="/2017/07/22/AbstractFactoryPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -959,7 +980,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/05/20/基数排序/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/AdapterPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -981,8 +1002,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/20/基数排序/" itemprop="url">
-                  基数排序
+                <a class="post-title-link" href="/2017/07/22/AdapterPattern/" itemprop="url">
+                  Adapter Pattern
                 </a>
               
             
@@ -998,8 +1019,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T12:19:25+08:00">
-                2017-05-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T12:21:25+08:00">
+                2017-07-22
               </time>
             
 
@@ -1021,8 +1042,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
                   </a>
                 </span>
 
@@ -1038,7 +1059,7 @@
 
           
           
-             <span id="/2017/05/20/基数排序/" class="leancloud_visitors" data-flag-title="基数排序">
+             <span id="/2017/07/22/AdapterPattern/" class="leancloud_visitors" data-flag-title="Adapter Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1067,10 +1088,19 @@
 
       
         
-          <h1 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h1><h2 id="基数排序是一种借助多关键字排序思想对单逻辑关键字进行排序的方法。所谓的多关键字排序就是有多个优先级不同的关键字。比如说成绩的排序，如果两个人总分相同，则语文高的排在前面，语文成绩也相同则数学高的排在前面。。。如果对数字进行排序，那么个位、十位、百位就是不同优先级的关键字，如果要进行升序排序，那么个位、十位、百位优先级一次增加。基数排序是通过多次的收分配和收集来实现的，关键字优先级低的先进行分配和收集。"><a href="#基数排序是一种借助多关键字排序思想对单逻辑关键字进行排序的方法。所谓的多关键字排序就是有多个优先级不同的关键字。比如说成绩的排序，如果两个人总分相同，则语文高的排在前面，语文成绩也相同则数学高的排在前面。。。如果对数字进行排序，那么个位、十位、百位就是不同优先级的关键字，如果要进行升序排序，那么个位、十位、百位优先级一次增加。基数排序是通过多次的收分配和收集来实现的，关键字优先级低的先进行分配和收集。" class="headerlink" title="基数排序是一种借助多关键字排序思想对单逻辑关键字进行排序的方法。所谓的多关键字排序就是有多个优先级不同的关键字。比如说成绩的排序，如果两个人总分相同，则语文高的排在前面，语文成绩也相同则数学高的排在前面。。。如果对数字进行排序，那么个位、十位、百位就是不同优先级的关键字，如果要进行升序排序，那么个位、十位、百位优先级一次增加。基数排序是通过多次的收分配和收集来实现的，关键字优先级低的先进行分配和收集。"></a>基数排序是一种借助多关键字排序思想对单逻辑关键字进行排序的方法。所谓的多关键字排序就是有多个优先级不同的关键字。比如说成绩的排序，如果两个人总分相同，则语文高的排在前面，语文成绩也相同则数学高的排在前面。。。如果对数字进行排序，那么个位、十位、百位就是不同优先级的关键字，如果要进行升序排序，那么个位、十位、百位优先级一次增加。基数排序是通过多次的收分配和收集来实现的，关键字优先级低的先进行分配和收集。</h2>
+          <h1 id="Adapter-Pattern（适配器模式）"><a href="#Adapter-Pattern（适配器模式）" class="headerlink" title="Adapter Pattern（适配器模式）"></a>Adapter Pattern（适配器模式）</h1><blockquote>
+<p>Convert the inface of a class into another interface clients expect.Adapter lets classes work together that couldn’t otherwise because of incompatible interface.（将一个类的接口变换成客户端所期待的另一种接口，从而使原本因接口不匹配而无法在一起工作的两个类能够在一起工作。）“系统的数据和行为都正确，单接口不符时，我们应该考虑使用适配器，目的是是控制范围之外的一个原有对象与某个接口匹配。适配器模式主要用于希望复用一些现存的类，但是接口又与复用环境不一致的情况。”（《大话设计模式》）</p>
+</blockquote>
+<ul>
+<li>目标（Target）：一个接口，客户想要使用的接口</li>
+<li>被适配器（Adaptee）：一个已经存在的接口或者抽象类</li>
+<li>适配器(Adapter)：一个实现了目标接口并且含有被适配器引用的类</li>
+<li>应用场景：目标和被适配器完全解耦，通过适配器来建立联系（单接口适配器）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/20/基数排序/#more" rel="contents">
+            <a class="btn" href="/2017/07/22/AdapterPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1111,7 +1141,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/24/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/26/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/24/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/26/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1156,7 +1186,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">138</span>
+                <span class="site-state-item-count">156</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1167,7 +1197,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1178,7 +1208,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">139</span>
+                <span class="site-state-item-count">148</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1238,7 +1268,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

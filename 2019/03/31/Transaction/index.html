@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2019/03/31/Transaction/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Transaction 数据库事务 Spring事务 Redis事务 分布式事务">
-<meta property="og:updated_time" content="2020-07-04T06:51:23.615Z">
+<meta property="og:updated_time" content="2021-03-10T03:36:44.797Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Transaction">
 <meta name="twitter:description" content="Transaction 数据库事务 Spring事务 Redis事务 分布式事务">
@@ -712,7 +712,10 @@ public class MysqlTest01 {
 </ol>
 </li>
 </ul>
-<h3 id="JTA规范"><a href="#JTA规范" class="headerlink" title="JTA规范"></a>JTA规范</h3><ol>
+<h3 id="JTA规范"><a href="#JTA规范" class="headerlink" title="JTA规范"></a>JTA规范</h3><blockquote>
+<p>JTA(基于XA协议建模的java标准事务抽象)+XA(XA事务协议)，常见的JTA实现框架有Atomikos、Bitronix</p>
+</blockquote>
+<ol>
 <li>Mysql服务端提供的XA命令<br> a. XA {START|BEGIN} xid [JOIN|RESUME] —————对应MysqlXAConnection 中的 start 方法<br> b. XA END xid [SUSPEND [FOR MIGRATE]] —————对应MysqlXAConnection 中的 end方法<br> c. XA PREPARE xid                    —————对应MysqlXAConnection 中的 perpare方法<br> d. XA COMMIT xid [ONE PHASE]         —————对应MysqlXAConnection 中的 commit方法<br> e. XA ROLLBACK xid                  —————对应MysqlXAConnection 中的 rollback方法<br> f. XA RECOVER [CONVERT XID]         —————对应MysqlXAConnection 中的 recover方法</li>
 <li>Mysql客户端驱动包中的XA实现类<br> a. MysqlXADataSource，MysqlXAConnection，MysqlXid<br> b. 基于java包中的标准接口XADatasource ，XAConnection，Javax.transaction.api包—-定义了java事务管理和部分分布式事务的标准接口Xid，由具体实现方实现细节<br> c. </li>
 <li><p>Atmoikos如何基于客户端实现类构建多数据源的分布式事务<br> a. UserTransactionImp 来开启事务关闭事务<br> b. UserTransactionImp utx = new UserTransactionImp();<br> c. AtomikosDataSourceBean dataSource = new AtomikosDataSourceBean();<br> d. 看不同具体实现，找不到怎么控制多数据原两阶段的代码</p>
@@ -870,7 +873,7 @@ public class MysqlTest01 {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">138</span>
+                <span class="site-state-item-count">156</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -881,7 +884,7 @@ public class MysqlTest01 {
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -892,7 +895,7 @@ public class MysqlTest01 {
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">139</span>
+                <span class="site-state-item-count">148</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -968,7 +971,7 @@ public class MysqlTest01 {
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

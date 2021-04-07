@@ -1,0 +1,1391 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis,ACL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Redis ACL(Access Control List)  基本用法 ACL的好处 ACL命名行配置 ACL rules ACL实时变更 ACL配置格式 哨兵/从库权限配置">
+<meta name="keywords" content="Redis,ACL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis ACL">
+<meta property="og:url" content="https://lfstefan.github.io/2020/12/15/Redis ACL/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="Redis ACL(Access Control List)  基本用法 ACL的好处 ACL命名行配置 ACL rules ACL实时变更 ACL配置格式 哨兵/从库权限配置">
+<meta property="og:updated_time" content="2020-12-26T07:32:34.383Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis ACL">
+<meta name="twitter:description" content="Redis ACL(Access Control List)  基本用法 ACL的好处 ACL命名行配置 ACL rules ACL实时变更 ACL配置格式 哨兵/从库权限配置">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2020/12/15/Redis ACL/"/>
+
+
+
+
+
+  <title>Redis ACL | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2020/12/15/Redis ACL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Redis ACL
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-15T20:49:53+08:00">
+                2020-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/12/15/Redis ACL/" class="leancloud_visitors" data-flag-title="Redis ACL">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Redis-ACL-Access-Control-List"><a href="#Redis-ACL-Access-Control-List" class="headerlink" title="Redis ACL(Access Control List)"></a>Redis ACL(Access Control List)</h1><blockquote>
+<ul>
+<li>基本用法</li>
+<li>ACL的好处</li>
+<li>ACL命名行配置</li>
+<li>ACL rules</li>
+<li>ACL实时变更</li>
+<li>ACL配置格式</li>
+<li>哨兵/从库权限配置</li>
+</ul>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<p>在默认配置中，Redis 6（<strong>第一个具有ACL的版本</strong>）的工作方式与Redis的旧版本完全相同，也就是说，每个新连接都能够调用每个可能的命令并访问每个键，因此ACL功能与旧版本向后兼容。 客户和应用程序。 <strong>同样，使用requirepass配置指令配置密码的旧方法仍然可以按预期工作，但是现在，它的作用只是为默认用户设置密码。</strong></p>
+</blockquote>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><ul>
+<li>AUTH <username> <password></password></username></li>
+<li>AUTH <password>（旧版本用法）</password></li>
+</ul>
+<blockquote>
+<p>AUTH <password>: 发生的是用于认证的用户名是“default”，因此仅指定密码就意味着我们要针对默认用户进行认证。 这提供了与过去的完美向后兼容性。 </password></p>
+</blockquote>
+<h2 id="ACL的好处"><a href="#ACL的好处" class="headerlink" title="ACL的好处"></a>ACL的好处</h2><ul>
+<li>通过限制对命令和密钥的访问来提高安全性，以便不受信任的客户端无法访问，而受信任的客户端仅具有对数据库的最低访问级别才能执行所需的工作。例如，某些客户端可能仅能够执行只读命令。</li>
+<li>提高操作安全性，以防止由于软件错误或人为错误而导致进程或人员访问Redis，从而损坏数据或配置。例如，没有必要让工作人员从Redis获取延迟的作业来调用FLUSHALL命令。</li>
+</ul>
+<h2 id="ACL命名行配置"><a href="#ACL命名行配置" class="headerlink" title="ACL命名行配置"></a>ACL命名行配置</h2><blockquote>
+<p>默认情况下，只有一个用户定义，称为default。 我们可以使用ACL LIST命令来检查当前活动的ACL并验证新启动的，默认配置的Redis实例的配置是：</p>
+</blockquote>
+<ul>
+<li>ACL LIST（查看所有用户权限信息）<ul>
+<li>“user default on nopass ~<em> &amp;</em> +@all”</li>
+</ul>
+</li>
+<li>ACL SETUSER newuser<ul>
+<li>newuser存在不做任何操作，不存在创建用户</li>
+<li>“user newuser off -@all”（新建立的用户处于未激活状态，不可以操作任何命令）</li>
+</ul>
+</li>
+<li><p>ACL SETUSER newuser on &gt;newpwd ~prefix* +get</p>
+<ul>
+<li>设置详细权限，密码自动加密处理（从redis6开始，CONFIG GET requirepass 结果也是），如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; acl list</div><div class="line">1) &quot;user default on nopass ~* +@all&quot;</div><div class="line">2) &quot;user newuser on #b221bf17bde0cc7ab86c92e8a707b126a7d8ba0dbc6d582ef02bcad8f9394ef5 ~prefix* -@all +get&quot;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>AUTH user password</p>
+<ul>
+<li>切换用户，终端只对切换后的第一个命令生效，之后自动切换回原用户</li>
+</ul>
+</li>
+<li>ACL GETUSER newuser<ul>
+<li>查看单个用户的权限信息</li>
+</ul>
+</li>
+<li>ACL SETUSER newuser ~objects<em> ~items</em> ~public*<ul>
+<li>一次性添加可以操作的多个匹配key模式（空格隔开）</li>
+<li>其他权限设置类似，以空格隔开多个同类型权限设置</li>
+</ul>
+</li>
+<li>ACL SETUSER newuser -client +client|setname +client|getname<ul>
+<li>设置允许某一模块下的某些子命令</li>
+</ul>
+</li>
+<li><strong>ACL GENPASS</strong><ul>
+<li>redis提供的生成加强版密码的命令</li>
+</ul>
+</li>
+</ul>
+<h2 id="ACL-rules"><a href="#ACL-rules" class="headerlink" title="ACL rules"></a>ACL rules</h2><h3 id="启用和禁止用户："><a href="#启用和禁止用户：" class="headerlink" title="启用和禁止用户："></a>启用和禁止用户：</h3><ul>
+<li>on：启用用户：可以认证为该用户。</li>
+<li>off：禁用用户：不再可以与此用户进行身份验证，但是已经过身份验证的连接仍然可以使用。请注意，如果默认用户被标记为关闭，则新连接将不会通过身份验证开始，并且将要求用户发送带有AUTH选项的AUTH或HELLO，以便以某种方式进行身份验证，而与默认用户配置无关。<h3 id="允许和禁止命令："><a href="#允许和禁止命令：" class="headerlink" title="允许和禁止命令："></a>允许和禁止命令：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">+&lt;命令&gt;：将该命令添加到用户可以调用的命令列表中。</div><div class="line">-&lt;命令&gt;：将命令从用户可以调用的命令列表中删除。</div><div class="line">+@&lt;**类别**&gt;：添加要由用户调用的该类别中的所有命令，有效类别为@ admin，@ set，@ sortedset等，等等，请通过调用ACL CAT查看完整列表命令。特殊类别@all表示所有命令，包括当前在服务器中存在的命令，以及将来将通过模块加载的命令。</div><div class="line">-@&lt;类别&gt;：类似于+@&lt;类别&gt;，但是从客户端可以调用的命令列表中删除命令。</div><div class="line">+ &lt;命令&gt; |子命令：允许某命令的特定子命令，其他禁止。注意，这种形式不允许像-DEBUG | SEGFAULT那样为负数，而只能以“ +”开头。如果命令在整体上已经处于活动状态，则此ACL将导致错误。</div><div class="line">allcommands：+@all的别名。请注意，这意味着可以执行将来通过模块系统加载的所有命令。</div><div class="line">nocommands：-@all的别名。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="acl-命令模块种类"><a href="#acl-命令模块种类" class="headerlink" title="acl 命令模块种类"></a>acl 命令模块种类</h4><ul>
+<li>acl cat（列出所有的模块类目）</li>
+<li>acl cat <cat-name>（列出指定模块类目下的所有命令）<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; acl cat</div><div class="line"> 1) &quot;keyspace&quot;</div><div class="line"> 2) &quot;read&quot;</div><div class="line"> 3) &quot;write&quot;</div><div class="line"> 4) &quot;set&quot;</div><div class="line"> 5) &quot;sortedset&quot;</div><div class="line"> 6) &quot;list&quot;</div><div class="line"> 7) &quot;hash&quot;</div><div class="line"> 8) &quot;string&quot;</div><div class="line"> 9) &quot;bitmap&quot;</div><div class="line">10) &quot;hyperloglog&quot;</div><div class="line">11) &quot;geo&quot;</div><div class="line">12) &quot;stream&quot;</div><div class="line">13) &quot;pubsub&quot;</div><div class="line">14) &quot;admin&quot;</div><div class="line">15) &quot;fast&quot;</div><div class="line">16) &quot;slow&quot;</div><div class="line">17) &quot;blocking&quot;</div><div class="line">18) &quot;dangerous&quot;</div><div class="line">19) &quot;connection&quot;</div><div class="line">20) &quot;transaction&quot;</div><div class="line">21) &quot;scripting&quot;</div><div class="line"></div><div class="line">127.0.0.1:6379&gt; acl cat string</div><div class="line"> 1) &quot;mset&quot;</div><div class="line"> 2) &quot;substr&quot;</div><div class="line"> 3) &quot;getrange&quot;</div><div class="line"> 4) &quot;strlen&quot;</div><div class="line"> 5) &quot;getset&quot;</div><div class="line"> 6) &quot;incrby&quot;</div><div class="line"> 7) &quot;incr&quot;</div><div class="line"> 8) &quot;setex&quot;</div><div class="line"> 9) &quot;set&quot;</div><div class="line">10) &quot;mget&quot;</div><div class="line">11) &quot;incrbyfloat&quot;</div><div class="line">12) &quot;psetex&quot;</div><div class="line">13) &quot;get&quot;</div><div class="line">14) &quot;stralgo&quot;</div><div class="line">15) &quot;decrby&quot;</div><div class="line">16) &quot;append&quot;</div><div class="line">17) &quot;decr&quot;</div><div class="line">18) &quot;msetnx&quot;</div><div class="line">19) &quot;setnx&quot;</div><div class="line">20) &quot;setrange&quot;</div></pre></td></tr></table></figure>
+</cat-name></li>
+</ul>
+<h3 id="允许和禁止某些键："><a href="#允许和禁止某些键：" class="headerlink" title="允许和禁止某些键："></a>允许和禁止某些键：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">〜&lt;模式&gt;：添加可以在命令中提及的键模式。例如〜*允许所有键。该模式是类似于KEYS之一的球形样式的模式。**可以指定多个模式**。</div><div class="line">allkeys：〜*的别名。</div><div class="line">resetkeys：刷新允许的密钥模式列表。例如，ACL 〜foo：* 〜bar：* resetkeys 〜objects：*，将导致客户端仅能够​​访问与模式object：*相匹配的键。</div></pre></td></tr></table></figure>
+<h3 id="允许和禁止发布-订阅频道：-单独在users-acl文件中设置该项会造成配置文件语法错误，原因未知，可能是版本问题，待定"><a href="#允许和禁止发布-订阅频道：-单独在users-acl文件中设置该项会造成配置文件语法错误，原因未知，可能是版本问题，待定" class="headerlink" title="允许和禁止发布/订阅频道：(单独在users.acl文件中设置该项会造成配置文件语法错误，原因未知，可能是版本问题，待定)"></a>允许和禁止发布/订阅频道：(<strong>单独在users.acl文件中设置该项会造成配置文件语法错误，原因未知，可能是版本问题，待定</strong>)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">＆&lt;pattern&gt;：添加可由用户访问的Pub/Sub通道的全局样式的模式。可以指定多个通道模式。请注意，仅对PUBLISH和SUBSCRIBE提及的通道进行模式匹配，而PSUBSCRIBE要求在其通道模式与用户允许的通道模式之间进行文字匹配。</div><div class="line">allchannels：＆*的别名，允许用户访问所有发布/订阅通道。</div><div class="line">resetchannels：刷新允许的通道模式列表，如果用户的Pub/Sub客户端不再能够访问其各自的通道和/或通道模式，则断开其连接。</div></pre></td></tr></table></figure>
+<h3 id="为用户配置有效密码："><a href="#为用户配置有效密码：" class="headerlink" title="为用户配置有效密码："></a>为用户配置有效密码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; &lt;密码&gt;：将此密码添加到用户的有效密码列表中。例如，&gt; mypass会将“ mypass”添加到有效密码列表中。该指令清除nopass标志（请参阅下文）。**每个用户可以具有任意数量的密码**。</div><div class="line">&lt; &lt;密码&gt;：从有效密码列表中删除此密码。万一实际上您未设置要删除的密码，则会发出错误消息。</div><div class="line">＃&lt;hash&gt;：将此SHA-256哈希值添加到用户的有效密码列表中。该哈希值将与为ACL用户输入的密码的哈希值进行比较。这允许用户将哈希存储在acl.conf文件中，而不是存储明文密码。仅接受SHA-256哈希值，因为密码哈希必须为64个字符，并且只能为容器的小写十六进制字符。</div><div class="line">！&lt;hash&gt;：从有效密码列表中删除该哈希值。当您不知道哈希值指定的密码但想从用户中删除密码时，这很有用。</div><div class="line">nopass：删除用户的所有设置密码，并将该用户标记为不需要密码：这意味着每个密码都将对该用户起作用。如果此指令用于默认用户，则每个新连接都将立即用默认用户进行身份验证，而无需任何显式的AUTH命令。请注意，resetpass指令将清除此条件。</div><div class="line">resetpass：刷新允许的密码列表。而且删除nopass状态。重置密码后，用户没有关联的密码，并且没有添加一些密码（或稍后将其设置为密码）的方法就无法进行身份验证。</div></pre></td></tr></table></figure>
+<h2 id="ACL实时变更"><a href="#ACL实时变更" class="headerlink" title="ACL实时变更"></a>ACL实时变更</h2><ul>
+<li>重启服务器</li>
+<li>定义外部acl文件<ul>
+<li>使用ACL LOAD命令重新加载acl配置文件</li>
+<li>使用ACL SAVE命令将当前acl配置写入acl配置文件</li>
+</ul>
+</li>
+</ul>
+<h2 id="ACL配置格式"><a href="#ACL配置格式" class="headerlink" title="ACL配置格式"></a>ACL配置格式</h2><ul>
+<li>redis.conf和users.acl文件中格式都一样，如下：</li>
+<li>user worker +@list +@connection ~jobs:* on &gt;ffa9203c493aa99</li>
+</ul>
+<h2 id="哨兵-从库权限配置"><a href="#哨兵-从库权限配置" class="headerlink" title="哨兵/从库权限配置"></a>哨兵/从库权限配置</h2><blockquote>
+<p>如果您不想为Redis副本和Redis Sentinel实例提供对Redis实例的完全访问权限，则以下是必须允许使用的命令集，以确保一切正常工作。通道的设置可能有些问题，如果报错语法解析错误，先考虑去掉通道的权限内容（allchannels，&amp;*）试试；</p>
+</blockquote>
+<ul>
+<li><p>注意⚠️：哨兵模式下，主从的用户权限设置要保持一致，否则会导致主从故障切换失败</p>
+</li>
+<li><p>对于Sentinel，允许用户在master和replica实例中都访问以下命令：</p>
+<ul>
+<li>AUTH, CLIENT, SUBSCRIBE, SCRIPT, PUBLISH, PING, INFO, MULTI, SLAVEOF, CONFIG, CLIENT, EXEC</li>
+</ul>
+</li>
+<li><p>Sentinel不需要访问数据库中的任何键，但需要使用Pub/Sub，因此ACL规则如下（注意：不需要AUTH，因为始终允许使用AUTH）：</p>
+<ul>
+<li>ACL SETUSER sentinel-user on &gt;somepassword allchannels +multi +slaveof +ping +exec +subscribe +config|rewrite +role +publish +info +client|setname +client|kill +script|kill</li>
+</ul>
+</li>
+<li><p>Redis replica需要在master实例上将以下命令列入白名单</p>
+<ul>
+<li>PSYNC, REPLCONF, PING</li>
+</ul>
+</li>
+<li>ACL setuser replica_user on &gt;somepassword +psync +replconf +ping</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+            <a href="/tags/ACL/" rel="tag"># ACL</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/15/SPI/" rel="next" title="SPI">
+                <i class="fa fa-chevron-left"></i> SPI
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/15/MethodAccessor/" rel="prev" title="MethodAccessor">
+                MethodAccessor <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">156</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">148</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-ACL-Access-Control-List"><span class="nav-number">1.</span> <span class="nav-text">Redis ACL(Access Control List)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本用法"><span class="nav-number">1.1.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACL的好处"><span class="nav-number">1.2.</span> <span class="nav-text">ACL的好处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACL命名行配置"><span class="nav-number">1.3.</span> <span class="nav-text">ACL命名行配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACL-rules"><span class="nav-number">1.4.</span> <span class="nav-text">ACL rules</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启用和禁止用户："><span class="nav-number">1.4.1.</span> <span class="nav-text">启用和禁止用户：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#允许和禁止命令："><span class="nav-number">1.4.2.</span> <span class="nav-text">允许和禁止命令：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#acl-命令模块种类"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">acl 命令模块种类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#允许和禁止某些键："><span class="nav-number">1.4.3.</span> <span class="nav-text">允许和禁止某些键：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#允许和禁止发布-订阅频道：-单独在users-acl文件中设置该项会造成配置文件语法错误，原因未知，可能是版本问题，待定"><span class="nav-number">1.4.4.</span> <span class="nav-text">允许和禁止发布/订阅频道：(单独在users.acl文件中设置该项会造成配置文件语法错误，原因未知，可能是版本问题，待定)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为用户配置有效密码："><span class="nav-number">1.4.5.</span> <span class="nav-text">为用户配置有效密码：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACL实时变更"><span class="nav-number">1.5.</span> <span class="nav-text">ACL实时变更</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACL配置格式"><span class="nav-number">1.6.</span> <span class="nav-text">ACL配置格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哨兵-从库权限配置"><span class="nav-number">1.7.</span> <span class="nav-text">哨兵/从库权限配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

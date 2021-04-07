@@ -1,0 +1,1425 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,IO," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="NIO JAVA怎么实现 基于操作做系统的那些函数   C语言怎么实现 操作系统怎么实现   以样例代码为主，辅以文字解释">
+<meta name="keywords" content="Java,IO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NIO">
+<meta property="og:url" content="https://lfstefan.github.io/2020/10/21/NIO/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="NIO JAVA怎么实现 基于操作做系统的那些函数   C语言怎么实现 操作系统怎么实现   以样例代码为主，辅以文字解释">
+<meta property="og:updated_time" content="2021-04-07T11:13:52.894Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NIO">
+<meta name="twitter:description" content="NIO JAVA怎么实现 基于操作做系统的那些函数   C语言怎么实现 操作系统怎么实现   以样例代码为主，辅以文字解释">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2020/10/21/NIO/"/>
+
+
+
+
+
+  <title>NIO | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2020/10/21/NIO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                NIO
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-21T12:21:25+08:00">
+                2020-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NIO/" itemprop="url" rel="index">
+                    <span itemprop="name">NIO</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/10/21/NIO/" class="leancloud_visitors" data-flag-title="NIO">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h1><ul>
+<li>JAVA怎么实现<ul>
+<li>基于操作做系统的那些函数</li>
+</ul>
+</li>
+<li>C语言怎么实现</li>
+<li>操作系统怎么实现</li>
+</ul>
+<blockquote>
+<p>以样例代码为主，辅以文字解释</p>
+</blockquote>
+<a id="more"></a>
+<p>ByteBufferAsCharBufferRB</p>
+<p>DirectCharBufferRS</p>
+<h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><h3 id="Buffers"><a href="#Buffers" class="headerlink" title="Buffers"></a>Buffers</h3><ol>
+<li>buffer是什么</li>
+</ol>
+<blockquote>
+<p>其实就是一个数组和指向数组中不同位置的多个指针</p>
+</blockquote>
+<p>0 &lt;= mark（特殊标记位） &lt;= position（当前位置） &lt;= limit（上限） &lt;= capacity（容量）</p>
+<blockquote>
+<p>java 中支持流式编程：buffer.mark().position(5).reset();</p>
+</blockquote>
+<ol>
+<li>怎么创建一个buffer<blockquote>
+<p>java中对应的buffer类都是抽象类，不能使用new关键字创建</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>方式一：<ul>
+<li>CharBuffer charBuffer = CharBuffer.allocate (100);</li>
+</ul>
+</li>
+<li>方式二：<ul>
+<li>char [] myArray = new char [100];</li>
+<li>CharBuffer charbuffer = CharBuffer.wrap (myArray);</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>buffer order<blockquote>
+<p>数据存储顺序：ByteOrder；BIG_ENDIAN（大端存储），LITTLE_ENDIAN（小端存储）</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>int value = buffer.order (ByteOrder.BIG_ENDIAN).getInt();结果：0x3BC5315E</li>
+<li>int value = buffer.order (ByteOrder.LITTLE_ENDIAN).getInt();结果：0x5E31C53B</li>
+</ul>
+<ol>
+<li><p>buffer type</p>
+<blockquote>
+<p>buffer的类型有多种，但是channel接受的只有byte类型的buffer，所以其他类型都必须转换成byte类型</p>
+</blockquote>
+</li>
+<li><p>direct buffer</p>
+<blockquote>
+<p>都知道，io操作操作的是字节byte（所以channel直接接受byte buffer），意味着作为I / O操作目标的存储区必须是连续的字节序列；但是在JVM中，字节数组可能不会连续存储在内存中，否则垃圾回收器可以随时移动它。数组是Java中的对象，数据在该对象中的存储方式可能因一个JVM实现而异。因此，引入了direct buffer。</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>尽最大努力将字节元素存储在通道可用于直接或原始访问的内存区域中，方法是使用本机代码告诉操作系统直接使用或填充内存区域。</li>
+<li>直接缓冲区使用的内存是通过绕过标准JVM堆调用本地特定于操作系统的代码来分配的。根据主机操作系统和JVM的实现，设置和拆除直接缓冲区可能比堆驻留缓冲区昂贵得多。直接缓冲区的内存存储区不受垃圾回收的影响，因为它们在标准JVM堆之外。</li>
+<li>建议使用旧的软件准则：首先使其运行，然后使其快速运行。不必太担心预先优化；首先专注于正确性。 JVM实现可能能够执行缓冲区缓存或其他优化，从而为您提供所需的性能，而无需您付出很多不必要的努力。</li>
+</ul>
+<blockquote>
+<p>non direct buffer其实最终还是会转换成direct buffer（创建临时direct buffer），这可能会导致每个I / O上的缓冲区复制和对象流失，这正是我们想要避免的事情。但是，根据实现的不同，情况可能不会很糟。运行时可能会缓存和重用直接缓冲区，或者执行其他巧妙的技巧来提高吞吐量。如果您只是创建用于一次性使用的缓冲区，则差异并不明显。另一方面，如果您要使用在高性能场景中反复使用缓冲区，您最好分配直接缓冲区并重新使用它们。</p>
+</blockquote>
+<ul>
+<li>创建direct buffer<ul>
+<li>ByteBuffer.allocateDirect()</li>
+</ul>
+</li>
+<li>wrap()方法创建出来的始终是non direct buffer</li>
+</ul>
+<ol>
+<li>MappedByteBuffer</li>
+</ol>
+<h3 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h3><ol>
+<li><p>channel是什么</p>
+<blockquote>
+<p>将buffer通过channle写到file文件或者socket网络中</p>
+</blockquote>
+</li>
+<li><p>channle怎么用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 打开channel</div><div class="line">SocketChannel sc = SocketChannel.open();</div><div class="line">sc.connect (new InetSocketAddress (&quot;somehost&quot;, someport));</div><div class="line">ServerSocketChannel ssc = ServerSocketChannel.open(); </div><div class="line">ssc.socket().bind (new InetSocketAddress (somelocalport));</div><div class="line">DatagramChannel dc = DatagramChannel.open();</div><div class="line">RandomAccessFile raf = new RandomAccessFile (&quot;somefile&quot;, &quot;r&quot;); FileChannel fc = raf.getChannel();</div><div class="line"></div><div class="line">// 使用channel</div><div class="line">FileInputStream input = new FileInputStream (fileName); </div><div class="line">FileChannel channel = input.getChannel();</div><div class="line">channel.write (buffer);</div><div class="line"></div><div class="line">// 关闭channel</div><div class="line">channel.close()</div></pre></td></tr></table></figure>
+</li>
+<li><p>Scatter/Gather</p>
+<blockquote>
+<p>通道提供了一种重要的新功能，称为分散/聚集（在某些情况下称为矢量I / O）。 散布/聚集是一个简单而强大的概念。 它指的是跨多个缓冲区执行单个I / O操作。 对于写操作，依次从几个缓冲区中收集（排空）数据并沿着通道发送数据。 缓冲区不需要具有相同的容量（通常不需要）。 效果与所有缓冲区的内容在发送之前被串联到一个大缓冲区中一样。 对于读取，将从通道读取的数据依次散布到多个缓冲区，每个缓冲区都填充到其极限，直到从通道或整个缓冲区空间中取出的数据用完为止。</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">ByteBuffer header = ByteBuffer.allocateDirect (10); </div><div class="line">ByteBuffer body = ByteBuffer.allocateDirect (80); </div><div class="line">ByteBuffer [] buffers = &#123; header, body &#125;;</div><div class="line">// 从多个buffer读取数据</div><div class="line">int bytesRead = channel.read (buffers);</div><div class="line"></div><div class="line">body.clear();</div><div class="line">body.put(&quot;FOO&quot;.getBytes()).flip(); // &quot;FOO&quot; as bytes</div><div class="line">header.clear();</div><div class="line">header.putShort (TYPE_FILE).putLong (body.limit()).flip();</div><div class="line">// 将多个buffer的数据写入</div><div class="line">long bytesWritten = channel.write (buffers);</div><div class="line"></div><div class="line"></div><div class="line">FileOutputStream fos = new FileOutputStream (DEMOGRAPHIC); **GatheringByteChannel** gatherChannel = fos.getChannel();</div><div class="line">ByteBuffer [] bs = utterBS (reps);</div><div class="line">while (gatherChannel.write (bs) &gt; 0) &#123;</div><div class="line">	// Loop until write() returns zero</div><div class="line">&#125;</div><div class="line">fos.close();</div></pre></td></tr></table></figure>
+<ol>
+<li>file lock</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">fileChannel.lock (0L, Long.MAX_VALUE, false);</div><div class="line"></div><div class="line">// 有共享锁，有独占锁，详情自行查看api</div><div class="line">FileLock lock = fileChannel.lock()</div><div class="line">try &#123;</div><div class="line">&lt;perform read/write/whatever on channel&gt;</div><div class="line">&#125; catch (IOException) [</div><div class="line">       &lt;handle unexpected exception&gt;</div><div class="line">&#125; finally &#123; lock.release()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>mmap<blockquote>
+<p>通过内存映射机制访问文件比通过常规方式读取或写入数据要高效得多，即使使用通道也是如此。无需进行显式的系统调用，这可能很耗时。更重要的是，操作系统的虚拟内存系统会自动缓存内存页面。这些页面将使用系统内存进行缓存，并且不会占用JVM内存堆中的空间。</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//  映射整个文件</div><div class="line">MappedByteBuffers buffer = fileChannel.map (FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());</div></pre></td></tr></table></figure>
+<ol>
+<li>Socket Channels</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line">// 传统阻塞socket使用样例</div><div class="line">// 服务端</div><div class="line">ServerSocket ss=new ServerSocket(3333);  </div><div class="line">Socket s=ss.accept();  </div><div class="line">DataInputStream din=new DataInputStream(s.getInputStream());  </div><div class="line">DataOutputStream dout=new DataOutputStream(s.getOutputStream());  </div><div class="line">BufferedReader br=new BufferedReader(new InputStreamReader(System.in));  </div><div class="line">  </div><div class="line">String str=&quot;&quot;,str2=&quot;&quot;;  </div><div class="line">while(!str.equals(&quot;stop&quot;))&#123;  </div><div class="line">str=din.readUTF();  </div><div class="line">System.out.println(&quot;client says: &quot;+str);  </div><div class="line">str2=br.readLine();  </div><div class="line">dout.writeUTF(str2);  </div><div class="line">dout.flush();  </div><div class="line">&#125;  </div><div class="line">din.close();  </div><div class="line">s.close();  </div><div class="line">ss.close();  </div><div class="line"></div><div class="line">// 客户端</div><div class="line">Socket s=new Socket(&quot;localhost&quot;,3333);  </div><div class="line">DataInputStream din=new DataInputStream(s.getInputStream());  </div><div class="line">DataOutputStream dout=new DataOutputStream(s.getOutputStream());  </div><div class="line">BufferedReader br=new BufferedReader(new InputStreamReader(System.in));  </div><div class="line">  </div><div class="line">String str=&quot;&quot;,str2=&quot;&quot;;  </div><div class="line">while(!str.equals(&quot;stop&quot;))&#123;  </div><div class="line">str=br.readLine();  </div><div class="line">dout.writeUTF(str);  </div><div class="line">dout.flush();  </div><div class="line">str2=din.readUTF();  </div><div class="line">System.out.println(&quot;Server says: &quot;+str2);  </div><div class="line">&#125;  </div><div class="line">dout.close();  </div><div class="line">s.close();  </div><div class="line"></div><div class="line">// nio模式，客户端</div><div class="line">SocketChannel sc = SocketChannel.open();</div><div class="line">sc.configureBlocking (false); // nonblocking ...</div><div class="line">if ( ! sc.isBlocking()) &#123; </div><div class="line">	doSomething (cs);</div><div class="line">&#125;</div><div class="line"></div><div class="line">Socket socket = null;</div><div class="line">Object lockObj = serverChannel.blockingLock();</div><div class="line">// have a handle to the lock object, but haven&apos;t locked it yet</div><div class="line">// may block here until lock is acquired</div><div class="line">synchronize (lockObj)</div><div class="line">&#123;</div><div class="line">	// This thread now owns the lock; mode can&apos;t be changed boolean 	prevState = serverChannel.isBlocking();</div><div class="line">	serverChannel.configureBlocking (false); </div><div class="line">	socket = serverChannel.accept(); </div><div class="line">	serverChannel.configureBlocking (prevState);</div><div class="line">&#125;</div><div class="line">// lock is now released, mode is allowed to change</div><div class="line">if (socket != null) &#123; </div><div class="line">	doSomethingWithTheSocket (socket);</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 服务端</div><div class="line">ServerSocketChannel ssc = ServerSocketChannel.open(); </div><div class="line">ServerSocket serverSocket = ssc.socket().bind (new InetSocketAddress (1234));</div><div class="line">...</div><div class="line">// 建立连接</div><div class="line">SocketChannel sc = ssc.accept();</div><div class="line">buffer.rewind(); </div><div class="line">// 向客户端发送数据</div><div class="line">sc.write (buffer); </div><div class="line">sc.close();</div></pre></td></tr></table></figure>
+<ol>
+<li>DatagramChannel<blockquote>
+<p>udp连接</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="Selectors"><a href="#Selectors" class="headerlink" title="Selectors"></a>Selectors</h3><ol>
+<li><p>selector有啥用</p>
+<blockquote>
+<ul>
+<li>将多个channel注册到selector中，由selector负责监控那些channel数据准备好了返回;</li>
+<li>一个channel可以注册到多个selector中，但是一个selector中只能注册一次</li>
+<li>SelectionKey用来关联channel和selector，channel注册到selector中后返回一个key，key中包含了读写等权限信息</li>
+</ul>
+</blockquote>
+</li>
+<li><p>怎么将channel注册到Selector中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Selector selector = Selector.open();</div><div class="line">channel1.register (selector, SelectionKey.OP_READ); </div><div class="line">channel2.register (selector, SelectionKey.OP_WRITE); </div><div class="line">channel3.register (selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);</div><div class="line">// 阻塞等待指定时间查询是否含有就绪的channel，只要有一个或者多个就绪channel后就返回，或者时间到了自动返回</div><div class="line">readyCount = selector.select (10000);</div><div class="line">// 非阻塞查询是否有就绪的channel，没有直接返回</div><div class="line">selector.selectNow()</div></pre></td></tr></table></figure>
+</li>
+<li><p>如何停止selector的当前阻塞式查询就绪channel</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 如果查询操作正在进行，直接返回。如果还没开始查询，第一次查询直接返回；后续的查询不受影响，同一次查询操作时间调用该方法多次跟一次一样</div><div class="line">selector.wakeup();</div><div class="line">// 所有的查询操作直接返回，然后所有注册的channel取消注册，key释放</div><div class="line">selector.close();</div><div class="line">// </div><div class="line">selector.interrupt();</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用select()来管理多个channel示例</p>
+<blockquote>
+<p>以前的模式相当于是一个socket和一个serverSocket，然后阻塞等待接收对方的消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line">public class SelectSockets &#123;</div><div class="line">    public static int PORT_NUMBER = 1234;</div><div class="line">    public static void main (String [] argv) throws Exception &#123;</div><div class="line">        new SelectSockets().go (argv);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public void go (String [] argv) throws Exception &#123;</div><div class="line">        int port = PORT_NUMBER;</div><div class="line">        if (argv.length &gt; 0) &#123; // Override default listen port</div><div class="line">             port = Integer.parseInt (argv [0]);</div><div class="line">        &#125;</div><div class="line">        System.out.println (&quot;Listening on port &quot; + port);</div><div class="line">        // 开启一个服务端socket channel</div><div class="line">        ServerSocketChannel serverChannel = ServerSocketChannel.open();</div><div class="line">        ServerSocket serverSocket = serverChannel.socket();</div><div class="line">        // 打开一个selector</div><div class="line">        Selector selector = Selector.open();</div><div class="line">        // 服务端socket需要绑定监听端口</div><div class="line">        serverSocket.bind (new InetSocketAddress(port));</div><div class="line">        // 配置非阻塞模式</div><div class="line">        serverChannel.configureBlocking (false);</div><div class="line">        // 将channel注册到selector上，由selector来负责监听channel是否准备完善</div><div class="line">        serverChannel.register (selector, SelectionKey.OP_ACCEPT);</div><div class="line">        while (true) &#123;</div><div class="line">            // 非阻塞访问是否有准备好的channel，有处理，无继续轮训访问</div><div class="line">            int n = selector.select();</div><div class="line">            if (n == 0) &#123;</div><div class="line">                continue; // nothing to do</div><div class="line">            &#125;</div><div class="line">            // channel的类型的操作权限有key来决定</div><div class="line">            Iterator it = selector.selectedKeys().iterator();</div><div class="line">            while (it.hasNext()) &#123;</div><div class="line">                SelectionKey key = (SelectionKey) it.next();</div><div class="line">                if (key.isAcceptable()) &#123;</div><div class="line">                    // 如果channel是一个连接建立请求事件，接受新的连接，生成对应新的channel，注册到selector中一起监听</div><div class="line">                    ServerSocketChannel server = (ServerSocketChannel) key.channel();</div><div class="line">                    SocketChannel channel = server.accept();</div><div class="line">                    registerChannel(selector, channel, SelectionKey.OP_READ);</div><div class="line">                    sayHello(channel);</div><div class="line">                &#125;</div><div class="line">                if (key.isReadable()) &#123;</div><div class="line">                    // 如果channel是一个已有的发送请求数据的事件，读取该channel的流入数据内容（通过buffer读取）</div><div class="line">                    readDataFromSocket (key);</div><div class="line">                &#125;</div><div class="line">                it.remove();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected void registerChannel (Selector selector, SelectableChannel channel, int ops)throws Exception&#123;</div><div class="line">        if (channel == null) &#123;// could happen</div><div class="line">            return;</div><div class="line">         &#125;</div><div class="line">        channel.configureBlocking (false);</div><div class="line">        channel.register (selector, ops);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private ByteBuffer buffer = ByteBuffer.allocateDirect (1024);</div><div class="line"></div><div class="line">    protected void readDataFromSocket (SelectionKey key) throws Exception&#123;</div><div class="line">        SocketChannel socketChannel = (SocketChannel) key.channel();</div><div class="line">        int count;</div><div class="line">        buffer.clear();</div><div class="line">        while ((count = socketChannel.read (buffer)) &gt; 0) &#123;</div><div class="line">            buffer.flip(); // Make buffer readable</div><div class="line">            while (buffer.hasRemaining()) &#123;</div><div class="line">                socketChannel.write (buffer);</div><div class="line">            &#125;</div><div class="line">            buffer.clear();</div><div class="line">        &#125;</div><div class="line">        if (count &lt; 0) &#123;</div><div class="line">            socketChannel.close();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void sayHello (SocketChannel channel)throws Exception&#123;</div><div class="line">        buffer.clear();</div><div class="line">        buffer.put (&quot;Hi there!\r\n&quot;.getBytes());</div><div class="line">        buffer.flip();</div><div class="line">        channel.write (buffer);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>并发</p>
+<blockquote>
+<p>selector对象是线程安全，但是key集合（sets）不是；所以多线程共享操作selector中的key时可能会出现问题，因此通常的模型为：单线程操作selector来监控多个channel，最终将准备好的channel交给指定工作线程池处理；</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>变种一：将n个channel交给多个selector负责，不同的selector将接收到的channel转发到不同的线程池处理</li>
+<li>变种二：一个selector处理所有channel，将channel分类，例如所有的连接交给一个worker线程池，所有的command交给一个worker线程池…</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div></pre></td><td class="code"><pre><div class="line">public class SelectSocketsThreadPool extends SelectSockets &#123;</div><div class="line">    private static final int MAX_THREADS = 5;</div><div class="line">    private ThreadPool pool = new ThreadPool(MAX_THREADS);</div><div class="line"></div><div class="line">    public static void main (String [] argv) throws Exception &#123;</div><div class="line">        new SelectSocketsThreadPool().go (argv);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected void readDataFromSocket (SelectionKey key) throws Exception &#123;</div><div class="line">        WorkerThread worker = pool.getWorker();</div><div class="line">        if (worker == null) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        worker.serviceChannel (key); &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class WorkerThread extends Thread &#123;</div><div class="line"></div><div class="line">    private ByteBuffer buffer = ByteBuffer.allocate (1024); private ThreadPool pool;</div><div class="line">    private SelectionKey key;</div><div class="line">    WorkerThread (ThreadPool pool) &#123;</div><div class="line">        this.pool = pool;</div><div class="line">    &#125;</div><div class="line">    // Loop forever waiting for work to do</div><div class="line">    public synchronized void run() &#123;</div><div class="line">        System.out.println (this.getName() + &quot; is ready&quot;);</div><div class="line">        while (true) &#123;</div><div class="line">            try &#123;</div><div class="line">                // Sleep and release object lock</div><div class="line">                this.wait();</div><div class="line">            &#125; catch (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">            if (key == null) &#123;</div><div class="line">                continue; // just in case</div><div class="line">            &#125;</div><div class="line">            System.out.println (this.getName() + &quot; has been awakened&quot;);</div><div class="line">            try &#123;</div><div class="line">                drainChannel (key);</div><div class="line">            &#125; catch (Exception e) &#123; System.out.println (&quot;Caught &apos;&quot;</div><div class="line">                    + e + &quot;&apos; closing channel&quot;);</div><div class="line">                // Close channel and nudge selector</div><div class="line">                try &#123;</div><div class="line">                    key.channel().close(); &#125; catch (IOException ex) &#123;</div><div class="line">                    ex.printStackTrace(); &#125;</div><div class="line">                key.selector().wakeup(); &#125;</div><div class="line">            key = null;</div><div class="line">            this.pool.returnWorker (this); &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    synchronized void serviceChannel (SelectionKey key) &#123;</div><div class="line">        this.key = key;</div><div class="line">        key.interestOps (key.interestOps() &amp; (~SelectionKey.OP_READ));</div><div class="line">        this.notify();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    void drainChannel (SelectionKey key)throws Exception &#123;</div><div class="line">        SocketChannel channel = (SocketChannel) key.channel();</div><div class="line">        int count;</div><div class="line">        buffer.clear(); // Empty buffer</div><div class="line">         while ((count = channel.read (buffer)) &gt; 0) &#123;</div><div class="line">             buffer.flip(); // make buffer readable</div><div class="line">             while (buffer.hasRemaining()) &#123;</div><div class="line">                    channel.write (buffer);</div><div class="line">             &#125;</div><div class="line">            buffer.clear();</div><div class="line">         &#125;</div><div class="line">        if (count &lt; 0) &#123;</div><div class="line">             channel.close();</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        key.interestOps (key.interestOps() | SelectionKey.OP_READ);</div><div class="line">        key.selector().wakeup();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class ThreadPool &#123;</div><div class="line"></div><div class="line">    List&lt;WorkerThread&gt; idle = new LinkedList&lt;&gt;();</div><div class="line">    ThreadPool (int poolSize) &#123;</div><div class="line">        WorkerThread thread = new WorkerThread (this);</div><div class="line">        idle.add (thread);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    WorkerThread getWorker() &#123;</div><div class="line">        WorkerThread worker = null;</div><div class="line">        synchronized (idle) &#123;</div><div class="line">            if (idle.size() &gt; 0) &#123;</div><div class="line">                worker = idle.remove (0); &#125;</div><div class="line">        &#125;</div><div class="line">        return (worker);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    void returnWorker (WorkerThread worker) &#123;</div><div class="line">        synchronized (idle) &#123;</div><div class="line">            idle.add (worker);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/IO/" rel="tag"># IO</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/30/伪共享/" rel="next" title="伪共享">
+                <i class="fa fa-chevron-left"></i> 伪共享
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/03/双亲委派模型/" rel="prev" title="双亲委派模型">
+                双亲委派模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">156</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">148</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NIO"><span class="nav-number">1.</span> <span class="nav-text">NIO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java"><span class="nav-number">1.1.</span> <span class="nav-text">Java</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffers"><span class="nav-number">1.1.1.</span> <span class="nav-text">Buffers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Channel"><span class="nav-number">1.1.2.</span> <span class="nav-text">Channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Selectors"><span class="nav-number">1.1.3.</span> <span class="nav-text">Selectors</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

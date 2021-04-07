@@ -122,7 +122,7 @@
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/GC%E6%97%A5%E5%BF%97.png">
 <meta property="og:image" content="http://op7sipvie.bkt.clouddn.com/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%9B%BE.png">
-<meta property="og:updated_time" content="2020-07-04T03:06:24.930Z">
+<meta property="og:updated_time" content="2020-12-26T10:18:59.764Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM">
 <meta name="twitter:description" content="步入java虚拟机的世界 内存管理 运行时数据区域 内存分配与回收   虚拟机对象 垃圾回收 垃圾回收算法 垃圾收集器   GC日志 class文件 类加载机制 自定义类加载器     建议读者自行了解java的技术体系结构以及java虚拟机的历史发展，这里不做叙述！">
@@ -508,7 +508,7 @@
 <p>运行时常量池—方法区的一部分，用于存放编译器生成的字面量和符号引用</p>
 </blockquote>
 </li>
-<li><p>直接内存</p>
+<li><p>直接内存（主要用于nio）</p>
 <blockquote>
 <p>本地函数库直接分配内存，由堆中一个DirectorByteBuffer指向引用操作</p>
 </blockquote>
@@ -518,9 +518,9 @@
 <p>指内存的永久保存区域，主要存放 Class 和 Meta（元数据）的信息,Class 在被加载的时候被 放入永久区域，它和和存放实例的区域不同,GC 不会在主程序运行期对永久区域进行清理。所以这 也导致了永久代的区域会随着加载的Class的增多而胀满，最终抛出OOM异常。<br><strong> “PermGen space”其实指的就是方法区。不过方法区和“PermGen space”又有着本质的区别。前者是 JVM 的规范，而后者则是 JVM 规范的一种实现，并且只有 HotSpot 才有 “PermGen space”，而对于其他类型的虚拟机，如 JRockit（Oracle）、J9（IBM） 并没有“PermGen space”。由于方法区主要存储类的相关信息，所以对于动态生成类的情况比较容易出现永久代的内存溢出。</strong></p>
 </blockquote>
 </li>
-<li><p>JAVA8与元数据 </p>
+<li><p>JAVA8与元数据（metaspace）</p>
 <blockquote>
-<p>在Java8中，永久代已经被移除，被一个称为“元数据区”（元空间）的区域所取代。元空间 的本质和永久代类似，元空间与永久代之间最大的区别在于：元空间并不在虚拟机中，而是使用 本地内存。因此，默认情况下，元空间的大小仅受本地内存限制。类的元数据放入 native memory, 字符串池和类的静态变量放入 java 堆中，这样可以加载多少类的元数据就不再由 MaxPermSize控制, 而由系统的实际可用空间来控制。 </p>
+<p>在Java8中，永久代已经被移除，被一个称为“元数据区”（元空间）的区域所取代。元空间 的本质和永久代类似，元空间与永久代之间最大的区别在于：元空间并不在虚拟机中，而是使用 本地内存。因此，默认情况下，元空间的大小仅受本地内存限制。类的元数据放入 native memory, 字符串池和类的静态变量放入 java 堆中，这样可以加载多少类的元数据就不再由 MaxPermSize控制（由新增参数-XX:MetaspaceSize=size和-XX:MaxMetaspaceSize=size来控制大小）, 而由系统的实际可用空间来控制。 </p>
 </blockquote>
 </li>
 </ul>
@@ -531,7 +531,7 @@
 <p>minorGC：新生代GC，由于新生代对象生命周期较短，朝生夕灭，所以minorGC较为频繁，速度较快</p>
 </blockquote>
 <h3 id="以复制算法为例，minorGC一次的全过程如下"><a href="#以复制算法为例，minorGC一次的全过程如下" class="headerlink" title="以复制算法为例，minorGC一次的全过程如下"></a>以复制算法为例，minorGC一次的全过程如下</h3><ol>
-<li>eden 、 servicorFrom 复制到 ServicorTo ，年龄 + 1：首先，把Eden和ServivorFrom区域中存活的对象复制到ServicorTo区域（如果有对象的年 龄以及达到了老年的标准，则赋值到老年代区），同时把这些对象的年龄+1（如果 ServicorTo 不 够位置了就放到老年区）； </li>
+<li>eden 、 servicorFrom 复制到 ServicorTo ，年龄 + 1：首先，把Eden和ServivorFrom区域中存活的对象复制到ServicorTo区域（如果有对象的年 龄以及达到了老年的标准，则赋值到老年代区），同时把这些对象的年龄+1（如果 ServicorTo 不 够位置了就放到老年区，这种现象叫做提前晋升，需要根据实际情况调整servicor区域的大）； </li>
 <li>清空 eden 、 servicorFrom 然后，清空Eden和ServicorFrom中的对象； </li>
 <li>ServicorTo和 ServicorFrom互换：最后，ServicorTo和ServicorFrom互换，原ServicorTo成为下一次GC时的ServicorFrom 区。 </li>
 </ol>
@@ -601,6 +601,19 @@
 <p>首先可达性分析—–&gt;不可达—–&gt;第一次标记，筛选（即一次miniorGC过程）——&gt;若没有覆盖finalize()方法/或已执行finalize方法——&gt;否——&gt;执行finalize方法—–&gt;放入F-queue队列中—-&gt;一定时间后执行二次标记（在此之前如果队列中对象可以再次获取引用，则到时候出队列躲过被回收的命运，否则就真的被回收）</p>
 </blockquote>
 </li>
+</ul>
+<h3 id="finalize（claner）"><a href="#finalize（claner）" class="headerlink" title="finalize（claner）"></a>finalize（claner）</h3><ul>
+<li>当垃圾回收确定不再有对该对象的引用时，由垃圾回收器在对象上调用。子类覆盖finalize方法以处置系统资源或执行其他清除。</li>
+<li>finalize的一般约定是，当Java™虚拟机确定不再有任何手段可以使尚未死亡的任何线程可以访问该对象时（除非是由于操作而导致），调用finalize。由完成的其他一些对象或类的完成确定。 finalize方法可以采取任何措施，包括使该对象可再次用于其他线程。但是，完成的通常目的是在清除对象之前将其清除。例如，代表输入/输出连接的对象的finalize方法可能会执行显式I / O事务，以在永久丢弃该对象之前中断连接。</li>
+<li>Object类的finalize方法不执行任何特殊操作；它只是正常返回。 Object的子类可以覆盖此定义。</li>
+<li>Java编程语言不能保证哪个线程将为任何给定对象调用finalize方法。但是，可以保证，在调用finalize时，调用finalize的线程将不持有任何用户可见的同步锁。如果finalize方法抛出未捕获的异常，则该异常将被忽略，并且该对象的终结将终止。</li>
+<li>在为对象调用finalize方法之后，直到Java虚拟机再次确定不再有任何方法可以由尚未死亡的任何线程访问该对象之后，才采取进一步的措施，包括可能的措施可以通过其他准备完成的对象或类来完成，此时可以丢弃该对象。</li>
+<li>对于任何给定的对象，Java虚拟机都不会多次调用finalize方法。</li>
+<li>由finalize方法引发的任何异常都将导致此对象的终止终止，但否则将被忽略。</li>
+<li>System.gc()与System.runFinalization()方法增加了finalize()方法执行的机会，但不可盲目依赖它们</li>
+<li>finalize()方法可能会带来性能问题。因为JVM通常在单独的低优先级线程中完成finalize()的执行</li>
+<li><strong>对象再生问题</strong>：finalize()方法中，可将待回收对象赋值给GC Roots可达的对象引用，从而达到对象再生的目的；即：当对象变成(GC Roots)不可达时，GC会判断该对象是否覆盖了finalize方法，若未覆盖，则直接将其回收。否则，若对象未执行过finalize方法，将其放入F-Queue队列，由一低优先级线程执行该队列中对象的finalize方法。执行finalize方法完毕后（释放非堆内存资源），GC会再次判断该对象是否可达，若不可达，则进行回收，否则，对象“复活”。</li>
+<li>在Java类中实现finalize方法，该方法会在Java对象回收的时候得到调用。这样我们便可以在finalize方法中去释放native对象，让Java资源和native资源在GC过程中同时释放。不过finalize方法有诸多缺陷，最终在JDK 9中被弃用。替代它的是Cleaner类。</li>
 </ul>
 <h3 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h3><ul>
 <li>标记清除算法：先标记回收对象，然后统一回收，效率较低，导致内存碎片过多，使得内存利用率降低</li>
@@ -773,8 +786,8 @@
 </ul>
 </li>
 </ul>
-<h2 id="如何打破双亲委派模型实现自定义class加载顺序"><a href="#如何打破双亲委派模型实现自定义class加载顺序" class="headerlink" title="如何打破双亲委派模型实现自定义class加载顺序"></a>如何打破双亲委派模型实现自定义class加载顺序</h2><ul>
-<li>springboot是如何打破双亲委派模型的</li>
+<h2 id="如何打破双亲委派模型"><a href="#如何打破双亲委派模型" class="headerlink" title="如何打破双亲委派模型"></a>如何打破双亲委派模型</h2><ul>
+<li>自定义类加载器，基于双亲委派模型自定义类加载顺序模型</li>
 </ul>
 <h2 id="javap可视化class文件解读"><a href="#javap可视化class文件解读" class="headerlink" title="javap可视化class文件解读"></a>javap可视化class文件解读</h2><ul>
 <li>javap -v xxx.class &gt; output.txt：该命令可以将指定的class文件以可读的格式输出到文本文件中</li>
@@ -790,6 +803,27 @@
 <li>规则4：当父类中最后一个成员和子类第一个成员的间隔如果不够4个字节的话，就必须扩展到4个字节的基本单位。</li>
 <li>规则5：如果子类第一个实例域是一个双精度或者长整型，并且父类并没有用完8个字节，JVM会破坏规则2，按照整形（int），短整型（short），字节型（byte），引用类型（reference）的顺序，向未填满的空间填充。</li>
 </ul>
+<h2 id="64位出现给jvm带来的影响"><a href="#64位出现给jvm带来的影响" class="headerlink" title="64位出现给jvm带来的影响"></a>64位出现给jvm带来的影响</h2><blockquote>
+<p>64位字长的出现，导致操作系统内存扩大（原先32位，4G）；64位的jvm也应用而生（增大的java堆），同时也导致了vm内部java对象表示（oops：普通对象指针）由32位增加到了64位，长度增加导致 cpu 高速缓存行中可用的oops减少，降低了cpu缓存的效率；从而导致jvm性能下降了 8～15% ；</p>
+</blockquote>
+<h3 id="解决方案：新版jvm出了压缩指针-XX-UseCompressedOops-弥补了字长增加导致的性能下降问题，同时还有所提升"><a href="#解决方案：新版jvm出了压缩指针-XX-UseCompressedOops-弥补了字长增加导致的性能下降问题，同时还有所提升" class="headerlink" title="解决方案：新版jvm出了压缩指针 -XX:UseCompressedOops 弥补了字长增加导致的性能下降问题，同时还有所提升"></a>解决方案：新版jvm出了压缩指针 -XX:UseCompressedOops 弥补了字长增加导致的性能下降问题，同时还有所提升</h3><blockquote>
+<p>64位，意味着同时可以使用更多的寄存器，避免寄存器的卸载发生，（就是变量超过寄存器数量，就会有一部分被存储在内存中，需要时和寄存器中内容交换，类似内存页面交换，这里称之为寄存器卸载）</p>
+</blockquote>
+<h2 id="JIT"><a href="#JIT" class="headerlink" title="JIT"></a>JIT</h2><blockquote>
+<p>在部分商用虚拟机中（如HotSpot），Java程序最初是通过解释器（Interpreter）进行解释执行的，当虚拟机发现某个方法或代码块的运行特别频繁时，就会把这些代码认定为“热点代码”。为了提高热点代码的执行效率，在运行时，虚拟机将会把这些代码编译成与本地平台相关的机器码，并进行各种层次的优化，完成这个任务的编译器称为即时编译器（Just In Time Compiler，下文统称JIT编译器）。</p>
+</blockquote>
+<ul>
+<li>即时编译器并不是虚拟机必须的部分，Java虚拟机规范并没有规定Java虚拟机内必须要有即时编译器存在，更没有限定或指导即时编译器应该如何去实现。但是，即时编译器编译性能的好坏、代码优化程度的高低却是衡量一款商用虚拟机优秀与否的最关键的指标之一，它也是虚拟机中最核心且最能体现虚拟机技术水平的部分。</li>
+<li>由于Java虚拟机规范并没有具体的约束规则去限制即使编译器应该如何实现，所以这部分功能完全是与虚拟机具体实现相关的内容，如无特殊说明，我们提到的编译器、即时编译器都是指Hotspot虚拟机内的即时编译器，虚拟机也是特指HotSpot虚拟机。</li>
+<li>尽管并不是所有的Java虚拟机都采用解释器与编译器并存的架构，但许多主流的商用虚拟机（如HotSpot），都同时包含解释器和编译器。解释器与编译器两者各有优势：<ul>
+<li>当程序需要迅速启动和执行的时候，解释器可以首先发挥作用，省去编译的时间，立即执行。在程序运行后，随着时间的推移，编译器逐渐发挥作用，把越来越多的代码编译成本地代码之后，可以获取更高的执行效率。</li>
+<li>当程序运行环境中内存资源限制较大（如部分嵌入式系统中），可以使用解释器执行节约内存，反之可以使用编译执行来提升效率。此外，如果编译后出现“罕见陷阱”，可以通过逆优化退回到解释执行。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注意⚠️：对一般的Java方法而言，编译后代码的大小相对于字节码的大小，膨胀比达到10x是很正常的。同上面说的时间开销一样，这里的空间开销也是，只有对执行频繁的代码才值得编译，如果把所有代码都编译则会显著增加代码所占空间，导致“代码爆炸”。这也就解释了为什么有些JVM会选择不总是做JIT编译，而是选择用解释器+JIT编译器的混合执行引擎。</p>
+</blockquote>
 
       
     </div>
@@ -859,8 +893,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/15/Compile JDK/" rel="next" title="Compile JDK">
-                <i class="fa fa-chevron-left"></i> Compile JDK
+              <a href="/2018/04/22/Rabbitmq Monitor/" rel="next" title="Rabbitmq Monitor">
+                <i class="fa fa-chevron-left"></i> Rabbitmq Monitor
               </a>
             
           </div>
@@ -945,7 +979,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">138</span>
+                <span class="site-state-item-count">156</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -956,7 +990,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -967,7 +1001,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">139</span>
+                <span class="site-state-item-count">148</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1020,7 +1054,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#步入java虚拟机的世界"><span class="nav-number">1.</span> <span class="nav-text">步入java虚拟机的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">1.1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.1.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收"><span class="nav-number">1.1.2.</span> <span class="nav-text">内存分配与回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以复制算法为例，minorGC一次的全过程如下"><span class="nav-number">1.1.3.</span> <span class="nav-text">以复制算法为例，minorGC一次的全过程如下</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机对象"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收"><span class="nav-number">1.3.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判定对象可以进行回收"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何判定对象可以进行回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">1.3.2.</span> <span class="nav-text">垃圾回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器：内存回收的具体实现"><span class="nav-number">1.3.3.</span> <span class="nav-text">垃圾收集器：内存回收的具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC日志阅读"><span class="nav-number">1.4.</span> <span class="nav-text">GC日志阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识class文件"><span class="nav-number">1.5.</span> <span class="nav-text">认识class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class文件校验"><span class="nav-number">1.5.1.</span> <span class="nav-text">Class文件校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">1.6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载过程"><span class="nav-number">1.6.1.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">1.6.2.</span> <span class="nav-text">类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jvm参数"><span class="nav-number">1.7.</span> <span class="nav-text">Jvm参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-UCC"><span class="nav-number">1.7.1.</span> <span class="nav-text">生产实例-UCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-CMC"><span class="nav-number">1.7.2.</span> <span class="nav-text">生产实例-CMC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.8.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义类加载器ClassLoader"><span class="nav-number">1.9.</span> <span class="nav-text">自定义类加载器ClassLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK目录结构解析（JDK1-8目录结构）"><span class="nav-number">1.10.</span> <span class="nav-text">JDK目录结构解析（JDK1.8目录结构）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何打破双亲委派模型实现自定义class加载顺序"><span class="nav-number">1.11.</span> <span class="nav-text">如何打破双亲委派模型实现自定义class加载顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#javap可视化class文件解读"><span class="nav-number">1.12.</span> <span class="nav-text">javap可视化class文件解读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hotspot中java对象的内存布局"><span class="nav-number">1.13.</span> <span class="nav-text">Hotspot中java对象的内存布局</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#步入java虚拟机的世界"><span class="nav-number">1.</span> <span class="nav-text">步入java虚拟机的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">1.1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.1.1.</span> <span class="nav-text">运行时数据区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配与回收"><span class="nav-number">1.1.2.</span> <span class="nav-text">内存分配与回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以复制算法为例，minorGC一次的全过程如下"><span class="nav-number">1.1.3.</span> <span class="nav-text">以复制算法为例，minorGC一次的全过程如下</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机对象"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收"><span class="nav-number">1.3.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判定对象可以进行回收"><span class="nav-number">1.3.1.</span> <span class="nav-text">如何判定对象可以进行回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#finalize（claner）"><span class="nav-number">1.3.2.</span> <span class="nav-text">finalize（claner）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收算法"><span class="nav-number">1.3.3.</span> <span class="nav-text">垃圾回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器：内存回收的具体实现"><span class="nav-number">1.3.4.</span> <span class="nav-text">垃圾收集器：内存回收的具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC日志阅读"><span class="nav-number">1.4.</span> <span class="nav-text">GC日志阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识class文件"><span class="nav-number">1.5.</span> <span class="nav-text">认识class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class文件校验"><span class="nav-number">1.5.1.</span> <span class="nav-text">Class文件校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">1.6.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载过程"><span class="nav-number">1.6.1.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">1.6.2.</span> <span class="nav-text">类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jvm参数"><span class="nav-number">1.7.</span> <span class="nav-text">Jvm参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-UCC"><span class="nav-number">1.7.1.</span> <span class="nav-text">生产实例-UCC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产实例-CMC"><span class="nav-number">1.7.2.</span> <span class="nav-text">生产实例-CMC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.8.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义类加载器ClassLoader"><span class="nav-number">1.9.</span> <span class="nav-text">自定义类加载器ClassLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK目录结构解析（JDK1-8目录结构）"><span class="nav-number">1.10.</span> <span class="nav-text">JDK目录结构解析（JDK1.8目录结构）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何打破双亲委派模型"><span class="nav-number">1.11.</span> <span class="nav-text">如何打破双亲委派模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#javap可视化class文件解读"><span class="nav-number">1.12.</span> <span class="nav-text">javap可视化class文件解读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hotspot中java对象的内存布局"><span class="nav-number">1.13.</span> <span class="nav-text">Hotspot中java对象的内存布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#64位出现给jvm带来的影响"><span class="nav-number">1.14.</span> <span class="nav-text">64位出现给jvm带来的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案：新版jvm出了压缩指针-XX-UseCompressedOops-弥补了字长增加导致的性能下降问题，同时还有所提升"><span class="nav-number">1.14.1.</span> <span class="nav-text">解决方案：新版jvm出了压缩指针 -XX:UseCompressedOops 弥补了字长增加导致的性能下降问题，同时还有所提升</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JIT"><span class="nav-number">1.15.</span> <span class="nav-text">JIT</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1043,7 +1077,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

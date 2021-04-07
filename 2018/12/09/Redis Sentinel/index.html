@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/12/09/Redis Sentinel/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Redis Sentinel  哨兵能干什么？ 什么是哨兵模式？ 如何启动redis以哨兵模式？ 如何配置哨兵？ 部署哨兵模式需要注意什么？ 哨兵API 如何添加或者移除哨兵？ 订阅/发布消息">
-<meta property="og:updated_time" content="2019-05-17T09:32:14.187Z">
+<meta property="og:updated_time" content="2020-12-26T07:32:17.641Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis Sentinel">
 <meta name="twitter:description" content="Redis Sentinel  哨兵能干什么？ 什么是哨兵模式？ 如何启动redis以哨兵模式？ 如何配置哨兵？ 部署哨兵模式需要注意什么？ 哨兵API 如何添加或者移除哨兵？ 订阅/发布消息">
@@ -525,6 +525,8 @@
 </ul>
 <h2 id="哨兵API"><a href="#哨兵API" class="headerlink" title="哨兵API"></a>哨兵API</h2><ul>
 <li>PING：连通性检测</li>
+<li>SENTINEL CKQUORUM <master-name>：检查当前的Sentinel配置是否能够达到对主机进行故障转移所需的仲裁，以及对授权故障转移所需的多数进行仲裁。在监视系统中应使用此命令来检查Sentinel部署是否正常</master-name></li>
+<li>SENTINEL INFO-CACHE（&gt; = 3.2）：从主服务器和副本服务器返回缓存的INFO输出。</li>
 <li>sentinel masters：显示多有被监视的master列表和其状态</li>
 <li>sentinel master <master name="">：显示指定master状态</master></li>
 <li>sentinel slaves <master mame="">：显示指定master下所有的slave的状态信息</master></li>
@@ -533,13 +535,15 @@
 <li>sentinel reset pattern&gt;：重置所有匹配到的master状态，清空所有目前的数据</li>
 <li>sentinel failover <master name="">：如果master不可达，强制启动失败策略，不经过哨兵的同意</master></li>
 <li>sentinel flushconfig：强制哨兵重写磁盘配置文件，包括当前哨兵状态</li>
+<li>SENTINEL REPLICAS <master name="">（&gt; = 5.0）：显示此主副本的副本及其状态的列表。</master></li>
 <li>重新配置哨兵在运行时<ul>
-<li>哨兵订阅命令可以使得哨兵实例的配置跟新变得自动化，避免人为手动每个实例去更改</li>
-<li>sentinel monitor <name> <ip> <port> <quorum>：根据所给信息重新配置哨兵的监控master</quorum></port></ip></name></li>
-<li>sentinel remove <name>：移除指定master</name></li>
-<li>sentinel set <name> <opiton> <value>：更改指定master的配置参数</value></opiton></name></li>
+<li>哨兵订阅命令可以使得哨兵实例的配置更新变得自动化，避免人为手动每个实例去更改</li>
+<li>sentinel monitor <master-name> <ip> <port> <quorum>：根据所给信息重新配置哨兵的监控master</quorum></port></ip></master-name></li>
+<li>sentinel remove <master-name>：移除指定master</master-name></li>
+<li>sentinel set <master-name> <opiton> <value>：更改指定master的配置参数</value></opiton></master-name></li>
 </ul>
 </li>
+<li>支持的额外命令：acl, info, shutdown(关闭当前实例), ping, hello, command, client, auth </li>
 </ul>
 <h2 id="如何添加或者移除哨兵？"><a href="#如何添加或者移除哨兵？" class="headerlink" title="如何添加或者移除哨兵？"></a>如何添加或者移除哨兵？</h2><ul>
 <li>基于哨兵的自动发现机制，只需要启动一台配置好当前活跃的master的哨兵实例即可，10秒中便内便会自动被其他哨兵发现并添加到哨兵列表中</li>
@@ -766,7 +770,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">138</span>
+                <span class="site-state-item-count">156</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -777,7 +781,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -788,7 +792,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">139</span>
+                <span class="site-state-item-count">148</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -864,7 +868,7 @@
         <div class="copyright" >
   
   &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
