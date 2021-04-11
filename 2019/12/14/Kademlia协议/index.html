@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2019/12/14/Kademlia协议/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Kademlia协议  什么是Kademlia协议 算法原理 应用场景">
-<meta property="og:updated_time" content="2021-04-07T14:10:42.710Z">
+<meta property="og:updated_time" content="2021-04-10T04:36:35.758Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kademlia协议">
 <meta name="twitter:description" content="Kademlia协议  什么是Kademlia协议 算法原理 应用场景">
@@ -439,6 +439,37 @@
 </ul>
 </blockquote>
 <a id="more"></a>
+<h2 id="什么是Kademlia协议"><a href="#什么是Kademlia协议" class="headerlink" title="什么是Kademlia协议"></a>什么是Kademlia协议</h2><blockquote>
+<p>Kademlia是一种分布式哈希表（DHT），是第三代对等网络的节点动态管理和路由协议。与前两代协议如 Chord、CAN、Pastry 等相比，Kad以全局唯一id标记对等网络节点，以节点ID异或（XOR）值度量节点之间距离，并通过距离分割子树构建路由表，建立了一种全新的网络拓扑结构。相比于其他算法，更简单，更高效。</p>
+</blockquote>
+<h2 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h2><ul>
+<li>网络中分散的各个节点一起组成了一张网状图，可以理解为数据结构中的无向图</li>
+<li>每个节点拥有一个唯一id标识，id由160bit的二进制位组成</li>
+<li>节点间的距离使用逻辑上的抽象表示，即2个节点id的异或（xor）结果的二进制bit位数来表示</li>
+<li>节点id之间的最长公共前缀lcp和节点之间的距离有一定的数学关系，由于节点间的距离采用节点id的异或结果的二进制bit位数表示，所以，lcp越长，节点间的距离(dis)越小（lcp + dis = 160）</li>
+<li>每个节点都维护着一个路由表，记录着网络中的部分节点信息；该路由表本质上是一个数组（bucket数据）数组的下标表示dis，数组内存储的就是距离本节点相同dis的其他节点<ul>
+<li>bucket的大小视具体实现算法而定，可以直接初始化为160；可以初始化为1，后续自动分裂；可以初始化为固定某值</li>
+<li>相同dis的节点数量限制为最大k</li>
+</ul>
+</li>
+<li>节点路由：当前节点和目标节点id值异或算出dis，然后根据dis查看当前节点的bucket数组，是否含有目标节点；否，向这些相同dis的节点发出咨询请求，查找目标节点</li>
+<li>节点路由表变更<ul>
+<li>新节点的加入上线：需要一个种子节点的配合，即将一个已经存在的节点S加入到新节点路由表中，然后发起节点查询请求。其一可以告诉节点S有新节点的加入，其二通过节点S告诉网络中其他节点有新节点的加入，同时其他节点也可能将自己的部分节点信息主动push到新节点供新节点使用</li>
+<li>旧节点下线：离线事件最终会反馈到网络节点的路由表中，将其从路由表中剔除即可</li>
+</ul>
+</li>
+</ul>
+<h3 id="算法优缺点"><a href="#算法优缺点" class="headerlink" title="算法优缺点"></a>算法优缺点</h3><ul>
+<li>网络中所有节点的映射关系避免了每个节点全量存储，分散到了各个节点，同时每个节点的信息至少存储在&gt;1个节点中，保证了任意一个节点下线不会影响到其他节点<ul>
+<li>但是节点的批量下线就可能会导致某些刚上线的新节点不可达，因为新节点刚上线，本身还没有路由表，这时候其他拥有该节点信息的节点批量下线，就会造成该新节点的不可达（孤立无援，求助都找不到人）</li>
+<li>解决思路：新节点加入的时候，其他节点探测到有新节点后，将本地距离更为近的节点信息push到新节点<ul>
+<li>鉴于p2p网络中，节点变动较为频繁，如此操作可能会导致网络压力增大，所以建议改为定时；同时检测节点是否有必要进行数据同步（已经是最新，最近刚刚同步过）；各个节点分散操作，避免所有节点同时操作，增大网络压力</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
       
     </div>
 
@@ -664,7 +695,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kademlia协议"><span class="nav-number">1.</span> <span class="nav-text">Kademlia协议</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kademlia协议"><span class="nav-number">1.</span> <span class="nav-text">Kademlia协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Kademlia协议"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Kademlia协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法原理"><span class="nav-number">1.2.</span> <span class="nav-text">算法原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法优缺点"><span class="nav-number">1.2.1.</span> <span class="nav-text">算法优缺点</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
