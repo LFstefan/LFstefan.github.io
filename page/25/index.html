@@ -327,6 +327,168 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/ChainOfResponsibilityPattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/29/ChainOfResponsibilityPattern/" itemprop="url">
+                  Chain Of Responsibility Pattern
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T12:11:25+08:00">
+                2017-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/29/ChainOfResponsibilityPattern/" class="leancloud_visitors" data-flag-title="Chain Of Responsibility Pattern">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Chain-Of-Responsibility-Pattern（责任链模式）"><a href="#Chain-Of-Responsibility-Pattern（责任链模式）" class="headerlink" title="Chain Of Responsibility Pattern（责任链模式）"></a>Chain Of Responsibility Pattern（责任链模式）</h1><h2 id="Avoid-coupling-the-sender-of-a-request-to-its-receiver-by-giving-more-than-one-object-a-chance-to-handle-the-request-Chain-the-receiving-objects-and-pass-the-request-along-the-chain-until-an-object-handles-it-（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系-。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）"><a href="#Avoid-coupling-the-sender-of-a-request-to-its-receiver-by-giving-more-than-one-object-a-chance-to-handle-the-request-Chain-the-receiving-objects-and-pass-the-request-along-the-chain-until-an-object-handles-it-（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系-。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）" class="headerlink" title="Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request.Chain the receiving objects and pass the request along the chain until an object handles it.（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系 。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）"></a>Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request.Chain the receiving objects and pass the request along the chain until an object handles it.（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系 。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）</h2><ul>
+<li>处理者（Handler）：一个接口,负责规定具体处理者处理用户的请求的方法和具体处理者设置后继对象的方法</li>
+<li>具体处理者（ConcreteHandler）：Handler接口的实现类，调用处理者接口规定的方法处理用户的请求，若能处理则进行处理，不能则传给下一节点</li>
+<li>应用场景：形成一个处理链，挨个节点判断是否能够进行处理，阶乘的计算（从结果的数据量按需判断那个节点可以容纳结果）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/29/ChainOfResponsibilityPattern/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/BuilderPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -446,168 +608,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/07/29/BuilderPattern/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/29/ChainOfResponsibilityPattern/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/29/ChainOfResponsibilityPattern/" itemprop="url">
-                  Chain Of Responsibility Pattern
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T12:11:25+08:00">
-                2017-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Pattern/" itemprop="url" rel="index">
-                    <span itemprop="name">Pattern</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/29/ChainOfResponsibilityPattern/" class="leancloud_visitors" data-flag-title="Chain Of Responsibility Pattern">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Chain-Of-Responsibility-Pattern（责任链模式）"><a href="#Chain-Of-Responsibility-Pattern（责任链模式）" class="headerlink" title="Chain Of Responsibility Pattern（责任链模式）"></a>Chain Of Responsibility Pattern（责任链模式）</h1><h2 id="Avoid-coupling-the-sender-of-a-request-to-its-receiver-by-giving-more-than-one-object-a-chance-to-handle-the-request-Chain-the-receiving-objects-and-pass-the-request-along-the-chain-until-an-object-handles-it-（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系-。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）"><a href="#Avoid-coupling-the-sender-of-a-request-to-its-receiver-by-giving-more-than-one-object-a-chance-to-handle-the-request-Chain-the-receiving-objects-and-pass-the-request-along-the-chain-until-an-object-handles-it-（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系-。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）" class="headerlink" title="Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request.Chain the receiving objects and pass the request along the chain until an object handles it.（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系 。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）"></a>Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request.Chain the receiving objects and pass the request along the chain until an object handles it.（使多个对象有机会处理请求，从而避免了请求的发送者和接收者之间的耦合关系 。将这些对象连成一个链，并沿着这条链传递请求，知道有对象处理它为止。）</h2><ul>
-<li>处理者（Handler）：一个接口,负责规定具体处理者处理用户的请求的方法和具体处理者设置后继对象的方法</li>
-<li>具体处理者（ConcreteHandler）：Handler接口的实现类，调用处理者接口规定的方法处理用户的请求，若能处理则进行处理，不能则传给下一节点</li>
-<li>应用场景：形成一个处理链，挨个节点判断是否能够进行处理，阶乘的计算（从结果的数据量按需判断那个节点可以容纳结果）</li>
-<li>javac -encoding UTF-8 Application.java</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/29/ChainOfResponsibilityPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -980,7 +980,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/AdapterPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/07/22/AbstractFactoryPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -1002,8 +1002,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/22/AdapterPattern/" itemprop="url">
-                  Adapter Pattern
+                <a class="post-title-link" href="/2017/07/22/AbstractFactoryPattern/" itemprop="url">
+                  Abstract Factory Pattern
                 </a>
               
             
@@ -1059,7 +1059,7 @@
 
           
           
-             <span id="/2017/07/22/AdapterPattern/" class="leancloud_visitors" data-flag-title="Adapter Pattern">
+             <span id="/2017/07/22/AbstractFactoryPattern/" class="leancloud_visitors" data-flag-title="Abstract Factory Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1088,19 +1088,17 @@
 
       
         
-          <h1 id="Adapter-Pattern（适配器模式）"><a href="#Adapter-Pattern（适配器模式）" class="headerlink" title="Adapter Pattern（适配器模式）"></a>Adapter Pattern（适配器模式）</h1><blockquote>
-<p>Convert the inface of a class into another interface clients expect.Adapter lets classes work together that couldn’t otherwise because of incompatible interface.（将一个类的接口变换成客户端所期待的另一种接口，从而使原本因接口不匹配而无法在一起工作的两个类能够在一起工作。）“系统的数据和行为都正确，单接口不符时，我们应该考虑使用适配器，目的是是控制范围之外的一个原有对象与某个接口匹配。适配器模式主要用于希望复用一些现存的类，但是接口又与复用环境不一致的情况。”（《大话设计模式》）</p>
-</blockquote>
-<ul>
-<li>目标（Target）：一个接口，客户想要使用的接口</li>
-<li>被适配器（Adaptee）：一个已经存在的接口或者抽象类</li>
-<li>适配器(Adapter)：一个实现了目标接口并且含有被适配器引用的类</li>
-<li>应用场景：目标和被适配器完全解耦，通过适配器来建立联系（单接口适配器）</li>
+          <h1 id="Abstract-Factory-Pattern（抽象工厂模式）"><a href="#Abstract-Factory-Pattern（抽象工厂模式）" class="headerlink" title="Abstract Factory Pattern（抽象工厂模式）"></a>Abstract Factory Pattern（抽象工厂模式）</h1><h2 id="Provide-an-interface-for-creating-families-of-related-or-dependent-objects-without-specifying-their-concrete-classes-（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）"><a href="#Provide-an-interface-for-creating-families-of-related-or-dependent-objects-without-specifying-their-concrete-classes-（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）" class="headerlink" title="Provide an interface for creating families of related or dependent objects without specifying their concrete classes.（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）"></a>Provide an interface for creating families of related or dependent objects without specifying their concrete classes.（为创建一组相关或相互依赖的对象提供一个接口，而且无需指定它们的具体类。）</h2><ul>
+<li>抽象产品（Product）：一个接口或者抽象类，定义、产品必须实现的方法</li>
+<li>具体产品（ConcreteProduct）：抽象产品的子类或者实现类</li>
+<li>抽象工厂（AbstractFactory）：一个接口或者抽象类，定义若干个抽象方法</li>
+<li>具体工厂（ConcreteFactory）：抽象工厂的实现类或者子类，重写抽象方法，使其返回具体产品的实例</li>
+<li>应用场景：提供一个创建一系列或相互依赖对象的接口，而无需知道他们具体的类，反射机制+抽象工厂（反射可以灵活地进行实例化）</li>
 <li>javac -encoding UTF-8 Application.java</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/22/AdapterPattern/#more" rel="contents">
+            <a class="btn" href="/2017/07/22/AbstractFactoryPattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
