@@ -489,6 +489,170 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/12/ObserverPattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/12/ObserverPattern/" itemprop="url">
+                  Observer Pattern
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T12:16:25+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Pattern</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/12/ObserverPattern/" class="leancloud_visitors" data-flag-title="Observer Pattern">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Observer-Pattern（观察者模式）"><a href="#Observer-Pattern（观察者模式）" class="headerlink" title="Observer Pattern（观察者模式）"></a>Observer Pattern（观察者模式）</h1><h2 id="Define-a-one-to-many-dependency-between-objects-so-that-when-one-object-changes-state-all-its-dependents-are-notified-and-updated-automatically-（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）"><a href="#Define-a-one-to-many-dependency-between-objects-so-that-when-one-object-changes-state-all-its-dependents-are-notified-and-updated-automatically-（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）" class="headerlink" title="Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）"></a>Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.（定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并被自动更新。）</h2><ul>
+<li>主题（Subject）：一个接口,规定具体主题需要实现的方法</li>
+<li>观察者（Observer）：一个接口，规定了具体观察者用来获取数据的方法</li>
+<li>具体主题(ConcreteSubject)：主题接口的实现类，该实例包含观察者所关心的数据（经常变动），含有观察者的引用，以便在数据发生变化时通知观察者更新数据</li>
+<li>具体观察者(ConcreteObserver)：观察者接口的实现类，含有具体主题的引用，以便于具体主题将自己添加/删除到其集合中去，成为该主题的观察者</li>
+<li>应用场景：观察者对于主题中的数据可采用两种方法——“拉”数据或者——-“推”数据,即主题主动将数据更新推送给观察者，或者只是通知观察者数据已更新，观察者自己调用主题方法实现数据更新，适用于一个对象数据更新时需要通知其他对象（或者让其自行更新）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/12/ObserverPattern/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/DecoratorPattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -608,168 +772,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/08/05/DecoratorPattern/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FacadePattern/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/05/FacadePattern/" itemprop="url">
-                  Facade Pattern
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:45:25+08:00">
-                2017-08-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Pattern/" itemprop="url" rel="index">
-                    <span itemprop="name">Pattern</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/08/05/FacadePattern/" class="leancloud_visitors" data-flag-title="Facade Pattern">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Facade-Pattern（门面模式）"><a href="#Facade-Pattern（门面模式）" class="headerlink" title="Facade Pattern（门面模式）"></a>Facade Pattern（门面模式）</h1><h2 id="Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。"><a href="#Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。" class="headerlink" title="Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)"></a>Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)</h2><ul>
-<li>子系统（Subsystem）:若干类的集合，均不包含外观类的实例引用</li>
-<li>外观（Facade）：一个含有子系统中全部或者部分类的实例引用的类</li>
-<li>应用场景：跟踪系统使用情况（经过同一个接口），更换系统（只需更改外观接口的代码）</li>
-<li>javac -encoding UTF-8 Application.java</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/FacadePattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -978,7 +980,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/InterpreterPattern/">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2017/08/05/FacadePattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘飞">
@@ -1000,8 +1002,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/05/InterpreterPattern/" itemprop="url">
-                  Interpreter Pattern
+                <a class="post-title-link" href="/2017/08/05/FacadePattern/" itemprop="url">
+                  Facade Pattern
                 </a>
               
             
@@ -1057,7 +1059,7 @@
 
           
           
-             <span id="/2017/08/05/InterpreterPattern/" class="leancloud_visitors" data-flag-title="Interpreter Pattern">
+             <span id="/2017/08/05/FacadePattern/" class="leancloud_visitors" data-flag-title="Facade Pattern">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1086,10 +1088,15 @@
 
       
         
-          <h1 id="Interpreter-Pattern（解释器模式）"><a href="#Interpreter-Pattern（解释器模式）" class="headerlink" title="Interpreter Pattern（解释器模式）"></a>Interpreter Pattern（解释器模式）</h1><h2 id="Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"><a href="#Given-a-language-define-a-representation-for-its-grammar-along-with-an-interpreter-that-uses-the-representation-to-interpret-sentences-int-the-language-（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）" class="headerlink" title="Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）"></a>Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences int the language.（给定一门语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。）</h2>
+          <h1 id="Facade-Pattern（门面模式）"><a href="#Facade-Pattern（门面模式）" class="headerlink" title="Facade Pattern（门面模式）"></a>Facade Pattern（门面模式）</h1><h2 id="Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。"><a href="#Provide-a-unified-interface-to-a-set-of-interface-in-a-subsystem-Facede-defines-a-higher-level-interface-that-makes-the-subsystem-easier-to-use-要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。" class="headerlink" title="Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)"></a>Provide a unified interface to a set of interface in a subsystem.Facede defines a higher-level interface that makes the subsystem easier to use.(要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供了一个高层次的接口，使得子系统更容易使用。)</h2><ul>
+<li>子系统（Subsystem）:若干类的集合，均不包含外观类的实例引用</li>
+<li>外观（Facade）：一个含有子系统中全部或者部分类的实例引用的类</li>
+<li>应用场景：跟踪系统使用情况（经过同一个接口），更换系统（只需更改外观接口的代码）</li>
+<li>javac -encoding UTF-8 Application.java</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/05/InterpreterPattern/#more" rel="contents">
+            <a class="btn" href="/2017/08/05/FacadePattern/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1175,7 +1182,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">157</span>
+                <span class="site-state-item-count">158</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
