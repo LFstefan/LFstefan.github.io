@@ -436,12 +436,19 @@
       
         
           <h1 id="RMI"><a href="#RMI" class="headerlink" title="RMI"></a>RMI</h1><ul>
-<li>基于接口API实现版本隔离<ul>
-<li>URL携带版本号  </li>
+<li>使用样例</li>
+<li>实现原理</li>
+<li>源码解析</li>
+<li>分布式垃圾回收-DGC</li>
+<li>类比其他语言<ul>
+<li>c++</li>
+<li>php</li>
+<li>golang</li>
 </ul>
 </li>
-<li>基于SPI实现动态加载不同版本<ul>
-<li>自定义SPI实现</li>
+<li>扩展<ul>
+<li>duboo的服务端多个tcp长链接复用如何实现</li>
+<li>远程调用是否可以实现调用接口缓存（幂等/非幂等）</li>
 </ul>
 </li>
 </ul>
@@ -609,171 +616,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2021/05/16/数据库连接池/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2021/04/04/GC-CMS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2021/04/04/GC-CMS/" itemprop="url">
-                  GC-CMS
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-04T20:49:53+08:00">
-                2021-04-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GC/" itemprop="url" rel="index">
-                    <span itemprop="name">GC</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2021/04/04/GC-CMS/" class="leancloud_visitors" data-flag-title="GC-CMS">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="GC-CMS"><a href="#GC-CMS" class="headerlink" title="GC-CMS"></a>GC-CMS</h1><blockquote>
-<ul>
-<li>算法实现</li>
-<li>优点缺点</li>
-<li>参数配置</li>
-<li>日志解释</li>
-<li>调优策略</li>
-</ul>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/04/04/GC-CMS/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1104,6 +946,171 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2021/04/04/GC-ParallelGC/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2021/04/04/GC-CMS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2021/04/04/GC-CMS/" itemprop="url">
+                  GC-CMS
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-04T20:49:53+08:00">
+                2021-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GC/" itemprop="url" rel="index">
+                    <span itemprop="name">GC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2021/04/04/GC-CMS/" class="leancloud_visitors" data-flag-title="GC-CMS">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="GC-CMS"><a href="#GC-CMS" class="headerlink" title="GC-CMS"></a>GC-CMS</h1><blockquote>
+<ul>
+<li>算法实现</li>
+<li>优点缺点</li>
+<li>参数配置</li>
+<li>日志解释</li>
+<li>调优策略</li>
+</ul>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/04/04/GC-CMS/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
