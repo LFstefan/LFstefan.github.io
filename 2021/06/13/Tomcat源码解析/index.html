@@ -1,0 +1,1438 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|comic sans:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JAVA,Tomcat," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="染心" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Tomecat源码解析 宏观架构层次 connector连接器 warpper映射servlet Pipeline-Valve管道 Lifecycle声明周期 类加载 springboot内嵌tomcat">
+<meta name="keywords" content="JAVA,Tomcat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tomecat源码解析">
+<meta property="og:url" content="https://lfstefan.github.io/2021/06/13/Tomcat源码解析/index.html">
+<meta property="og:site_name" content="染心">
+<meta property="og:description" content="Tomecat源码解析 宏观架构层次 connector连接器 warpper映射servlet Pipeline-Valve管道 Lifecycle声明周期 类加载 springboot内嵌tomcat">
+<meta property="og:updated_time" content="2021-06-21T09:56:53.592Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tomecat源码解析">
+<meta name="twitter:description" content="Tomecat源码解析 宏观架构层次 connector连接器 warpper映射servlet Pipeline-Valve管道 Lifecycle声明周期 类加载 springboot内嵌tomcat">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lfstefan.github.io/2021/06/13/Tomcat源码解析/"/>
+
+
+
+
+
+  <title>Tomecat源码解析 | 染心</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/LFstefan"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">染心</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Coding Everyday</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2021/06/13/Tomcat源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Tomecat源码解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-13T12:21:25+08:00">
+                2021-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tomcat/" itemprop="url" rel="index">
+                    <span itemprop="name">Tomcat</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2021/06/13/Tomcat源码解析/" class="leancloud_visitors" data-flag-title="Tomecat源码解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Tomecat源码解析"><a href="#Tomecat源码解析" class="headerlink" title="Tomecat源码解析"></a>Tomecat源码解析</h1><ul>
+<li>宏观架构层次</li>
+<li>connector连接器</li>
+<li>warpper映射servlet</li>
+<li>Pipeline-Valve管道</li>
+<li>Lifecycle声明周期</li>
+<li>类加载</li>
+<li>springboot内嵌tomcat</li>
+</ul>
+<a id="more"></a>
+<h2 id="宏观架构层次"><a href="#宏观架构层次" class="headerlink" title="宏观架构层次"></a>宏观架构层次</h2><ul>
+<li>顶层server容器（唯一，只有一个）<ul>
+<li>服务service容器（不唯一，允许存在多个，即多个应用服务共享tomcat容器）<ul>
+<li>connector：管理处理网络连接（不唯一，一个service服务可以拥有多个connectors，例如，分别处理http和https等）</li>
+<li>container：管理处理servlet（唯一，一个service服务一个）<ul>
+<li>Engine：（唯一，一个service只有一个）<ul>
+<li>host：（虚拟主机，不唯一）<ul>
+<li>context：（具体我们部署的一个应用程序，不唯一）<ul>
+<li>wrapper：（不唯一，每一个wrapper封装一个servlet）</li>
+<li>wrapper</li>
+</ul>
+</li>
+<li>context</li>
+</ul>
+</li>
+<li>host：</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>服务service容器</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<h2 id="Connector深入理解"><a href="#Connector深入理解" class="headerlink" title="Connector深入理解"></a>Connector深入理解</h2><ul>
+<li>Connector用于接受请求并将请求封装成Request，然后交给Container进行处理，Container处理完之后在交给Connector封装成Response返回给客户端。</li>
+<li>Ajp/Http（通讯协议） - apr/nio/nio2(nio2=aio)（io模型） - protocol</li>
+<li>tomcat本身支持AJP协议和HTTP协议</li>
+</ul>
+<blockquote>
+<ul>
+<li>AJP（Apache JServ Protocol）是定向包协议。</li>
+<li>apr (Apache Portable Runtime/Apache可移植运行库)，是Apache HTTP服务器的支持库。你可以简单地理解为，Tomcat将以JNI的形式调用Apache HTTP服务器的核心动态链接库来处理文件io读取或网络传输操作，从而大大地提高Tomcat对静态文件的处理性能。 Tomcat apr也是在Tomcat上运行高并发应用的首选模式</li>
+</ul>
+</blockquote>
+<h3 id="connector核心组成"><a href="#connector核心组成" class="headerlink" title="connector核心组成"></a>connector核心组成</h3><ul>
+<li>ProtocolHandler：连接使用的协议以及模式</li>
+<li>网络通信的 I/O 模型是变化的, 应用层协议也是变化的，但是整体的处理逻辑是不变的<ul>
+<li>Http11AprProtocol，Http11NioProtocol， Http11Nio2Protocol</li>
+<li>AjpAprProtocol，AjpNioProtocol，AjpNio2Protocol</li>
+</ul>
+</li>
+<li>Endpoint组件：处理socket，实现tcp/ip协议<ul>
+<li>NioEndpoint特殊分析：一共包含 LimitLatch、Acceptor、Poller、SocketProcessor和 Executor 共 5 个组件，分别分工合作实现整个 TCP/IP 协议的处理。</li>
+<li>LimitLatch是连接控制器，它负责控制最大连接数，NIO 模式下默认是 10000，达到这个阈值后，连接请求被拒绝。</li>
+<li>Acceptor跑在一个单独的线程里，它在一个死循环里调用 accept方法来接收新连接，一旦有新的连接请求到来，accept方法返回一个 Channel 对象，接着把 Channel对象交给 Poller 去处理。</li>
+<li>Poller 的本质是一个 Selector，也跑在单独线程里。Poller在内部维护一个 Channel数组，它在一个死循环里不断检测 Channel的数据就绪状态，一旦有 Channel可读，就生成一个 SocketProcessor任务对象扔给 Executor去处理。</li>
+<li>SocketProcessor实现了 Runnable接口，其中run方法中的 getHandler().process(socketWrapper, SocketEvent.CONNECT_FAIL); 代码则是获取handler并执行处理 socketWrapper，最后通过socket 获取合适应用层协议处理器，也就是调用 Http11Processor组件来处理请求。</li>
+<li>Executor就是线程池，负责运行 SocketProcessor任务类，SocketProcessor 的 run方法会调用 Http11Processor 来读取和解析请求数据。我们知道，Http11Processor是应用层协议的封装，它会调用容器获得响应，再把响应通过 Channel写出。</li>
+</ul>
+</li>
+<li>Processor组件：封装request/response，实现http协议</li>
+<li>Adapter组件：请求适配到servlet</li>
+</ul>
+<h2 id="Wrapper深入理解"><a href="#Wrapper深入理解" class="headerlink" title="Wrapper深入理解"></a>Wrapper深入理解</h2><h3 id="一个请求是如何定位到让哪个-Wrapper-的-Servlet-处理的？答案是，Tomcat-是用-Mapper-组件来完成这个任务的。"><a href="#一个请求是如何定位到让哪个-Wrapper-的-Servlet-处理的？答案是，Tomcat-是用-Mapper-组件来完成这个任务的。" class="headerlink" title="一个请求是如何定位到让哪个 Wrapper 的 Servlet 处理的？答案是，Tomcat 是用 Mapper 组件来完成这个任务的。"></a>一个请求是如何定位到让哪个 Wrapper 的 Servlet 处理的？答案是，Tomcat 是用 Mapper 组件来完成这个任务的。</h3><ul>
+<li>Mapper 组件的功能就是将用户请求的 URL 定位到一个 Servlet，它的工作原理是：Mapper组件里保存了 Web 应用的配置信息，其实就是容器组件与访问路径的映射关系，比如 Host容器里配置的域名、Context容器里的 Web应用路径，以及 Wrapper容器里 Servlet 映射的路径，你可以想象这些配置信息就是一个多层次的 Map。</li>
+<li>当一个请求到来时，Mapper 组件通过解析请求 URL 里的域名和路径，再到自己保存的 Map 里去查找，就能定位到一个 Servlet。请你注意，一个请求 URL 最后只会定位到一个 Wrapper容器，也就是一个 Servlet。</li>
+</ul>
+<h2 id="Pipeline-Valve-管道"><a href="#Pipeline-Valve-管道" class="headerlink" title="Pipeline-Valve 管道"></a>Pipeline-Valve 管道</h2><ul>
+<li>连接器中的 Adapter 会调用container容器的 Service 方法来执行 Servlet，最先拿到请求的是 Engine 容器，Engine 容器对请求做一些处理后，会把请求传给自己子容器 Host 继续处理，依次类推，最后这个请求会传给 Wrapper 容器，Wrapper 会调用最终的 Servlet 来处理。那么这个调用过程具体是怎么实现的呢？答案是使用 Pipeline-Valve 管道。</li>
+<li>Pipeline-Valve 是责任链模式，责任链模式是指在一个请求处理的过程中有很多处理者依次对请求进行处理，每个处理者负责做自己相应的处理，处理完之后将再调用下一个处理者继续处理，Valve 表示一个处理点（也就是一个处理阀门），因此 invoke方法就是来处理请求的。</li>
+<li>每层容器都有自己的Pipeline链表，链表的尾节点指向下一层容器Pipeline链表的首节点</li>
+<li>整个过程分是通过connector连接器中的 CoyoteAdapter 触发，它会调用 Engine 的第一个 Valve：<ul>
+<li>connector.getService().getContainer().getPipeline().getFirst().invoke(request, response);</li>
+</ul>
+</li>
+</ul>
+<h3 id="Pipeline-Valve-管道和servlet-filter过滤器的区别"><a href="#Pipeline-Valve-管道和servlet-filter过滤器的区别" class="headerlink" title="Pipeline-Valve 管道和servlet filter过滤器的区别"></a>Pipeline-Valve 管道和servlet filter过滤器的区别</h3><ul>
+<li>Wrapper 容器的最后一个 Valve 会创建一个 Filter 链，并调用 doFilter() 方法，最终会调到 Servlet的 service方法。</li>
+<li>Valve是 Tomcat的私有机制，与 Tomcat 的基础架构 API是紧耦合的</li>
+<li>过滤器filter是Servlet API是公有的标准，所有的 Web 容器包括 Jetty 都支持 Filter 机制。</li>
+<li>Valve工作在 Web 容器级别，拦截所有应用的请求；而 Servlet Filter 工作在应用级别，只能拦截某个 Web 应用的所有请求。如果想做整个 Web容器的拦截器，必须通过 Valve来实现。</li>
+</ul>
+<h2 id="Lifecycle-生命周期任何管理？"><a href="#Lifecycle-生命周期任何管理？" class="headerlink" title="Lifecycle 生命周期任何管理？"></a>Lifecycle 生命周期任何管理？</h2><ul>
+<li>如何统一管理组件的创建、初始化、启动、停止和销毁？如何做到代码逻辑清晰？如何方便地添加或者删除组件？如何做到组件启动和停止不遗漏、不重复？</li>
+<li>抽象公共上层接口，定义流程编排：init初始化-start启动-stop停止-destory销毁</li>
+<li>如何扩展，保持开闭原则</li>
+<li>使用事件event和监听listener来实现新逻辑的扩展（观察者模式）</li>
+<li>Tomcat 为了实现一键式启停以及优雅的生命周期管理，并考虑到了可扩展性和可重用性，将面向对象思想和设计模式发挥到了极致，Containaer接口维护了容器的父子关系，Lifecycle 组合模式实现组件的生命周期维护，生命周期每个组件有变与不变的点，运用模板方法模式。 分别运用了组合模式、观察者模式、骨架抽象类和模板方法。</li>
+</ul>
+<h2 id="Tomcat-热加载"><a href="#Tomcat-热加载" class="headerlink" title="Tomcat 热加载"></a>Tomcat 热加载</h2><ul>
+<li>Tomcat通过一个后台线程做周期性的任务，定期检测类文件的变化，如果有变化就重新加载类</li>
+<li>Tomcat的热加载就是在 Context 容器实现，主要是调用了 Context 容器的 reload 方法，具体动作如下：<ul>
+<li>停止和销毁 Context 容器及其所有子容器，子容器其实就是 Wrapper，也就是说 Wrapper 里面 Servlet 实例也被销毁了。</li>
+<li>停止和销毁 Context 容器关联的 Listener 和 Filter。</li>
+<li>停止和销毁 Context 下的 Pipeline 和各种 Valve。</li>
+<li>停止和销毁 Context 的类加载器，以及类加载器加载的类文件资源。</li>
+<li>启动 Context 容器，在这个过程中会重新创建前面四步被销毁的资源。</li>
+<li>在这个过程中，类加载器发挥着关键作用。一个 Context 容器对应一个类加载器，类加载器在销毁的过程中会把它加载的所有类也全部销毁。Context 容器在启动过程中，会创建一个新的类加载器来加载新的类文件。</li>
+</ul>
+</li>
+</ul>
+<h3 id="如何避免防止-Web-应用自己的类覆盖-JRE-的核心类"><a href="#如何避免防止-Web-应用自己的类覆盖-JRE-的核心类" class="headerlink" title="如何避免防止 Web 应用自己的类覆盖 JRE 的核心类"></a>如何避免防止 Web 应用自己的类覆盖 JRE 的核心类</h3><h3 id="类加载层次"><a href="#类加载层次" class="headerlink" title="类加载层次"></a>类加载层次</h3><ul>
+<li>tomcat作为Servlet容器，负责加载我们写的Servlet类，以及我们所依赖的jar包</li>
+<li>tomcat自身也是java，也需要加载自己的类和自己的依赖jar包</li>
+<li>由于支持多应用部署，不同应用的相同类名加载应该保持隔离，即各自加载一份</li>
+<li>不同应用依赖的相同jar包，因该加载一份，共享即可，避免内存占用过多</li>
+<li>如何解决上述问题：<ul>
+<li>解决不同web应用类隔离：WebAppClassLoader：每个 Web 应用创建一个类加载器实例；Context 容器组件对应一个 Web 应用，因此，每个 Context容器负责创建和维护一个 WebAppClassLoader加载器实例。这背后的原理是，不同的加载器实例加载的类被认为是不同的类；Web 应用之间通过各自的类加载器互相隔离</li>
+<li>解决不同web应用相同依赖库共享：SharedClassLoader：作为 WebAppClassLoader的父加载器，专门来加载 Web 应用之间共享的类。如果 WebAppClassLoader自己没有加载到某个类，就会委托父加载器 SharedClassLoader去加载这个类，SharedClassLoader会在指定目录下加载共享类</li>
+<li>解决tomcat自身类和web应用类隔离：CatalinaClassloader：负责加载tomcat自身的类文件</li>
+<li>解决tomcat和web应用含有相同依赖的jar包共享：CommonClassLoader（作为 CatalinaClassloader和 SharedClassLoader的父加载器。CommonClassLoader能加载的类都可以被 CatalinaClassLoader和 SharedClassLoader使用）；位于CATALINA_HOME/lib下</li>
+</ul>
+</li>
+</ul>
+<h3 id="类加载顺序"><a href="#类加载顺序" class="headerlink" title="类加载顺序"></a>类加载顺序</h3><ul>
+<li>类加载顺序（默认）<ul>
+<li>Bootstrap classes of your JVM</li>
+<li>/WEB-INF/classes of your web application</li>
+<li>/WEB-INF/lib/*.jar of your web application</li>
+<li>System class loader classes (described above)</li>
+<li>Common class loader classes (described above)</li>
+</ul>
+</li>
+<li>类加载顺序（特殊配置<loader delegate="true">）<ul>
+<li>Bootstrap classes of your JVM</li>
+<li>System class loader classes (described above)</li>
+<li>Common class loader classes (described above)</li>
+<li>/WEB-INF/classes of your web application</li>
+<li>/WEB-INF/lib/*.jar of your web application</li>
+</ul>
+</loader></li>
+</ul>
+<blockquote>
+<p>要共享可以通过父子关系，要隔离那就需要兄弟关系了。兄弟关系就是指两个类加载器是平行的，它们可能拥有同一个父加载器</p>
+<p>核心配置文件：conf目录下的server.xml配置文件</p>
+<p>tomcat目录下，webapps/目录 = 一个host，host下默认主应用是webapps/ROOT/目录（可以设置修改），访问地址不需要添加目录名，非默认其他应用需要添加目录名才能正确访问</p>
+</blockquote>
+<h2 id="web应用部署方式"><a href="#web应用部署方式" class="headerlink" title="web应用部署方式"></a>web应用部署方式</h2><ul>
+<li>应用可以以war包的形式部署到tomcat的wabapps目录下，也可以以文件夹的形式部署</li>
+<li>war包格式：  <ul>
+<li>项目文件名<ul>
+<li>META-INF</li>
+<li>WEB-INF<ul>
+<li>web.xml</li>
+<li>classes/</li>
+<li>lib/</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="spirngboot启动内嵌tomcat容器过程"><a href="#spirngboot启动内嵌tomcat容器过程" class="headerlink" title="spirngboot启动内嵌tomcat容器过程"></a>spirngboot启动内嵌tomcat容器过程</h2><ul>
+<li>内嵌后的类加载流程<ul>
+<li>tomcat原生加载类文件基于文件路径位置，判断路径使用不同的类加载器加载，springboot内嵌后不一样</li>
+<li>因为没有了tomcat启动的所面临的问题，多个webapp隔离(只有一个)，tomcat和应用隔离</li>
+<li>使用TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader 加载应用类文件</li>
+</ul>
+</li>
+<li>核心方法：this.createWebServer();</li>
+<li>核心类：TomcatServletWebServerFactory<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">//初始化构造tomcat容器，未启动容器</div><div class="line">@Override</div><div class="line">public WebServer getWebServer(ServletContextInitializer... initializers) &#123;</div><div class="line">    if (this.disableMBeanRegistry) &#123;</div><div class="line">        Registry.disableRegistry();</div><div class="line">    &#125;</div><div class="line">    Tomcat tomcat = new Tomcat();</div><div class="line">    File baseDir = (this.baseDirectory != null) ? this.baseDirectory : createTempDir(&quot;tomcat&quot;);</div><div class="line">    tomcat.setBaseDir(baseDir.getAbsolutePath());</div><div class="line">    Connector connector = new Connector(this.protocol);</div><div class="line">    connector.setThrowOnFailure(true);</div><div class="line">    tomcat.getService().addConnector(connector);</div><div class="line">    customizeConnector(connector);</div><div class="line">    tomcat.setConnector(connector);</div><div class="line">    tomcat.getHost().setAutoDeploy(false);</div><div class="line">    configureEngine(tomcat.getEngine());</div><div class="line">    for (Connector additionalConnector : this.additionalTomcatConnectors) &#123;</div><div class="line">        tomcat.getService().addConnector(additionalConnector);</div><div class="line">    &#125;</div><div class="line">    prepareContext(tomcat.getHost(), initializers);</div><div class="line">    return getTomcatWebServer(tomcat);</div><div class="line">&#125;</div></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://op7sipvie.bkt.clouddn.com/wechat-reward-image.JPG" alt="刘飞 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://op7sipvie.bkt.clouddn.com/alipay-reward-image.JPG" alt="刘飞 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Tomcat/" rel="tag"># Tomcat</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/05/29/RMI/" rel="next" title="RMI">
+                <i class="fa fa-chevron-left"></i> RMI
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="刘飞" />
+          <p class="site-author-name" itemprop="name">刘飞</p>
+           
+              <p class="site-description motion-element" itemprop="description">一只奋进的小菜鸟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">149</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LFstefan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Tomecat源码解析"><span class="nav-number">1.</span> <span class="nav-text">Tomecat源码解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#宏观架构层次"><span class="nav-number">1.1.</span> <span class="nav-text">宏观架构层次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Connector深入理解"><span class="nav-number">1.2.</span> <span class="nav-text">Connector深入理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#connector核心组成"><span class="nav-number">1.2.1.</span> <span class="nav-text">connector核心组成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wrapper深入理解"><span class="nav-number">1.3.</span> <span class="nav-text">Wrapper深入理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个请求是如何定位到让哪个-Wrapper-的-Servlet-处理的？答案是，Tomcat-是用-Mapper-组件来完成这个任务的。"><span class="nav-number">1.3.1.</span> <span class="nav-text">一个请求是如何定位到让哪个 Wrapper 的 Servlet 处理的？答案是，Tomcat 是用 Mapper 组件来完成这个任务的。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pipeline-Valve-管道"><span class="nav-number">1.4.</span> <span class="nav-text">Pipeline-Valve 管道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pipeline-Valve-管道和servlet-filter过滤器的区别"><span class="nav-number">1.4.1.</span> <span class="nav-text">Pipeline-Valve 管道和servlet filter过滤器的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lifecycle-生命周期任何管理？"><span class="nav-number">1.5.</span> <span class="nav-text">Lifecycle 生命周期任何管理？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tomcat-热加载"><span class="nav-number">1.6.</span> <span class="nav-text">Tomcat 热加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何避免防止-Web-应用自己的类覆盖-JRE-的核心类"><span class="nav-number">1.6.1.</span> <span class="nav-text">如何避免防止 Web 应用自己的类覆盖 JRE 的核心类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载层次"><span class="nav-number">1.6.2.</span> <span class="nav-text">类加载层次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载顺序"><span class="nav-number">1.6.3.</span> <span class="nav-text">类加载顺序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web应用部署方式"><span class="nav-number">1.7.</span> <span class="nav-text">web应用部署方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spirngboot启动内嵌tomcat容器过程"><span class="nav-number">1.8.</span> <span class="nav-text">spirngboot启动内嵌tomcat容器过程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  Sat Apr 29 2017 08:00:00 GMT+0800 (China Standard Time) - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘飞</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=https://lfstefan.github.io/"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4jo3lh32lhNprUWelt3fCUrM-gzGzoHsz", "cTko66LfK5xF0OrYbFlACBB7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2020/12/03/双亲委派模型/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="双亲委派模型 什么是双亲委派模型 存在的意义 演进规则有哪些 如何自定义类加载器   如果打破双亲委派模型 为什么会需要打破该模型 打破方式有哪些 实际场景应用">
-<meta property="og:updated_time" content="2021-04-07T14:54:41.797Z">
+<meta property="og:updated_time" content="2021-06-21T09:21:28.201Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="双亲委派模型">
 <meta name="twitter:description" content="双亲委派模型 什么是双亲委派模型 存在的意义 演进规则有哪些 如何自定义类加载器   如果打破双亲委派模型 为什么会需要打破该模型 打破方式有哪些 实际场景应用">
@@ -545,7 +545,7 @@
 </ol>
 <h5 id="tomcat8类加载器机制"><a href="#tomcat8类加载器机制" class="headerlink" title="tomcat8类加载器机制"></a>tomcat8类加载器机制</h5><ul>
 <li><p>类加载树形图如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">    Bootstrap</div><div class="line">        |</div><div class="line">     System</div><div class="line">        |</div><div class="line">     Common</div><div class="line">     /     \</div><div class="line">Webapp1   Webapp2 ...</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">      Bootstrap</div><div class="line">          |</div><div class="line">       System</div><div class="line">          |</div><div class="line">       Common</div><div class="line">       /     \</div><div class="line">  Webapp1   Webapp2 ...</div><div class="line"></div><div class="line">  // 增强配置加载机制</div><div class="line">  Bootstrap</div><div class="line">      |</div><div class="line">    System</div><div class="line">      |</div><div class="line">    Common</div><div class="line">     /  \</div><div class="line">Server  Shared</div><div class="line">         /  \</div><div class="line">   Webapp1  Webapp2 ...</div></pre></td></tr></table></figure>
 </li>
 <li><p>类加载顺序（默认）</p>
 <ul>
@@ -732,7 +732,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">158</span>
+                <span class="site-state-item-count">159</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -743,7 +743,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">60</span>
+                <span class="site-state-item-count">61</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -754,7 +754,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">148</span>
+                <span class="site-state-item-count">149</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
