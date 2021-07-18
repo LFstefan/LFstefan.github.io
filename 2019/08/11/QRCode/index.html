@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2019/08/11/QRCode/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="二维码 説白了就是把信息存儲在圖片二維碼當中，儅二維碼被掃描時，根據統一規約去解析的到相應的信息   條形碼：一維圖形，可支持數據範圍較小，最大20位 使用lua来生成条形码   二維碼：二維圖形，可支持數據範圍大，最大7089位；可全方位掃描識別（二維碼中有三個位置標識來幫助全方位掃描識別）；容錯性，數據部分包含大量的冗餘數據來包幫助實現容錯識別   詳細信息到官方網頁查看詳情：https://">
-<meta property="og:updated_time" content="2019-09-01T07:42:02.652Z">
+<meta property="og:updated_time" content="2021-07-18T06:42:18.767Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="QRCode">
 <meta name="twitter:description" content="二维码 説白了就是把信息存儲在圖片二維碼當中，儅二維碼被掃描時，根據統一規約去解析的到相應的信息   條形碼：一維圖形，可支持數據範圍較小，最大20位 使用lua来生成条形码   二維碼：二維圖形，可支持數據範圍大，最大7089位；可全方位掃描識別（二維碼中有三個位置標識來幫助全方位掃描識別）；容錯性，數據部分包含大量的冗餘數據來包幫助實現容錯識別   詳細信息到官方網頁查看詳情：https://">
@@ -444,6 +444,15 @@
 <blockquote>
 <p>詳細信息到官方網頁查看詳情：<a href="https://www.qrcode.com/en/index.html" title="https://www.qrcode.com/en/index.html" target="_blank" rel="external">https://www.qrcode.com/en/index.html</a></p>
 </blockquote>
+<ul>
+<li>身份码</li>
+<li>付款码</li>
+<li>收款码</li>
+<li>乘车码</li>
+<li>小程序入口码</li>
+<li>离线码</li>
+<li>登陆二维码</li>
+</ul>
 <a id="more"></a>
 <h2 id="現實應用"><a href="#現實應用" class="headerlink" title="現實應用"></a>現實應用</h2><h3 id="身份碼-付款嗎-收款碼"><a href="#身份碼-付款嗎-收款碼" class="headerlink" title="身份碼/付款嗎/收款碼"></a>身份碼/付款嗎/收款碼</h3><ul>
 <li>身份二维码<ul>
@@ -540,6 +549,30 @@
 <ul>
 <li>传输：token的传输经过加密，可防止传递过程中数据包被截取。</li>
 <li>保存：token保存在app的独立空间中可能会被恶意程序获取到，这个问题理论上仅存在于已开放root权限的手机中。在产品安全的角度，只能限制root手机用户使用，解决办法可以是当客户端获知用户的手机root过以后通知服务端降低该用户的消费限额。</li>
+</ul>
+</blockquote>
+<h2 id="二维码登陆"><a href="#二维码登陆" class="headerlink" title="二维码登陆"></a>二维码登陆</h2><blockquote>
+<p>移动端的登陆的会携带设备id（唯一）等信息，服务端生成的token会保存在移动端本地，所以后台退出/关机等都操作后仍然可以直接登陆成功</p>
+<ul>
+<li>浏览器/客户端向服务器发送请求获取二维码，同时服务端生成唯一标识id返回给客户端（二维码信息中包含唯一标识id），唯一标识id存储在redis中，设置一定的过期时间</li>
+<li>浏览器/客户端显示登陆二维码，同时<strong>轮询请求</strong>登陆验证接口，时间间隔自定义，taobao网页不到一秒，知乎网页3秒<ul>
+<li>根据每次的请求结果可以知晓当前的状态（待扫描，已扫瞄待确认，已确认） </li>
+<li>超过指定时间不扫描二维码过期</li>
+<li>如果结果是已确认后，会从服务端可以获取到用户登录的token；</li>
+</ul>
+</li>
+<li>移动端已登陆用户扫码请求服务端<ul>
+<li>服务端解析，获取到唯一标识id，接口类型（是否是登陆接口请求）</li>
+<li>将服务端redis中唯一标识id的状态由待扫描变更为已扫瞄待确认</li>
+<li>同时生成<strong>临时token</strong>（用来标识后续的确认登陆请求和扫描请求的关联性）返回给浏览器/客户端</li>
+</ul>
+</li>
+<li>浏览器/客户端使用临时token确认登陆请求<ul>
+<li>将服务端redis中唯一标识id的状态由已扫瞄待确认变更为已确认</li>
+<li>服务端收到确认后，根据二维码ID绑定的设备信息与账号信息，生成用户PC端登录的token；</li>
+</ul>
+</li>
+<li>登陆成功，浏览器/客户端根据服务端生成的toekn进行交互</li>
 </ul>
 </blockquote>
 
@@ -693,7 +726,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-count">160</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -715,7 +748,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">149</span>
+                <span class="site-state-item-count">150</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -768,7 +801,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二维码"><span class="nav-number">1.</span> <span class="nav-text">二维码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#現實應用"><span class="nav-number">1.1.</span> <span class="nav-text">現實應用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#身份碼-付款嗎-收款碼"><span class="nav-number">1.1.1.</span> <span class="nav-text">身份碼/付款嗎/收款碼</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#易通行二維碼"><span class="nav-number">1.2.</span> <span class="nav-text">易通行二維碼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小程序二維碼"><span class="nav-number">1.3.</span> <span class="nav-text">小程序二維碼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#離綫二維碼"><span class="nav-number">1.4.</span> <span class="nav-text">離綫二維碼</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二维码"><span class="nav-number">1.</span> <span class="nav-text">二维码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#現實應用"><span class="nav-number">1.1.</span> <span class="nav-text">現實應用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#身份碼-付款嗎-收款碼"><span class="nav-number">1.1.1.</span> <span class="nav-text">身份碼/付款嗎/收款碼</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#易通行二維碼"><span class="nav-number">1.2.</span> <span class="nav-text">易通行二維碼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小程序二維碼"><span class="nav-number">1.3.</span> <span class="nav-text">小程序二維碼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#離綫二維碼"><span class="nav-number">1.4.</span> <span class="nav-text">離綫二維碼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二维码登陆"><span class="nav-number">1.5.</span> <span class="nav-text">二维码登陆</span></a></li></ol></li></ol></div>
             
 
           </div>

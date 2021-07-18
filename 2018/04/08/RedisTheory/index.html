@@ -117,7 +117,7 @@
 <meta property="og:url" content="https://lfstefan.github.io/2018/04/08/RedisTheory/index.html">
 <meta property="og:site_name" content="染心">
 <meta property="og:description" content="Redis底层技术实现与原理 本篇以《Rdeis设计与实现》为阅读基础，总结提炼其中一些知识点   底层数据结构 内存回收机制 对象共享 单机数据库 RDB持久化 AOF持久化 事件 复制 redis集群  &amp;lt;- more -&amp;gt; 基本底层实现SDS动态字符串（redis内部自定义字符串）12345Struct sdshdr&amp;#123; Int len;字符串长度，不包括结束符‘/0’">
-<meta property="og:updated_time" content="2019-06-23T08:21:42.116Z">
+<meta property="og:updated_time" content="2021-06-28T05:50:24.092Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RedisTheory">
 <meta name="twitter:description" content="Redis底层技术实现与原理 本篇以《Rdeis设计与实现》为阅读基础，总结提炼其中一些知识点   底层数据结构 内存回收机制 对象共享 单机数据库 RDB持久化 AOF持久化 事件 复制 redis集群  &amp;lt;- more -&amp;gt; 基本底层实现SDS动态字符串（redis内部自定义字符串）12345Struct sdshdr&amp;#123; Int len;字符串长度，不包括结束符‘/0’">
@@ -483,7 +483,7 @@
 </ol>
 </li>
 </ul>
-<h3 id="跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"><a href="#跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）" class="headerlink" title="跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"></a>跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Typedef struct zskiplistNode&#123; </div><div class="line">Struct zskiplistLevel&#123; </div><div class="line">Struct zskiplistNode *forward; </div><div class="line">Unsigned <span class="keyword">int</span> span;跨度，节点间的距离 </div><div class="line">&#125;level[];层，表示一个节点维持有几个指向其他节点的指针，即level数组的个数 </div><div class="line"></div><div class="line">Struct zskiplistNode *backward; </div><div class="line">Double score;保存对象值 </div><div class="line">Robj *obj;保存对象 </div><div class="line">&#125;zskiplistNode;</div></pre></td></tr></table></figure>
+<h3 id="跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"><a href="#跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）" class="headerlink" title="跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"></a>跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Typedef struct zskiplistNode&#123; </div><div class="line">	Struct zskiplistLevel&#123; </div><div class="line">		Struct zskiplistNode *forward; </div><div class="line">		Unsigned <span class="keyword">int</span> span;跨度，节点间的距离 </div><div class="line">	&#125;level[];层，表示一个节点维持有几个指向其他节点的指针，即level数组的个数 </div><div class="line"></div><div class="line">	Struct zskiplistNode *backward; </div><div class="line">	Double score;保存对象值 </div><div class="line">	Robj *obj;保存对象 </div><div class="line">&#125;zskiplistNode;</div></pre></td></tr></table></figure>
 <h3 id="整数集合"><a href="#整数集合" class="headerlink" title="整数集合"></a>整数集合</h3><h3 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h3><h3 id="对象-redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象"><a href="#对象-redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象" class="headerlink" title="对象-(redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象)"></a>对象-(redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Typedef struct redisObject&#123; </div><div class="line">Unsigned type:<span class="number">4</span>;类型 </div><div class="line">Undigned encoding:<span class="number">4</span>;编码 </div><div class="line">Void *ptr;指向底层实现数据结构的指针 </div><div class="line">… </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="字符串对象"><a href="#字符串对象" class="headerlink" title="字符串对象"></a>字符串对象</h3><blockquote>
 <p>编码有三种：int，raw，embatr</p>
@@ -762,8 +762,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/15/初识REST/" rel="prev" title="初识REST">
-                初识REST <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/08/HashAlgorithm/" rel="prev" title="HashAlgorithm">
+                HashAlgorithm <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -838,7 +838,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-count">160</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -860,7 +860,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">149</span>
+                <span class="site-state-item-count">150</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

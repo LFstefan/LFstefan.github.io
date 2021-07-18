@@ -813,6 +813,163 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/04/08/HashAlgorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘飞">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="染心">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/04/08/HashAlgorithm/" itemprop="url">
+                  HashAlgorithm
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T12:21:25+08:00">
+                2018-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/08/HashAlgorithm/" class="leancloud_visitors" data-flag-title="HashAlgorithm">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="hash算法"><a href="#hash算法" class="headerlink" title="hash算法"></a>hash算法</h1><ul>
+<li>Murmurhash2 哈希算法</li>
+<li>siphash 哈希算法</li>
+</ul>
+<p>&lt;- more -&gt;</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/04/08/RedisTheory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -974,7 +1131,7 @@
 </ol>
 </li>
 </ul>
-<h3 id="跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"><a href="#跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）" class="headerlink" title="跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"></a>跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Typedef struct zskiplistNode&#123; </div><div class="line">Struct zskiplistLevel&#123; </div><div class="line">Struct zskiplistNode *forward; </div><div class="line">Unsigned <span class="keyword">int</span> span;跨度，节点间的距离 </div><div class="line">&#125;level[];层，表示一个节点维持有几个指向其他节点的指针，即level数组的个数 </div><div class="line"></div><div class="line">Struct zskiplistNode *backward; </div><div class="line">Double score;保存对象值 </div><div class="line">Robj *obj;保存对象 </div><div class="line">&#125;zskiplistNode;</div></pre></td></tr></table></figure>
+<h3 id="跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"><a href="#跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）" class="headerlink" title="跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）"></a>跳跃表-（有序数据结构，在一个接点中维持有多个指向其他节点的指针，从而实现跳跃性访问节点，可代替平横树）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Typedef struct zskiplistNode&#123; </div><div class="line">	Struct zskiplistLevel&#123; </div><div class="line">		Struct zskiplistNode *forward; </div><div class="line">		Unsigned <span class="keyword">int</span> span;跨度，节点间的距离 </div><div class="line">	&#125;level[];层，表示一个节点维持有几个指向其他节点的指针，即level数组的个数 </div><div class="line"></div><div class="line">	Struct zskiplistNode *backward; </div><div class="line">	Double score;保存对象值 </div><div class="line">	Robj *obj;保存对象 </div><div class="line">&#125;zskiplistNode;</div></pre></td></tr></table></figure>
 <h3 id="整数集合"><a href="#整数集合" class="headerlink" title="整数集合"></a>整数集合</h3><h3 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h3><h3 id="对象-redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象"><a href="#对象-redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象" class="headerlink" title="对象-(redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象)"></a>对象-(redis五大基本对象：字符串对象，列表对象，哈希对象，集合对象，有序集合对象)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Typedef struct redisObject&#123; </div><div class="line">Unsigned type:<span class="number">4</span>;类型 </div><div class="line">Undigned encoding:<span class="number">4</span>;编码 </div><div class="line">Void *ptr;指向底层实现数据结构的指针 </div><div class="line">… </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="字符串对象"><a href="#字符串对象" class="headerlink" title="字符串对象"></a>字符串对象</h3><blockquote>
 <p>编码有三种：int，raw，embatr</p>
@@ -1210,164 +1367,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lfstefan.github.io/2018/04/01/Java描绘数据统计图/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘飞">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="染心">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/04/01/Java描绘数据统计图/" itemprop="url">
-                  Java描绘数据统计图
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-01T12:13:25+08:00">
-                2018-04-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ECharts/" itemprop="url" rel="index">
-                    <span itemprop="name">ECharts</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/04/01/Java描绘数据统计图/" class="leancloud_visitors" data-flag-title="Java描绘数据统计图">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="Java描绘数据统计图"><a href="#Java描绘数据统计图" class="headerlink" title="Java描绘数据统计图"></a>Java描绘数据统计图</h3><h4 id="ECharts"><a href="#ECharts" class="headerlink" title="ECharts"></a><a href="http://echarts.baidu.com/" title="echarts" target="_blank" rel="external">ECharts</a></h4><blockquote>
-<h4 id="最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！"><a href="#最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！" class="headerlink" title="最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！"></a>最近需要实现一个数据曲线对比的小任务，于是想试试描绘数据统计图，了解到可以使用echarts和hcharts，这里使用的是echarts，首先官方实例很好，容易理解且上手快，但是都是静态的，我要实现的是动态获取后台数据来前台显示数据曲线对比，所以会涉及到ajax和json的相关内容（读者自行了解）！</h4></blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/04/01/Java描绘数据统计图/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1417,7 +1416,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">159</span>
+                <span class="site-state-item-count">160</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1439,7 +1438,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">149</span>
+                <span class="site-state-item-count">150</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
